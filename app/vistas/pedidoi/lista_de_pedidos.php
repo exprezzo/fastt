@@ -7,7 +7,8 @@
 		
 		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";		
-		$('div'+tabId).css('padding','4px 0 0 0');
+		$('div'+tabId).css('padding','0px 0 0 0');
+		$('div'+tabId).css('margin-top','0px');
 		$('div'+tabId).css('border','0 1px 1px 1px');
 		
 		var tab=$('a[href="'+tabId+'"]');
@@ -23,8 +24,8 @@
 		var altoHeaderGrid = 38;
 		
 		newH=newH - (2*altoHeaderGrid);
-		newH=newH/altoHeaderGrid;
-		pageSize=newH;		
+		newH=parseInt(newH/altoHeaderGrid);
+		pageSize=newH-2;		
 		
 		var totalRows=<?php echo isset($this->total)?$this->total: 0 ?>;
 		var dataReader = new wijarrayreader([
@@ -70,40 +71,17 @@
 			}
 		});
 		gridPedidos.wijgrid({ loaded: function (e) { 
-			$('#lista_pedidos_internos tr').bind('click', function (e) { 
-			
+			$('#lista_pedidos_internos tr').bind('click', function (e) { 			
 				var pedidoId=$(e.currentTarget).attr('pedidoId');
-				var objId='pedidoi_id_'+pedidoId;
-				
-				var tab=$("div[objId="+objId+"]");		
-							
-				 if (tab.length>0){
-					 var id=tab.attr('id');			
-					 
-					
-					 TabManager.tabs.wijtabs('select',id);
-					 return false;
-				 }
-				 
-				if (pedidoId==undefined || pedidoId=='' || pedidoId==0) return false;
-				var url='/pedidoi/getPedido';
-				var titulo='Editar Pedido';
-				TabManager.add(url,titulo,pedidoId);
-				
-				
-				
-			});
-			// var h=$(window).height();		
-				// var h2=$('.btnNuevoPedido').height();			
-				// var newH = h;			
-				// alert(newH);
-				//$('.listaPedidos').css('min-height',newH);
+				if (pedidoId==undefined || pedidoId=='' || pedidoId==0) return false;				
+				TabManager.add('/pedidoi/getPedido','Editar Pedido',pedidoId);				
+			});			
 		} });
 		
 		
 	});
 </script>
-
+<?php include_once('../app/vistas/pedidoi/lista_toolbar.php') ?>
 <div style="">	
 	<table id="lista_pedidos_internos">
 		<thead>

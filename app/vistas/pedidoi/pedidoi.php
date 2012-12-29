@@ -11,6 +11,10 @@
 		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
 		
+		
+		$('div'+tabId).css('padding','0');
+		$('div'+tabId).css('border','0 1px 1px 1px');
+		
 		var objId='pedidoi_id_'+pedidoId;
 		
 		//Titulo
@@ -160,33 +164,37 @@
 		datasource.load();		
 	});
 </script>
-<div >
+<?php include_once('../app/vistas/pedidoi/toolbar.php'); ?>
+<!--div >
 	<button class='btnGuardar'>Guardar</button>
 	<button class='btnEliminar'>Eliminar</button>
 	<button class='btnNuevo'>Nuevo</button>
-</div>
-<br /><br />
+</div-->
+
 <?php
 	$fecha= isset($this->pedido)? $this->pedido['fecha'] : ''; 
 	$nombreAlmacen= isset($this->pedido)? $this->pedido['nombreAlmacen'] : ''; 
 	$fk_almacen= isset($this->pedido)? $this->pedido['fk_almacen'] : ''; 	
 	$id= isset($this->pedido)? $this->pedido['id'] : 0; 	
 ?>
-<form class='frmPedidoi'>	
+<form class='frmPedidoi' style='padding-top:10px;'>	
 	<input type='hidden' name='id' class="txtId" value="<?php echo $id; ?>" />	
-	<label >Fecha:</label>
-	<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" /><br/>	
-	<br/>		
 	<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />
-	<label>Almacen:</label>
-	<select class="cmbAlmacen" style='width:170px;'>		
-	</select>
-	<!--input type='text' name='fecha' value="<?php //echo $nombreAlmacen; ?>" /-->
+	<div style='margin-bottom:5px;'>
+		<label >Fecha:</label>
+		<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" />
+	</div>
+	<div style='margin-bottom:5px;'>		
+		<label>Almacen:</label>
+		<select class="cmbAlmacen" style='width:170px;'>			
+		</select>
+	</div>
+	
 	<br />	
 </form>
-<button class="btnAdd" value="Agregar" />
+
 <div style='background-color:white; padding:2px;'>
-<table class="grid_articulos">
+<table class="grid_articulos" style="visibility:hidden;">
 	<thead>
 		<th>Producto</th> 
 		<th>Cantidad</th>

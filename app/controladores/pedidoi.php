@@ -36,10 +36,12 @@ class Pedidoi extends Controlador{
 		return $respuesta;
 	}
 	function nuevoPedido(){
+		return $this->nuevo();
+	}
+	function nuevo(){
 		$vista=$this->getVista();
 		$vista->mostrar('pedidoi/pedidoi');
 	}
-	
 	function getPedido(){
 		$mod=$this->getModel();
 		$idPedido=$_REQUEST['pedidoId'];
@@ -70,8 +72,9 @@ class Pedidoi extends Controlador{
 	function paginar(){
 		$mod=$this->getModel();
 		$paging=$_GET['paging'];
-		$start=intval($paging['pageIndex'])*9;
 		$pageSize=intval($paging['pageSize']);
+		$start=intval($paging['pageIndex'])*$pageSize;
+		
 		$res=$mod->paginar($start,$pageSize);				
 				
 		$respuesta=array(	

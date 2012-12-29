@@ -1,0 +1,12 @@
+.ui-tabs-panel{/* -background-color:white !important; */}
+.ui-button { position: relative; }
+span.ui-button-text { padding-top:40px !important; background-repeat: no-repeat; background-position: top center; background-position:center 6px !important; }
+#gritter-notice-wrapper { } /* position:fixed;top: 20px;right: 20px;width:301px;z-index:9999; */
+/* TABS */		
+.ui-tabs-nav{ min-height:47px; }
+ul.ui-tabs-nav li a { padding-top: 14px !important; padding-left: 38px !important; background-repeat: no-repeat; padding-bottom: 12px !important; background-position:5px;	}
+ul.ui-tabs-nav li a.listaPedidos{ background-image:url('/images/berlin_iconpack/order_list.png'); }	
+/* GRID */
+.wijmo-wijgrid-row{ height:37px; }
+/* PAGINADOR */
+li.ui-page{ padding:8px 15px 8px 15px; }
