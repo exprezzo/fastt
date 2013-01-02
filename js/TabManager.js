@@ -1,6 +1,4 @@
-var tab_counter = 2;
-// close icon: removes the tab on click
- 
+var tab_counter = 1; 
 var TabManager={
 	init:function(){
 		$tabs = $('#tabs').wijtabs({
@@ -34,17 +32,14 @@ var TabManager={
 		});
 	},
 	seleccionarTab:function(objId){
-		//¿ Que pasa con los tabs dentro de tabs ?
-		
-		var tabListaPedidos = $('#tabs > div[objId="'+objId+'"]'); //role="tabPanel", 
-		
+		var tabListaPedidos = $('#tabs > div[objId="'+objId+'"]'); //role="tabPanel",
 		if (tabListaPedidos.length == 0){
 			return false;
 		}else if (tabListaPedidos.length > 0){ //Seleccionar el tab		
 			var tabs = $('#tabs > div[role="tabpanel"]');
 			$.each(tabs, function(index, element) {
 				var jElement = $(element);
-				//si el elemento tiene el atributo == objId, seleccionar
+				//si el elemento tiene el atributo  [objId]==objId, seleccionar
 				if ( jElement.attr ){
 					if ( jElement.attr('objId')==objId ){
 						//Ocultar el panel anterior
@@ -62,22 +57,15 @@ var TabManager={
 						var activeTab = $(selector).parent();
 						activeTab.attr('aria-selected',true);
 						activeTab.addClass('ui-tabs-selected');
-						activeTab.addClass('ui-state-active');						 
-						//activeTab
-						
+						activeTab.addClass('ui-state-active');						 					
 						//Selecciona el nuevo
 						jElement.addClass('ui-tabs-selected ui-state-active');
 						jElement.removeClass('ui-tabs-hide');
 						jElement.attr('aria-hidden',false);
 						
-						
-						//TabManager.tabs.wijtabs('select', index);
-						
-						//alert("seleccionado: "+objId);
 						return true;
 					}
-				}
-				
+				}				
 			});	
 			return true;
 		}

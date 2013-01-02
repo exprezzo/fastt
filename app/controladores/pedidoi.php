@@ -1,15 +1,23 @@
 <?php
-
 require_once '../app/modelos/pedido_model.php';
 require_once '../app/modelos/almacen_model.php';
 class Pedidoi extends Controlador{
+	
+	
 	function getModel(){		
 		if ( !isset($this->modObj) ){						
 			$this->modObj = new PedidoModel();	
 		}	
 		return $this->modObj;
 	}
-	
+	function verPedido(){
+		
+		$idPedido=empty($_REQUEST['id'])? 0 : $_REQUEST['id'];
+		
+		
+		$pedido=$this->getPedido($idPedido);
+		
+	}
 	function getArticulos(){
 		$datos=array();
 		
@@ -27,13 +35,11 @@ class Pedidoi extends Controlador{
 			'nombre'=>'nombre 3'
 		);
 		
-		$respuesta=array(
-			'success'=>true,
-			'msg'=>'',
-			'datos'=>$datos
+		$respuesta=array(	
+			'rows'=>$datos,
+			'totalRows'=>3			
 		);
-		echo json_encode( $respuesta );
-		return $respuesta;
+		echo json_encode($respuesta);
 	}
 	function nuevoPedido(){
 		return $this->nuevo();
@@ -42,14 +48,25 @@ class Pedidoi extends Controlador{
 		$vista=$this->getVista();
 		$vista->mostrar('pedidoi/pedidoi');
 	}
-	function getPedido(){
+	function getPedido($id = null){
+		if ($id==null){
+			$idPedido=$_REQUEST['pedidoId'];
+			$mostrar=true;
+		}else{
+			$idPedido=$id;
+			$mostrar=false;
+		}
 		$mod=$this->getModel();
-		$idPedido=$_REQUEST['pedidoId'];
+		
 		$pedido = $mod->getPedido( $idPedido );
 		
 		$vista=$this->getVista();
 		$vista->pedido=$pedido;
-		$vista->mostrar('pedidoi/pedidoi');
+		if ($mostrar==true){			
+			$vista->mostrar('pedidoi/pedidoi');
+		}else{
+			return $vista;
+		}
 	}
 	
 	function verPedidos(){
@@ -64,7 +81,9 @@ class Pedidoi extends Controlador{
 		
 		$vista->mostrar('pedidoi/lista_de_pedidos');
 	}
-	
+	function pedidos(){
+		return $this->lista_de_pedidos();
+	}
 	function lista_de_pedidos(){
 		return $this->verPedidos();		
 	}

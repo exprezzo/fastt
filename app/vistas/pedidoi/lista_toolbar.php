@@ -21,60 +21,7 @@
 		})
 	});	
 </script>
-<style type="text/css">
-	.ribbon .ui-tabs-nav{
-		display:none;
-	}
-	.tbPedido .btnGuardar{
-		background-image:url('/images/floppy.png') !important;
-		top:5px;
-		width:48px;
-		height:48px;
-		background-size:40px;
-		background-repeat:no-repeat;
-		background-position: 5px 0px;
-		padding: 0;		
-	}
-	
-	.tbPedido .btnNuevo{
-		background-image:url('/images/file.png') !important;
-		top:5px;
-		width:48px;
-		height:48px;
-		background-size:40px;
-		background-repeat:no-repeat;
-		background-position: 5px 0px;
-		padding: 0;		
-	}
-	
-	.tbPedido .btnEliminar{
-		background-image:url('/images/recycle.png') !important;
-		top:5px;
-		width:48px;
-		height:48px;
-		background-size:40px;
-		background-repeat:no-repeat;
-		background-position: 5px 0px;
-		padding: 0;		
-	}
-	
-	.tbPedido .btnImprimir{
-		background-image:url('/images/print.png') !important;
-		top:5px;
-		width:48px;
-		height:48px;
-		background-size:40px;
-		background-repeat:no-repeat;
-		background-position: 5px 0px;
-		padding: 0;		
-	}
-	
-	.tbPedido button{
-		width:61px;
-	}
-	.tbPedido .ui-button-text{
-		padding:0;
-	}
+<style type="text/css">	
 </style>
 	
 <div class="ribbon">

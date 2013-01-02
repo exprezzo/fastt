@@ -1,11 +1,5 @@
 <script type="text/javascript">
-	$(function () {
-		$(".ribbon").wijribbon({
-			click: function (e, cmd) {
-				alert(cmd.commandName);
-			}
-		})
-	});	
+		
 </script>
 <style type="text/css">
 	
@@ -15,9 +9,9 @@
 	<ul>
 		 <li><a href="#tbPedido">Format</a></li>		 
 	</ul>
-	<div id="tbPedido" class="tbPedido">
+	<div class="tbArticulos">
 		<ul>
-			<li id="actiongroup">				
+			<li >				
 				<button title="Nuevo" class="" name="nuevo">
 					<div class="btnNuevo"></div>
 					<span>Nuevo</span>

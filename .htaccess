@@ -2,6 +2,10 @@
 	# Enrutamiento mediante htacces de apache		
     RewriteEngine On
 	
+	#	Accesos Directos
+	RewriteRule ^login 		     mvc_core/entrada.php/user/login [NC,L]   # 
+	RewriteRule ^pedidos 		 mvc_core/entrada.php/pedidoi/pedidos [NC,L]   # 
+	
 	RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ mvc_core/entrada.php/$1 [L]

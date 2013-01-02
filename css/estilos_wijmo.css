@@ -7,6 +7,48 @@ span.ui-button-text { padding-top:40px !important; background-repeat: no-repeat;
 ul.ui-tabs-nav li a { padding-top: 14px !important; padding-left: 38px !important; background-repeat: no-repeat; padding-bottom: 12px !important; background-position:5px;	}
 ul.ui-tabs-nav li a.listaPedidos{ background-image:url('/images/berlin_iconpack/order_list.png'); }	
 /* GRID */
-.wijmo-wijgrid-row{ height:37px; }
+.wijmo-wijgrid-row{ height:36px; }
 /* PAGINADOR */
 li.ui-page{ padding:8px 15px 8px 15px; }
+.btnVerPedidos span{ background-image: url('/images/berlin_iconpack/order_list.png'); background-position:center 5px; }		
+.btnNuevoPedido span{ background-image: url('/images/berlin_iconpack/order.png'); background-position:center 5px; }	
+.btnGuardar span{ background-image: url('/images/icons/save.png'); }
+.btnEliminar span{ background-image: url('/images/icons/delete.png'); }
+.btnNuevo span{ background-image: url('/images/icons/new.png'); }
+.inputBox label{ width:100px; display:inline-block; }
+.inputBox { margin-bottom:8px; }
+form{ padding:10px }
+
+.user_widget{ float:right;margin-right:20px; }
+.user_widget a{ padding-top:10px; height: 30px;	display: inline-block; vertical-align: middle; text-decoration:none; font-weight:bold !important; border-top:0; }
+.user_widget a.left{	padding-left:30px;	padding-right:15px;	border-bottom-left-radius: 50px; }
+.user_widget a.right{ padding-left:15px;	padding-right:20px;	margin-left:-4px; border-bottom-right-radius:50px; }
+
+.ribbon .ui-tabs-nav{
+	display:none;
+}
+
+.tbPedido .ui-button-icon-primary{
+	top:5px;
+	width:48px;
+	height:48px;
+	background-size:40px;
+	background-repeat:no-repeat;
+	background-position: 5px 4px;
+	padding: 0;		
+}
+.tbPedido .btnGuardar{ background-image:url('/images/floppy.png') !important; }
+.tbPedido .btnNuevo{ 	background-image:url('/images/file.png') !important; }
+.tbPedido .btnEliminar{	background-image:url('/images/recycle.png') !important; }
+.tbPedido .btnImprimir{	background-image:url('/images/print.png') !important; }
+.tbPedido .btnNuevoArticulo{ 	background-image:url('/images/icons/diagram_v2_06.png') !important; }
+
+.tbPedido button{
+	width:61px;
+}
+.tbPedido .ui-button-text{ padding:0;}
+
+.main_header{
+/*	visibility:hidden;
+	display:none !important; */
+}

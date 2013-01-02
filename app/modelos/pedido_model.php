@@ -59,7 +59,7 @@ class PedidoModel extends Modelo_PDO{
 		
 		$total=$datos['datos'][0]['total'];
 		
-		$sql='select ped.*,alm.nombre as nombreAlmacen FROM pedidos ped
+		$sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha, alm.nombre as nombreAlmacen FROM pedidos ped
 		LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen ORDER BY ped.fecha DESC LIMIT :start,:limit';		
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);

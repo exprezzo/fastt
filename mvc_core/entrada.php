@@ -22,14 +22,14 @@
 		
 		if ( $result['success']==false ) {
 			echo $result['msg'];
-			$vista= new Vista('asd');
-			$vista->mostrar('asd');
+			//$vista= new Vista('asd');
+			//$vista->mostrar('asd');
 			
 			
 			//PENDIENTE: registrar el error   -------
 		}
 	}catch(Exception $e){
-		echo 'Ups. <br>';
+		//echo 'Ups. <br>';
 		echo $e->getMessage();
 		//echo "El sistema ha sufrido un fallo, consulte con el administrador del sistema";
 		//PENDIENTE: registrar la exception   -------		

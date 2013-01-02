@@ -10,13 +10,17 @@ class Modelo_PDO implements ICrud{
 
 		if ( !isset($this->db) ){
 			try {
-				$db = new PDO('mysql:host='.$DB_CONFIG['DB_SERVER'].';dbname='.$DB_CONFIG{'DB_NAME'}.';charset=UTF8', $DB_CONFIG['DB_USER'], $DB_CONFIG['DB_PASS'],array(
+				$db = @new PDO('mysql:host='.$DB_CONFIG['DB_SERVER'].';dbname='.$DB_CONFIG{'DB_NAME'}.';charset=UTF8', $DB_CONFIG['DB_USER'], $DB_CONFIG['DB_PASS'],array(
 					PDO::ATTR_PERSISTENT => true
 				));				
 				$this->db=$db;
 			} catch (PDOException $e) {
-				print "Error!: " . $e->getMessage() . "<br/>";
-				die();
+				//print "Error!: " . $e->getMessage() . "<br/>";
+				$resp=array(
+					'success'=>false,
+					'msg'=>"Error al conectarse con la base de datos"
+				);
+				throw new Exception("Error al conectarse con la base de datos");
 			}
 		}
 		return $this->db;

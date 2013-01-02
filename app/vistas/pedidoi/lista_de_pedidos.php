@@ -1,10 +1,11 @@
 ﻿<style type="text/css">
-	
+	.colFecha{
+		text-align:right;
+	}
 </style>
 <script>
 	
 	$( function(){
-		
 		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";		
 		$('div'+tabId).css('padding','0px 0 0 0');
@@ -27,9 +28,9 @@
 		newH=parseInt(newH/altoHeaderGrid);
 		pageSize=newH-2;		
 		
-		var totalRows=<?php echo isset($this->total)?$this->total: 0 ?>;
+		//var totalRows=<?php //echo isset($this->total)?$this->total: 0 ?>;
 		var dataReader = new wijarrayreader([
-			{ name: "id"},
+			{ name: "id"  },
 			{ name: "fecha"},
 			{ name: "nombreAlmacen"}
 		]);
@@ -55,6 +56,9 @@
 		};				
 			
 		var gridPedidos=$("#lista_pedidos_internos");
+		
+		// gridPedidos.wijgrid();
+		
 		gridPedidos.wijgrid({
 			dynamic: true,
 			allowColSizing:true,
@@ -64,11 +68,19 @@
 			pageSize:pageSize,
 			selectionMode:'singleRow',
 			data:dataSource,
-			columns: [ { dataKey: "id", hidden:true, visible:false, headerText: "ID" },{dataKey: "nombreAlmacen", headerText: "Almacén" }, {dataKey: "fecha", headerText: "Fecha" } ],
+			columns: [ { dataKey: "id", hidden:true, visible:false, headerText: "ID" },{dataKey: "nombreAlmacen", headerText: "Almacén",width:'80%' }, {dataKey: "fecha", headerText: "Fecha",width:'20%' } ],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
 					args.$rows.attr('pedidoId',args.data.id);
-			}
+			},
+			cellStyleFormatter: function(args) { 
+			 if (args.column._originalDataKey=='fecha'){
+				// console.log(args);		
+				 args.$cell.addClass("colFecha");
+				
+			 }
+			
+			} 
 		});
 		gridPedidos.wijgrid({ loaded: function (e) { 
 			$('#lista_pedidos_internos tr').bind('click', function (e) { 			
