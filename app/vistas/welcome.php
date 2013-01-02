@@ -5,7 +5,7 @@ $( function(){
 });
 </script>
 
-<div id="tabs-1">
+<div class="">
 	<h3>Changelog</h3>
 	<ul> 
 		<li>estrenando Wijmo framework (25 Dic 2012)</li>
@@ -24,7 +24,7 @@ $( function(){
 		<li><h4>Edicion de Pedido</h4></li>
 	<hr>
 	<h3>Otros</h3>			
-		<li>Definir lista de dispositivos y navegadores donde debe funcionar el sistema</li>
+		<li>Crear lista de dispositivos y navegadores donde debe funcionar el sistema</li>
 		<li>Definir las acciones que debe tener el toolbar de edicion y el de busqueda</li>
 		<li>Definir Tema principal para adaptar la pantalla de login</li>
 </div>

@@ -48,6 +48,17 @@ form{ padding:10px }
 }
 .tbPedido .ui-button-text{ padding:0;}
 
+.ui-icon.ui-icon-close{
+	right: 0;
+	position: absolute;
+	cursor:pointer;
+}
+
+a img{
+  border:0 none;
+}
+
+
 .main_header{
 /*	visibility:hidden;
 	display:none !important; */

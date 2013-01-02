@@ -68,7 +68,7 @@
 			pageSize:pageSize,
 			selectionMode:'singleRow',
 			data:dataSource,
-			columns: [ { dataKey: "id", hidden:true, visible:false, headerText: "ID" },{dataKey: "nombreAlmacen", headerText: "Almacén",width:'80%' }, {dataKey: "fecha", headerText: "Fecha",width:'20%' } ],
+			columns: [ { dataKey: "id", hidden:true, visible:false, headerText: "ID" },{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'80%' }, {dataKey: "fecha", headerText: "Fecha",width:'20%' } ],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
 					args.$rows.attr('pedidoId',args.data.id);
@@ -98,7 +98,7 @@
 	<table id="lista_pedidos_internos">
 		<thead>
 			<th>id</th>		
-			<th>Almacén</th>		
+			<th>Almac&eacute;n</th>		
 			<th>Fecha</th> 		
 		</thead>  	 
 		<tbody>

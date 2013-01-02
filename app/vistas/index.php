@@ -14,8 +14,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<script src="/js/libs/jquery-ui-1.9.2.custom/jquery-ui-1.9.2.custom.js"></script>  
 	<!--Theme-->
 	<!--link href="http://cdn.wijmo.com/themes/rocket/jquery-wijmo.css" rel="stylesheet" type="text/css"  /-->
-	<!--link href="/css/themes/rocket/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" /-->
-	<link href="/css/themes/cobalt/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" />		
+	<link href="/css/themes/rocket/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" />
+	<!--link href="/css/themes/cobalt/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" /-->		
 	
 	<!--Wijmo Widgets CSS-->	
 	<link href="/js/libs/Wijmo.2.3.2/Wijmo-Complete/css/jquery.wijmo-complete.2.3.2.css" rel="stylesheet" type="text/css" />
@@ -78,9 +78,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			display: none !important;
 		}
 		
-		body{
-			background: #F8E088 url(/images/stripe2.png);
-		}
+		
 		
 		.main_header{
 			display: inline-block;
@@ -94,7 +92,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<style type="text/css">
   
 	</style>
-	<div class="ui-widget-content main_header">
+	<div class="main_header">
 		<div style="padding:10px 0 10px 20px; float:left;">
 			<a href="#" id="lnkMenu" ><img height="91px" src="/images/lamona.png" /></a>
 		</div>
