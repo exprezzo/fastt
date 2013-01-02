@@ -1,1 +1,7 @@
+Agregar usuario
+Insert into system_users set nick='fouser', pass=AES_ENCRYPT('f!*s3r','m3me1234z') , email="userx2@email.com"
+
+
 ver estilos y efectos de esta pagina: http://www.wufoo.com/
+
+
