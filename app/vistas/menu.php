@@ -2,6 +2,7 @@
 	$(function () {		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
 		$('a[href="'+tabId+'"]').html('Menu Principal');		
+		$('a[href="'+tabId+'"]').addClass('tabMenuPrincipal');
 		iniciarLinkTabs();	
 		
 		var h=$(window).height();		

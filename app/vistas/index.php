@@ -41,7 +41,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 				time: 6000 // hang on the screen for...
 			});
 			
-			TabManager.init();
+			TabManager.init('#tabs');
 			
 			ajustarTab(); //Ajusta la altura al tamaño en relacion al tamaño de la pantalla
 			iniciarLinkTabs(); //A los objetos con atributo linkTab=true,  se les agrega comportamiento ajax para abrir tabs.
@@ -94,7 +94,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	</style>
 	<div class="main_header">
 		<div style="padding:10px 0 10px 20px; float:left;">
-			<a href="#" id="lnkMenu" ><img height="91px" src="/images/lamona.png" /></a>
+			<a href="#" id="lnkMenu" ><img height="60px" src="/images/lamona.png" /></a>
 		</div>
 				
 		<div class="user_widget" >

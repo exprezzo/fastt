@@ -1,12 +1,15 @@
 var EdicionPedido={	
 	init:function(tabId, pedidoId, almacen){		
-		
+		var tab=$('div'+tabId);
 		$('div'+tabId).css('padding','0');
 		$('div'+tabId).css('border','0 1px 1px 1px');
 		
+		var tab=$('a[href="'+tabId+'"]');		
+		tab.addClass('frmPedido');
+		
 		//Para identificar el contenido del tab
-		var objId='pedidoi_id_'+pedidoId;								
-		$('#tabs '+tabId).attr('objId',objId);
+		//var objId='pedidoi_id_'+pedidoId;								
+		//$('#tabs '+tabId).attr('objId',objId);
 		
 		//Establecer titulo e icono
 		if (pedidoId>0){		
@@ -89,8 +92,7 @@ var EdicionPedido={
 		$('#tabs '+tabId+' .btnEliminar')
 		.button()
 		.click(function () {							
-			$.gritter.add({
-				position: 'bottom-left',
+			$.gritter.add({				
 				title:'Error',
 				text: 'Todavia no se implementa',
 				image: '/images/error.png',

@@ -1,7 +1,7 @@
 var tab_counter = 1; 
 var TabManager={
-	init:function(){
-		$tabs = $('#tabs').wijtabs({
+	init:function(target){
+		$tabs = $(target).wijtabs({
 		   tabTemplate: '<li><a  href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>'
 		});
 		this.tabs=$tabs;
@@ -16,19 +16,22 @@ var TabManager={
 		var tabId = '#tabs-' + tab_counter;
 		
 		var objId = url+'?id='+id;
+		objId = objId.toLowerCase();
 		if ( this.seleccionarTab(objId) == true)
 			return true;
 		tab_counter++;
+		
+		$tabs.wijtabs('add', tabId, 'Nuevo Tab');	//Los agrego antes de la peticion ajax.
+		$( tabId ).attr('objId',objId);	
+		
 		$.ajax({
 			type: "POST",
 			url: url,
-			data: { tabId:tabId,pedidoId:id }
-		}).done(function( response ) {
-			$tabs.wijtabs('add', tabId, 'Nuevo Tab');
+			data: { tabId:tabId, pedidoId:id }
+		}).done(function( response ) {			
 			$( tabId ).html(response);
-			$( tabId ).attr('objId',objId);			
-			$tabs.wijtabs('select',tabId);
-			
+					
+			$tabs.wijtabs('select',tabId);			
 		});
 	},
 	seleccionarTab:function(objId){
@@ -36,6 +39,9 @@ var TabManager={
 		if (tabListaPedidos.length == 0){
 			return false;
 		}else if (tabListaPedidos.length > 0){ //Seleccionar el tab		
+			
+			
+			
 			var tabs = $('#tabs > div[role="tabpanel"]');
 			$.each(tabs, function(index, element) {
 				var jElement = $(element);
@@ -44,6 +50,13 @@ var TabManager={
 					if ( jElement.attr('objId')==objId ){
 						//Ocultar el panel anterior
 						var jAnt = $('#tabs > div[aria-hidden="false"]');
+						if ( jAnt.attr('objId')==objId) {
+							alert('asdf');
+							//Si el tab es el mismo no hacer nada
+							return true;
+						}
+						
+						
 						jAnt.addClass('ui-tabs-hide');
 						jElement.attr('aria-hidden',true);
 						//Desmarcar el tab anterior

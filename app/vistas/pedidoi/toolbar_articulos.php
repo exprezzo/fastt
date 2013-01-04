@@ -1,13 +1,6 @@
-<script type="text/javascript">
-		
-</script>
-<style type="text/css">
-	
-</style>
-	
 <div class="ribbon">
 	<ul>
-		 <li><a href="#tbPedido">Format</a></li>		 
+		 <li><a href="#tbPedido">Format</a></li>
 	</ul>
 	<div class="tbArticulos">
 		<ul>

@@ -4,14 +4,20 @@ span.ui-button-text { padding-top:40px !important; background-repeat: no-repeat;
 #gritter-notice-wrapper { } /* position:fixed;top: 20px;right: 20px;width:301px;z-index:9999; */
 /* TABS */		
 .ui-tabs-nav{ min-height:47px; }
+ul.ui-tabs-nav li a{ background-size:32px; }
 ul.ui-tabs-nav li a { padding-top: 14px !important; padding-left: 38px !important; background-repeat: no-repeat; padding-bottom: 12px !important; background-position:5px;	}
-ul.ui-tabs-nav li a.listaPedidos{ background-image:url('/images/berlin_iconpack/order_list.png'); }	
+ul.ui-tabs-nav li a.listaPedidos{ background-image:url('/images/berlin_iconpack/order_list.png'); }
+ul.ui-tabs-nav a.frmPedido {background-image: url('/images/icons/diagram_v2_26.png');}
+ul.ui-tabs-nav a.tabWelcome {background-image: url('/images/home.png');}
+ul.ui-tabs-nav a.tabMenuPrincipal {background-image: url('/images/icons/diagram_v2_13.png');}
+ul.ui-tabs-nav a.tabPerfil {background-image: url('/images/icons/diagram_v2_11.png');}
+
 /* GRID */
 .wijmo-wijgrid-row{ height:36px; }
 /* PAGINADOR */
 li.ui-page{ padding:8px 15px 8px 15px; }
-.btnVerPedidos span{ background-image: url('/images/berlin_iconpack/order_list.png'); background-position:center 5px; }		
-.btnNuevoPedido span{ background-image: url('/images/berlin_iconpack/order.png'); background-position:center 5px; }	
+.btnVerPedidos span{ background-image: url('/images/berlin_iconpack/order_list.png'); background-position:center 5px; }
+.btnNuevoPedido span{ background-image: url('/images/berlin_iconpack/order.png'); background-position:center 5px; }
 .btnGuardar span{ background-image: url('/images/icons/save.png'); }
 .btnEliminar span{ background-image: url('/images/icons/delete.png'); }
 .btnNuevo span{ background-image: url('/images/icons/new.png'); }
@@ -21,8 +27,8 @@ form{ padding:10px }
 
 .user_widget{ float:right;margin-right:20px; }
 .user_widget a{ padding-top:10px; height: 30px;	display: inline-block; vertical-align: middle; text-decoration:none; font-weight:bold !important; border-top:0; }
-.user_widget a.left{	padding-left:30px;	padding-right:15px;	border-bottom-left-radius: 50px; }
-.user_widget a.right{ padding-left:15px;	padding-right:20px;	margin-left:-4px; border-bottom-right-radius:50px; }
+.user_widget a.left{	padding-left:30px;	padding-right:13px;	border-bottom-left-radius: 10px; }
+.user_widget a.right{ padding-left:13px;	padding-right:30px;	margin-left:-4px; border-bottom-right-radius:10px; }
 
 .ribbon .ui-tabs-nav{
 	display:none;
@@ -48,11 +54,7 @@ form{ padding:10px }
 }
 .tbPedido .ui-button-text{ padding:0;}
 
-.ui-icon.ui-icon-close{
-	right: 0;
-	position: absolute;
-	cursor:pointer;
-}
+.ui-icon.ui-icon-close{ right: 0; position: absolute; cursor:pointer; }
 
 a img{
   border:0 none;
