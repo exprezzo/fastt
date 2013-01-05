@@ -1,5 +1,6 @@
 var EdicionPedido={	
 	init:function(tabId, pedidoId, almacen){		
+		tabId = '#'+tabId;
 		var tab=$('div'+tabId);
 		$('div'+tabId).css('padding','0');
 		$('div'+tabId).css('border','0 1px 1px 1px');
@@ -12,14 +13,14 @@ var EdicionPedido={
 		//$('#tabs '+tabId).attr('objId',objId);
 		
 		//Establecer titulo e icono
-		if (pedidoId>0){		
+		if (pedidoId>0){
 			$('a[href="'+tabId+'"]').html('Pedido '+almacen+' ID: '+pedidoId);		
 		}else{
-			$('a[href="'+tabId+'"]').html('Nuevo Pedido');		
+			$('a[href="'+tabId+'"]').html('Nuevo Pedido');
 		}
 		
 		this.configurarFormulario(tabId);
-		
+		this.configurarToolbar(tabId);
 		this.configurarListaArticulos(tabId);
 	},
 	// cargarValoresIniciales:function(){
@@ -213,7 +214,8 @@ var EdicionPedido={
 			pageSize:6,
 			selectionMode:'singleRow',
 			data:dataSource,
-			columns: [ { dataKey: "id", hidden:true, visible:false, headerText: "ID" },{dataKey: "nombre", headerText: "Articulo"}],
+			beforeCellEdit: this.beforeCellEdit, 
+			columns: [ { dataKey: "id", hidden:true, visible:false, headerText: "ID" },{dataKey: "nombre", headerText: "Articulo"},{dataKey: "c", headerText: "Cantidad"}],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
 					args.$rows.attr('pedidoId',args.data.id);
@@ -225,16 +227,49 @@ var EdicionPedido={
 			 }
 			
 			} 
-		});
-		gridPedidos.wijgrid({ loaded: function (e) { 
-			$('#lista_pedidos_internos tr').bind('click', function (e) { 			
-				var pedidoId=$(e.currentTarget).attr('pedidoId');
-				if (pedidoId==undefined || pedidoId=='' || pedidoId==0) return false;				
-				TabManager.add('/pedidoi/getPedido','Editar Pedido',pedidoId);				
-			});			
-		} });
+		});		
 
+	},
+	configurarToolbar:function(tabId){		
+		$(tabId+ "> .tbPedido").wijribbon({
+			click: function (e, cmd) {
+				switch(cmd.commandName){
+					case 'nuevo':
+						TabManager.add('/pedidoi/nuevo','Nuevo Pedido');				
+					break;
+					default:						
+						$.gritter.add({
+							position: 'bottom-left',
+							title:"Informaci&oacute;n",
+							text: "Acciones del toolbar en construcci&oacute;n",
+							image: '/images/info.png',
+							class_name: 'my-sticky-class'
+						});
+					break;
+				}
+				
+			}
+		});
 		
+		$(tabId+ " div > .ribbon").wijribbon({
+			click: function (e, cmd) {
+				switch(cmd.commandName){
+					case 'nuevo':
+						alert("Nuevo Articulo");
+					break;
+					default:						
+						$.gritter.add({
+							position: 'bottom-left',
+							title:"Informaci&oacute;n",
+							text: "Acciones del toolbar en construcci&oacute;n",
+							image: '/images/info.png',
+							class_name: 'my-sticky-class'
+						});
+					break;
+				}
+				
+			}
+		});
 	}
 	
 }

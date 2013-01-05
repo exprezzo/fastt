@@ -1,6 +1,8 @@
 <?php
 require_once '../app/modelos/pedido_model.php';
 require_once '../app/modelos/almacen_model.php';
+require_once '../app/modelos/articulo_model.php';
+require_once '../app/modelos/um_model.php';
 class Pedidoi extends Controlador{
 	
 	
@@ -10,36 +12,35 @@ class Pedidoi extends Controlador{
 		}	
 		return $this->modObj;
 	}
-	function verPedido(){
-		
-		$idPedido=empty($_REQUEST['id'])? 0 : $_REQUEST['id'];
-		
-		
-		$pedido=$this->getPedido($idPedido);
-		
+	function verPedido(){		
+		$idPedido=empty($_REQUEST['id'])? 0 : $_REQUEST['id'];		
+		$pedido=$this->getPedido($idPedido);		
 	}
 	function getArticulos(){
-		$datos=array();
-		
-		$datos[]=array(
-			'id'=>1,
-			'nombre'=>'nombre'
-		);
-		$datos[]=array(
-			'id'=>2,
-			'nombre'=>'nombre 2'
-		);
-		
-		$datos[]=array(
-			'id'=>3,
-			'nombre'=>'nombre 3'
-		);
+		$mod=new ArticuloModel();		
+		// $paging=$_GET['paging'];
+		// $start=intval($paging['pageIndex'])*9;		
+		$start=0;		
+		$res=$mod->paginar($start,9);				
 		
 		$respuesta=array(	
-			'rows'=>$datos,
-			'totalRows'=>3			
+			'rows'=>$res['datos'],
+			'totalRows'=> $res['total']
 		);
-		echo json_encode($respuesta);
+		echo json_encode($respuesta);	
+	}
+	function getUnidadesMedida(){
+		$mod=new UMModel();		
+		// $paging=$_GET['paging'];
+		// $start=intval($paging['pageIndex'])*9;		
+		$start=0;		
+		$res=$mod->paginar($start,9);				
+		
+		$respuesta=array(	
+			'rows'=>$res['datos'],
+			'totalRows'=> $res['total']
+		);
+		echo json_encode($respuesta);	
 	}
 	function nuevoPedido(){
 		return $this->nuevo();

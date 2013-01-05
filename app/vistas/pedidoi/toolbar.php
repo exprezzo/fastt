@@ -1,21 +1,21 @@
 <script type="text/javascript">
 	$(function () {
-		$(".ribbon").wijribbon({
-			click: function (e, cmd) {
-				alert(cmd.commandName);
-			}
-		})
+		// $(".ribbon").wijribbon({
+			// click: function (e, cmd) {
+				// alert(cmd.commandName);
+			// }
+		// })
 	});	
 </script>
 <style type="text/css">
 	
 </style>
-	
-<div class="ribbon">
+<?php $tabId=$_REQUEST['tabId']; ?>
+<div class="ribbon tbPedido">
 	<ul>
-		 <li><a href="#tbPedido">Format</a></li>		 
+		 <li><a href="#tbPedido_<?php echo $tabId; ?>">Format</a></li>		 
 	</ul>
-	<div id="tbPedido" class="tbPedido">
+	<div id="tbPedido_<?php echo $tabId; ?>" class="">
 		<ul>
 			<li id="actiongroup">				
 				<button title="Nuevo" class="" name="nuevo">

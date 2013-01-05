@@ -1,14 +1,19 @@
+
 <div class="ribbon">
 	<ul>
-		 <li><a href="#tbPedido">Format</a></li>
+		 <li><a href="#tbArticulos_<?php echo $tabId; ?>">Format</a></li>
 	</ul>
-	<div class="tbArticulos">
+	<div class="tbArticulos" id="tbArticulos_<?php echo $tabId; ?>">
 		<ul>
 			<li >				
 				<button title="Nuevo" class="" name="nuevo">
 					<div class="btnNuevo"></div>
 					<span>Nuevo</span>
 				</button>
+				<button title="Editar" class="" name="editar">
+					<div class="btnEditar"></div>
+					<span>Editar</span>
+				</button>				
 				<button title="Guardar" class="" name="guardar">
 					<div class="btnGuardar"></div>
 					<span>Guardar</span>
@@ -17,10 +22,7 @@
 					<div class="btnEliminar"></div>
 					<span>Eliminar</span>
 				</button>
-				<button title="Imprimir" class="" name="imprimir">
-					<div class="btnImprimir"></div>
-					<span>Imprimir</span>
-				</button>				
+				
 			 </li>			 
 		</ul>
 	</div>

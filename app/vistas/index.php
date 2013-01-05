@@ -59,7 +59,27 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			$('.user_widget a').mouseleave(function(){
 				$(this).removeClass('ui-state-hover');
 			});
-
+			
+			$("#splitter").wijsplitter({ orientation: "horizontal" });
+			
+			$('.accesos_directos .item').mouseenter(function(){
+				// $(this).animate({width:'75px'},100);
+				// $(this).animate({width:'75px'},100);
+				
+				var imagen=$(this).find('img').animate({width:'75px'},100);
+			//	var label=$(this).find('label').animate({opacity:1},400);
+			});
+			
+			$('.accesos_directos .item').click(function(){				
+				var label=$(this).find('img');
+				label.animate({width:'70px'},50);
+				label.animate({width:'75px'},90);
+			});
+			
+			$('.accesos_directos .item').mouseleave(function(){
+				var imagen=$(this).find('img').animate({width:'60px'},100);
+				var label=$(this).find('label').animate({opacity:'0'},400);
+			});
 		});
 		
 	</script>
@@ -89,43 +109,44 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	
 </head>
 <body style="padding:0; margin:0;">	
-	<style type="text/css">
-  
-	</style>
-	<div class="main_header">
-		<div style="padding:10px 0 10px 20px; float:left;">
-			<a href="#" id="lnkMenu" ><img height="60px" src="/images/lamona.png" /></a>
-		</div>
+	<div id="splitter">
+		<div class="main_header">
+			<div style="padding:10px 0 10px 20px; float:left;">
+				<a href="#" id="lnkMenu" ><img height="60px" src="/images/lamona.png" /></a>
+			</div>
+					
+			<div class="user_widget" >
+				<a class ="left ui-state-default" href="/user/perfil" tablink="true">Perfil</a>
+				<a class ="right ui-state-default" href="/user/logout">Salir</a>
+			</div>
+			
+			<div class="accesos_directos">
+				<div class="item" style="">
+					<a href="/menu" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_13.png" /><label style='padding-left:20px;'>Menu</label></a>
+				</div>
 				
-		<div class="user_widget" >
-			<a class ="left ui-state-default" href="/user/perfil" tablink="true">Perfil</a>
-			<a class ="right ui-state-default" href="/user/logout">Salir</a>
-		</div>
-		
-		<div class="accesos_directos">
-			<div style="float:right;margin-right:20px;">
-				<a href="/menu" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_13.png" /></a>
+				<div class="item" style="float:right;margin-right:20px;">
+					<a href="/pedidoi/edicion_articulo" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_06.png" /><label style='padding-left:10px;'>Productos</label></a>
+				</div>
+				
+				<div class="item" style="float:right;margin-right:20px;">
+					<a href="/pedidoi/nuevo" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_26.png" /><label>Nuevo Pedido</label></a>
+				</div>
+				<div class="item" style="float:right;margin-right:20px;">
+					<a href="/pedidoi/verpedidos" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_17.png" /><label style='padding-left:15px;'>Pedidos</label></a>
+				</div>
 			</div>
 			
-			<div style="float:right;margin-right:20px;">
-				<a href="/pedidoi/edicion_articulo" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_06.png" /></a>
-			</div>
-			
-			<div style="float:right;margin-right:20px;">
-				<a href="/pedidoi/nuevo" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_26.png" /></a>
-			</div>
-			<div style="float:right;margin-right:20px;">
-				<a href="/pedidoi/verpedidos" tablink="true" ><img width="60px" src="/images/icons/diagram_v2_17.png" /></a>
-			</div>
 		</div>
-		
+		<div id="tabs">
+			 <ul>			
+			</ul>		
+		</div>	
 	</div>
 	
-	<div style="clear:both;"></div>
-	<div id="tabs">
-		 <ul>			
-		</ul>		
-	</div>	 
+	
+
+	 
 </body>
 </html>
 

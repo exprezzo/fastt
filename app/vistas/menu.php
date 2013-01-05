@@ -1,16 +1,44 @@
 <script type="text/javascript">
 	$(function () {		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
+		tabId='#'+tabId;
 		$('a[href="'+tabId+'"]').html('Menu Principal');		
 		$('a[href="'+tabId+'"]').addClass('tabMenuPrincipal');
 		iniciarLinkTabs();	
 		
 		var h=$(window).height();		
-			var position=$('#tabs').position();					
-			var tabsH = $('#tabs ul[role="tablist"]').height();
-			var newH = (h-position.top)-tabsH-60;
-			//alert("h= "+h + "position.top= "+position.top+" tabsH="+tabsH+" newH= "+newH);			
-			$('#menu_principal').css('max-height',newH);
+		var position=$('#tabs').position();					
+		var tabsH = $('#tabs ul[role="tablist"]').height();
+		var newH = (h-position.top)-tabsH-60;
+		//alert("h= "+h + "position.top= "+position.top+" tabsH="+tabsH+" newH= "+newH);			
+		$('#menu_principal').css('max-height',newH);
+		
+		var items = $('#menu_principal div');
+		var ancho;
+		$.each(items, function(indexInArray, valueOfElement){
+			ancho = $(valueOfElement).find('img').width();
+			
+			$(valueOfElement).css('width',96);
+			$(valueOfElement).css('height',96);
+		});
+		
+		
+		$('#menu_principal div').mouseenter(function(){						
+			// var imagen=$(this).find('img').animate({width:'110px'},100);
+			var label=$(this).find('label').animate({opacity:1},500);
+		});
+		
+		$('#menu_principal div').click(function(){
+			var img=$(this).find('img');
+			// img.animate({width:'102px'},50);
+			// img.animate({width:'110px'},90);
+		});
+		
+		$('#menu_principal div').mouseleave(function(){
+			// var imagen=$(this).find('img').animate({width:'96px'},100);
+			var label=$(this).find('label').animate({opacity:'0'},500);
+		});
+		
 	});
 </script>
 <style type="text/css">

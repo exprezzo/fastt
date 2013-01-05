@@ -46,7 +46,7 @@
 	<br />	
 </form>
 
-<div style=' padding:10px;'>
+<div style='background-color:white; padding:2px;'>
 	<?php include_once('../app/vistas/pedidoi/toolbar_articulos.php'); ?>
 	<table class="grid_articulos" style="">
 		<thead>
