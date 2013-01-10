@@ -1,9 +1,8 @@
-
-<div class="ribbon">
+<div class="ribbon tbArticulos">
 	<ul>
-		 <li><a href="#tbArticulos_<?php echo $tabId; ?>">Format</a></li>
+		 <li><a href="#tbArticulos_<?php echo $tabId; ?>">Acciones</a>x</li>
 	</ul>
-	<div class="tbArticulos" id="tbArticulos_<?php echo $tabId; ?>">
+	<div class="" id="tbArticulos_<?php echo $tabId; ?>">
 		<ul>
 			<li >				
 				<button title="Nuevo" class="" name="nuevo">

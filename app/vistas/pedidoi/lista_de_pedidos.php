@@ -9,7 +9,8 @@
 			
 		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
-		ListaPedidos.init(tabId);
+		var lista=new ListaPedidos(tabId);
+		lista.init(tabId);
 		
 	});
 </script>

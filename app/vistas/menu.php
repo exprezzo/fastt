@@ -103,6 +103,12 @@
 				<img src="/images/icons/diagram_v2_13.png" />
 				<label>MENU</label>
 			</div>
+			
+			
+			<div tabLink="true" href="/tests/popup" title="Ver Pedidos">
+				<img src="/images/icons/diagram_v2_13.png" />
+				<label>MENU 2</label>
+			</div>
         </div>
 
 

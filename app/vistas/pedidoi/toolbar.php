@@ -34,7 +34,8 @@
 					<div class="btnImprimir"></div>
 					<span>Imprimir</span>
 				</button>				
-			 </li>			 
+			 </li>	
+			
 		</ul>
 	</div>
 </div>

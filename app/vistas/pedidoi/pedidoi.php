@@ -33,35 +33,56 @@
 <form class='frmPedidoi' style='padding-top:10px;'>	
 	<input type='hidden' name='id' class="txtId" value="<?php echo $id; ?>" />	
 	<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />
-	<div class="inputBox" style='margin-bottoms:5px;'>
-		<label >Fecha:</label>
-		<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" />
+	<div style='display:inline-block;'>
+		<div class="inputBox" style='margin-bottom:5px;'>
+			<label >Fecha:</label>
+			<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" autofocus />
+		</div>
+		<div class="inputBox" style='margin-bottoms:5px;'>		
+			<label>Almacen:</label>
+			<select class="cmbAlmacen" style='width:170px;'>			
+			</select>
+		</div>		
 	</div>
-	<div class="inputBox" style='margin-bottoms:5px;'>		
-		<label>Almacen:</label>
-		<select class="cmbAlmacen" style='width:170px;'>			
-		</select>
-	</div>		
-	
+	<div style='display:inline-block;'>
+		<div class="inputBox" style='margin-bottoms:5px;'>		
+			<label>Destino:</label>
+			<select class="cmbDestino" style='width:170px;'>			
+			</select>
+		</div>		
+		
+	</div>
 	<br />	
 </form>
-
-<div style=' padding:10px;'>
-	<?php include_once('../app/vistas/pedidoi/toolbar_articulos.php'); ?>
-	<table class="grid_articulos" style="">
-		<thead>
-			<th>Producto</th> 
-			<th>Cantidad</th>
-		</thead>
-	  <tbody>
-		<tr><td></td> <td></td></tr>
-		<?php 
-			if ( isset($this->pedido) )
-			foreach($this->pedido['articulos'] as $articulo){			
-			//	echo '<tr><td>'.$articulo['nombreProducto'].'</td> <td>'.$articulo['cantidad'].'</td></tr>';
-			}
-		?>
-		
-	  </tbody>
-	</table>
+<div class="cardArticulos">
+	<div style='' class="pnlArticulos ui-widget-content">
+		<div style='position:relative;'>
+			<hr></hr>
+			<h3 style='position:absolute;top:-31px; left:40px;border:0px;' class='ui-widget-content'>Art&iacute;culos del Pedido</h3>
+		</div>
+		<?php include_once('../app/vistas/pedidoi/toolbar_articulos.php'); ?>
+		<table class="grid_articulos" style="">
+			<thead>
+				<th>Producto</th> 
+				<th>Cantidad</th>
+			</thead>
+		  <tbody>
+			<tr><td></td> <td></td></tr>
+			<?php 
+				if ( isset($this->pedido) )
+				foreach($this->pedido['articulos'] as $articulo){			
+				//	echo '<tr><td>'.$articulo['nombreProducto'].'</td> <td>'.$articulo['cantidad'].'</td></tr>';
+				}
+			?>
+			
+		  </tbody>
+		</table>
+	</div>
+	<div class="pnlEdicionArticulo ui-widget-content">
+		<div style='position:relative;'>
+			<hr></hr>
+			<h3 style='position:absolute;top:-31px; left:40px;border:0px;' class='ui-widget-content'>Art&iacute;culo</h3>
+		</div>
+		<?php include_once('../app/vistas/pedidoi/edicion_articulo.php'); ?>
+	</div>
 </div>

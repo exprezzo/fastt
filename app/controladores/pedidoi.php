@@ -4,8 +4,6 @@ require_once '../app/modelos/almacen_model.php';
 require_once '../app/modelos/articulo_model.php';
 require_once '../app/modelos/um_model.php';
 class Pedidoi extends Controlador{
-	
-	
 	function getModel(){		
 		if ( !isset($this->modObj) ){						
 			$this->modObj = new PedidoModel();	
@@ -16,6 +14,27 @@ class Pedidoi extends Controlador{
 		$idPedido=empty($_REQUEST['id'])? 0 : $_REQUEST['id'];		
 		$pedido=$this->getPedido($idPedido);		
 	}
+	function getListaArticulos(){
+		$datos=array();
+		$datos[]=array(
+			'id'=>1,
+			'nombre'=>'Papas',
+			'fk_articulo'=>11,
+			'cantidad'=>8,
+			'um'=>'Kg',
+			'fk_um'=>21		
+		);
+		$res=array(
+			'datos'=>$datos,
+			'total'=>1
+		);
+		$respuesta=array(	
+			'rows'=>$res['datos'],
+			'totalRows'=> $res['total']
+		);
+		echo json_encode($respuesta);	
+	}
+	
 	function getArticulos(){
 		$mod=new ArticuloModel();		
 		// $paging=$_GET['paging'];
@@ -74,8 +93,6 @@ class Pedidoi extends Controlador{
 		$mod=$this->getModel();
 		$res=$mod->paginar();
 		
-		
-		
 		$vista=$this->getVista();
 		$vista->pedidos=$res['datos'];
 		$vista->total=$res['total'];
@@ -121,6 +138,21 @@ class Pedidoi extends Controlador{
 	}
 	function guardar(){
 		$pedido= $_POST['pedido'];
+		
+		if ( empty($_POST['pedido']) ){
+			$res=array(
+				'success'=>false,
+				'msg'=>'No se recibieron datos para almacenar'
+			);
+			echo json_encode($res); exit;
+		}
+		if ( empty($_POST['pedido']['almacen']) ){
+			$res=array(
+				'success'=>false,
+				'msg'=>'Debe seleccionar un almac&eacute;n de origen'
+			);
+			echo json_encode($res); exit;
+		}
 		$model=$this->getModel();
 		$res = $model->guardar($pedido);
 		echo json_encode($res);

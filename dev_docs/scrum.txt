@@ -1,0 +1,33 @@
+	BACKLOG
+
+Gestion de empresas, sucursales y almacenes.
+
+Gestion de productos.
+
+Inventarios.
+
+Compras.
+
+Proveedores.
+
+Insumos.
+
+Gestion de Usuarios y privilegios.
+
+Impresiones en PDF.
+
+
+	Entrega 1
+
+Layout General considerando tablets.
+
+Login / Logout.
+
+Catalogo Basico (Listado con Paginación y CRUD).
+
+Catalogo Maestro Detalle.
+
+
+
+
+

@@ -1,3 +1,9 @@
+
+.frmPedido{ position:relative; }
+.frmPedido .pnlEdicionArticulo{ position:absolute; visibility:hidden; }
+.frmPedido .pnlArticulos{  }
+.frmPedido .cardArticulos{position:relative;}
+
 .accesos_directos  label{ opacity: 0;	display: block;	text-align: center; position:absolute; }
 .accesos_directos  .item{ float:right;margin-right:20px; width:60px;}
 .accesos_directos  a{ text-decoration:none;}
@@ -11,6 +17,7 @@ span.ui-button-text { padding-top:40px !important; background-repeat: no-repeat;
 #gritter-notice-wrapper { } /* position:fixed;top: 20px;right: 20px;width:301px;z-index:9999; */
 /* TABS */		
 .ui-tabs-nav{ min-height:47px; }
+.ui-tabs{padding:0;}
 ul.ui-tabs-nav li a{ background-size:32px; }
 ul.ui-tabs-nav li a { padding-top: 14px !important; padding-left: 38px !important; background-repeat: no-repeat; padding-bottom: 12px !important; background-position:5px;	}
 ul.ui-tabs-nav li a.listaPedidos{ background-image:url('/images/berlin_iconpack/order_list.png'); }
@@ -33,7 +40,7 @@ form{ padding:10px }
 .user_widget a.right{ padding-left:13px;	padding-right:30px;	margin-left:-4px; border-bottom-right-radius:10px; }
 
 .ribbon .ui-tabs-nav{
-	display:none;
+	display:none; 
 }
 
 .ribbon .ui-button-icon-primary{
@@ -45,12 +52,19 @@ form{ padding:10px }
 	background-position: 5px 4px;
 	padding: 0;		
 }
+.ui-button-text{color:black !important;}
+
+.tbFecha{display:inline-block;}
 .ribbon .btnGuardar{ background-image:url('/images/token_dark_iconpack/oh.png') !important; }
 .ribbon .btnNuevo{ 	background-image:url('/images/token_dark_iconpack/word_processor.png') !important; }
 .ribbon .btnEditar{ 	background-image:url('/images/edit.png') !important; }
 .ribbon .btnEliminar{	background-image:url('/images/token_dark_iconpack/xion.png') !important; }
 .ribbon .btnImprimir{	background-image:url('/images/token_dark_iconpack/printer_and_fax.png') !important; }
 .ribbon .btnNuevoArticulo{ 	background-image:url('/images/icons/diagram_v2_06.png') !important; }
+.ribbon .btnAceptar{	background-image:url('/images/sub_black_accept.png') !important; }
+.ribbon .btnCancelar{	background-image:url('/images/undo.png') !important; }
+.ribbon .btnRefresh{	background-image:url('/images/token_dark_iconpack/playback_reload.png') !important; background-size: 29px; background-position: 10px;}
+
 
 .ribbon button{
 	width:61px;

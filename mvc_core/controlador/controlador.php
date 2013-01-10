@@ -134,7 +134,8 @@ class Controlador{
 		
 		$res=$modObj->borrar($params);
 		$respuesta = array(
-			'success'=>$res
+			'success'=>$res,
+			'msg'=>'Registro Eliminado'
 		);
 		
 		echo json_encode($respuesta);

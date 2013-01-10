@@ -2,9 +2,11 @@
 <script>
 	$(function(){
 		var  tabId="<?php echo $_REQUEST['tabId']; ?>";
-		EdicionArticulo.init(tabId);
+		var frmEdicionArticulo = new EdicionArticulo(tabId);
+		 frmEdicionArticulo.init(tabId);
 	});
 </script>
+<?php include_once('../app/vistas/pedidoi/toolbar_articulo.php'); ?>
 <form>	
 	<div class="inputBox" style='margin-bottoms:5px;'>		
 		<label>Articulo:</label>

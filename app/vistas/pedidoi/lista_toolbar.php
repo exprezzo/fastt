@@ -33,6 +33,24 @@
 					<span>Imprimir</span>
 				</button>				
 			 </li>
+			 <li>				
+				<span class="tbFecha">					
+					<span class="ui-button-text">Fecha Inicial</span><br/>
+					<input type='text' name='fecha' class="txtFechaI"  />
+				</span>
+				<span class="tbFecha">					
+					<span class="ui-button-text">Fecha Final</span><br/>
+					<input type='text' name='fecha' class="txtFechaF"  />
+				</span>
+			</li>
+			<li>			
+				
+			
+				<button title="Refresh" class="" name="refresh">
+					<div class="btnRefresh"></div>
+					<span>Actualizar</span>
+				</button>		
+			 </li>
 		</ul>
 	</div>
 </div>
