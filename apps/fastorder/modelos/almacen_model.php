@@ -1,5 +1,5 @@
 <?php
-class AlmacenModel extends Modelo_PDO{
+class AlmacenModel extends Modelo{
 	
 	function paginar($start=0, $pageSize=9){
 		$sql='select COUNT(ped.id) as total FROM almacenes ped';

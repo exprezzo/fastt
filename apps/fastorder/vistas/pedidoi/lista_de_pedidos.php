@@ -1,4 +1,4 @@
-﻿<script src="/js/admin/catalogos/pedidos/listado_pedidos.js"></script>
+﻿<script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/listado_pedidos.js"></script>
 <style type="text/css">
 	.colFecha{
 		text-align:right;
@@ -28,7 +28,10 @@ text-align: right;
 		border: 0;
 		
 	}
-	
+	div.listaPedidos{
+		margin-top: 18px !important;
+		
+	}
 	
 </style>
 <script>			

@@ -1,5 +1,5 @@
 <?php
-class UMModel extends Modelo_PDO{
+class UMModel extends Modelo{
 	
 	function paginar($start=0, $pageSize=9){
 		$sql='select COUNT(id) as total FROM um';

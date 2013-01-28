@@ -1,4 +1,4 @@
-<script src="/js/admin/catalogos/pedidos/edicion_articulo.js"></script>
+<script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/edicion_articulo.js"></script>
 <script>
 	$(function(){
 		var  tabId="<?php echo $_REQUEST['tabId']; ?>";

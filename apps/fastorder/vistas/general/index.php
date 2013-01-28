@@ -1,6 +1,6 @@
 <?php
 if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
-	header ('Location: /admin/user/login'); exit;
+	header ('Location: /'.$_PETICION->modulo.'/user/login'); exit;
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,8 +10,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<title><?php echo NOMBRE_APL; ?></title>
 	<!--jQuery References-->
 	<!--link href="/js/jquery-ui-1.9.2.custom/css/flick/jquery-ui-1.9.2.custom.css" rel="stylesheet"-->	
-	<script src="/js/libs/jquery-1.8.3.js"></script>
-	<script src="/js/libs/jquery-ui-1.9.2.custom/jquery-ui-1.9.2.custom.js"></script>  
+	<script src="/web/apps/fastorder/libs/jquery-1.8.3.js"></script>
+	<script src="/web/apps/fastorder/libs/jquery-ui-1.9.2.custom/jquery-ui-1.9.2.custom.js"></script>  
 	<!--Theme-->
 	<!--link href="http://cdn.wijmo.com/themes/rocket/jquery-wijmo.css" rel="stylesheet" type="text/css"  /-->
 	<?php 
@@ -23,26 +23,29 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<!--link href="http://cdn.wijmo.com/themes/arctic/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" /-->
 	<link href="<?php echo $rutaTema; ?>" rel="stylesheet" type="text/css" />
 	
-	<link href="/css/mods/rocket/mods.css" rel="stylesheet" type="text/css" />		
+	<!--link href="/css/mods/rocket/mods.css" rel="stylesheet" type="text/css" /-->		
 	<!--link href="/css/themes/cobalt/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" /-->		
 	
 	<!--Wijmo Widgets CSS-->	
-	<link href="/js/libs/Wijmo.2.3.2/Wijmo-Complete/css/jquery.wijmo-complete.2.3.2.css" rel="stylesheet" type="text/css" />
-	<link href="/js/libs/Wijmo.2.3.2/Wijmo-Open/css/jquery.wijmo-open.2.3.2.css" rel="stylesheet" type="text/css" />			
+	<link href="/web/apps/fastorder/libs/Wijmo.2.3.2/Wijmo-Complete/css/jquery.wijmo-complete.2.3.2.css" rel="stylesheet" type="text/css" />
+	<link href="/web/apps/fastorder/libs/Wijmo.2.3.2/Wijmo-Open/css/jquery.wijmo-open.2.3.2.css" rel="stylesheet" type="text/css" />			
 	<!--link href="/css/themes/blitzer/jquery-ui-1.9.2.custom.css" rel="stylesheet"-->	
 	<!--Wijmo Widgets JavaScript-->
-	<script src="/js/libs/Wijmo.2.3.2/Wijmo-Complete/js/jquery.wijmo-complete.all.2.3.2.min.js" type="text/javascript"></script>
-	<script src="/js/libs/Wijmo.2.3.2/Wijmo-Open/js/jquery.wijmo-open.all.2.3.2.min.js" type="text/javascript"></script>		
+	<script src="/web/apps/fastorder/libs/Wijmo.2.3.2/Wijmo-Complete/js/jquery.wijmo-complete.all.2.3.2.min.js" type="text/javascript"></script>
+	<script src="/web/apps/fastorder/libs/Wijmo.2.3.2/Wijmo-Open/js/jquery.wijmo-open.all.2.3.2.min.js" type="text/javascript"></script>		
 	<!-- Gritter -->
-	<link href="/js/libs/Gritter-master/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
-	<script src="/js/libs/Gritter-master/js/jquery.gritter.min.js" type="text/javascript"></script>
+	<link href="/web/apps/fastorder/libs/Gritter-master/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
+	<script src="/web/apps/fastorder/libs/Gritter-master/js/jquery.gritter.min.js" type="text/javascript"></script>
 	
-	<link href="/css/admin/estilos_wijmo.css" rel="stylesheet" type="text/css" />
-	<script src="/js/admin/funciones.js" type="text/javascript"></script>
-	<script src="/js/admin/TabManager.js" type="text/javascript"></script>
+	<link href="/web/apps/fastorder/css/estilos_wijmo.css" rel="stylesheet" type="text/css" />
+	<script src="/web/apps/fastorder/js/funciones.js" type="text/javascript"></script>
+	<script src="/web/apps/fastorder/js/TabManager.js" type="text/javascript"></script>
 	
 	<script type="text/javascript">		
 		$(function () {			
+			kore={
+				modulo:'<?php echo $_PETICION->modulo; ?>'
+			};
 			$.extend($.gritter.options, { 
 				position: 'bottom-right', // defaults to 'top-right' but can be 'bottom-left', 'bottom-right', 'top-left', 'top-right' 
 				fade_in_speed: 'medium', // how fast notifications fade in (string or int)
@@ -133,8 +136,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			</div>	
 					
 			<div class="user_widget" >
-				<a class ="left ui-state-default" href="/admin/user/perfil" tablink="true">Perfil</a>
-				<a class ="right ui-state-default" href="/admin/user/logout" tablink="false">Salir</a>
+				<a class ="left ui-state-default" href="/<?php echo $_PETICION->modulo; ?>/user/perfil" tablink="true">Perfil</a>
+				<a class ="right ui-state-default" href="/<?php echo $_PETICION->modulo; ?>/user/logout" tablink="false">Salir</a>
 			</div>						
 			
 			<?php $this->mostrar('general/accesos_directos'); ?>

@@ -1,6 +1,6 @@
 <?php
 
-class PedidoProductoModel extends Modelo_PDO{
+class PedidoProductoModel extends Modelo{
 	var $tablas=array('tmp_pedidos_productos','pedidos_productos');
 	var $ids=array('IdTmp','id');
 	var $indexTabla=0;

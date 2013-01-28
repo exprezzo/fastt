@@ -1,7 +1,7 @@
 <?php
-include '../'.$_PETICION->modulo.'/modelos/pedido_producto_model.php';
-include_once '../'.$_PETICION->modulo.'/modelos/pedido_producto_tmp_model.php';
-class PedidoModel extends Modelo_PDO{
+include '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_model.php';
+include_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_tmp_model.php';
+class PedidoModel extends Modelo{
 	var $tabla='pedidos';	
 	var $pk='id';
 		
@@ -194,7 +194,7 @@ class PedidoModel extends Modelo_PDO{
 		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_pedido',$fk_pedido,PDO::PARAM_INT);
 		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
-		$res = $this->consultar($sth);											
+		$res = $this->execute($sth);											
 		if (!$res['success'])return $res;
 		foreach($res['datos'] as $elemento){				
 			$fk_articulo=$elemento['fk_articulo'];

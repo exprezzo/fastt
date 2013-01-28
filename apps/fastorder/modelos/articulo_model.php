@@ -1,5 +1,5 @@
 <?php
-class ArticuloModel extends Modelo_PDO{
+class ArticuloModel extends Modelo{
 	
 	function paginar($start=0, $pageSize=9){
 		$sql='select COUNT(id) as total FROM productos';

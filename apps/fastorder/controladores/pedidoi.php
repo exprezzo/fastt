@@ -1,8 +1,9 @@
 <?php
-require_once '../admin/modelos/pedido_model.php';
-require_once '../admin/modelos/almacen_model.php';
-require_once '../admin/modelos/articulo_model.php';
-require_once '../admin/modelos/um_model.php';
+
+require_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/almacen_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
 class Pedidoi extends Controlador{
 	function eliminar(){
 		$modObj= $this->getModel();

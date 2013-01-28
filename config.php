@@ -1,6 +1,12 @@
 <?php
 //$APP_URL='http://'.$_SERVER['SERVER_NAME']; 
 
+if (!defined('DEFAULT_APP') ) define('DEFAULT_APP','fastoder');
+if (!defined('DEFAULT_CONTROLLER') ) define('DEFAULT_CONTROLLER','paginas');
+if (!defined('DEFAULT_ACTION') ) define('DEFAULT_ACTION','index');
+$_LOGIN_REDIRECT_PATH = '/'.DEFAULT_APP.'/'.DEFAULT_CONTROLLER.'/'.DEFAULT_ACTION;
+/*
+
 $DB_CONFIG=array(
 	'DB_SERVER'	=>'localhost',
 	'DB_NAME'	=>'fastt',
@@ -47,18 +53,11 @@ $_TEMAS['redmond']="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/
 $_TEMAS['pepper-grinder']="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/pepper-grinder/jquery-ui.css";
 $_TEMAS['overcast']="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/overcast/jquery-ui.css";
 
-/*
-Temas disponibles:   (la intencion es agregar todos los temas de jqureyui y de wijmo, pero no queremos ser dependientes de sus servicios web)
-
-flick
-
-ui-lightness
-
-*/
 
 
 define ("PATH_MVC",'../mvc/');
 define ("DEFAULT_CONTROLLER",'general');
 // CONFIGURA LA RUTA DEL NUCLEO
 define ("PATH_NUCLEO",'../mvc_core/');
+*/
 ?>

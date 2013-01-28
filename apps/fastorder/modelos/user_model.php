@@ -1,5 +1,5 @@
 <?php
-class UserModel extends Modelo_PDO{
+class UserModel extends Modelo{
 	var $tabla='system_users';	
 	
 	function login($username, $pass){

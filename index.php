@@ -4,12 +4,9 @@
 	 * */
 	$a=1;
 	if ($a==0){
-		echo "El sistema está en mantenimiento, disculpe los inconvenientes.";
-		include 'lego_core/manejador_crud.php';
-		$manejador = new ManejadorCrud();
-		$ligarParametros = $manejador->ligarParametros(array());		
+		echo "El sistema está en mantenimiento, disculpe los inconvenientes.";		
 	}else{
-		header("Location: /admin/general/index");
+		header("Location: /fastorder/general/index");
 	}
 
 ?>

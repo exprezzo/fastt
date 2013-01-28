@@ -1,6 +1,6 @@
 <?php
 
-class PedidoProductoTmpModel extends Modelo_PDO{
+class PedidoProductoTmpModel extends Modelo{
 	var $tabla='tmp_pedidos_productos';	
 	var $pk='id_tmp';
 	
