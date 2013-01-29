@@ -29,7 +29,7 @@ text-align: right;
 		
 	}
 	div.listaPedidos{
-		margin-top: 18px !important;
+		margin-top: 25px !important;
 		
 	}
 	
@@ -47,7 +47,7 @@ text-align: right;
 <?php 
 	//include_once('../app/vistas/pedidoi/lista_toolbar.php') 
 	global $_PETICION;
-	$this->mostrar($_PETICION->controlador.'/lista_toolbar');
+	$this->mostrar($_PETICION->controlador.'/componentes/lista_toolbar');
 ?>
 <div style="">	
 	<table id="lista_pedidos_internos">
@@ -57,10 +57,7 @@ text-align: right;
 			<th>Fecha</th> 		
 		</thead>  	 
 		<tbody>
-			<?php foreach($this->pedidos as $pedido ){
-			//	echo '<tr><td>'.$pedido['id'].'</td><td>'.$pedido['nombreAlmacen'].'</td> <td>'.$pedido['fecha'].'</td></tr>';
-			}
-			?>		
+			
 		</tbody>
 	</table>
 </div>

@@ -21,7 +21,8 @@ ul.ui-tabs-nav li a{ background-size:32px; }
 ul.ui-tabs-nav li a { -padding-top: 14px !important; -padding-bottom: 14px !important; padding-left: 38px !important; background-repeat: no-repeat;background-position:5px;	}
 ul.ui-tabs-nav li a.listaPedidos{ background-image:url('../images/supermono/paste.png'); }
 ul.ui-tabs-nav li a.frmPedido{ background-image:url('../images/supermono/add-button.png'); }
-ul.ui-tabs-nav li a.welcome{ background-image:url('../images/admin/home.png'); }
+ul.ui-tabs-nav li a.welcome{ background-image:url('../images/supermono/home.png'); }
+#tabs > ul.ui-tabs-nav li a.pedido{ background-image:url('../images/supermono/basket.png'); }
 
 
 /* GRID */
@@ -176,3 +177,34 @@ color: #fafafa;
 	border-radius:7px; */
 	width:100%;
 }
+
+/*Layout pirata */
+.main_header{display:none !important;}
+#tabs{padding:0 !important;height:auto !important;min-height:auto !important;}
+#tabs .ui-tabs .ui-tabs-nav li a{padding:0;}
+#tabs > ul{height: auto;min-height: auto; border-radius:0;padding: 0;margin: 0;}
+#tabs > ul .ui-icon.ui-icon-close{}
+#tabs > ul a.listaPedidos  ~ .ui-icon.ui-icon-close{}
+#tabs > ul a, .link-salir a{background-size: 22px;background-position: 1px 1px;padding-left: 23px !important;padding-right:10px;padding-top: 4px;font-size: .9em;
+padding-bottom: 3px;
+}
+.link-salir a{padding:5px !important;display:block;}
+#tabs >ul li, .link-salir{margin-left:13px !important;border-radius:0;padding-right:7px;border: 0;-webkit-box-shadow: 0 !important;box-shadow: none !important;}
+
+#tabs >ul li:not(.ui-state-hover){background: none !important;}
+.frmPedido{margin:0 !important;}
+body{border:0 !important;}
+#tabs > div{width:100% !important;}
+.pedido .paneles .cardArticulos{width:100% !important;}
+
+.pedido .left .tabpanel  > ul{background:none !important; border:none !important;margin-top:41px;margin-left:0px;margin-right:0px;display:inline-block; }
+.pedido .left .tabpanel  > ul li{float:none !important;}
+/*
+.pedido .left .tabpanel{ }
+
+.pedido .left .tabpanel > ul li{display:block;width:auto; float:none !important;  padding-right:5px; }
+
+.pedido .left > ul li a{display:inline;width:auto;padding-left:19px !important;}
+/*.pedido .left{margin-right:10px;margin-left:25px;}*/
+.pedido .center{}
+.pedido_ico{background-image:url('../images/supermono/paste.png'); height:64px; width:64px;}

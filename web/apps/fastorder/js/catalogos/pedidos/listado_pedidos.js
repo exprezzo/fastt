@@ -11,6 +11,7 @@
 		
 		var tab=$('a[href="'+tabId+'"]');
 		tab.html('Pedidos');
+		tab.parent().addClass('listaPedidos');
 		tab.addClass('listaPedidos');
 		
 		this.configurarToolbar(tabId);		

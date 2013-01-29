@@ -13,7 +13,7 @@ if (!defined('DEFAULT_ACTION') ) define('DEFAULT_ACTION','index');
 
 $_LOGIN_REDIRECT_PATH = '/'.DEFAULT_APP.'/'.DEFAULT_CONTROLLER.'/'.DEFAULT_ACTION;
 // Configuracion del ssitio
-define ("NOMBRE_APL",'LA MONA');
+define ("NOMBRE_APL",'Fast Order');
 define ("PASS_AES",'faztA3s');
 
 define ("TEMA",'rocket');

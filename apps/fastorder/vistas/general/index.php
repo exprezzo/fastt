@@ -16,8 +16,10 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<!--link href="http://cdn.wijmo.com/themes/rocket/jquery-wijmo.css" rel="stylesheet" type="text/css"  /-->
 	<?php 
 		global $_TEMAS;
-		$rutaTema=$_TEMAS[TEMA];
-		//$this->getRutaTema();
+		//$rutaTema=$_TEMAS[TEMA];
+		
+		$rutaTema=getUrlTema('artic');
+		$rutaTema=getUrlTema(TEMA);
 	?>
 	
 	<!--link href="http://cdn.wijmo.com/themes/arctic/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" /-->
@@ -37,11 +39,14 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<link href="/web/apps/fastorder/libs/Gritter-master/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
 	<script src="/web/apps/fastorder/libs/Gritter-master/js/jquery.gritter.min.js" type="text/javascript"></script>
 	
-	<link href="/web/apps/fastorder/css/estilos_wijmo.css" rel="stylesheet" type="text/css" />
+	<link href="/web/apps/fastorder/css/estilos.css" rel="stylesheet" type="text/css" />
 	<script src="/web/apps/fastorder/js/funciones.js" type="text/javascript"></script>
 	<script src="/web/apps/fastorder/js/TabManager.js" type="text/javascript"></script>
 	
 	<script type="text/javascript">		
+		salir=function(){
+			window.location='/'+kore.modulo+'/user/logout';
+		}
 		$(function () {			
 			kore={
 				modulo:'<?php echo $_PETICION->modulo; ?>'
@@ -55,13 +60,22 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			TabManager.init('#tabs');
 			
+			//Agregar opcion para salir
+			
+			//
+			
 			ajustarTab(); //Ajusta la altura al tamaño en relacion al tamaño de la pantalla
 			iniciarLinkTabs(); //A los objetos con atributo linkTab=true,  se les agrega comportamiento ajax para abrir tabs.
 			
-			//TabManager.add('/welcome');
-			//TabManager.add('/admin/general/welcome');
-
-			$(window).resize(function() {
+			
+			
+			TabManager.add('/'+kore.modulo+'/pedidoi/verlista');
+		//	TabManager.add('/'+kore.modulo+'/pedidoi/nuevo');
+			TabManager.add('/'+kore.modulo+'/pedidoi/pedido');
+			//TabManager.add('/'+kore.modulo+'/pedidoi/editar/580');
+			//$('#tabs > ul').append('');
+			
+			$(window).resize( function() {
 			  ajustarTab();
 			});
 			
@@ -74,7 +88,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			$('.header_empresa').mouseenter(function(){
 				$(this).addClass('ui-state-hover');
-			});			
+			});
 			$('.header_empresa').mouseleave(function(){
 				$(this).removeClass('ui-state-hover');
 			});
@@ -86,49 +100,39 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
                 display: 12,
                 step: 4,
                 orientation: "horizontal"
-            });
+            });			
 			
-			
-			
+			$('.link-salir').mouseenter(function(){
+				$(this).addClass('ui-state-hover');
+			});
+			$('.link-salir').mouseleave(function(){
+				$(this).removeClass('ui-state-hover');
+			});
 		});
 		
 		
 	</script>
-	<style type="text/css">
-		
-		@media only screen and (max-width: 999px) {	  } /* rules that only apply for canvases narrower than 1000px */
-		@media only screen and (device-width: 768px) and (orientation: landscape) {} /* rules for iPad in landscape orientation */
-		@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {}/* iPhone, Android rules here */		
-		.link{
-			cursor:pointer;
-		}
-		.ui-tabs .ui-tabs-nav{
-			/* border-bottom:0; */
-		}
-		.ui-tabs .ui-tabs-hide {
-			display: none !important;
-		}
-		
-		
-		
-		.main_header{
-			display: inline-block;
-			width: 100%;
-			border: 0;
-		}
-
+	<style type="text/css">		
+		@media only screen and (max-width: 999px) {	  } 									/* rules that only apply for canvases narrower than 1000px */
+		@media only screen and (device-width: 768px) and (orientation: landscape) {} 		/* rules for iPad in landscape orientation */
+		@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {}	/* iPhone, Android rules here */		
+		.link{cursor:pointer;}
+		.ui-tabs .ui-tabs-nav{	/* border-bottom:0; */	}
+		.ui-tabs .ui-tabs-hide {display: none !important;}		
+		.main_header{display: none;width: 100%;border: 0;}
 		
 		.wijmo-wijsplitter-h-panel1.ui-resizable{
 				transition:height .5s;
-				-moz-transition:height .5s; /* Firefox 4 */
-				-webkit-transition:height .5s; /* Safari and Chrome */
-				-o-transition:height .5s; /* Opera */					
+				-moz-transition:height .5s; 			/* Firefox 4 */
+				-webkit-transition:height .5s; 			/* Safari and Chrome */
+				-o-transition:height .5s; 				/* Opera */					
 		}
 		
+		}
 	</style>
 	
 </head>
-<body style="padding:0; margin:0;" class="ui-widget-content" >	
+<body style="padding:0; margin:0;" class="" >	
 	<div id="splitter">
 		<div class="main_header">
 			<div style="padding:0px 0 0px 0px; float:left;position:relative;">
@@ -146,6 +150,9 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			 <ul>			
 			</ul>		
 		</div>	
+		
+		<div class="ui-state-default link-salir" style="position:absolute;right:0;top:0;"><a onclick="salir()" href="#" >Salir</a></div>
+		
 	</div>
 	
 	

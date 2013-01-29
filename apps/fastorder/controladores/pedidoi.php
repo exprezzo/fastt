@@ -4,7 +4,11 @@ require_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/almacen_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
-class Pedidoi extends Controlador{
+class Pedidoi extends Controlador{	
+	function verlista(){
+		return $this->verPedidos();
+	}
+	
 	function eliminar(){
 		$modObj= $this->getModel();
 		$params=array();
@@ -89,6 +93,15 @@ class Pedidoi extends Controlador{
 		 $vista->pedido =$pedido['datos'];
 		 $vista->mostrar('pedidoi/nuevo');
 	}	
+	function pedido(){
+		$mod=$this->getModel();
+		 $mod->indexTabla=1;
+		 $pedido=$mod->nuevo();
+		 
+		 $vista=$this->getVista();
+		 $vista->pedido =$pedido['datos'];
+		 $vista->mostrar();
+	}
 	
 	function getPedido($id = null){
 		if ($id==null){
@@ -136,6 +149,7 @@ class Pedidoi extends Controlador{
 		//print_r($fechai);
 		
 		$paging=$_GET['paging']; //Datos de paginacion enviados por el componente js
+		if ($paging['pageSize']<0) $paging['pageSize']=0;
 		$params=array(	//Se traducen al lenguaje sql
 			'pageSize'=>$pageSize=intval($paging['pageSize']),
 			'start'=>intval($paging['pageIndex'])*$pageSize,
@@ -144,7 +158,7 @@ class Pedidoi extends Controlador{
 		);
 		
 		$res=$mod->paginar($params);				
-				
+			
 		$respuesta=array(	
 			'rows'=>$res['datos'],			
 			'totalRows'=> $res['total']			

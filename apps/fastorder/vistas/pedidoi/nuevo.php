@@ -72,19 +72,22 @@
 	<span class="closeBtn ui-icon ui-icon-close"></span>
 </div-->
 
-<div class="paneles">
+<div class="paneles" style="width:700px;">
 	<div class="pnlIzq">
+		<div style="display:block;">
+		<?php $this->mostrar($_PETICION->controlador.'/componentes/toolbar'); ?>
+		</div>
 		<form class='frmPedidoi' style='padding-top:10px;'>	
 			<input type='hidden' name='id' class="txtId" value="<?php echo $id; ?>" />	
 			<input type='hidden' name='id_tmp' class="txtIdTmp" value="<?php echo $id_tmp; ?>" />	
-			<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />
+			<input type='hidden' name='fecha' class="txtFkAlmacen" value="	<?php echo $fk_almacen; ?>" />
 			<div style='display:inline-block;'>
-				<div class="inputBox" style='margin-bottom:8px;'>
-					<label >Fecha:</label>
+				<div class="inputBox" style='margin-bottom:8px;display:inline;'>
+					<label style="width:auto;">Fecha:</label>
 					<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" autofocus />
 				</div>
-				<div class="inputBox" style='margin-bottoms:5px;'>		
-					<label>Almacen:</label>
+				<div class="inputBox" style='margin-bottoms:5px;display:inline;margin-left:10px;'>		
+					<label style="width:auto;">Almacen:</label>
 					<select class="cmbAlmacen" style='width:170px;'>			
 					</select>
 				</div>		
@@ -92,56 +95,7 @@
 			
 			<br />	
 		</form>
-		<div class="toolbarFormPedido">		
-			<div style="text-align:center;" class="boton btnGuardar " >
-				<div class="iconWrap">		
-					<div class="icon"></div>
-				</div>
-				<div>
-					<span>Guardar</span>
-				</div>		
-			</div>
-			<div style="text-align:center;" class="boton btnNew">
-				<div class="iconWrap">		
-					<div class="icon"></div>
-				</div>
-				<div>
-					<span>Nuevo</span>
-				</div>		
-			</div>			
-			<div style="text-align:center;" class="boton btnEmail">
-				<div class="iconWrap">		
-					<div class="icon"></div>
-				</div>
-				<div>
-					<span>Email</span>
-				</div>		
-			</div>
-			<div style="text-align:center;" class="boton btnPrint">
-				<div class="iconWrap">		
-					<div class="icon"></div>
-				</div>
-				<div>
-					<span>Imprimir</span>
-				</div>		
-			</div>
-			<div style="text-align:center;" class="boton btnDelete">
-				<div class="iconWrap">		
-					<div class="icon"></div>
-				</div>
-				<div>
-					<span>Borrar</span>
-				</div>		
-			</div>			
-			<div style="text-align:center;" class="boton btnAgregar">
-				<div class="iconWrap">		
-					<div class="icon"></div>
-				</div>
-				<div>
-					<span>Agregar</span>
-				</div>		
-			</div>			
-		</div>
+		
 	</div>
 	<div class="cardArticulos">
 			<div style='display:inline-block;' class="pnlArticulos ui-widget-content">								
@@ -163,7 +117,7 @@
 				</table>
 			</div>
 			
-			<?php $this->mostrar('pedidoi/edicion_articulo'); ?>
+			<?php $this->mostrar('pedidoi/componentes/edicion_articulo'); ?>
 			
 		</div>
 	<div class="pnlDer" >
