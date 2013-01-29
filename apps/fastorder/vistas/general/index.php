@@ -70,7 +70,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			
 			TabManager.add('/'+kore.modulo+'/pedidoi/verlista');
-		//	TabManager.add('/'+kore.modulo+'/pedidoi/nuevo');
+			TabManager.add('/'+kore.modulo+'/general/welcome');
 			TabManager.add('/'+kore.modulo+'/pedidoi/pedido');
 			//TabManager.add('/'+kore.modulo+'/pedidoi/editar/580');
 			//$('#tabs > ul').append('');
