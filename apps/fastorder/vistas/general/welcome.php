@@ -20,6 +20,11 @@
 </script>
 <div style="margin-top:-29px;">
 <h1>Bienvenido!</h1>
-<br>
-<br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br />
+<h2>Consultas o Preguntas</h2>
+<br />
+<h2>Bugs</h2>
+<br />
+<h2>En desarrollo</h2>
+<br><br><br><br><br><br><br><br><br><br><br>
 </div>
