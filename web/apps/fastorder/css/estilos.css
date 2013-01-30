@@ -22,6 +22,7 @@ ul.ui-tabs-nav li a { -padding-top: 14px !important; -padding-bottom: 14px !impo
 ul.ui-tabs-nav li a.listaPedidos{ background-image:url('../images/supermono/paste.png'); }
 ul.ui-tabs-nav li a.frmPedido{ background-image:url('../images/supermono/add-button.png'); }
 ul.ui-tabs-nav li a.welcome{ background-image:url('../images/supermono/home.png'); }
+ul.ui-tabs-nav li a.scrum{ background-image:url('../images/supermono/alarm-clock.png'); }
 #tabs > ul.ui-tabs-nav li a.pedido{ background-image:url('../images/supermono/basket.png'); }
 
 

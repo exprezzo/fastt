@@ -1,5 +1,4 @@
 <style type="text/css">
-	
 </style>
 <script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/edicion_pedido.js"></script>
 <link href='/web/apps/<?php echo $_PETICION->modulo; ?>/css/pedidoi.css' rel="stylesheet" type="text/css" />
@@ -10,41 +9,16 @@
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
 		var edicion = new EdicionPedido();
 		edicion.init(tabId, pedidoId, almacen);
-					
 		$('#'+tabId+' .toolbarFormPedido .boton:not(.btnPrint, .btnEmail)').mouseenter(function(){
-			$(this).addClass("ui-state-hover");			
+			$(this).addClass("ui-state-hover");
 		});
 		
-		$('#'+tabId+' .toolbarFormPedido .boton *').mouseenter(function(){			
-			// console.log('ENTER CHILD');
-			// console.log(this);
-			// var parent=$(this).parent();
-			// console.log('el parent');
-			// console.log(parent);
-			// $(this).parent('.boton').addClass("ui-state-hover");			
-			
-		});
+		// $('#'+tabId+' .toolbarFormPedido .boton *').mouseenter(function(){						
+			 // $(this).parent('.boton').addClass("ui-state-hover");						
+		// });		
 		
-		
-		$('#'+tabId+' .toolbarFormPedido .boton').mouseleave(function(e){
-			 // console.log("eventObject"); console.dir(e);
-			// console.log('this');
-			// console.log( $(this) );
-			// console.log(eventObject.relatedTarget.parentElement);
-			// if ( e.target !=this || e.relatedTarget.parentNode.className == e.currentTarget.className || e.relatedTarget.parentNode.className == e.currentTarget.className){
-				// return false;
-			// }else{
-				// console.log( 'eventObject.relatedTarget.parentNode.className'  );
-				// console.log( e.relatedTarget.parentNode.className  );
-				
-				// console.log('eventObject.currentTarget.className');
-				// console.log(e.currentTarget.className);
-				
-			// }
-			
-				$(this).removeClass("ui-state-hover");
-			
-			
+		$('#'+tabId+' .toolbarFormPedido .boton').mouseleave(function(e){			 
+				$(this).removeClass("ui-state-hover");			
 		});
 		
 	});
@@ -68,6 +42,7 @@
 
 
 <!--div class="formTitle ui-widget-header ">
+	<!-- BARRA DE TITULO --c
 	<span class="">PEDIDO</span>
 	<span class="closeBtn ui-icon ui-icon-close"></span>
 </div-->

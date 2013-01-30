@@ -5,6 +5,9 @@ require_once '../apps/'.$_PETICION->modulo.'/modelos/almacen_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
 class Pedidoi extends Controlador{	
+
+	
+
 	function verlista(){
 		return $this->verPedidos();
 	}
@@ -72,6 +75,12 @@ class Pedidoi extends Controlador{
 		echo json_encode($respuesta);	
 	}
 	function getUnidadesMedida(){
+	
+	function index($vistaFile=''){				
+		$vista= $this->getVista();					
+		return $vista->mostrar( '/index' );
+	}
+	
 		$mod=new UMModel();		
 		// $paging=$_GET['paging'];
 		// $start=intval($paging['pageIndex'])*9;		
@@ -84,7 +93,12 @@ class Pedidoi extends Controlador{
 		);
 		echo json_encode($respuesta);	
 	}
-	function nuevo(){
+	function nuevo(){		
+		if ( $_SERVER['REQUEST_METHOD'] == 'GET' ){
+			
+			$vista= $this->getVista();					
+			return $vista->mostrar( '/index' );
+		}
 		 $mod=$this->getModel();
 		 $mod->indexTabla=1;
 		 $pedido=$mod->nuevo();
@@ -132,6 +146,11 @@ class Pedidoi extends Controlador{
 		$vista->pedidos=$res['datos'];
 		$vista->total=$res['total'];
 		
+		//Esto debe ir en el nucleo
+		if ( $_SERVER['REQUEST_METHOD'] == 'GET' ){		
+			$vista= $this->getVista();					
+			return $vista->mostrar( '/index' );
+		}
 		$vista->mostrar('pedidoi/lista_de_pedidos');
 	}
 	function pedidos(){

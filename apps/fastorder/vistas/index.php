@@ -49,7 +49,14 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 		}
 		$(function () {			
 			kore={
-				modulo:'<?php echo $_PETICION->modulo; ?>'
+				modulo:'<?php echo $_PETICION->modulo; ?>',
+				controlador:'<?php echo $_PETICION->controlador; ?>',
+				accion:'<?php echo $_PETICION->accion; ?>'
+				// dafault:{
+					// modulo:
+					// controlador:
+					// accion:
+				// }
 			};
 			$.extend($.gritter.options, { 
 				position: 'bottom-right', // defaults to 'top-right' but can be 'bottom-left', 'bottom-right', 'top-left', 'top-right' 
@@ -69,9 +76,16 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			
 			
+			
+			
 			TabManager.add('/'+kore.modulo+'/pedidoi/verlista');
+			TabManager.add('/'+kore.modulo+'/pedidoi/nuevo');
+			TabManager.add('/'+kore.modulo+'/general/scrum');
 			TabManager.add('/'+kore.modulo+'/general/welcome');
-			TabManager.add('/'+kore.modulo+'/pedidoi/pedido');
+					
+			//TabManager.add('/'+kore.modulo+'/'+kore.controlador+'/'+kore.accion+'/');
+			
+			//TabManager.add('/'+kore.modulo+'/pedidoi/pedido');
 			//TabManager.add('/'+kore.modulo+'/pedidoi/editar/580');
 			//$('#tabs > ul').append('');
 			
