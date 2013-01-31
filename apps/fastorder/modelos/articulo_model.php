@@ -10,7 +10,9 @@ class ArticuloModel extends Modelo{
 		
 		$total=$datos['datos'][0]['total'];
 		
-		$sql='select id, nombre FROM productos LIMIT :start,:limit';
+		$sql='select pro.id, pro.nombre,pro.codigo, pre.idarticulopre, pre.descripcion presentacion FROM productos pro
+		LEFT JOIN articulopre pre ON pre.idarticulo=pro.id and pre.default=1
+		LIMIT :start,:limit';
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
 		$sth->bindValue(':start',$start, PDO::PARAM_INT);

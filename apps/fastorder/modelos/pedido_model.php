@@ -35,8 +35,8 @@ class PedidoModel extends Modelo{
 	}
 	
 	function clonar($fk_pedido, $fk_tmp){
-		$sql='INSERT INTO tmp_pedidos_productos (id, fk_articulo, fk_pedido,cantidad, fk_um, fk_tmp)
-		SELECT id,fk_articulo, fk_pedido,cantidad, fk_um,:fk_tmp  fk_tmp from pedidos_productos WHERE fk_pedido=:fk_pedido';
+		$sql='INSERT INTO tmp_pedidos_productos (id, fk_articulo, fk_pedido,cantidad, idarticulopre, fk_tmp)
+		SELECT id,fk_articulo, fk_pedido,cantidad, idarticulopre,:fk_tmp  fk_tmp from pedidos_productos WHERE fk_pedido=:fk_pedido';
 		
 		$con = $this->getConexion();
 		$sth = $con->prepare($sql);		
@@ -169,8 +169,8 @@ class PedidoModel extends Modelo{
 		$resp=array();
 		$fk_tmp=$params['IdTmp'];			
 		
-		$sql='INSERT INTO pedidos_productos (fk_articulo, fk_pedido, cantidad, fk_um)
-		SELECT fk_articulo,:fk_pedido fk_pedido, cantidad, fk_um from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id=0';
+		$sql='INSERT INTO pedidos_productos (fk_articulo, fk_pedido, cantidad, idarticulopre)
+		SELECT fk_articulo,:fk_pedido fk_pedido, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id=0';
 		
 		$con = $this->getConexion();
 		$sth = $con->prepare($sql);
@@ -187,9 +187,9 @@ class PedidoModel extends Modelo{
 		}
 		
 		//actualizar			
-		$sql='SELECT id, fk_articulo, cantidad, fk_um from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id!=0 AND fk_pedido=:fk_pedido';			
-		// $sql='INSERT INTO pedidos_productos (fk_articulo, fk_pedido, cantidad, fk_um)
-		// SELECT fk_articulo,:fk_pedido fk_pedido, cantidad, fk_um from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id=0';			
+		$sql='SELECT id, fk_articulo, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id!=0 AND fk_pedido=:fk_pedido';			
+		// $sql='INSERT INTO pedidos_productos (fk_articulo, fk_pedido, cantidad, idarticulopre)
+		// SELECT fk_articulo,:fk_pedido fk_pedido, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id=0';			
 		$con = $this->getConexion();
 		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_pedido',$fk_pedido,PDO::PARAM_INT);
@@ -200,12 +200,12 @@ class PedidoModel extends Modelo{
 			$fk_articulo=$elemento['fk_articulo'];
 			$cantidad=$elemento['cantidad'];
 			$id=$elemento['id'];
-			$fk_um=$elemento['fk_um'];
-			$sql='UPDATE pedidos_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, fk_um=:fk_um WHERE id=:id';
+			$idarticulopre=$elemento['idarticulopre'];
+			$sql='UPDATE pedidos_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, idarticulopre=:idarticulopre WHERE id=:id';
 			$sth = $con->prepare($sql);				
 			$sth->bindValue(':fk_articulo',$fk_articulo,PDO::PARAM_INT);
 			$sth->bindValue(':cantidad',$cantidad,PDO::PARAM_INT);
-			$sth->bindValue(':fk_um',$fk_um,PDO::PARAM_INT);
+			$sth->bindValue(':idarticulopre',$idarticulopre,PDO::PARAM_INT);
 			
 			$sth->bindValue(':id',intval($id),PDO::PARAM_INT);
 			$exito = $sth->execute();			

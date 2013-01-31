@@ -13,15 +13,15 @@ class PedidoProductoTmpModel extends Modelo{
 		$fk_pedido	=$params['fk_pedido'];
 		$fk_tmp	=$params['fk_tmp'];
 		$fk_articulo	=$params['fk_articulo'];
-		$fk_um	=$params['fk_um'];
+		$idarticulopre	=$params['idarticulopre'];
 		$cantidad	=$params['pedido'];
 		
 		if ( empty($pk) ){
 			//           CREAR			
-			$sql='INSERT INTO '.$this->tabla.' SET fk_articulo=:fk_articulo, fk_um= :fk_um, cantidad=:cantidad, fk_pedido=:fk_pedido, id=:id,fk_tmp=:fk_tmp';						
+			$sql='INSERT INTO '.$this->tabla.' SET fk_articulo=:fk_articulo, idarticulopre= :idarticulopre, cantidad=:cantidad, fk_pedido=:fk_pedido, id=:id,fk_tmp=:fk_tmp';						
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_articulo", $fk_articulo, PDO::PARAM_INT);
-			$sth->bindValue(":fk_um", $fk_um,PDO::PARAM_INT);
+			$sth->bindValue(":idarticulopre", $idarticulopre,PDO::PARAM_INT);
 			$sth->bindValue(":cantidad", $cantidad,PDO::PARAM_INT);
 			$sth->bindValue(":fk_pedido", $fk_pedido,PDO::PARAM_INT);			
 			$sth->bindValue(":fk_tmp", $fk_tmp,PDO::PARAM_STR);						
@@ -29,10 +29,10 @@ class PedidoProductoTmpModel extends Modelo{
 			$msg='registro Creado';							
 		}else{
 			//	         ACTUALIZAR
-			$sql='UPDATE '.$this->tabla.' SET fk_articulo=:fk_articulo, fk_um= :fk_um, cantidad=:cantidad,fk_tmp=:fk_tmp WHERE '.$this->pk.'=:pk';			
+			$sql='UPDATE '.$this->tabla.' SET fk_articulo=:fk_articulo, idarticulopre= :idarticulopre, cantidad=:cantidad,fk_tmp=:fk_tmp WHERE '.$this->pk.'=:pk';			
 			$sth = $dbh->prepare($sql);										
 			$sth->bindValue(":fk_articulo", $fk_articulo, PDO::PARAM_INT);
-			$sth->bindValue(":fk_um", $fk_um,PDO::PARAM_INT);			
+			$sth->bindValue(":idarticulopre", $idarticulopre,PDO::PARAM_INT);			
 			$sth->bindValue(":cantidad", $cantidad,PDO::PARAM_INT);
 			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
 			$sth->bindValue(":fk_tmp", $fk_tmp,PDO::PARAM_STR);			
@@ -70,9 +70,7 @@ class PedidoProductoTmpModel extends Modelo{
 		
 		//, $pageSize=9,$idPedido
 		
-		$sql='select COUNT(pedprod.id) as total FROM '.$this->tabla.' pedprod
-		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
-		LEFT JOIN um um ON um.id = pedprod.fk_um
+		$sql='select COUNT(pedprod.id) as total FROM '.$this->tabla.' pedprod		
 		WHERE pedprod.fk_tmp=:fk_tmp';		
 		
 		$model=$this;
@@ -85,11 +83,11 @@ class PedidoProductoTmpModel extends Modelo{
 		
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
-		$sql = 'SELECT pedprod.*,prod.nombre as nombre,um.abrev as um,
-		prod.codigo codart,"maximo" maximo,"minimo" minimo,"reorden" reorden,"inicial" inicial,"sugerido" sugerido,cantidad pedido, "pendiente" pendiente ,"inv_inicial" inv_inicial 
+		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre,
+		prod.codigo codigo,"maximo" maximo,"minimo" minimo,"reorden" reorden,"inicial" inicial,"sugerido" sugerido,cantidad pedido, "pendiente" pendiente ,"inv_inicial" inv_inicial 
 		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
-		LEFT JOIN um um ON um.id = pedprod.fk_um
+		LEFT JOIN articulopre pre ON pre.idarticulo = pedprod.fk_articulo
 		WHERE pedprod.fk_tmp=:fk_tmp limit :start,:limit';		
 				
 		$con=$model->getConexion();

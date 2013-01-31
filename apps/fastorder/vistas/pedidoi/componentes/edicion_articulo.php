@@ -10,28 +10,24 @@
 
 	<form>
 		<input type="hidden" class="txtId" />
-		<input type="text" class="txtCodigo" placeholder="Codigo" style="display:inline-block;width:200px;"/>
+		<input readonly="true" type="text" class="txtCodigo" placeholder="Codigo" style="display:inline-block;width:200px;"/>
 		<select class="cmbArticulo" placeholder="Articulo">
 			<option value="1">a</option>
 			<option value="2">b</option>
 			<option value="3">c</option>
 			<option value="4">d</option>
 		</select>						
-		<select placeholder="Unidad de Medida" class="cmbUm">
-			<option>A</option>
-			<option>B</option>
-			<option>C</option>
-			<option>D</option>
-		</select>
+		<input readonly="true" placeholder="Presentacion"  class="txtPresentacion"/>
+			
 		<input placeholder="maximo" class="txtMaximo"/>
 		<input placeholder="minimo" class="txtMinimo"/>
 		<input placeholder="reorden" class="txtReorden"/>
 		<input placeholder="inv_inicial" class="txtInv_inicial"/>
 		<input placeholder="sugerido" class="txtSugerido"/>
-		<input placeholder="reorden" class="txtPedido"/>
+		<input placeholder="cantidad pedida" class="txtPedido"/>
 		<input placeholder="pendiente" class="txtPendiente"/>		
 		<input type="hidden" class="txtFkArticulo" />
-		<input type="hidden" class="txtFkUm" />
+		<input type="hidden" class="txtIdArticuloPre" />
 		<input type="hidden" class="txtIdTmp" />
 	</form>
 	<div class="toolbarFormPedidoInline">
