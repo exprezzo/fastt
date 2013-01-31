@@ -18,15 +18,16 @@
 	.enproceso{
 		color:blue;
 	}
+	.scrum h3{display:inline}
 </style>
-<div style="margin-top:-29px;">
+<div style="margin-top:-29px;" class="scrum">
 <h1>Bugs</h1>
 <ul>
 	<li></li>
 </ul>
-<h1>Scrum</h1>
 
-<h3>Sprint</h3>
+<h3>Sprint 1 </h3>29/Ene/2013 <br/>
+
 <p class="pendiente">Pedido Interno - Agregar en el filtro el almac&eacute;n.</p>
 <p class="pendiente">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</p>
 <p class="pendiente">Pedido Interno - Agregar en el filtro Estado de Documentos.</p>
@@ -38,6 +39,10 @@
 <p class="enproceso">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</p> 
 <p class="enproceso">Pedido Interno - Campos a modificiar: Codigo Articulo <-> Nombre Articulo, Inventario inicial, Pedido.</p>
 
+<h3>Sprint 2 </h3> (##/##/####)<br/>
+<ul>
+	<li></li>
+</ul>
 
 <h3>Back Log</h3>
 <p class="pendiente">Configuraci&oacute;n - Crear un modo de configuraci&oacute;n para jalar la serie y el folio que le sigue por almac&eacute;n.</p>

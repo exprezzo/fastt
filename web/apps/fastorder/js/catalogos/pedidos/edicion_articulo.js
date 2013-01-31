@@ -1,47 +1,8 @@
 
-jQuery.extend(jQuery.expr[':'], {
-    styleEquals: function(a, i, m){
-    	var styles = $(a).attr("style").split(" ")
-    	var found = false;
-		// console.log("m"); console.log(m);
-		// console.log("i"); console.log(i);
-		// console.log("a"); console.log(a);
-		// console.log("styles"); console.log(styles);
-    	for (var i = 0; i < styles.length; i++) {
-		
-			
-			
-    		if (styles[i]===m[3]) {
-				
-				
-				return a;	
-    			found = true;
-    			break;
-    		}
-    	}
-    	return found;
-    }
-	// styleDiferente: function(a, i, m){
-    	// var styles = $(a).attr("style").split(" ")
-    	// var found = false;
-    	// for (var i = 0; i < styles.length; i++) {
-    		// if (styles[i]===m[3]) {
-    			// found = true;
-    			// break;
-    		// }
-    	// }
-    	// return found;
-    // }
-});
-// $('input:styleEquals('width=10px')')
-// $('input:styleDiferente('width=10px')')
 var EdicionArticulo=function (tabId){
 	this.init=function(tabId){		
-		tabId = '#'+tabId;		
-		
+		tabId = '#'+tabId;				
 		this.tabId=tabId;
-		
-		
 		
 		this.configurarFormulario(tabId);	
 		this.configurarGrid(tabId);	
@@ -161,7 +122,7 @@ var EdicionArticulo=function (tabId){
 		var datos={
 			id			:$(this.tabId+' .frmEditInlinePedido .txtId').val(),
 			id_tmp		:$(this.tabId+' .frmEditInlinePedido .txtIdTmp').val(),
-			cantidad	:$(this.tabId+' .frmEditInlinePedido .txtCantidad').val(),
+			pedido		:$(this.tabId+' .frmEditInlinePedido .txtPedido').val(),
 			IdTmp		: $(this.tabId+' .frmEditInlinePedido .txtIdTmp').val(),
 			fk_um		:$(this.tabId+' .frmEditInlinePedido .txtFkUm').val(),
 			fk_articulo	:$(this.tabId+' .frmEditInlinePedido .txtFkArticulo').val(),
@@ -185,14 +146,6 @@ var EdicionArticulo=function (tabId){
 				
 				$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');								
 				$(me.tabId+' .grid_articulos').wijgrid('ensureControl', true);
-				
-				//$(me.tabId+' .frmEditInlinePedido').css('top',0);
-				
-				
-				
-				//this.gridArticulos.endEdit();
-				
-				
 				
 			}else{
 				icon= '/images/error.png';
@@ -309,42 +262,11 @@ var EdicionArticulo=function (tabId){
 		
 		gridPedidos.wijgrid({ loaded: function (e) { 
 			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                
-				var todos = $(me.tabId+' .frmEditInlinePedido form > *');								
-				var styles,w;
-				var found;
-				var editores=new Array();				
-				for (var i=0; i<todos.length; i++){
-					if ( $(todos[i]).attr("type")=='hidden' ){
-						continue;
-					}					
-					styles = $(todos[i]).attr("style");
-					if (styles==undefined){
-						editores.push( $(todos[i]) );
-						continue;					
-					}															
-					styles = $(todos[i]).attr("style").split(";");					
-					found = false;					
-					for (var ixS = 0; ixS < styles.length; ixS++) {					
-						if ( styles[ixS].trim().replace(' ','')==='display:none') {							
-							found = true;
-							break;
-						}
-					}
-					if (found == false){						
-						editores.push( $(todos[i]) );						
-					}
-				}
-				console.log("editores"); console.log(editores);
-				for(var i=0; i<editores.length; i++){					
-					w=$(me.tabId+' table.grid_articulos th:eq('+i+')').width();					
-					$(editores[i]).css('width',w-5);				
-				}
-				
-				
+							
 				var position = $(e.currentTarget).position();				
 				$(me.tabId+' .frmEditInlinePedido').css('visibility','visible');				
-				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');				
-				
+				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
+		
 				// var w=$(me.tabId+' table.grid_articulos th:eq(0)').width();
 				// $(me.tabId+' .frmEditInlinePedido form  > input.txtCodigo').css('width',w-5);			
 				
@@ -510,6 +432,24 @@ var EdicionArticulo=function (tabId){
 		//Posicionar tab Edicion articulo
 		this.mostrarTab(0);
 	};
+	this.nuevo=function(){		
+		var me=this;
+		$(me.tabId+' .frmEditInlinePedido').css('top','38px');
+		$(me.tabId+' .frmEditInlinePedido .txtId').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',0);
+		$(me.tabId+' .frmEditInlinePedido .txtFkArticulo').val(0);				
+		$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", '');			
+		$(me.tabId+' .frmEditInlinePedido .txtFkUm').val(0);
+		$(me.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox("option", "text", ''); //
+		
+		var position = $(me.tabId+' table.grid_articulos thead > tr').position();				
+		var h = $(me.tabId+' table.grid_articulos thead > tr').height();
+		$(me.tabId+' .frmEditInlinePedido').css('visibility','visible');				
+		$(me.tabId+' .frmEditInlinePedido').css('top',position.top+h);	
+		
+		me.mostrarEditor();
+		
+	};
 	this.editar=function(){		
 		//Cargar los datos en el editor
 		
@@ -517,7 +457,7 @@ var EdicionArticulo=function (tabId){
 			
 			$(this.tabId+' .frmEditInlinePedido .txtId').val(this.selected.id);
 			$(this.tabId+' .frmEditInlinePedido .txtIdTmp').val(this.selected.id_tmp);
-			$(this.tabId+' .frmEditInlinePedido .txtCantidad').val(this.selected.cantidad);
+			$(this.tabId+' .frmEditInlinePedido .txtPedido').val(this.selected.pedido);
 			$(this.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',this.selected.cantidad);
 			$(this.tabId+' .frmEditInlinePedido .txtFkArticulo').val(this.selected.fk_articulo);				
 			$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", this.selected.nombre);			
@@ -525,33 +465,48 @@ var EdicionArticulo=function (tabId){
 			$(this.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox("option", "text", this.selected.um); //
 		}
 		
-		
-		
-		// var w=$(this.tabId+' table.grid_articulos thead th:eq(0)').width();
-		// $(this.tabId+' .frmEditInlinePedido form  > div:eq(0)').css('width',w-5);				
-		 $(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');				
-		
-		 // w=$(this.tabId+' table.grid_articulos thead th:eq(1)').width();
-		// $(this.tabId+' .frmEditInlinePedido form  > div:eq(1)').css('width',w);				
-		// $(this.tabId+' .frmEditInlinePedido form  .txtCantidad').css('width',w-25);				
-		
-		// var w=$(this.tabId+' table.grid_articulos thead th:eq(2)').width();
-		// $(this.tabId+' .frmEditInlinePedido form  > div:eq(2)').css('width',w-5);				
-		 $(this.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox('repaint');				
+		this.mostrarEditor();
 		
 	};
 	this.mostrarEditor=function(){		
-		$(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
-		var w=$(this.tabId+' table.grid_articulos thead th:eq(0)').width();
-		$(this.tabId+' .frmEditInlinePedido form  > div:eq(0)').css('width',w-5);				
-		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');				
+		//$(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
 		
-		 w=$(this.tabId+' table.grid_articulos thead th:eq(1)').width();
-		$(this.tabId+' .frmEditInlinePedido form  > div:eq(1)').css('width',w);				
-		$(this.tabId+' .frmEditInlinePedido form  .txtCantidad').css('width',w-25);				
+		var me=this;
+		var todos = $(me.tabId+' .frmEditInlinePedido form > *');								
+		var styles,w;
+		var found;
+		var editores=new Array();				
+		for (var i=0; i<todos.length; i++){
+			if ( $(todos[i]).attr("type")=='hidden' ){
+				continue;
+			}					
+			styles = $(todos[i]).attr("style");
+			if (styles==undefined){
+				editores.push( $(todos[i]) );
+				continue;					
+			}															
+			styles = $(todos[i]).attr("style").split(";");					
+			found = false;					
+			for (var ixS = 0; ixS < styles.length; ixS++) {					
+				if ( styles[ixS].trim().replace(' ','')==='display:none') {							
+					found = true;
+					break;
+				}
+			}
+			if (found == false){						
+				editores.push( $(todos[i]) );						
+			}
+		}
+		console.log("editores"); console.log(editores);
+		for(var i=0; i<editores.length; i++){					
+			w=$(me.tabId+' table.grid_articulos th:eq('+i+')').width();					
+			$(editores[i]).css('width',w-5);				
+		}
 		
-		var w=$(this.tabId+' table.grid_articulos thead th:eq(2)').width();
-		$(this.tabId+' .frmEditInlinePedido form  > div:eq(2)').css('width',w-5);				
+		
+		
+				
+		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');						
 		$(this.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox('repaint');				
 	};
 	// this.mostrarTabEdicionArticulo=function(){
@@ -584,16 +539,7 @@ var EdicionArticulo=function (tabId){
 	this.configurarToolbar=function(tabId){
 		var me=this;
 		$(this.tabId+ ' .btnAgregar').click(function(){		
-			
-			$(me.tabId+' .frmEditInlinePedido').css('top','38px');
-			$(me.tabId+' .frmEditInlinePedido .txtId').val(0);
-			$(me.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',0);
-			$(me.tabId+' .frmEditInlinePedido .txtFkArticulo').val(0);				
-			$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", '');			
-			$(me.tabId+' .frmEditInlinePedido .txtFkUm').val(0);
-			$(me.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox("option", "text", ''); //
-			
-			me.mostrarEditor();
+			me.nuevo();
 		});
 	}
 }

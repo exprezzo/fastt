@@ -14,7 +14,7 @@ class PedidoProductoModel extends Modelo{
 		$fk_pedido	=$params['fk_pedido'];
 		$fk_articulo	=$params['fk_articulo'];
 		$fk_um	=$params['fk_um'];
-		$cantidad	=$params['cantidad'];
+		$cantidad	=$params['pedido'];
 		
 		if ( empty($id) ){
 			//           CREAR			

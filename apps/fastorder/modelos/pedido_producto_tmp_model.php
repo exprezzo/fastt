@@ -14,7 +14,7 @@ class PedidoProductoTmpModel extends Modelo{
 		$fk_tmp	=$params['fk_tmp'];
 		$fk_articulo	=$params['fk_articulo'];
 		$fk_um	=$params['fk_um'];
-		$cantidad	=$params['cantidad'];
+		$cantidad	=$params['pedido'];
 		
 		if ( empty($pk) ){
 			//           CREAR			
@@ -47,8 +47,8 @@ class PedidoProductoTmpModel extends Modelo{
 			$msg    = $error[2];
 			$elemeno=$params;
 		}else{
-			if ( empty($pk) ) $pk=$dbh->lastInsertId();
-			$elemeno=$this->obtener($pk);
+			if ( empty($pk) ) $pk=$dbh->lastInsertId();			
+			$elemeno=$this->obtener( array($this->pk=> $pk) );			
 		}
 		
 		return array(
@@ -86,7 +86,7 @@ class PedidoProductoTmpModel extends Modelo{
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
 		$sql = 'SELECT pedprod.*,prod.nombre as nombre,um.abrev as um,
-		"codart" codart,"maximo" maximo,"minimo" minimo,"reorden" reorden,"inicial" inicial,"sugerido" sugerido,"pedido" pedido, "pendiente" pendiente ,"inv_inicial" inv_inicial 
+		prod.codigo codart,"maximo" maximo,"minimo" minimo,"reorden" reorden,"inicial" inicial,"sugerido" sugerido,cantidad pedido, "pendiente" pendiente ,"inv_inicial" inv_inicial 
 		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
 		LEFT JOIN um um ON um.id = pedprod.fk_um

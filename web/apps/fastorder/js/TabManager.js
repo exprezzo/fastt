@@ -17,7 +17,8 @@ var TabManager={
 		
 		$('#tabs').height(screen.height);
 	},
-	add:function(url,titulo,id){
+	add:function(url,titulo,id,iconCls){
+		if (titulo == undefined) titulo='Nuevo Tab';
 		id = id || 0;
 		var tabId = 'tabs-' + tab_counter;
 		
@@ -27,9 +28,12 @@ var TabManager={
 			return true;
 		tab_counter++;
 		
-		$tabs.wijtabs('add','#'+ tabId, 'Nuevo Tab');	//Los agrego antes de la peticion ajax.
+		$tabs.wijtabs('add','#'+ tabId, titulo);	//Los agrego antes de la peticion ajax.
 		$('#'+ tabId ).attr('objId',objId);
-		
+		if (iconCls!=undefined){
+			var tab=$('a[href="#'+tabId+'"]');
+			tab.addClass(iconCls);
+		}
 		$.ajax({
 			type: "POST",
 			url: url,
