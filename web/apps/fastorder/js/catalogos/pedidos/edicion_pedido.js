@@ -83,6 +83,10 @@ var EdicionPedido = function(){
 				tab.find('.txtFecha').wijinputdate('option','date', resp.datos.fecha); 
 				$('a[href="'+me.tabId+'"]').html('Pedido-'+resp.datos.nombreAlmacen+' ID: '+resp.datos.id);		
 				
+				var objId = '/'+kore.modulo+'/pedidoi/getPedido?id='+resp.datos.id;
+				objId = objId.toLowerCase();
+				$(me.tabId ).attr('objId',objId);
+				
 			}else{
 				icon= '/images/error.png';
 				title= 'Error';					
@@ -196,12 +200,12 @@ var EdicionPedido = function(){
 		});
 		
 		
-		var animationOptions = {
-			 animated: "Drop",
-			 duration: 1000
-		};
-		combo.wijcombobox("option", "showingAnimation", animationOptions);		
-		combo.wijcombobox("option", "hidingAnimation", animationOptions);
+		// var animationOptions = {
+			 // animated: "Drop",
+			 // duration: 1000
+		// };
+		// combo.wijcombobox("option", "showingAnimation", animationOptions);		
+		// combo.wijcombobox("option", "hidingAnimation", animationOptions);
 		
 		
 		

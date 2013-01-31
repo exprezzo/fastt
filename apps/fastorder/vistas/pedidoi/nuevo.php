@@ -47,7 +47,7 @@
 	<span class="closeBtn ui-icon ui-icon-close"></span>
 </div-->
 
-<div class="paneles" style="width:700px;">
+<div class="paneles" style="width:90%;">
 	<div class="pnlIzq">
 		<div style="display:block;">
 		<?php $this->mostrar($_PETICION->controlador.'/componentes/toolbar'); ?>

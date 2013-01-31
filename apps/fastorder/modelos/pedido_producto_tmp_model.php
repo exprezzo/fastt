@@ -84,8 +84,10 @@ class PedidoProductoTmpModel extends Modelo{
 		if (!$datos['success']) return $datos;
 		
 		$total=$datos['datos'][0]['total'];
-		
-		$sql = 'SELECT pedprod.*,prod.nombre as nombre,um.abrev as um FROM '.$this->tabla.' pedprod
+		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
+		$sql = 'SELECT pedprod.*,prod.nombre as nombre,um.abrev as um,
+		"codart" codart,"maximo" maximo,"minimo" minimo,"reorden" reorden,"inicial" inicial,"sugerido" sugerido,"pedido" pedido, "pendiente" pendiente ,"inv_inicial" inv_inicial 
+		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
 		LEFT JOIN um um ON um.id = pedprod.fk_um
 		WHERE pedprod.fk_tmp=:fk_tmp limit :start,:limit';		

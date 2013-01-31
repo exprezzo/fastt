@@ -14,10 +14,15 @@
 	});
 	
 </script>
+<style>
+	.enproceso{
+		color:blue;
+	}
+</style>
 <div style="margin-top:-29px;">
 <h1>Bugs</h1>
 <ul>
-	<li>Pedido, Busqueda: Al eliminar un elemento, la lista no refleja el cambio en automatico</li>
+	<li></li>
 </ul>
 <h1>Scrum</h1>
 
@@ -26,12 +31,12 @@
 <p class="pendiente">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</p>
 <p class="pendiente">Pedido Interno - Agregar en el filtro Estado de Documentos.</p>
 <p class="pendiente">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.</p>
-<p class="pendiente">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</p>
+<p class="enproceso">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</p>
 <p class="pendiente">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Cadudaco.</p>
 <p class="pendiente">Pedido Interno - Folio y serie de acuerdo a almac&eacute;n y al dar nuevo y empezar la captura sugerir&aacute; el siguiente y si hay un cambio al momento de guardar se le avisar&aacute; al usuario.</p>
 <p class="pendiente">Pedido Interno - El grid del listado de insumos se agrupa por grupo y se ordena de acuerdo a campo articulostock.grupoposicion y los que sean sugeribles.</p>
-<p class="pendiente">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</p> 
-<p class="pendiente">Pedido Interno - Campos a modificiar: Codigo Articulo <-> Nombre Articulo, Inventario inicial, Pedido.</p>
+<p class="enproceso">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</p> 
+<p class="enproceso">Pedido Interno - Campos a modificiar: Codigo Articulo <-> Nombre Articulo, Inventario inicial, Pedido.</p>
 
 
 <h3>Back Log</h3>
@@ -54,7 +59,8 @@ $( function(){
 <script type="text/javascript">
 		/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
 		var disqus_shortname = 'fastorder'; // required: replace example with your forum shortname
-
+		//var disqus_identifier = 'scrum';
+		var disqus_url='http://fastorder.lamona.mx/index';
 		/* * * DON'T EDIT BELOW THIS LINE * * */
 		(function() {
 			var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

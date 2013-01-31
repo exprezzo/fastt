@@ -1,4 +1,40 @@
 
+jQuery.extend(jQuery.expr[':'], {
+    styleEquals: function(a, i, m){
+    	var styles = $(a).attr("style").split(" ")
+    	var found = false;
+		// console.log("m"); console.log(m);
+		// console.log("i"); console.log(i);
+		// console.log("a"); console.log(a);
+		// console.log("styles"); console.log(styles);
+    	for (var i = 0; i < styles.length; i++) {
+		
+			
+			
+    		if (styles[i]===m[3]) {
+				
+				
+				return a;	
+    			found = true;
+    			break;
+    		}
+    	}
+    	return found;
+    }
+	// styleDiferente: function(a, i, m){
+    	// var styles = $(a).attr("style").split(" ")
+    	// var found = false;
+    	// for (var i = 0; i < styles.length; i++) {
+    		// if (styles[i]===m[3]) {
+    			// found = true;
+    			// break;
+    		// }
+    	// }
+    	// return found;
+    // }
+});
+// $('input:styleEquals('width=10px')')
+// $('input:styleDiferente('width=10px')')
 var EdicionArticulo=function (tabId){
 	this.init=function(tabId){		
 		tabId = '#'+tabId;		
@@ -45,7 +81,9 @@ var EdicionArticulo=function (tabId){
 	this.configurarComboArticulo=function(){
 		//alert("asd");
 		var tabId=this.tabId;
-		var fields=[{
+		 
+		var fields=[			
+		{
 			name: 'label',
 			mapping: 'nombre'
 		}, {
@@ -145,8 +183,12 @@ var EdicionArticulo=function (tabId){
 				title= 'Success';
 				
 				
-				$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');				
+				$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');								
 				$(me.tabId+' .grid_articulos').wijgrid('ensureControl', true);
+				
+				//$(me.tabId+' .frmEditInlinePedido').css('top',0);
+				
+				
 				
 				//this.gridArticulos.endEdit();
 				
@@ -168,18 +210,22 @@ var EdicionArticulo=function (tabId){
 			});
 		});
 	},
-	this.configurarGrid=function(tabId){
-		
-		
-		
-		var fields=[
-			{ name: "id"  },
-			{ name: "id_tmp"  },
+	this.configurarGrid=function(tabId){		
+		var fields=[			
+			{ name: "codart"},			
 			{ name: "nombre"},
-			{ name: "fk_articulo"},
-			{ name: "cantidad"},
 			{ name: "um"},
-			{ name: "fk_um"}
+			{ name: "maximo"},
+			{ name: "minimo"},
+			{ name: "reorden"},
+			{ name: "inv_inicial"},
+			{ name: "sugerido"},
+			{ name: "pedido"},
+			{ name: "pendiente"},			
+			{ name: "fk_articulo"},
+			{ name: "id_tmp"  },
+			{ name: "fk_um"},
+			{ name: "id"  }
 		];
 		var dataReader = new wijarrayreader(fields);
 		var me=this;
@@ -223,13 +269,20 @@ var EdicionArticulo=function (tabId){
 			allowKeyboardNavigation:true,			
 			selectionMode:'singleRow',
 			data:dataSource,
-			beforeCellEdit: this.beforeCellEdit, 
+			beforeCellEdit: this.beforeCellEdit, 			
 			columns: [ 
-				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
-				{ dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },
-				{dataKey: "nombre", headerText: "Articulo"},
-				{dataKey: "cantidad", headerText: "Cantidad"},
+				{ dataKey: "codart", headerText: "Codigo"},
+				{dataKey: "nombre", headerText: "Art&iacute;culo"},
 				{dataKey: "um", headerText: "um"},
+				{dataKey: "maximo", headerText: "M&aacute;ximo"},
+				{dataKey: "minimo", headerText: "M&iacute;nimo"},
+				{dataKey: "reorden", headerText: "P Reorden"},
+				{dataKey: "inv_inicial", headerText: "I. Inicial"},
+				{dataKey: "sugerido", headerText: "Sugerido"},
+				{dataKey: "pedido", headerText: "Pedido"},
+				{dataKey: "pendiente", headerText: "Pendiente"},						
+				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
+				{ dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
 				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
 				{dataKey: "fk_um", headerText: "fk_um", visible:false}
 			],
@@ -251,29 +304,59 @@ var EdicionArticulo=function (tabId){
 			var row=item.row();
 			var data=row.data;			
 			me.selected=data;			
-			console.log("me.selected"); console.log(me.selected);
+			//console.log("me.selected"); console.log(me.selected);
 		} });
 		
 		gridPedidos.wijgrid({ loaded: function (e) { 
-			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											
+			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                
+				var todos = $(me.tabId+' .frmEditInlinePedido form > *');								
+				var styles,w;
+				var found;
+				var editores=new Array();				
+				for (var i=0; i<todos.length; i++){
+					if ( $(todos[i]).attr("type")=='hidden' ){
+						continue;
+					}					
+					styles = $(todos[i]).attr("style");
+					if (styles==undefined){
+						editores.push( $(todos[i]) );
+						continue;					
+					}															
+					styles = $(todos[i]).attr("style").split(";");					
+					found = false;					
+					for (var ixS = 0; ixS < styles.length; ixS++) {					
+						if ( styles[ixS].trim().replace(' ','')==='display:none') {							
+							found = true;
+							break;
+						}
+					}
+					if (found == false){						
+						editores.push( $(todos[i]) );						
+					}
+				}
+				console.log("editores"); console.log(editores);
+				for(var i=0; i<editores.length; i++){					
+					w=$(me.tabId+' table.grid_articulos th:eq('+i+')').width();					
+					$(editores[i]).css('width',w-5);				
+				}
+				
+				
 				var position = $(e.currentTarget).position();				
 				$(me.tabId+' .frmEditInlinePedido').css('visibility','visible');				
-				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');
+				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');				
 				
-				var w=$(me.tabId+' table.grid_articulos th:eq(0)').width();
-				$(me.tabId+' .frmEditInlinePedido form  > div:eq(0)').css('width',w-5);				
-			//	$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');				
+				// var w=$(me.tabId+' table.grid_articulos th:eq(0)').width();
+				// $(me.tabId+' .frmEditInlinePedido form  > input.txtCodigo').css('width',w-5);			
 				
-				 w=$(me.tabId+' table.grid_articulos th:eq(1)').width();
-				$(me.tabId+' .frmEditInlinePedido form  > div:eq(1)').css('width',w);				
-				$(me.tabId+' .frmEditInlinePedido form  .txtCantidad').css('width',w-25);				
+				// var w=$(me.tabId+' table.grid_articulos th:eq(1)').width();
+				// $(me.tabId+' .frmEditInlinePedido form  > div:eq(0)').css('width',w-5);				
 				
-				var w=$(me.tabId+' table.grid_articulos th:eq(2)').width();
-				$(me.tabId+' .frmEditInlinePedido form  > div:eq(2)').css('width',w-5);				
-			//	$(me.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox('repaint');				
+				 // w=$(me.tabId+' table.grid_articulos th:eq(1)').width();
+				// $(me.tabId+' .frmEditInlinePedido form  > div:eq(2)').css('width',w);				
+				// $(me.tabId+' .frmEditInlinePedido form  .txtCantidad').css('width',w-25);				
 				
-				// w=$(me.tabId+' table.grid_articulos th:eq(2)').width();				
-				// $(me.tabId+' .frmEditInlinePedido form > div:eq(2)').css('width',w-5);				
+				// var w=$(me.tabId+' table.grid_articulos th:eq(2)').width();
+				// $(me.tabId+' .frmEditInlinePedido form  > div:eq(3)').css('width',w-5);				
 				
 				me.editar();
 			});			
@@ -402,10 +485,10 @@ var EdicionArticulo=function (tabId){
 			data: datasource,
 			showTrigger: true,
 			minLength: 1,
-			animationOptions: {
-				animated: "Drop",
-				duration: 1000
-			},
+			// animationOptions: {
+				// animated: "Drop",
+				// duration: 1000
+			// },
 			forceSelectionText: true,
 			search: function (e, obj) {
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
@@ -416,12 +499,12 @@ var EdicionArticulo=function (tabId){
 		});
 		
 		
-		var animationOptions = {
-			 animated: "Drop",
-			 duration: 1000
-		};
-		combo.wijcombobox("option", "showingAnimation", animationOptions);		
-		combo.wijcombobox("option", "hidingAnimation", animationOptions);
+		// var animationOptions = {
+			 // animated: "Drop",
+			 // duration: 1000
+		// };
+		// combo.wijcombobox("option", "showingAnimation", animationOptions);		
+		// combo.wijcombobox("option", "hidingAnimation", animationOptions);
 	};
 	this.mostrarTabArticulos=function(){
 		//Posicionar tab Edicion articulo
@@ -444,17 +527,17 @@ var EdicionArticulo=function (tabId){
 		
 		
 		
-		var w=$(this.tabId+' table.grid_articulos thead th:eq(0)').width();
-		$(this.tabId+' .frmEditInlinePedido form  > div:eq(0)').css('width',w-5);				
-		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');				
+		// var w=$(this.tabId+' table.grid_articulos thead th:eq(0)').width();
+		// $(this.tabId+' .frmEditInlinePedido form  > div:eq(0)').css('width',w-5);				
+		 $(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');				
 		
-		 w=$(this.tabId+' table.grid_articulos thead th:eq(1)').width();
-		$(this.tabId+' .frmEditInlinePedido form  > div:eq(1)').css('width',w);				
-		$(this.tabId+' .frmEditInlinePedido form  .txtCantidad').css('width',w-25);				
+		 // w=$(this.tabId+' table.grid_articulos thead th:eq(1)').width();
+		// $(this.tabId+' .frmEditInlinePedido form  > div:eq(1)').css('width',w);				
+		// $(this.tabId+' .frmEditInlinePedido form  .txtCantidad').css('width',w-25);				
 		
-		var w=$(this.tabId+' table.grid_articulos thead th:eq(2)').width();
-		$(this.tabId+' .frmEditInlinePedido form  > div:eq(2)').css('width',w-5);				
-		$(this.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox('repaint');				
+		// var w=$(this.tabId+' table.grid_articulos thead th:eq(2)').width();
+		// $(this.tabId+' .frmEditInlinePedido form  > div:eq(2)').css('width',w-5);				
+		 $(this.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox('repaint');				
 		
 	};
 	this.mostrarEditor=function(){		

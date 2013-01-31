@@ -25,8 +25,11 @@ class Pedidoi extends Controlador{
 		
 		$res=$modObj->borrar($params);
 		
-		
-		echo json_encode($res);
+		$response=array(
+			'success'=>$res,
+			'msg'=>'Pedido Eliminado'
+		);
+		echo json_encode($response);
 		exit;
 		//return $respuesta;
 	}
