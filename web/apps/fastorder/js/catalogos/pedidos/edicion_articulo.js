@@ -81,7 +81,7 @@ var EdicionArticulo=function (tabId){
 				// });				
 			},
 			loading: function (dataSource, userData) {                            				
-				 console.log("dataSource"); console.log(dataSource);
+				 
 				 dataSource.proxy.options.data=dataSource.proxy.options.data || {};
 				 dataSource.proxy.options.data.idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();		
             },
@@ -122,7 +122,7 @@ var EdicionArticulo=function (tabId){
 			select: function (e, item) 
 			{			
 				me.articuloSeleccionado=item;
-				console.log(item);
+				
 				$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
 				$('#tabs '+tabId+' .txtIdArticuloPre').val(item.idarticulopre);
 				$('#tabs '+tabId+' .txtPresentacion').val(item.presentacion);
@@ -132,6 +132,10 @@ var EdicionArticulo=function (tabId){
 				$('#tabs '+tabId+' .txtMinimo').val(item.minimo);
 				$('#tabs '+tabId+' .txtPuntoReorden').val(item.puntoreorden);
 				$('#tabs '+tabId+' .txtInvInicial').val(item.existencia);
+				
+				var sugerido=0;
+				sugerido= item.puntoreorden - item.existencia;				
+				$('#tabs '+tabId+' .txtSugerido').val(sugerido);
 			}
 		});
 		
@@ -282,7 +286,7 @@ var EdicionArticulo=function (tabId){
 			var row=item.row();
 			var data=row.data;			
 			me.selected=data;			
-			//console.log("me.selected"); console.log(me.selected);
+			
 		} });
 		
 		gridPedidos.wijgrid({ loaded: function (e) { 
@@ -524,7 +528,7 @@ var EdicionArticulo=function (tabId){
 				editores.push( $(todos[i]) );						
 			}
 		}
-		console.log("editores"); console.log(editores);
+		
 		for(var i=0; i<editores.length; i++){					
 			w=$(me.tabId+' table.grid_articulos th:eq('+i+')').width();					
 			$(editores[i]).css('width',w-6);				
