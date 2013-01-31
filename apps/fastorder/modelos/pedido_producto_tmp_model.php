@@ -87,7 +87,7 @@ class PedidoProductoTmpModel extends Modelo{
 		prod.codigo codigo,"maximo" maximo,"minimo" minimo,"reorden" reorden,"inicial" inicial,"sugerido" sugerido,cantidad pedido, "pendiente" pendiente ,"inv_inicial" inv_inicial 
 		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
-		LEFT JOIN articulopre pre ON pre.idarticulo = pedprod.fk_articulo
+		LEFT JOIN articulopre pre ON pedprod.idarticulopre =pre.idarticulopre
 		WHERE pedprod.fk_tmp=:fk_tmp limit :start,:limit';		
 				
 		$con=$model->getConexion();
