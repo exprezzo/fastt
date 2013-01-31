@@ -47,6 +47,10 @@ var EdicionArticulo=function (tabId){
 			{name: 'presentacion'},
 			{name: 'idarticulopre'},
 			{name: 'codigo'},
+			{name: 'existencia'},
+			{name: 'minimo'},
+			{name: 'maximo'},
+			{name: 'puntoreorden'},
 		{
 			name: 'label',
 			mapping: 'nombre'
@@ -57,7 +61,7 @@ var EdicionArticulo=function (tabId){
 			name: 'selected',
 			defaultValue: false
 		}];
-		
+		var me = this;
 		var myReader = new wijarrayreader(fields);
 		
 		var proxy = new wijhttpproxy({
@@ -75,7 +79,12 @@ var EdicionArticulo=function (tabId){
 						// $('#tabs '+tabId+' .cmbAlmacen').wijcombobox({selectedIndex:index});
 					// }
 				// });				
-			}
+			},
+			loading: function (dataSource, userData) {                            				
+				 console.log("dataSource"); console.log(dataSource);
+				 dataSource.proxy.options.data=dataSource.proxy.options.data || {};
+				 dataSource.proxy.options.data.idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();		
+            },
 		});
 		
 		// datasource.proxy.options.data={
@@ -119,6 +128,10 @@ var EdicionArticulo=function (tabId){
 				$('#tabs '+tabId+' .txtPresentacion').val(item.presentacion);
 				$('#tabs '+tabId+' .txtCodigo').val(item.codigo);
 				//$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
+				$('#tabs '+tabId+' .txtMaximo').val(item.maximo);
+				$('#tabs '+tabId+' .txtMinimo').val(item.minimo);
+				$('#tabs '+tabId+' .txtPuntoReorden').val(item.puntoreorden);
+				$('#tabs '+tabId+' .txtInvInicial').val(item.existencia);
 			}
 		});
 		

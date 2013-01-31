@@ -21,8 +21,8 @@
 			
 		<input placeholder="maximo" class="txtMaximo"/>
 		<input placeholder="minimo" class="txtMinimo"/>
-		<input placeholder="reorden" class="txtReorden"/>
-		<input placeholder="inv_inicial" class="txtInv_inicial"/>
+		<input placeholder="reorden" class="txtPuntoReorden"/>
+		<input placeholder="inv_inicial" class="txtInvInicial" value="0" />
 		<input placeholder="sugerido" class="txtSugerido"/>
 		<input placeholder="cantidad pedida" class="txtPedido"/>
 		<input placeholder="pendiente" class="txtPendiente"/>		

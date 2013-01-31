@@ -73,7 +73,7 @@ var EdicionPedido = function(){
 			var msg= (resp.msg)? resp.msg : '';
 			var title;
 			if ( resp.success == true	){
-				icon='/images/yes.png';
+				icon='/web/apps/fastorder/images/yes.png';
 				title= 'Success';
 				
 				tab.find('.txtId').val(resp.datos.id);
@@ -88,7 +88,7 @@ var EdicionPedido = function(){
 				$(me.tabId ).attr('objId',objId);
 				
 			}else{
-				icon= '/images/error.png';
+				icon= '/web/apps/fastorder/images/error.png';
 				title= 'Error';					
 			}
 			

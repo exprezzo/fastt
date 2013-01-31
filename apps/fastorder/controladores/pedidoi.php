@@ -69,7 +69,8 @@ class Pedidoi extends Controlador{
 		// $paging=$_GET['paging'];
 		// $start=intval($paging['pageIndex'])*9;		
 		$start=0;		
-		$res=$mod->paginar($start,90);				
+		$idalmacen=$_REQUEST['idalmacen'];
+		$res=$mod->paginar($start,90, $idalmacen);				
 		
 		$respuesta=array(	
 			'rows'=>$res['datos'],
