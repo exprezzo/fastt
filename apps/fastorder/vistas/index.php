@@ -79,9 +79,9 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			
 			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
-			TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');
-			TabManager.add('/'+kore.modulo+'/general/scrum','Scrrum');
-			TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');
+			//TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			
+			//TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');
+			TabManager.add('/'+kore.modulo+'/general/historias','Historias de usuario',0,'scrum');
 			TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
 					
 			//TabManager.add('/'+kore.modulo+'/'+kore.controlador+'/'+kore.accion+'/');

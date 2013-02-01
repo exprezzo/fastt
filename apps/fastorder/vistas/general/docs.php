@@ -1,7 +1,7 @@
 <h2>Documentaci&oacute;n:</h2>
 
 <h4>TabManager</h4>
-Encapsula al objeto tab de Wijmo, con el proposito de agregar el comportamiento requerido por nuestro backed.<br />
+Encapsula al objeto tab de Wijmo, con el proposito de agregar el comportamiento requerido por nuestro backend.<br />
 <br />
 Ejemplo de uso: <br/> <br/>
 <span>
