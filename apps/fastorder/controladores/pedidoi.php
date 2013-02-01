@@ -175,6 +175,7 @@ class Pedidoi extends Controlador{
 		
 		$fechai=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechai']);
 		$fechaf=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechaf']);
+		$vencimiento=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['vencimiento']);
 		//print_r($fechai);
 		
 		$paging=$_GET['paging']; //Datos de paginacion enviados por el componente js
@@ -184,6 +185,8 @@ class Pedidoi extends Controlador{
 			'start'=>intval($paging['pageIndex'])*$pageSize,
 			'fechai'=>$fechai->format('Y-m-d').' 00:00:00',
 			'fechaf'=>$fechaf->format('Y-m-d').' 23:59:59',
+			'vencimiento'=>$vencimiento->format('Y-m-d').' 00:00:00',
+			
 			'idalmacen'=>$_GET['idalmacen']
 		);
 		

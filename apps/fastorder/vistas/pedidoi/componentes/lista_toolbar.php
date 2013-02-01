@@ -61,8 +61,15 @@
 							echo '<option value="'.$almacen['id'].'">'.$almacen['nombre'].'</option>';
 						}
 						?>						
+						<span class="ui-button-text">Almac&eacute;n</span><br/>
 					</select>
 				</span>
+			</li>
+			 <li>				
+				<span class="tbFecha">										
+					<input type='text' name='vencimiento' class="txtVencimiento"  />
+					<span class="ui-button-text">Vencimiento</span><br/>
+				</span>				
 			</li>
 			<li>			
 				

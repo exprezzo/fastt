@@ -22,6 +22,8 @@
 		
 		$(this.tabId+' .cmbAlmacen').wijcombobox({});
 		
+		
+		
 		$(tabId+ " > .tbPedidos").wijribbon({
 			click: function (e, cmd) {
 				switch(cmd.commandName){
@@ -64,6 +66,7 @@
 		var fecha=new Date();
 		$('#tabs '+tabId+' .txtFechaI').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true, date: new Date()});	
 		$('#tabs '+tabId+' .txtFechaF').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true, date: new Date()}); //fecha.getFullYear()	+'-'+fecha.getMonth()+1+'-'+fecha.getUTCDate() });	
+		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true, date: new Date()});	
 	};
 	this.configurarGrid=function(tabId){
 		var pageSize=10;
@@ -82,6 +85,7 @@
 		var dataReader = new wijarrayreader([
 			{ name: "id"  },
 			{ name: "fecha"},
+			{ name: "vencimiento"},
 			{ name: "nombreAlmacen"}
 		]);
 
@@ -94,6 +98,7 @@
 			reader:new wijarrayreader([
 				 { name: "id"},
 				 { name: "fecha"},
+				 { name: "vencimiento"},
 				 { name: "nombreAlmacen"}
 			])
 		});
@@ -118,7 +123,12 @@
 			pageSize:pageSize,
 			selectionMode:'singleRow',
 			data:dataSource,
-			columns: [ { dataKey: "id", hidden:true, visible:false, headerText: "ID" },{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'80%' }, {dataKey: "fecha", headerText: "Fecha",width:'20%' } ],
+			columns: [ 
+				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
+				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'60%' }, 
+				{dataKey: "fecha", headerText: "Fecha",width:'20%' },
+				{dataKey: "vencimiento", headerText: "Vencimiento",width:'20%' }
+				],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
 					args.$rows.attr('pedidoId',args.data.id);
@@ -128,14 +138,15 @@
 				var ff=$('#tabs '+me.tabId+' .txtFechaF').val();			
 				
 				var idalmacen = $('#tabs '+me.tabId+' .cmbAlmacen').wijcombobox('option','selectedValue');
+				var vencimiento = $('#tabs '+me.tabId+' .txtVencimiento').val();
 				
-                me.dataSource.proxy.options.data={fechai:fi, fechaf:ff, idalmacen:idalmacen};
+                me.dataSource.proxy.options.data={fechai:fi, fechaf:ff, idalmacen:idalmacen, vencimiento:vencimiento};
             },
 			cellStyleFormatter: function(args) { 
-				if (args.column._originalDataKey=='fecha'){
+				if (args.column._originalDataKey=='fecha' || args.column._originalDataKey=='vencimiento'){
 					// console.log(args);		
 					args.$cell.addClass("colFecha");
-				}			
+				}			 
 			} 
 		});
 		

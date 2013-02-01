@@ -100,9 +100,9 @@ class PedidoModel extends Modelo{
 		$f1=empty($params['fechai'])? '1000-01-01' : $params['fechai'];
 		$f2=empty($params['fechaf'])? '2040-01-01' : $params['fechaf'];
 		$idalmacen=empty($params['idalmacen'])? 0 : $params['idalmacen'];
+		$vencimiento=empty($params['vencimiento'])? '2040-01-01' : $params['vencimiento'];
 		
-		
-		$sql='select COUNT(ped.id) as total FROM pedidos ped where fecha between :f1 and :f2';
+		$sql='select COUNT(ped.id) as total FROM pedidos ped where fecha between :f1 and :f2  AND (vencimiento between :vencimiento and :f2)';
 		
 		
 		if ( !empty($idalmacen) ){
@@ -113,6 +113,7 @@ class PedidoModel extends Modelo{
 		$sth=$con->prepare($sql);
 		$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
 		$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
+		$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 		if ( !empty($idalmacen) ){
 			$sth->bindValue(":idalmacen",$idalmacen,PDO::PARAM_INT);			
 		}
@@ -120,9 +121,9 @@ class PedidoModel extends Modelo{
 		
 		$total=$datos['datos'][0]['total'];
 		
-		$sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha, alm.nombre as nombreAlmacen FROM pedidos ped
+		$sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
 		LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
-		WHERE fecha between :f1 and :f2';
+		WHERE (fecha between :f1 and :f2) AND (vencimiento between :vencimiento and :f2)';
 		if ( !empty($idalmacen) ){
 			$sql.=' AND fk_almacen=:idalmacen';
 		}
@@ -134,6 +135,7 @@ class PedidoModel extends Modelo{
 		$sth->bindValue(':limit',$pageSize, PDO::PARAM_INT);
 		$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
 		$sth->bindValue(":f2",$f2,PDO::PARAM_STR);		
+		$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 		if ( !empty($idalmacen) ){
 			$sth->bindValue(":idalmacen",$idalmacen,PDO::PARAM_INT);			
 		}
