@@ -74,19 +74,19 @@ var EdicionPedido = function(){
 			var title;
 			if ( resp.success == true	){
 				icon='/web/apps/fastorder/images/yes.png';
-				title= 'Success';
-				
+				title= 'Success';				
 				tab.find('.txtId').val(resp.datos.id);
-				tab.find('.txtIdTmp').val(resp.datos.id_tmp);
-				
+				tab.find('.txtIdTmp').val(resp.datos.id_tmp);				
 				tab.find('.txtFkAlmacen').val(resp.datos.fk_almacen);
 				tab.find('.txtFecha').wijinputdate('option','date', resp.datos.fecha); 
-				$('a[href="'+me.tabId+'"]').html('Pedido-'+resp.datos.nombreAlmacen+' ID: '+resp.datos.id);		
-				
+				$('a[href="'+me.tabId+'"]').html('Pedido-'+resp.datos.nombreAlmacen+' ID: '+resp.datos.id);				
 				var objId = '/'+kore.modulo+'/pedidoi/getPedido?id='+resp.datos.id;
 				objId = objId.toLowerCase();
 				$(me.tabId ).attr('objId',objId);
 				
+				var gridPedidos=$(me.tabId+" .grid_articulos");
+				gridPedidos.wijgrid('ensureControl', true);
+						
 			}else{
 				icon= '/web/apps/fastorder/images/error.png';
 				title= 'Error';					
@@ -114,13 +114,13 @@ var EdicionPedido = function(){
 				var resp = eval('(' + response + ')');
 				var msg= (resp.msg)? resp.msg : '';
 				var title;
-				if ( resp.success == true	){
-					icon='/images/yes.png';
+				if ( resp.success == true	){					
+					icon='/web/apps/fastorder/images/yes.png';
 					title= 'Success';				
 					var gridPedidos=$(me.tabId+" #lista_de_vuelos");				
 					gridPedidos.wijgrid('ensureControl', true);
 				}else{
-					icon= '/images/error.png';
+					icon= '/web/apps/fastorder/images/error.png';
 					title= 'Error';
 				}
 				

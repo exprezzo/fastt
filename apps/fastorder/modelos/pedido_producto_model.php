@@ -15,23 +15,30 @@ class PedidoProductoModel extends Modelo{
 		$fk_articulo	=$params['fk_articulo'];
 		$fk_um	=$params['fk_um'];
 		$cantidad	=$params['pedido'];
-		
+				
 		if ( empty($id) ){
 			//           CREAR			
-			$sql='INSERT INTO '.$this->tablas[$this->indexTabla].' SET fk_articulo=:fk_articulo, fk_um= :fk_um, cantidad=:cantidad, fk_pedido=:fk_pedido';						
+			$sql='INSERT INTO '.$this->tablas[$this->indexTabla].' SET fk_articulo=:fk_articulo, fk_um= :fk_um, cantidad=:cantidad, fk_pedido=:fk_pedido';			
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_articulo", $fk_articulo, PDO::PARAM_INT);
 			$sth->bindValue(":fk_um", $fk_um,PDO::PARAM_INT);
 			$sth->bindValue(":cantidad", $cantidad,PDO::PARAM_INT);
 			$sth->bindValue(":fk_pedido", $fk_pedido,PDO::PARAM_INT);			
+			
+			
+			
 			$msg='Pedido Guardado';							
 		}else{
 			//	         ACTUALIZAR
-			$sql='UPDATE '.$this->tablas[$this->indexTabla].' SET fk_articulo=:fk_articulo, fk_um= :fk_um, cantidad=:cantidad WHERE '.$this->ids[$this->indexTabla].'=:id';			
+			$sql='UPDATE '.$this->tablas[$this->indexTabla].' SET fk_articulo=:fk_articulo, fk_um= :fk_um, cantidad=:cantidad			
+			WHERE '.$this->ids[$this->indexTabla].'=:id';			
 			$sth = $dbh->prepare($sql);										
 			$sth->bindValue(":fk_articulo", $fk_articulo, PDO::PARAM_INT);
 			$sth->bindValue(":fk_um", $fk_um,PDO::PARAM_INT);			
 			$sth->bindValue(":cantidad", $cantidad,PDO::PARAM_INT);
+			
+					
+			
 			$sth->bindValue(":id",$id,PDO::PARAM_INT);
 			$msg='Pedido Actualizado';		
 		}
@@ -82,7 +89,9 @@ class PedidoProductoModel extends Modelo{
 		
 		$total=$datos['datos'][0]['total'];
 		
-		$sql = 'SELECT pedprod.*,prod.nombre as nombre,um.abrev as um FROM '.$this->tablas[$this->indexTabla].' pedprod
+		$sql = 'SELECT pedprod.*,prod.nombre as nombre,um.abrev as um,
+		maximo, minimo, puntoreorden, existencia
+		FROM '.$this->tablas[$this->indexTabla].' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
 		LEFT JOIN um um ON um.id = pedprod.fk_um
 		WHERE pedprod.fk_pedido=:fk_pedido limit :start,:limit';		

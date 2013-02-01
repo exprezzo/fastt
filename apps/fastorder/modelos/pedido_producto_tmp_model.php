@@ -16,9 +16,15 @@ class PedidoProductoTmpModel extends Modelo{
 		$idarticulopre	=$params['idarticulopre'];
 		$cantidad	=$params['pedido'];
 		
+		$maximo=$params['maximo'];
+		$minimo=$params['minimo'];
+		$puntoreorden=$params['puntoreorden'];
+		$existencia=$params['existencia'];
+		
 		if ( empty($pk) ){
 			//           CREAR			
-			$sql='INSERT INTO '.$this->tabla.' SET fk_articulo=:fk_articulo, idarticulopre= :idarticulopre, cantidad=:cantidad, fk_pedido=:fk_pedido, id=:id,fk_tmp=:fk_tmp';						
+			$sql='INSERT INTO '.$this->tabla.' SET fk_articulo=:fk_articulo, idarticulopre= :idarticulopre, cantidad=:cantidad, fk_pedido=:fk_pedido, id=:id,fk_tmp=:fk_tmp
+			,maximo=:maximo, minimo=:minimo, puntoreorden=:puntoreorden,existencia=:existencia';									
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_articulo", $fk_articulo, PDO::PARAM_INT);
 			$sth->bindValue(":idarticulopre", $idarticulopre,PDO::PARAM_INT);
@@ -26,16 +32,29 @@ class PedidoProductoTmpModel extends Modelo{
 			$sth->bindValue(":fk_pedido", $fk_pedido,PDO::PARAM_INT);			
 			$sth->bindValue(":fk_tmp", $fk_tmp,PDO::PARAM_STR);						
 			$sth->bindValue(":id", $id, PDO::PARAM_INT);
+			
+			$sth->bindValue(":maximo", $maximo,PDO::PARAM_INT);			
+			$sth->bindValue(":minimo", $minimo,PDO::PARAM_INT);			
+			$sth->bindValue(":puntoreorden", $puntoreorden,PDO::PARAM_INT);			
+			$sth->bindValue(":existencia", $existencia,PDO::PARAM_INT);			
+			
 			$msg='registro Creado';							
 		}else{
 			//	         ACTUALIZAR
-			$sql='UPDATE '.$this->tabla.' SET fk_articulo=:fk_articulo, idarticulopre= :idarticulopre, cantidad=:cantidad,fk_tmp=:fk_tmp WHERE '.$this->pk.'=:pk';			
+			$sql='UPDATE '.$this->tabla.' SET fk_articulo=:fk_articulo, idarticulopre= :idarticulopre, cantidad=:cantidad,fk_tmp=:fk_tmp
+			,maximo=:maximo, minimo=:minimo, puntoreorden=:puntoreorden,existencia=:existencia 
+			WHERE '.$this->pk.'=:pk';			
 			$sth = $dbh->prepare($sql);										
 			$sth->bindValue(":fk_articulo", $fk_articulo, PDO::PARAM_INT);
 			$sth->bindValue(":idarticulopre", $idarticulopre,PDO::PARAM_INT);			
 			$sth->bindValue(":cantidad", $cantidad,PDO::PARAM_INT);
 			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
 			$sth->bindValue(":fk_tmp", $fk_tmp,PDO::PARAM_STR);			
+			
+			$sth->bindValue(":maximo", $maximo,PDO::PARAM_INT);			
+			$sth->bindValue(":minimo", $minimo,PDO::PARAM_INT);			
+			$sth->bindValue(":puntoreorden", $puntoreorden,PDO::PARAM_INT);			
+			$sth->bindValue(":existencia", $existencia,PDO::PARAM_INT);
 			$msg='registro Actualizado';		
 		}
 			
@@ -83,8 +102,8 @@ class PedidoProductoTmpModel extends Modelo{
 		
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
-		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre,
-		prod.codigo codigo,"maximo" maximo,"minimo" minimo,"reorden" reorden,"inicial" inicial,"sugerido" sugerido,cantidad pedido, "pendiente" pendiente ,"inv_inicial" inv_inicial 
+		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre, prod.codigo codigo, 
+		maximo, minimo, puntoreorden, existencia,cantidad pedido ,puntoreorden - existencia sugerido,((puntoreorden - existencia)- cantidad) pendiente
 		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
 		LEFT JOIN articulopre pre ON pedprod.idarticulopre =pre.idarticulopre

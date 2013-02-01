@@ -19,13 +19,13 @@
 		</select>						
 		<input readonly="true" placeholder="Presentacion"  class="txtPresentacion"/>
 			
-		<input placeholder="maximo" class="txtMaximo"/>
-		<input placeholder="minimo" class="txtMinimo"/>
-		<input placeholder="reorden" class="txtPuntoReorden"/>
-		<input placeholder="inv_inicial" class="txtInvInicial" value="0" />
-		<input placeholder="sugerido" class="txtSugerido"/>
+		<input readonly="true" placeholder="maximo" class="txtMaximo"/>
+		<input readonly="true" placeholder="minimo" class="txtMinimo"/>
+		<input readonly="true" placeholder="reorden" class="txtPuntoReorden"/>
+		<input placeholder="existencia" class="txtExistencia" value="0" />
+		<input readonly="true" placeholder="sugerido" class="txtSugerido"/>
 		<input placeholder="cantidad pedida" class="txtPedido"/>
-		<input placeholder="pendiente" class="txtPendiente"/>		
+		<input readonly="true" placeholder="pendiente" class="txtPendiente"/>		
 		<input type="hidden" class="txtFkArticulo" />
 		<input type="hidden" class="txtIdArticuloPre" />
 		<input type="hidden" class="txtIdTmp" />

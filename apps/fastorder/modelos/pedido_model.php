@@ -27,21 +27,27 @@ class PedidoModel extends Modelo{
 		$mod=$this->obtener($idPedido);		
 		$id_tmp=uniqid();
 		$mod['id_tmp']=$id_tmp;
-		$res=$this->clonar($idPedido, $id_tmp);
+		
+		$res=$this->clonar($idPedido, $id_tmp, $mod['fk_almacen']);
 		if (!$res['success']){
 			print_r($res); exit;
 		}
 		return $mod;
 	}
 	
-	function clonar($fk_pedido, $fk_tmp){
-		$sql='INSERT INTO tmp_pedidos_productos (id, fk_articulo, fk_pedido,cantidad, idarticulopre, fk_tmp)
-		SELECT id,fk_articulo, fk_pedido,cantidad, idarticulopre,:fk_tmp  fk_tmp from pedidos_productos WHERE fk_pedido=:fk_pedido';
+	function clonar($fk_pedido, $fk_tmp,$idalmacen){
+		$sql='INSERT INTO tmp_pedidos_productos (id, fk_articulo, fk_pedido,cantidad, idarticulopre, fk_tmp,maximo,minimo,existencia,puntoreorden)
+		SELECT id,fk_articulo, fk_pedido,cantidad, idarticulopre,:fk_tmp  fk_tmp, maximo, minimo, existencia,puntoreorden
+		from pedidos_productos prods
+		LEFT JOIN articulostock  sto ON sto.idarticulo = prods.fk_articulo AND sto.idalmacen = :idalmacen
+		WHERE fk_pedido=:fk_pedido';
 		
 		$con = $this->getConexion();
 		$sth = $con->prepare($sql);		
 		$sth->bindValue(':fk_pedido',$fk_pedido);		
 		$sth->bindValue(':fk_tmp',$fk_tmp);	
+		$sth->bindValue(':idalmacen',$idalmacen);	
+		
 		$exito = $sth->execute();
 		
 		$msg='ok';
