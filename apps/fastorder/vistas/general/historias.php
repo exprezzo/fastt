@@ -56,7 +56,7 @@ Documentos:<br />
 </ul>
 
 Tareas Sprint 1<br/>
-<p class="pendiente">Pedido Interno - Agregar en el filtro el almac&eacute;n.</p>
+<p class="listo">Pedido Interno - Agregar en el filtro el almac&eacute;n.</p>
 <p class="pendiente">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</p>
 <p class="pendiente">Pedido Interno - Agregar en el filtro Estado de Documentos.</p>
 <p class="pendiente">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.</p>

@@ -19,6 +19,9 @@
 	};
 	this.configurarToolbar=function(tabId){
 		var me=this;
+		
+		$(this.tabId+' .cmbAlmacen').wijcombobox({});
+		
 		$(tabId+ " > .tbPedidos").wijribbon({
 			click: function (e, cmd) {
 				switch(cmd.commandName){
@@ -123,7 +126,10 @@
 			loading: function (dataSource, userData) {                            
 				var fi=$('#tabs '+me.tabId+' .txtFechaI').val();	
 				var ff=$('#tabs '+me.tabId+' .txtFechaF').val();			
-                me.dataSource.proxy.options.data={fechai:fi, fechaf:ff};
+				
+				var idalmacen = $('#tabs '+me.tabId+' .cmbAlmacen').wijcombobox('option','selectedValue');
+				
+                me.dataSource.proxy.options.data={fechai:fi, fechaf:ff, idalmacen:idalmacen};
             },
 			cellStyleFormatter: function(args) { 
 				if (args.column._originalDataKey=='fecha'){

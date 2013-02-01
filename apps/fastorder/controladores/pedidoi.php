@@ -144,7 +144,7 @@ class Pedidoi extends Controlador{
 	
 	function verPedidos(){
 		$mod=$this->getModel();
-		$res=$mod->paginar(array());
+		//$res=$mod->paginar($_REQUEST);
 		
 		$vista=$this->getVista();
 		$vista->pedidos=$res['datos'];
@@ -155,6 +155,11 @@ class Pedidoi extends Controlador{
 			$vista= $this->getVista();					
 			return $vista->mostrar( '/index' );
 		}
+		
+		$almMod= new AlmacenModel();
+		$res=$almMod->paginar();
+		$vista->almacenes=$res['datos'];
+		
 		$vista->mostrar('pedidoi/lista_de_pedidos');
 	}
 	function pedidos(){
@@ -177,7 +182,8 @@ class Pedidoi extends Controlador{
 			'pageSize'=>$pageSize=intval($paging['pageSize']),
 			'start'=>intval($paging['pageIndex'])*$pageSize,
 			'fechai'=>$fechai->format('Y-m-d').' 00:00:00',
-			'fechaf'=>$fechaf->format('Y-m-d').' 23:59:59'
+			'fechaf'=>$fechaf->format('Y-m-d').' 23:59:59',
+			'idalmacen'=>$_GET['idalmacen']
 		);
 		
 		$res=$mod->paginar($params);				

@@ -5,7 +5,15 @@
 	});	
 </script>
 <style type="text/css">	
+	.cmbAlmacenW .ui-icon{
+		background-position:-65px -16px !important;
+		background-image:url('http://cdn.wijmo.com/themes/rocket/images/ui-icons_00a6dd_256x240.png') !important;
+	}
 	
+	.cmbAlmacenW .wijmo-wijinput-trigger {
+		background: transparent;
+		border: 0;
+	}
 </style>
 
 <?php $tabId=$_REQUEST['tabId']; ?>
@@ -42,6 +50,18 @@
 				<span class="tbFecha">										
 					<input type='text' name='fecha' class="txtFechaF"  />
 					<span class="ui-button-text">Fecha Final</span><br/>
+				</span>
+			</li>
+			<li>
+				<span class="cmbAlmacenW">
+					<select class="cmbAlmacen">
+						<?php 
+						echo '<option value="0">--ninguno--</option>';
+						foreach($this->almacenes as $almacen){
+							echo '<option value="'.$almacen['id'].'">'.$almacen['nombre'].'</option>';
+						}
+						?>						
+					</select>
 				</span>
 			</li>
 			<li>			
