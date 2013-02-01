@@ -144,7 +144,7 @@ class Pedidoi extends Controlador{
 	
 	function verPedidos(){
 		$mod=$this->getModel();
-		//$res=$mod->paginar($_REQUEST);
+		$res=$mod->paginar($_REQUEST);
 		
 		$vista=$this->getVista();
 		$vista->pedidos=$res['datos'];
