@@ -232,6 +232,9 @@ class Pedidoi extends Controlador{
 		$fecha = DateTime::createFromFormat('d/m/Y', $pedido['fecha']);
 		$pedido['fecha']= $fecha->format('Y-m-d H:i:s');
 		
+		$vencimiento = DateTime::createFromFormat('d/m/Y', $pedido['vencimiento']);
+		$pedido['vencimiento']= $vencimiento->format('Y-m-d H:i:s');
+		
 		$model=$this->getModel();		
 		$res = $model->guardar($pedido);
 		$pk=$res['datos']['id'];

@@ -15,6 +15,7 @@ class PedidoModel extends Modelo{
 		$params['fk_almacen']=0;
 		$params['nombreAlmacen']='';
 		$params['fecha']=date('Y-m-d H:i:s');				
+		$params['vencimiento']=date('Y-m-d H:i:s');				
 		$params['id_tmp']=uniqid();
 		$params['articulos']=array();
 		return array(
@@ -148,20 +149,23 @@ class PedidoModel extends Modelo{
 		$pk			=empty($params[$this->pk]) ? 0 : $params[$this->pk];
 		$fk_almacen	=$params['almacen'];
 		$strFecha	=$params['fecha'];
+		$vencimiento	=$params['vencimiento'];
 		if ( empty($pk) ){
 			//           CREAR
-			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha';
+			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento';
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
+			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 			$msg='Pedido Guardado';
 		}else{
 			//	         ACTUALIZAR
-			$sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha WHERE '.$this->pk.'=:pk';
+			$sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento WHERE '.$this->pk.'=:pk';
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
 			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
+			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 			$msg='Pedido Actualizado';
 		}
 		

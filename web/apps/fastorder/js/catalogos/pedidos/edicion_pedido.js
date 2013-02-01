@@ -58,7 +58,8 @@ var EdicionPedido = function(){
 			id		: tab.find('.txtId').val(),
 			IdTmp		: tab.find('.txtIdTmp').val(),
 			almacen	: tab.find('.txtFkAlmacen').val(),
-			fecha	: tab.find('.txtFecha').val()
+			fecha	: tab.find('.txtFecha').val(),
+			vencimiento	: tab.find('.txtVencimiento').val()
 		};
 		
 		//Envia los datos al servidor, el servidor responde success true o false.
@@ -137,7 +138,7 @@ var EdicionPedido = function(){
 	},
 	this.configurarFormulario=function(tabId){
 		$('#tabs '+tabId+' .txtFecha').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
-		
+		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
 		//COMBO
 		
 		var fields=[{

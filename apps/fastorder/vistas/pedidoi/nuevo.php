@@ -33,6 +33,7 @@
 <?php
 	if (isset($this->pedido)){
 		$fecha= $this->pedido['fecha'];
+		$vencimiento= $this->pedido['vencimiento'];
 		$nombreAlmacen= $this->pedido['nombreAlmacen'];
 		$fk_almacen= isset($this->pedido)? $this->pedido['fk_almacen'] : '';
 		$id= isset($this->pedido)? $this->pedido['id'] : 0;
@@ -66,6 +67,11 @@
 					<select class="cmbAlmacen" style='width:170px;'>			
 					</select>
 				</div>		
+				<div class="inputBox" style='margin-bottom:8px;display:inline;height:26px;margin-left:10px;'>
+					<label style="width:auto;">Vencimiento:</label>
+					<input type='text' name='vencimiento' class="txtVencimiento" value="<?php echo $vencimiento; ?>"  />
+				</div>
+				
 			</div>
 			
 			<br />	

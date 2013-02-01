@@ -55,6 +55,7 @@ div.frmPedido .pnlDer{display: inline-block !important; margin-top: 3px; vertica
 .toolbarFormPedidoInline .wrapText{display:inline; float:right; }	
 .toolbarFormPedidoInline .btnEdit{margin-left: 116px;text-align: center;margin-right: 112px;}
 .frmPedidoi input.txtFecha {height: 26px !important;text-align: right !important;}
+.frmPedidoi input.txtVencimiento {height: 26px !important;text-align: right !important;}
 #tabs > ul{display:block;}
 div.frmPedido{
 	/*margin-top: 20px !important;*/
