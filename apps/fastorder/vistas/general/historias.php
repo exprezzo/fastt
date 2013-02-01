@@ -57,16 +57,16 @@ Documentos:<br />
 
 Tareas Sprint 1<br/>
 <p class="listo">Pedido Interno - Agregar en el filtro el almac&eacute;n.</p>
-<p class="pendiente">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</p>
+<p class="enproceso">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</p>
 <p class="pendiente">Pedido Interno - Agregar en el filtro Estado de Documentos.</p>
-<p class="pendiente">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.</p>
+<p class="enproceso">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.</p>
 <p class="enproceso">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</p>
 <p class="pendiente">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Caducado.</p>
 <p class="enproceso">Pedido Interno - Folio y serie de acuerdo a almac&eacute;n y al dar nuevo y empezar la captura sugerir&aacute; el siguiente y si hay un cambio al momento de guardar se le avisar&aacute; al usuario.</p>
-<p class="pendiente">Pedido Interno - El grid del listado de insumos se agrupa por grupo y se ordena de acuerdo a campo articulostock.grupoposicion y los que sean sugeribles.</p>
+<p class="listo">Pedido Interno - El grid del listado de insumos se agrupa por grupo y se ordena de acuerdo a campo articulostock.grupoposicion y los que sean sugeribles.</p>
 <p class="listo">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</p> 
 <p class="listo">Pedido Interno - Campos a modificiar: Nombre Articulo, Inventario inicial, Pedido.</p>
-<p class="pendiente">Pedido Interno - Permitir buscar articulos por codigo.</p>
+<p class="enproceso">Pedido Interno - Permitir buscar articulos por codigo.</p>
 
 <h3>Sprint 2 </h3> (##/##/####)<br/>
 <ul>

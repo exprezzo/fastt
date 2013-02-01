@@ -211,6 +211,8 @@ var EdicionArticulo=function (tabId){
 			{ name: "minimo"},
 			{ name: "puntoreorden"},
 			{ name: "existencia"},
+			{ name: "nombreGpo"},
+			{ name: "grupoposicion"},
 			{ name: "sugerido"},
 			{ name: "pedido"},
 			{ name: "pendiente"},			
@@ -232,9 +234,12 @@ var EdicionArticulo=function (tabId){
 			loading: function(e, data) { 
 				var id=$(me.tabId+' .frmPedidoi .txtId').val();					
 				var fk_tmp=$(me.tabId+' .frmPedidoi .txtIdTmp').val();					
-			
+				var idalmacen=$(me.tabId+' .txtFkAlmacen').val();					
+				
                 me.dataSource.proxy.options.data.id=id;
 				me.dataSource.proxy.options.data.fk_tmp=fk_tmp;
+				me.dataSource.proxy.options.data.idalmacen=idalmacen;
+				
 				
 			}
 		});
@@ -258,6 +263,8 @@ var EdicionArticulo=function (tabId){
 			allowPaging: true,
 			pageSize:5,
 			//allowEditing:false,
+			allowColMoving: true,
+			//showGroupArea: true,
 			allowKeyboardNavigation:true,			
 			selectionMode:'singleRow',
 			data:dataSource,
@@ -276,7 +283,14 @@ var EdicionArticulo=function (tabId){
 				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
 				{ dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
 				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
-				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false}
+				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},
+				{ visible:false, dataKey: "nombreGpo", groupInfo:{groupSingleRow: true,
+					 position: "header", 
+					outlineMode: "startExpanded", 
+					headerText: "{0}"
+				} },
+				
+				{ visible:false,dataKey: "grupoposicion"}
 			],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
@@ -513,8 +527,8 @@ var EdicionArticulo=function (tabId){
 			
 			var sugerido = parseInt(this.selected.puntoreorden) - parseInt(this.selected.existencia);
 			$(this.tabId+' .frmEditInlinePedido .txtSugerido').val(sugerido); 
-			$(this.tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
-			$(this.tabId+' .frmEditInlinePedido .txtPendiente').val(0); 
+			//$(this.tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
+			$(this.tabId+' .frmEditInlinePedido .txtPendiente').val(sugerido - this.selected.pedido); 
 		}
 		
 		this.mostrarEditor();

@@ -12,7 +12,7 @@ class ArticuloModel extends Modelo{
 		
 		$sql='SELECT pro.id, pro.nombre,pro.codigo, 
 		pre.idarticulopre, pre.descripcion presentacion,
-		sto.existencia, minimo, maximo, puntoreorden
+		sto.existencia, minimo, maximo, puntoreorden,idgrupo, grupoposicion
 		FROM productos pro
 		LEFT JOIN articulopre pre ON pre.idarticulo=pro.id and pre.default=1
 		LEFT JOIN articulostock sto ON sto.idarticulo=pro.id and idalmacen=:idalmacen

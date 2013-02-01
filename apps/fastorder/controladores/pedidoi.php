@@ -57,7 +57,8 @@ class Pedidoi extends Controlador{
 		$paging=$_REQUEST['paging'];
 		$params=array(	//Se traducen al lenguaje sql
 			'limit'=>$pageSize=intval($paging['pageSize']),
-			'start'=>intval($paging['pageIndex'])*$pageSize
+			'start'=>intval($paging['pageIndex'])*$pageSize,
+			'idalmacen'=>$_REQUEST['idalmacen']
 		);
 		$params['fk_tmp']=$fk_tmp;		
 		$mod->indexTabla=1;
@@ -144,7 +145,7 @@ class Pedidoi extends Controlador{
 	
 	function verPedidos(){
 		$mod=$this->getModel();
-		$res=$mod->paginar($_REQUEST);
+		$res=$mod->paginar(array());
 		
 		$vista=$this->getVista();
 		$vista->pedidos=$res['datos'];

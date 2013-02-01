@@ -86,8 +86,7 @@ class PedidoProductoTmpModel extends Modelo{
 		$start=$params['start'];
 		$pageSize=$params['limit'];
 		$fk_tmp=$params['fk_tmp'];
-		
-		//, $pageSize=9,$idPedido
+		$idalmacen=empty($params['idalmacen'])? 0 :intval( $params['idalmacen']);
 		
 		$sql='select COUNT(pedprod.id) as total FROM '.$this->tabla.' pedprod		
 		WHERE pedprod.fk_tmp=:fk_tmp';		
@@ -103,17 +102,23 @@ class PedidoProductoTmpModel extends Modelo{
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
 		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre, prod.codigo codigo, 
-		maximo, minimo, puntoreorden, existencia,cantidad pedido ,puntoreorden - existencia sugerido,((puntoreorden - existencia)- cantidad) pendiente
+		sto.maximo, sto.minimo, sto.puntoreorden, sto.existencia,cantidad pedido ,sto.puntoreorden - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- cantidad) pendiente,
+		sto.idgrupo, sto.grupoposicion, gpo.nombre nombreGpo
 		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
 		LEFT JOIN articulopre pre ON pedprod.idarticulopre =pre.idarticulopre
-		WHERE pedprod.fk_tmp=:fk_tmp limit :start,:limit';		
+		LEFT JOIN articulostock sto ON sto.idarticulo= pedprod.fk_articulo AND sto.idalmacen=:idalmacen
+		LEFT JOIN grupo_de_productos gpo ON  gpo.id=sto.idgrupo
+		WHERE pedprod.fk_tmp=:fk_tmp ORDER BY sto.grupoposicion, gpo.id limit :start,:limit';		
 				
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
 		 $sth->bindValue(':start',intval($start), PDO::PARAM_INT);
 		 $sth->bindValue(':limit',intval($pageSize), PDO::PARAM_INT);
 		$sth->bindValue(':fk_tmp',$fk_tmp, PDO::PARAM_INT);
+		$sth->bindValue(':idalmacen',$idalmacen, PDO::PARAM_INT);
+		
+		
 		$datos=$model->execute($sth);
 		
 		if (!$datos['success']) return $datos;
