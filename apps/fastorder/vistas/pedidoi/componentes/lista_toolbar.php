@@ -56,7 +56,7 @@
 				<span class="cmbAlmacenW">
 					<select class="cmbAlmacen">
 						<?php 
-						echo '<option value="0">--ninguno--</option>';
+						echo '<option value="0">--todos--</option>';
 						foreach($this->almacenes as $almacen){
 							echo '<option value="'.$almacen['id'].'">'.$almacen['nombre'].'</option>';
 						}
