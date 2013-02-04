@@ -16,3 +16,10 @@ tabm.add('/paginas/ayuda','Ayuda',0,'iconAyuda');<br />
 	<li>add( url,[titulo],[objId],[iconCls] )</li>
 </ul>
 
+<script>
+var idcomments_acct = '1863f61062bd3c2c1aeb42b52872c6ad';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
