@@ -27,8 +27,6 @@
 		$(this.tabId+' .cmbAlmacen').wijcombobox({});
 		$(this.tabId+' .cmbEstado').wijcombobox({});
 		
-		
-		
 		$(tabId+ " > .tbPedidos").wijribbon({
 			click: function (e, cmd) {
 				switch(cmd.commandName){
@@ -87,14 +85,8 @@
 						}else{
 						    $(me.tabId+' input.txtVencimiento').css('color','black');
 						}
-					break;
-					
-					
-					default:
-						 
-						// this.omitirFI=false;
-						// this.omitirFF=false;
-						// this.omitirFV=false;
+					break;					
+					default:						 
 						$.gritter.add({
 							position: 'bottom-left',
 							title:cmd.commandName,
@@ -246,12 +238,12 @@ ListaPedidos.prototype.eliminar=function(){
 			var msg= (resp.msg)? resp.msg : '';
 			var title;
 			if ( resp.success == true	){
-				icon='/images/yes.png';
+				icon='/web/apps/fastorder/images/yes.png';
 				title= 'Success';				
 				var gridPedidos=$(me.tabId+" #lista_pedidos_internos");				
 				gridPedidos.wijgrid('ensureControl', true);  
 			}else{
-				icon= '/images/error.png';
+				icon= '/web/apps/fastorder/images/error.png';
 				title= 'Error';
 			}
 			
