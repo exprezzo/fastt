@@ -95,3 +95,33 @@ $( function(){
 	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 	<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>
+
+Sugerido pedido interno = max - Inventario ini   Si Inv Ini <= Punto Reorden
+
+Como usuario, mejorar captura de sistema, en todos los módulos...
+enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro.
+teclas ràpidas.
+Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco.
+cuando se modifique registro y se pretenda cerrar registro que te pregunte si deseas guardar los cambios, si, no y cancelar.
+
+
+Permitir agregar nuevos varias veces.
+
+
+Permitir configurar si la información en un módulo se almacena en el cliente hasta que se de guardar o temporalmente en el servidor cada vez que cambias algún valor.
+
+
+
+Agrupar las opciones en módulos de acuerdo a su uso por parte del usuario p ej. si soy almacenista veo info de articulso, pedidos, entradas y salida y si soy cobrador, nada más veo clientes y saldos.
+
+
+
+Concentración:
+Se mostrará una lista de los pedidos internos sin surtir(solicitado) se le permitirá al usuario seleccionar y correr el proceso de concentración que mostrará una ventana agrupando por grupo y por producto todos los registros de productos similares.
+
+sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden
+
+Funcionará bajo la configuración de usabilidad geral.
+
+Al final se tendrá una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
+
