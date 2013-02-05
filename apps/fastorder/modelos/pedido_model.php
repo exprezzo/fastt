@@ -246,6 +246,19 @@ class PedidoModel extends Modelo{
 			'datos'=>$datos['datos']
 		);
 	}
+	
+	function asignarFolio(){
+		/*
+			bloquear escritura de folio, 
+			Empezar transaccion, 			
+			obtener folio, 
+			compararlo con el anterior y guardar bandera para notificar al usuario en caso de cambio,
+			incrementar numero de folio,		
+			guardar,
+			terminar transaccion,
+			desbloquear tabla folios.			
+			*/
+	}
 	function guardar($params){
 		$dbh=$this->getConexion();
 		$pk			=empty($params[$this->pk]) ? 0 : $params[$this->pk];
@@ -253,29 +266,37 @@ class PedidoModel extends Modelo{
 		$strFecha	=$params['fecha'];
 		$vencimiento=$params['vencimiento'];
 		$fk_serie 	=intval($params['fk_serie']);
+		$folio 	=intval($params['folio']);
 		
-		if ( empty($pk) ){
+		
+		if ( empty($pk) ){			
+			$folio = $this->asignarFolio();
 			//           CREAR
-			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie';
+			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie, folio=:folio';
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 			$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
+			$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
 			$msg='Pedido Guardado';
+			$exito = $sth->execute();
+			//Terminar transaccion y desbloquear tabla
 		}else{
 			//	         ACTUALIZAR
-			$sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento, fk_serie=:fk_serie WHERE '.$this->pk.'=:pk';
+			$sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento, fk_serie=:fk_serie,folio=:folio WHERE '.$this->pk.'=:pk';
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
 			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 			$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
+			$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
 			$msg='Pedido Actualizado';
+			$exito = $sth->execute();
 		}
 		
-		$exito = $sth->execute();
+		
 		
 		if (!$exito){
 			$resp['success']=false;

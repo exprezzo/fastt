@@ -85,7 +85,7 @@ class Pedidoi extends Controlador{
 		// $paging=$_GET['paging'];
 		// $start=intval($paging['pageIndex'])*9;		
 		$start=0;		
-		$idalmacen=$_REQUEST['idalmacen'];
+		$idalmacen=empty($_REQUEST['idalmacen'])? 0 :$_REQUEST['idalmacen'];
 		$res=$mod->paginar($start,90, $idalmacen);				
 		
 		$respuesta=array(	
@@ -269,6 +269,14 @@ class Pedidoi extends Controlador{
 			$res=array(
 				'success'=>false,
 				'msg'=>'Debe seleccionar una serie'
+			);
+			echo json_encode($res); exit;
+		}
+		
+		if ( !isset($_POST['pedido']['folio']) || !is_numeric($_POST['pedido']['folio']) ){
+			$res=array(
+				'success'=>false,
+				'msg'=>'Debe asignar un <b>Folio</b> v&aacute;lido'
 			);
 			echo json_encode($res); exit;
 		}

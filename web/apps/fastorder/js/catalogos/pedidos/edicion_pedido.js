@@ -60,7 +60,9 @@ var EdicionPedido = function(){
 			almacen	: tab.find('.txtFkAlmacen').val(),
 			fecha	: tab.find('.txtFecha').val(),
 			fk_serie: tab.find('.txtFkSerie').val(),
-			vencimiento	: tab.find('.txtVencimiento').val()
+			vencimiento	: tab.find('.txtVencimiento').val(),
+			folio	: tab.find('.txtFolio').val()
+			
 		};
 		
 		//Envia los datos al servidor, el servidor responde success true o false.
@@ -148,6 +150,8 @@ var EdicionPedido = function(){
 			mapping: 'id'
 		},{
 			name:'es_default'
+		},{
+			name:'sig_folio'
 		}];
 		
 		var myReader = new wijarrayreader(fields);
@@ -167,12 +171,13 @@ var EdicionPedido = function(){
 					// alert(tabId);
 					if (val !=0 ){
 						if (val==parseInt(datos.value) ){
-							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
+							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});														
 						}
 					}else{
 						if (parseInt(datos.es_default) == 1 ){							
 							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
 							$(tabId+' .txtFkSerie').val(datos.value);
+							$(tabId+' .txtFolio').val(datos.sig_folio);
 						}
 					}
 					
@@ -207,8 +212,9 @@ var EdicionPedido = function(){
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
 			select: function (e, item) {
-				console.log('item'); console.log(item); 
-				$(tabId+' .txtFkSerie').val(item.value);				
+				//console.log('item'); console.log(item); 
+				$(tabId+' .txtFkSerie').val(item.value);
+				$(tabId+' .txtFolio').val(item.sig_folio);
 			}
 		});
 	};

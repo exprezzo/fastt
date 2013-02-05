@@ -39,6 +39,7 @@
 		$id= isset($this->pedido)? $this->pedido['id'] : 0;
 		$id_tmp= empty($this->pedido['id_tmp'])?0 : $this->pedido['id_tmp'];
 		$fk_serie= empty($this->pedido['fk_serie'])?0 : $this->pedido['fk_serie'];
+		$folio= empty($this->pedido['folio'])?0 : $this->pedido['folio'];
 		
 	}	
 ?>
@@ -70,7 +71,11 @@
 					<label style="width:auto;">Serie:</label>
 					<select class="cmbSerie" style='width:170px;'>			
 					</select>
-				</div>				
+				</div>	
+				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
+					<label style="width:auto;">Folio:</label>
+					<input type='text' name='folo' class="txtFolio" value="<?php echo $folio; ?>" style="width:50px;" />
+				</div>
 				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
 					<label style="width:auto;">Fecha:</label>
 					<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" autofocus />

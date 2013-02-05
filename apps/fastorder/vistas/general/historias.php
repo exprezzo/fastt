@@ -37,14 +37,15 @@ Sprint 1<br/>
 	<li class="listo">Pedido Interno - El grid del listado de insumos se agrupa por grupo y se ordena de acuerdo a campo articulostock.grupoposicion y los que sean sugeribles.</li>
 	<li class="listo">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</li> 
 	<li class="listo">Pedido Interno - Campos a modificiar: Nombre Articulo, Inventario inicial, Pedido.</li>
-	<li class="listo">Pedido Interno - Agregar en el filtro Estado de Documentos. (3:30pm - 5:19pm, 1 hr 49min)</li>
+	<li class="listo">Pedido Interno - Agregar en el filtro Estado de Documentos. (3:30pm - 5:19pm, 1:49)</li>
 	<li class="listo">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Caducado.</li>
 	<li class="enproceso">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</li>
-	<li class="enproceso">Pedido Interno - Folio y serie de 
+	<li class="enproceso">Pedido Interno - Folio y serie
 		<ul>			
-			<li >Al cambiar/seleccionar almac&eacute;n, seleccionar serie default en automático</li>
+			<li class="listo">Guardar Serie (campo requerido) (8:00pm-8:44 pm,0:44)</li>
+			<li class="listo">Al cambiar/seleccionar almac&eacute;n, seleccionar serie default en automático (8:45pm-10:13pm, 1:28)</li>
 			<li>Al seleccionar serie, seleccionar folio en automático</li>
-			<li>Antes de guardar, volver a revisar el sig folio, en caso de haber un cambio, notificar al usuario</li>
+			<li>Al guardar, asignar el folio correspondiente, en caso de ser diferente al pre-asignado, notificar al usuario</li>
 			<li>Si no hay folios disponibles,  impedir guardar</li>
 		</ul>
 	</li>
@@ -63,7 +64,7 @@ Sprint 1<br/>
 <p class="pendiente">Formatos de Impresi&oacute;n para pedido interno.</p> 
 <h3>Bugs</h3>
 <ul>
-	<li>El toolbar de busqueda de pedidos no se muestra en ff, en chrome aveces no se muestra, en los otros nave</li>
+	<li>Edicion Pedido: Aveces, los headers del grid articulos se muestran colapsados (con un ancho muy pequeño que no deja ver ni el texto)</li>
 	<li>Cuando seleccionas manualmente una serie, deja de funcionar la seleccion automatica desde el combo almacen</li>
 </ul>
 

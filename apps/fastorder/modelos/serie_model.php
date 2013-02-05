@@ -12,7 +12,7 @@ class SerieModel extends Modelo{
 		
 		$total=$datos['datos'][0]['total'];
 		
-		$sql='select id, serie, es_default  FROM '.$this->tabla.' WHERE idalmacen=:idalmacen LIMIT :start,:limit';
+		$sql='select id, serie, es_default,sig_folio  FROM '.$this->tabla.' WHERE idalmacen=:idalmacen LIMIT :start,:limit';
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
 		$sth->bindValue(':start',$start, PDO::PARAM_INT);
