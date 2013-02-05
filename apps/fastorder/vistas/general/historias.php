@@ -40,12 +40,12 @@ Sprint 1<br/>
 	<li class="listo">Pedido Interno - Agregar en el filtro Estado de Documentos. (3:30pm - 5:19pm, 1:49)</li>
 	<li class="listo">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Caducado.</li>
 	<li class="enproceso">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</li>
-	<li class="enproceso">Pedido Interno - Folio y serie
+	<li class="listo">Pedido Interno - Folio y serie
 		<ul>			
-			<li class="listo">Guardar Serie (campo requerido) (8:00pm-8:44 pm,0:44)</li>
-			<li class="listo">Al cambiar/seleccionar almac&eacute;n, seleccionar serie default en automático (8:45pm-10:13pm, 1:28)</li>
-			<li>Al seleccionar serie, seleccionar siguiente folio en automático</li>
-			<li>Al guardar, asignar el folio correspondiente (impedir folios duplicados), en caso de ser diferente al pre-asignado, notificar al usuario</li>
+			<li >Guardar Serie (campo requerido) (8:00pm-8:44 pm,0:44)</li>
+			<li >Al cambiar/seleccionar almac&eacute;n, seleccionar serie default en automático (8:45pm-10:13pm, 1:28)</li>
+			<li>Al seleccionar serie, seleccionar siguiente folio en automático (9:07-9:20, 0:20)</li>
+			<li>Al guardar, asignar el folio correspondiente (impedir folios duplicados), en caso de ser diferente al pre-asignado, notificar al usuario (10:38-12:50, 2:12)</li>
 			<li>Si no hay folios disponibles,  impedir guardar</li>
 		</ul>
 	</li>
