@@ -97,47 +97,147 @@ class PedidoModel extends Modelo{
 		
 		$start=empty($params['start'])? 0 : intval($params['start']);
 		$pageSize=empty($params['pageSize'])? 9 : intval($params['pageSize']);
-		$f1=empty($params['fechai'])? '1000-01-01' : $params['fechai'];
-		$f2=empty($params['fechaf'])? '2040-01-01' : $params['fechaf'];
+		$f1=empty($params['fechai'])? '' : $params['fechai'];
+		$f2=empty($params['fechaf'])? '' : $params['fechaf'];
+		
 		$idalmacen=empty($params['idalmacen'])? 0 : $params['idalmacen'];
-		$vencimiento=empty($params['vencimiento'])? '2040-01-01' : $params['vencimiento'];
+		$vencimiento=empty($params['vencimiento'])? '' : $params['vencimiento'];
+		$idestado=empty($params['idestado'])? 0 : $params['idestado'];
 		
-		$sql='select COUNT(ped.id) as total FROM pedidos ped where fecha between :f1 and :f2  AND (vencimiento between :vencimiento and :f2)';
+		$sql='select COUNT(ped.id) as total FROM pedidos ped ';
 		
+		$filtros='';
+		if ( !empty($f1)&& !empty($f2) ){
+			$filtros='WHERE (fecha between :f1 and :f2) ';
+		}else{			
+		    if ( !empty($f1) ){
+				$filtros.=' WHERE fecha >= :f1 ';				
+			}
+			
+			if ( !empty($f2) ){
+				$filtros.=' WHERE fecha <= :f2 ';
+			}
+		}
+			
+		if ( !empty($vencimiento) && !empty($f2) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
+			$filtros.=' (vencimiento between :vencimiento and :f2) ';						
+		}else if ( !empty($vencimiento) && !empty($f1) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
+			$filtros.=' (vencimiento between :f1 and :vencimiento) ';						
+		}
 		
 		if ( !empty($idalmacen) ){
-			$sql.=' AND fk_almacen=:idalmacen';
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='fk_almacen=:idalmacen ';
 		}
+		
+		if ( !empty($idestado) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='idestado=:idestado ';
+		}
+		
+		$sql.=$filtros;
+	//	echo $sql;
 		$model=$this;
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
-		$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
-		$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
-		$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
-		if ( !empty($idalmacen) ){
+		if ( !empty($f1) ){			
+			//echo 'f1';
+			$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
+		}
+		if ( !empty($f2) ){			
+			//echo 'F2';
+			$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
+		}		
+		if ( !empty($vencimiento) && ( !empty($f2) || !empty($f1) ) ){			
+			//echo 'FV';
+			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
+		}
+		
+		if ( !empty($idalmacen) ){			
 			$sth->bindValue(":idalmacen",$idalmacen,PDO::PARAM_INT);			
 		}
-		$datos=$model->execute($sth);
-		
+		if ( !empty($idestado) ){			
+			$sth->bindValue(":idestado",$idestado,PDO::PARAM_INT);			
+		}
+		$datos=$model->execute($sth);		
+	//	print_r($datos	);
 		$total=$datos['datos'][0]['total'];
 		
 		$sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
-		LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
-		WHERE (fecha between :f1 and :f2) AND (vencimiento between :vencimiento and :f2)';
-		if ( !empty($idalmacen) ){
-			$sql.=' AND fk_almacen=:idalmacen';
+			LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen ';
+		
+		$filtros='';
+		if ( !empty($f1)&& !empty($f2) ){
+			$filtros='WHERE fecha between :f1 and :f2';
+		}else{
+			if ( !empty($f1) ){
+				$filtros.=' WHERE fecha >= :f1 ';				
+			}
+			
+			if ( !empty($f2) ){
+				$filtros.=' WHERE fecha <= :f2 ';				
+			}
 		}
 		
+		if ( !empty($vencimiento) && !empty($f2) ){
+			$filtros.=empty($filtros)? 'WHERE ': ' AND ';		
+			$filtros.='(vencimiento between :vencimiento and :f2)';
+		}else if ( !empty($vencimiento) && !empty($f1) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
+			$filtros.='(vencimiento between :f1 and :vencimiento)';						
+		}
+		
+		if ( !empty($idalmacen) ){
+			$filtros.=empty($filtros)? 'WHERE ': ' AND ';
+			$filtros.='fk_almacen=:idalmacen';
+		}
+		
+		if ( !empty($idestado) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='idestado=:idestado ';
+		}
+		
+		$sql.=$filtros;
+		// if ( !empty($vencimiento) ){
+			// $sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
+			// LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
+			// WHERE (fecha between :f1 and :f2) AND (vencimiento between :vencimiento and :f2)';
+		// }else{
+			// $sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
+			// LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
+			// WHERE (fecha between :f1 and :f2)';
+		// }
+		
+		// if ( !empty($idalmacen) ){
+			// $sql.=' AND fk_almacen=:idalmacen';
+		// }
+		
 		$sql.=' ORDER BY ped.fecha DESC LIMIT :start,:limit';		
+		
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
 		$sth->bindValue(':start',$start, PDO::PARAM_INT);		
-		$sth->bindValue(':limit',$pageSize, PDO::PARAM_INT);
-		$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
-		$sth->bindValue(":f2",$f2,PDO::PARAM_STR);		
-		$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
+		$sth->bindValue(':limit',$pageSize, PDO::PARAM_INT);		
+		
+		if ( !empty($f1) ){
+			$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
+		}
+		if ( !empty($f2) ){
+			$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
+		}		
+		
+		if ( !empty($vencimiento) && ( !empty($f2) || !empty($f1) ) ){
+			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
+		}
+		
 		if ( !empty($idalmacen) ){
 			$sth->bindValue(":idalmacen",$idalmacen,PDO::PARAM_INT);			
+		}
+		
+		if ( !empty($idestado) ){
+			$sth->bindValue(":idestado",$idestado,PDO::PARAM_INT);			
 		}
 		$datos=$model->execute($sth);
 		

@@ -1,5 +1,9 @@
 ﻿var ListaPedidos=function(){
 	this.init=function(tabId){
+		this.omitirFI=false;
+		this.omitirFF=false;
+		this.omitirFV=false;
+		
 		tabId = '#' + tabId;
 		this.tabId = tabId;
 		var tab=$('div'+tabId);		
@@ -21,6 +25,7 @@
 		var me=this;
 		
 		$(this.tabId+' .cmbAlmacen').wijcombobox({});
+		$(this.tabId+' .cmbEstado').wijcombobox({});
 		
 		
 		
@@ -47,14 +52,57 @@
 						var gridPedidos=$(me.tabId+" #lista_pedidos_internos");
 						gridPedidos.wijgrid('ensureControl', true);
 					break;
+					case 'omitirFI':
+						if (me.omitirFI){
+								me.omitirFI=false;
+						} else{
+							me.omitirFI=true;
+						}
+						if (me.omitirFI){
+							 $(me.tabId+' input.txtFechaI').css('color','white');
+						}else{
+						    $(me.tabId+' input.txtFechaI').css('color','black');
+						}
+					break;
+					case 'omitirFF':
+						if (me.omitirFF){
+								me.omitirFF=false;
+						} else{
+							me.omitirFF=true;
+						}
+						if (me.omitirFF){
+							 $(me.tabId+' input.txtFechaF').css('color','white');
+						}else{
+						    $(me.tabId+' input.txtFechaF').css('color','black');
+						}
+					break;
+					case 'omitirFV':
+						if (me.omitirFV){
+								me.omitirFV=false;
+						} else{
+							me.omitirFV=true;
+						}
+						if (me.omitirFV){
+							 $(me.tabId+' input.txtVencimiento').css('color','white');
+						}else{
+						    $(me.tabId+' input.txtVencimiento').css('color','black');
+						}
+					break;
+					
+					
 					default:
+						 
+						// this.omitirFI=false;
+						// this.omitirFF=false;
+						// this.omitirFV=false;
 						$.gritter.add({
 							position: 'bottom-left',
-							title:"Informaci&oacute;n",
+							title:cmd.commandName,
 							text: "Acciones del toolbar en construcci&oacute;n",
-							image: '/images/info.png',
+							image: '/web/apps/fastorder/images/info.png',
 							class_name: 'my-sticky-class'
 						});
+						console.log("cmd"	); console.log(cmd);
 					break;
 					case 'imprimir':
 						alert("Imprimir en construcción");						
@@ -82,12 +130,14 @@
 		pageSize=newH-1;		
 
 		//var totalRows=<?php //echo isset($this->total)?$this->total: 0 ?>;
-		var dataReader = new wijarrayreader([
+		var campos=[
 			{ name: "id"  },
 			{ name: "fecha"},
 			{ name: "vencimiento"},
-			{ name: "nombreAlmacen"}
-		]);
+			{ name: "nombreAlmacen"},
+			{ name: 'idestado'}
+		];
+		var dataReader = new wijarrayreader(campos);
 
 		var dataSource = new wijdatasource({
 			proxy: new wijhttpproxy({
@@ -95,12 +145,7 @@
 				dataType: "json"
 			}),
 			dynamic:true,			
-			reader:new wijarrayreader([
-				 { name: "id"},
-				 { name: "fecha"},
-				 { name: "vencimiento"},
-				 { name: "nombreAlmacen"}
-			])
+			reader:new wijarrayreader(campos)
 		});
 		dataSource.reader.read= function (datasource) {
 			
@@ -125,6 +170,19 @@
 			data:dataSource,
 			columns: [ 
 				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
+				{dataKey: "idestado", headerText: "Estado",width:'20px',
+					cellFormatter: function (args) { 
+                            if (args.row.type & $.wijmo.wijgrid.rowType.data) { 
+                                args.$container 
+                                    .css("text-align", "center") 
+                                    .empty() 
+                                    .append($("<div />") 
+                                    .addClass('estado_pedido_'+args.row.data.idestado)); 
+								//args.row.data.Cover
+                                return true; 
+                            } 
+                        }  
+				}, 
 				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'60%' }, 
 				{dataKey: "fecha", headerText: "Fecha",width:'20%' },
 				{dataKey: "vencimiento", headerText: "Vencimiento",width:'20%' }
@@ -136,11 +194,14 @@
 			loading: function (dataSource, userData) {                            
 				var fi=$('#tabs '+me.tabId+' .txtFechaI').val();	
 				var ff=$('#tabs '+me.tabId+' .txtFechaF').val();			
-				
+				var fv = $('#tabs '+me.tabId+' .txtVencimiento').val();			
 				var idalmacen = $('#tabs '+me.tabId+' .cmbAlmacen').wijcombobox('option','selectedValue');
-				var vencimiento = $('#tabs '+me.tabId+' .txtVencimiento').val();
+				var idestado = $('#tabs '+me.tabId+' .cmbEstado').wijcombobox('option','selectedValue');
+                me.dataSource.proxy.options.data={idalmacen:idalmacen, idestado:idestado};
 				
-                me.dataSource.proxy.options.data={fechai:fi, fechaf:ff, idalmacen:idalmacen, vencimiento:vencimiento};
+				if ( !me.omitirFI) me.dataSource.proxy.options.data.fechai=fi;
+				if ( !me.omitirFF) me.dataSource.proxy.options.data.fechaf=ff;
+				if ( !me.omitirFV) me.dataSource.proxy.options.data.vencimiento=fv;				
             },
 			cellStyleFormatter: function(args) { 
 				if (args.column._originalDataKey=='fecha' || args.column._originalDataKey=='vencimiento'){

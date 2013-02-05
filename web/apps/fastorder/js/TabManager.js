@@ -1,7 +1,7 @@
 var tab_counter = 1; 
 var TabManager={
 	init:function(target){
-		$tabs = $(target).wijtabs({
+		$tabs = $(target).wijtabs({		   
 		   tabTemplate: '<li><a  href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>'		   
 		});
 		this.tabs=$tabs;

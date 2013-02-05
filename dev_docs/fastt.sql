@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50508
 File Encoding         : 65001
 
-Date: 2013-02-01 14:31:10
+Date: 2013-02-04 17:11:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -106,6 +106,26 @@ INSERT INTO `articulostock` VALUES ('19', '4', '4', '19.00000', '1.00000', '100.
 INSERT INTO `articulostock` VALUES ('20', '5', '4', '20.00000', '1.00000', '100.00000', '20.00000', '5', '5');
 
 -- ----------------------------
+-- Table structure for `estado_pedido`
+-- ----------------------------
+DROP TABLE IF EXISTS `estado_pedido`;
+CREATE TABLE `estado_pedido` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` char(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of estado_pedido
+-- ----------------------------
+INSERT INTO `estado_pedido` VALUES ('1', 'Solicitado');
+INSERT INTO `estado_pedido` VALUES ('2', 'Concentrado');
+INSERT INTO `estado_pedido` VALUES ('3', 'Parcialmente Surtido');
+INSERT INTO `estado_pedido` VALUES ('4', 'Surtido');
+INSERT INTO `estado_pedido` VALUES ('5', 'Cancelado');
+INSERT INTO `estado_pedido` VALUES ('6', 'Caducado');
+
+-- ----------------------------
 -- Table structure for `grupo_de_productos`
 -- ----------------------------
 DROP TABLE IF EXISTS `grupo_de_productos`;
@@ -133,23 +153,27 @@ CREATE TABLE `pedidos` (
   `fk_almacen` int(11) DEFAULT NULL,
   `fecha` datetime DEFAULT NULL,
   `vencimiento` datetime DEFAULT NULL,
+  `idestado` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos
 -- ----------------------------
-INSERT INTO `pedidos` VALUES ('1', '3', '2013-01-31 22:02:05', null);
-INSERT INTO `pedidos` VALUES ('2', '1', '2013-01-31 19:53:30', null);
-INSERT INTO `pedidos` VALUES ('3', '3', '2013-01-31 22:04:52', null);
-INSERT INTO `pedidos` VALUES ('4', '3', '2013-01-31 23:21:11', null);
-INSERT INTO `pedidos` VALUES ('5', '1', '2013-01-31 02:41:17', null);
-INSERT INTO `pedidos` VALUES ('6', '0', '2013-02-01 00:34:18', null);
-INSERT INTO `pedidos` VALUES ('7', '2', '2013-02-01 00:51:45', null);
-INSERT INTO `pedidos` VALUES ('8', '1', '2013-02-01 02:29:43', null);
-INSERT INTO `pedidos` VALUES ('9', '1', '2013-02-01 02:48:30', null);
-INSERT INTO `pedidos` VALUES ('10', '1', '2013-02-01 22:26:43', '2013-02-19 22:26:43');
-INSERT INTO `pedidos` VALUES ('11', '4', '2013-02-01 22:25:46', '2013-02-12 22:25:46');
+INSERT INTO `pedidos` VALUES ('1', '3', '2013-01-31 22:02:05', null, '1');
+INSERT INTO `pedidos` VALUES ('2', '1', '2013-01-31 19:53:30', null, '2');
+INSERT INTO `pedidos` VALUES ('3', '3', '2013-01-31 22:04:52', null, '3');
+INSERT INTO `pedidos` VALUES ('4', '3', '2013-01-31 23:21:11', null, '4');
+INSERT INTO `pedidos` VALUES ('5', '1', '2013-01-31 02:41:17', null, '5');
+INSERT INTO `pedidos` VALUES ('6', '3', '2013-02-01 01:09:12', '2013-02-04 01:09:12', '6');
+INSERT INTO `pedidos` VALUES ('7', '2', '2013-02-01 00:51:45', null, '1');
+INSERT INTO `pedidos` VALUES ('8', '1', '2013-02-01 02:29:43', null, '2');
+INSERT INTO `pedidos` VALUES ('9', '1', '2013-02-01 02:48:30', null, '3');
+INSERT INTO `pedidos` VALUES ('10', '1', '2013-02-01 23:04:51', '2013-02-19 23:04:51', '4');
+INSERT INTO `pedidos` VALUES ('11', '4', '2013-02-01 22:59:56', '2013-02-11 22:59:56', '5');
+INSERT INTO `pedidos` VALUES ('12', '2', '2013-02-01 23:07:35', '2013-02-08 23:07:35', '6');
+INSERT INTO `pedidos` VALUES ('13', '3', '2013-02-02 01:44:13', '2013-02-02 01:44:13', '1');
+INSERT INTO `pedidos` VALUES ('15', '1', '2013-02-04 00:44:00', '2013-02-05 00:44:00', '1');
 
 -- ----------------------------
 -- Table structure for `pedidos_productos`
@@ -162,7 +186,7 @@ CREATE TABLE `pedidos_productos` (
   `cantidad` float(18,6) DEFAULT NULL,
   `idarticulopre` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos_productos
@@ -175,6 +199,10 @@ INSERT INTO `pedidos_productos` VALUES ('16', '1', '9', '19.000000', '1');
 INSERT INTO `pedidos_productos` VALUES ('17', '1', '10', '19.000000', '1');
 INSERT INTO `pedidos_productos` VALUES ('18', '2', '11', '1.000000', '2');
 INSERT INTO `pedidos_productos` VALUES ('19', '4', '11', '1.000000', '4');
+INSERT INTO `pedidos_productos` VALUES ('20', '1', '13', '9.000000', '1');
+INSERT INTO `pedidos_productos` VALUES ('21', '2', '14', '18.000000', '2');
+INSERT INTO `pedidos_productos` VALUES ('22', '2', '15', '18.000000', '2');
+INSERT INTO `pedidos_productos` VALUES ('23', '4', '15', '16.000000', '4');
 
 -- ----------------------------
 -- Table structure for `productos`
@@ -251,7 +279,7 @@ CREATE TABLE `tmp_pedidos_productos` (
   `sugerido` int(11) DEFAULT NULL,
   `pendiente` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_tmp`)
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tmp_pedidos_productos
@@ -301,6 +329,14 @@ INSERT INTO `tmp_pedidos_productos` VALUES ('19', '4', '11', '1.000000', '4', '7
 INSERT INTO `tmp_pedidos_productos` VALUES ('18', '2', '11', '1.000000', '2', '72', '510c324108a43', '100', '1', '20', '17', null, null);
 INSERT INTO `tmp_pedidos_productos` VALUES ('19', '4', '11', '1.000000', '4', '73', '510c324108a43', '100', '1', '20', '19', null, null);
 INSERT INTO `tmp_pedidos_productos` VALUES ('17', '1', '10', '19.000000', '1', '86', '510c3318212fb', '100', '1', '20', '1', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('0', '2', '0', '0.000000', '2', '87', '510c595323667', '0', '0', '0', '0', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('20', '1', '13', '9.000000', '1', '92', '510c615d41a70', '100', '1', '20', '11', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('0', '1', '0', '19.000000', '1', '93', '510c6165ddbb4', '100', '1', '20', '1', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('17', '1', '10', '19.000000', '1', '94', '510c63db7c403', '100', '1', '20', '1', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('21', '2', '14', '18.000000', '2', '96', '511014c198671', '100', '1', '20', '2', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('21', '2', '14', '18.000000', '2', '97', '51101dfc91228', '100', '1', '20', '2', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('21', '2', '14', '18.000000', '2', '98', '51103ff64c32e', '100', '1', '20', '2', null, null);
+INSERT INTO `tmp_pedidos_productos` VALUES ('0', '4', '0', '0.000000', '4', '100', '511046c7e0892', '0', '0', '0', '0', null, null);
 
 -- ----------------------------
 -- Table structure for `um`

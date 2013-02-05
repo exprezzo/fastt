@@ -45,23 +45,13 @@ form{ padding:10px }
 .header_empresa{ padding-left:13px;	padding-right:30px;	margin-left:-4px; border-bottom-right-radius:10px; }
 .header_empresa{ padding-top:10px; height: 30px;	display: inline-block; vertical-align: middle; text-decoration:none; font-weight:bold !important; border-top:0; }
 
-.ribbon .ui-tabs-nav{
-	display:none; 
-}
+.ribbon .ui-tabs-nav{display:none; }
 
-.ribbon .ui-button-icon-primary{
-	top:5px;
-	width:48px;
-	height:48px;
-	background-size:40px;
-	background-repeat:no-repeat;
-	background-position: 5px 4px;
-	padding: 0;		
-}
+.ribbon .ui-button-icon-primary{top:5px;width:48px;height:48px;background-size:40px;background-repeat:no-repeat;background-position: 5px 4px;padding: 0;		}
 .ui-button-text{color:black !important;}
 
-.tbFecha{display:inline-block;}
-.ribbon .btnGuardar{ background-image:url('../images/token_dark_iconpack/oh.png') !important; }
+.tbFecha{display:inline-block;position:relative;}
+.ribbon .btnGuardar{ background-imagen:url('../images/token_dark_iconpack/oh.png') !important; }
 .ribbon .btnNuevo{ 	background-image:url('../images/token_dark_iconpack/word_processor.png') !important; }
 .ribbon .btnEditar{ 	background-image:url('../images/edit.png') !important; }
 .ribbon .btnEliminar{	background-image:url('../images/token_dark_iconpack/xion.png') !important; }
@@ -70,18 +60,38 @@ form{ padding:10px }
 .ribbon .btnAceptar{	background-image:url('../images/sub_black_accept.png') !important; }
 .ribbon .btnCancelar{	background-image:url('../images/undo.png') !important; }
 .ribbon .btnRefresh{	background-image:url('../images/token_dark_iconpack/playback_reload.png') !important; background-size: 29px; background-position: 10px;}
-
-
-.ribbon button{
-	width:61px;
+.tbFecha > label{display: inline-block !important;
+position: absolute;
+right: 10px;
+margin-top: 4px;
 }
+
+
+.tbFecha > label  span{
+background: transparent url('/web/apps/fastorder/images/checkbox_unchecked.png') no-repeat !important;
+display: inline !important;
+padding-right: 20px !important;
+background-position: bottom right !important;
+background-repeat: no-repeat;
+padding-top:4px !important;
+}
+.tbFecha > label  span.ui-state-active{
+background: transparent url('/web/apps/fastorder/images/checkbox_checked.png') no-repeat !important;
+display: inline !important;
+padding-right: 20px !important;
+background-position: bottom right !important;
+background-repeat: no-repeat;
+}
+
+
+
+
+.ribbon button{width:57px;}
 .ribbon .ui-button-text{ padding:0;}
 
 .ui-icon.ui-icon-close{ right: 0; position: absolute; cursor:pointer; }
 
-a img{
-  border:0 none;
-}
+a img{border:0 none;}
 
 
 #splitter > .wijmo-wijsplitter-wrapper > .ui-widget-header{
@@ -211,3 +221,9 @@ body{border:0 !important;}
 /*.pedido .left{margin-right:10px;margin-left:25px;}*/
 .pedido .center{}
 .pedido_ico{background-image:url('../images/supermono/paste.png'); height:64px; width:64px;}
+.estado_pedido_1{background-image:url('../images/circle_blue.png');width:32px;height:32px;display:inline-block;}
+.estado_pedido_2{background-image:url('../images/circle_yellow.png');width:32px;height:32px;display:inline-block;}
+.estado_pedido_3{background-image:url('../images/circle_orange.png');width:32px;height:32px;display:inline-block;}
+.estado_pedido_4{background-image:url('../images/circle_green.png');width:32px;height:32px;display:inline-block;}
+.estado_pedido_5{background-image:url('../images/circle_red.png');width:32px;height:32px;display:inline-block;}
+.estado_pedido_6{background-image:url('../images/circle_grey.png');width:32px;height:32px;display:inline-block;}

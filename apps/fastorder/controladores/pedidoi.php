@@ -2,6 +2,7 @@
 
 require_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/almacen_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/estado_pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
 class Pedidoi extends Controlador{	
@@ -156,11 +157,16 @@ class Pedidoi extends Controlador{
 			$vista= $this->getVista();					
 			return $vista->mostrar( '/index' );
 		}
+		$estados=array();
 		
 		$almMod= new AlmacenModel();
 		$res=$almMod->paginar();
 		$vista->almacenes=$res['datos'];
 		
+		$estMod= new EstadoPedidoModel();
+		$res=$estMod->paginar();
+		$vista->estados=$res['datos'];
+						
 		$vista->mostrar('pedidoi/lista_de_pedidos');
 	}
 	function pedidos(){
@@ -173,21 +179,34 @@ class Pedidoi extends Controlador{
 	function paginar(){
 		$mod=$this->getModel();
 		
-		$fechai=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechai']);
-		$fechaf=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechaf']);
-		$vencimiento=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['vencimiento']);
-		//print_r($fechai);
+		$fi='';
+		if ( !empty($_GET['fechai']) ){
+			$fechai=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechai']);
+			$fi=$fechai->format('Y-m-d').' 00:00:00';
+		}
+		
+		$ff='';
+		if ( !empty($_GET['fechaf']) ){
+			$fechaf=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechaf']);
+			$ff=$fechaf->format('Y-m-d').' 23:59:59';
+		}
+		
+		$fv='';
+		if ( !empty($_GET['vencimiento']) ){
+			$vencimiento=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['vencimiento']);
+			$fv=$vencimiento->format('Y-m-d').' 00:00:00';
+		}								
 		
 		$paging=$_GET['paging']; //Datos de paginacion enviados por el componente js
 		if ($paging['pageSize']<0) $paging['pageSize']=0;
 		$params=array(	//Se traducen al lenguaje sql
 			'pageSize'=>$pageSize=intval($paging['pageSize']),
 			'start'=>intval($paging['pageIndex'])*$pageSize,
-			'fechai'=>$fechai->format('Y-m-d').' 00:00:00',
-			'fechaf'=>$fechaf->format('Y-m-d').' 23:59:59',
-			'vencimiento'=>$vencimiento->format('Y-m-d').' 00:00:00',
-			
-			'idalmacen'=>$_GET['idalmacen']
+			'fechai'=>$fi,
+			'fechaf'=>$ff,
+			'vencimiento'=>$fv,			
+			'idalmacen'=>$_GET['idalmacen'],
+			'idestado'=>$_GET['idestado']
 		);
 		
 		$res=$mod->paginar($params);				
