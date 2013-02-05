@@ -2,6 +2,7 @@
 
 require_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/almacen_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/serie_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/estado_pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
@@ -13,6 +14,19 @@ class Pedidoi extends Controlador{
 		return $this->verPedidos();
 	}
 	
+	function getSeries(){
+		$idAlmacen=$_GET['idalmacen'];
+		$mod=new SerieModel();		
+		// $paging=$_GET['paging'];
+		// $start=intval($paging['pageIndex'])*9;				
+		$res=$mod->getSeries($start=0, $limit=9, $idAlmacen);				
+		
+		$respuesta=array(	
+			'rows'=>$res['datos'],
+			'totalRows'=> $res['total']
+		);
+		echo json_encode($respuesta);	
+	}
 	function eliminar(){
 		$modObj= $this->getModel();
 		$params=array();
@@ -247,6 +261,14 @@ class Pedidoi extends Controlador{
 			$res=array(
 				'success'=>false,
 				'msg'=>'Debe seleccionar un almac&eacute;n de origen'
+			);
+			echo json_encode($res); exit;
+		}
+		
+		if ( empty($_POST['pedido']['fk_serie']) ){
+			$res=array(
+				'success'=>false,
+				'msg'=>'Debe seleccionar una serie'
 			);
 			echo json_encode($res); exit;
 		}

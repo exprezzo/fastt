@@ -59,6 +59,7 @@ var EdicionPedido = function(){
 			IdTmp		: tab.find('.txtIdTmp').val(),
 			almacen	: tab.find('.txtFkAlmacen').val(),
 			fecha	: tab.find('.txtFecha').val(),
+			fk_serie: tab.find('.txtFkSerie').val(),
 			vencimiento	: tab.find('.txtVencimiento').val()
 		};
 		
@@ -136,11 +137,84 @@ var EdicionPedido = function(){
 				});
 			});
 	},
-	this.configurarFormulario=function(tabId){
-		$('#tabs '+tabId+' .txtFecha').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
-		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
-		//COMBO
+	
+	this.configurarComboSerie=function(){
+		var tabId=this.tabId;
+		var fields=[{
+			name: 'label',
+			mapping:'serie'
+		},{
+			name: 'value',
+			mapping: 'id'
+		},{
+			name:'es_default'
+		}];
 		
+		var myReader = new wijarrayreader(fields);
+		
+		var proxy = new wijhttpproxy({
+			url: '/'+kore.modulo+'/pedidoi/getSeries',
+			dataType:"json"			
+		});
+		var me=this;
+		var datasource = new wijdatasource({
+			reader:  new wijarrayreader(fields),
+			proxy: proxy,
+			loaded: function (data) {				
+				var val=parseInt( $('#tabs '+tabId+' .txtFkSerie').val() );								
+				$.each(data.items, function(index, datos) {					
+					// console.log(datos);
+					// alert(tabId);
+					if (val !=0 ){
+						if (val==parseInt(datos.value) ){
+							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
+						}
+					}else{
+						if (parseInt(datos.es_default) == 1 ){							
+							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
+							$(tabId+' .txtFkSerie').val(datos.value);
+						}
+					}
+					
+				});				
+			},
+			loading: function (dataSource, userData) {
+				var idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();
+                dataSource.proxy.options.data={idalmacen:idalmacen};
+            }
+			
+		});
+		this.dataSerie=datasource;
+		datasource.reader.read= function (datasource) {			
+			var totalRows=datasource.data.totalRows;			
+			datasource.data = datasource.data.rows;
+			datasource.data.totalRows = totalRows;
+			myReader.read(datasource);
+		};			
+		
+		datasource.load();	
+		var combo=$('#tabs '+tabId+' .cmbSerie').wijcombobox({
+			data: datasource,
+			showTrigger: true,
+			minLength: 1,
+			autoFilter: false,
+			animationOptions: {
+				animated: "Drop",
+				duration: 1000
+			},
+			forceSelectionText: true,
+			search: function (e, obj) {
+				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
+			},
+			select: function (e, item) {
+				console.log('item'); console.log(item); 
+				$(tabId+' .txtFkSerie').val(item.value);				
+			}
+		});
+	};
+	this.configCmbAlmacen=function(){
+		var tabId=this.tabId;
+		var me=this;
 		var fields=[{
 			name: 'label',
 			mapping: function (item) {
@@ -196,9 +270,23 @@ var EdicionPedido = function(){
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
 			select: function (e, item) {				
-				$('#tabs '+tabId+' .txtFkAlmacen').val(item.id);				
+				$('#tabs '+me.tabId+' .txtFkAlmacen').val(item.id);				
+				$('#tabs '+me.tabId+' .txtFkSerie').val(0);	
+				
+				$(me.tabId +' .cmbSerie').wijcombobox('option', 'selectedIndex',-1)
+				//$(me.tabId +' .cmbSerie + div input').val('')
+				
+				
+				me.dataSerie.load();
 			}
 		});
+	};
+	this.configurarFormulario=function(tabId){
+		$('#tabs '+tabId+' .txtFecha').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
+		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
+		//COMBO
+		
+		
 		
 		
 		// var animationOptions = {
@@ -207,8 +295,8 @@ var EdicionPedido = function(){
 		// };
 		// combo.wijcombobox("option", "showingAnimation", animationOptions);		
 		// combo.wijcombobox("option", "hidingAnimation", animationOptions);
-		
-		
+		this.configCmbAlmacen();
+		this.configurarComboSerie();
 		
 	};
 	this.configurarToolbar=function(tabId){		

@@ -38,6 +38,8 @@
 		$fk_almacen= isset($this->pedido)? $this->pedido['fk_almacen'] : '';
 		$id= isset($this->pedido)? $this->pedido['id'] : 0;
 		$id_tmp= empty($this->pedido['id_tmp'])?0 : $this->pedido['id_tmp'];
+		$fk_serie= empty($this->pedido['fk_serie'])?0 : $this->pedido['fk_serie'];
+		
 	}	
 ?>
 
@@ -56,17 +58,24 @@
 		<form class='frmPedidoi' style='padding-top:10px;'>	
 			<input type='hidden' name='id' class="txtId" value="<?php echo $id; ?>" />	
 			<input type='hidden' name='id_tmp' class="txtIdTmp" value="<?php echo $id_tmp; ?>" />	
-			<input type='hidden' name='fecha' class="txtFkAlmacen" value="	<?php echo $fk_almacen; ?>" />
+			<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />
+			<input type='hidden' name='serie' class="txtFkSerie" value="<?php echo $fk_serie; ?>" />
 			<div style='display:inline-block;'>
-				<div class="inputBox" style='margin-bottom:8px;display:inline;'>
-					<label style="width:auto;">Fecha:</label>
-					<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" autofocus />
-				</div>
-				<div class="inputBox" style='margin-bottoms:5px;display:inline;margin-left:10px;'>		
+				<div class="inputBox" style='margin-bottoms:5px;display:inline;'>		
 					<label style="width:auto;">Almacen:</label>
 					<select class="cmbAlmacen" style='width:170px;'>			
 					</select>
 				</div>		
+				<div class="inputBox" style='margin-bottoms:5px;display:inline;margin-left:10px;'>		
+					<label style="width:auto;">Serie:</label>
+					<select class="cmbSerie" style='width:170px;'>			
+					</select>
+				</div>				
+				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
+					<label style="width:auto;">Fecha:</label>
+					<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" autofocus />
+				</div>
+				
 				<div class="inputBox" style='margin-bottom:8px;display:inline;height:26px;margin-left:10px;'>
 					<label style="width:auto;">Vencimiento:</label>
 					<input type='text' name='vencimiento' class="txtVencimiento" value="<?php echo $vencimiento; ?>"  />

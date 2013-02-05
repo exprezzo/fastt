@@ -29,25 +29,28 @@ Backlog:
 	<li>Como webmaster, quiero un historial de sucesos en especial de error, para supervisar y dar seguimiento.</li>
 </ul>
 
-Sprint 1 xxx<br/>
+Sprint 1<br/>
 <ul>
 	<li class="listo">Pedido Interno - Agregar en el filtro el almac&eacute;n.</li>
 	<li class="listo">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</li>
-	<li class="listo">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.(12:00-2:20pm, 2hrs20)</li>
+	<li class="listo">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.(12:00-2:20pm, 2hrs 20min)</li>
 	<li class="listo">Pedido Interno - El grid del listado de insumos se agrupa por grupo y se ordena de acuerdo a campo articulostock.grupoposicion y los que sean sugeribles.</li>
 	<li class="listo">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</li> 
 	<li class="listo">Pedido Interno - Campos a modificiar: Nombre Articulo, Inventario inicial, Pedido.</li>
-	<li class="listo">Pedido Interno - Agregar en el filtro Estado de Documentos.</li>
+	<li class="listo">Pedido Interno - Agregar en el filtro Estado de Documentos. (3:30pm - 5:19pm, 1 hr 49min)</li>
+	<li class="listo">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Caducado.</li>
+	<li class="enproceso">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</li>
+	<li class="enproceso">Pedido Interno - Folio y serie de 
+		<ul>			
+			<li >Al cambiar/seleccionar almac&eacute;n, seleccionar serie default en automático</li>
+			<li>Al seleccionar serie, seleccionar folio en automático</li>
+			<li>Antes de guardar, volver a revisar el sig folio, en caso de haber un cambio, notificar al usuario</li>
+			<li>Si no hay folios disponibles,  impedir guardar</li>
+		</ul>
+	</li>
+	<li class="enproceso">Pedido Interno - Permitir buscar articulos por codigo.</li>
 </ul>
 
-
-
-<p class="enproceso">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</p>
-<p class="pendiente">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Caducado.</p>
-<p class="enproceso">Pedido Interno - Folio y serie de acuerdo a almac&eacute;n y al dar nuevo y empezar la captura sugerir&aacute; el siguiente y si hay un cambio al momento de guardar se le avisar&aacute; al usuario.</p>
-
-
-<p class="enproceso">Pedido Interno - Permitir buscar articulos por codigo.</p>
 
 <h3>Sprint 2 </h3> (##/##/####)<br/>
 <ul>
@@ -58,6 +61,11 @@ Sprint 1 xxx<br/>
 <p class="pendiente">Configuraci&oacute;n - Crear un modo de configuraci&oacute;n para jalar la serie y el folio que le sigue por almac&eacute;n.</p>
 <p class="pendiente">Al Logear preguntar la sucursal y el almac&eacute;n si se puede almacenar por default el &uacute;ltimo seleccionado.</p>
 <p class="pendiente">Formatos de Impresi&oacute;n para pedido interno.</p> 
+<h3>Bugs</h3>
+<ul>
+	<li>El toolbar de busqueda de pedidos no se muestra en ff, en chrome aveces no se muestra, en los otros nave</li>
+	<li>Cuando seleccionas manualmente una serie, deja de funcionar la seleccion automatica desde el combo almacen</li>
+</ul>
 
 
 
