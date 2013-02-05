@@ -135,7 +135,9 @@
 			{ name: "fecha"},
 			{ name: "vencimiento"},
 			{ name: "nombreAlmacen"},
-			{ name: 'idestado'}
+			{ name: 'idestado'},
+			{ name: 'estado'},
+			{ name: 'serie'}
 		];
 		var dataReader = new wijarrayreader(campos);
 
@@ -169,21 +171,23 @@
 			selectionMode:'singleRow',
 			data:dataSource,
 			columns: [ 
-				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
+				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },								
+				{ dataKey: "estado", hidden:true, visible:false, headerText: "estado" },								
 				{dataKey: "idestado", headerText: "Estado",width:'20px',
 					cellFormatter: function (args) { 
                             if (args.row.type & $.wijmo.wijgrid.rowType.data) { 
                                 args.$container 
                                     .css("text-align", "center") 
                                     .empty() 
-                                    .append($("<div />") 
+                                    .append($("<div title='"+args.row.data.estado+"'/>") 
                                     .addClass('estado_pedido_'+args.row.data.idestado)); 
 								//args.row.data.Cover
                                 return true; 
                             } 
                         }  
 				}, 
-				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'60%' }, 
+				{ dataKey: "serie",  headerText: "Serie" },
+				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'60%' }, 				
 				{dataKey: "fecha", headerText: "Fecha",width:'20%' },
 				{dataKey: "vencimiento", headerText: "Vencimiento",width:'20%' }
 				],

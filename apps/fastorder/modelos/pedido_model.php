@@ -165,8 +165,11 @@ class PedidoModel extends Modelo{
 	//	print_r($datos	);
 		$total=$datos['datos'][0]['total'];
 		
-		$sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
-			LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen ';
+		$sql='select ped.*,CONCAT(sn.serie," ", folio ) as serie,st.nombre as estado, DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
+			LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
+			LEFT JOIN series sn ON sn.id = ped.fk_serie 
+			LEFT JOIN estado_pedido st ON st.id = ped.idestado 
+			';
 		
 		$filtros='';
 		if ( !empty($f1)&& !empty($f2) ){
