@@ -1,5 +1,5 @@
 var EdicionPedido = function(){
-	this.init=function(tabId, pedidoId, almacen){		
+	this.init=function(tabId, pedidoId, almacen){
 		
 		tabId = '#'+tabId;
 		this.tabId=tabId;
@@ -8,24 +8,27 @@ var EdicionPedido = function(){
 		$('div'+tabId).css('border','0 1px 1px 1px');
 		
 		tab.addClass('frmPedido');
-		var tab=$('a[href="'+tabId+'"]');		
+		var tab=$('a[href="'+tabId+'"]');
 		tab.addClass('frmPedido');
 		
 		//Para identificar el contenido del tab
 		//var objId='pedidoi_id_'+pedidoId;								
 		//$('#tabs '+tabId).attr('objId',objId);
 		
-		//Establecer titulo e icono
-		if (pedidoId>0){
-			$('a[href="'+tabId+'"]').html('Pedido-'+almacen+' ID: '+pedidoId);		
-		}else{
-			$('a[href="'+tabId+'"]').html('Nuevo Pedido');
-		}
+		
 		
 		this.configurarFormulario(tabId);
 		this.configurarToolbar(tabId);
 		// this.configurarListaArticulos(tabId);
 		
+		//Establecer titulo e icono
+		if (pedidoId>0){
+			$('a[href="'+tabId+'"]').html('Pedido-'+almacen+' ID: '+pedidoId);		
+			$(tabId+' .cmbAlmacen').wijcombobox( 'option', 'disabled', true );
+			$(tabId+' .cmbSerie').wijcombobox( 'option', 'disabled', true );
+		}else{
+			$('a[href="'+tabId+'"]').html('Nuevo Pedido');
+		}
 		//al cerrar notificar al servidor 
 		 $('#tabs > ul a[href="'+tabId+'"] + span').click(function(){
 			 var tmp=$('.frmPedidoi .txtIdTmp');
@@ -77,12 +80,21 @@ var EdicionPedido = function(){
 			var msg= (resp.msg)? resp.msg : '';
 			var title;
 			if ( resp.success == true	){
-				icon='/web/apps/fastorder/images/yes.png';
+				if (resp.msgType!=undefined && resp.msgType == 'info'){
+					icon='/web/apps/fastorder/images/yes.png';
+				}else{
+					icon='/web/apps/fastorder/images/info.png';
+				}
+				
 				title= 'Success';				
 				tab.find('.txtId').val(resp.datos.id);
 				tab.find('.txtIdTmp').val(resp.datos.id_tmp);				
 				tab.find('.txtFkAlmacen').val(resp.datos.fk_almacen);
+				tab.find('.txtFolio').val(resp.datos.folio);
 				tab.find('.txtFecha').wijinputdate('option','date', resp.datos.fecha); 
+				tab.find('.cmbAlmacen').wijcombobox( 'option', 'disabled', true );
+				tab.find('.cmbSerie').wijcombobox( 'option', 'disabled', true );
+				
 				$('a[href="'+me.tabId+'"]').html('Pedido-'+resp.datos.nombreAlmacen+' ID: '+resp.datos.id);				
 				var objId = '/'+kore.modulo+'/pedidoi/getPedido?id='+resp.datos.id;
 				objId = objId.toLowerCase();

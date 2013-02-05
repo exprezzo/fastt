@@ -289,6 +289,10 @@ class Pedidoi extends Controlador{
 		
 		$model=$this->getModel();		
 		$res = $model->guardar($pedido);
+		
+		if (!$res['success']) {
+			echo json_encode($res); exit;
+		}
 		$pk=$res['datos']['id'];
 		
 		$pedido=$model->editar($pk);

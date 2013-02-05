@@ -247,18 +247,63 @@ class PedidoModel extends Modelo{
 		);
 	}
 	
-	function asignarFolio(){
-		/*
-			bloquear escritura de folio, 
-			Empezar transaccion, 			
-			obtener folio, 
-			compararlo con el anterior y guardar bandera para notificar al usuario en caso de cambio,
-			incrementar numero de folio,		
-			guardar,
-			terminar transaccion,
-			desbloquear tabla folios.			
-			*/
+	function getError($sth){
+		$resp=array();
+		$error=$sth->errorInfo();
+		
+		$resp['success']=false;			
+		$resp['msg']=$error[2];
+		return $resp;
 	}
+	function asignarFolio($idFolio){		
+		//      http://dev.mysql.com/doc/refman/5.0/es/innodb-locking-reads.html		
+		try {
+			$db=$this->getConexion();
+			// $sql='START TRANSACTION;';
+			// $db->exec($sql);			
+			$db->beginTransaction();
+			
+			//Revisa que la serie tenga folios disponibles			
+			$sql='SELECT folio_f, sig_folio FROM series where id='.intval($idFolio).'  FOR UPDATE;';			
+			//Si no hay folios disponibles, devolver el error
+			$result = $db->query($sql);
+			if ( !$result ) return $this->getError($db);			
+			$row = $result->fetch(PDO::FETCH_ASSOC);						
+			if ( $row['folio_f'] < $row['sig_folio'] ) {
+				$db->rollBack( );
+				return array(
+					'success'=>false,
+					'msg'=>'Esta serie no tiene folios disponibles',
+					'tipoError'=>'info'
+				);
+			}
+			
+			$sig_folio=$row['sig_folio'];			
+			$sql= 'UPDATE series SET sig_folio = '.($sig_folio + 1).' WHERE id='.$idFolio.';';			
+			$db->exec($sql);			
+		}
+		catch(PDOException $e)
+		{
+			$db->rollBack( );
+			echo $e->getMessage();
+			die();
+		}		
+		$msgType='';
+		return array(
+			'success'=>true,
+			'folio'=>$sig_folio,
+			'msg'=>'',
+			'msgType'=>$msgType
+		);
+		/*			
+		compararlo con el anterior y guardar bandera para notificar al usuario en caso de cambio,
+		
+		guardar,
+		terminar transaccion,
+		desbloquear tabla folios.			
+		*/
+	}
+	
 	function guardar($params){
 		$dbh=$this->getConexion();
 		$pk			=empty($params[$this->pk]) ? 0 : $params[$this->pk];
@@ -268,9 +313,17 @@ class PedidoModel extends Modelo{
 		$fk_serie 	=intval($params['fk_serie']);
 		$folio 	=intval($params['folio']);
 		
-		
+		$msgType='';
 		if ( empty($pk) ){			
-			$folio = $this->asignarFolio();
+			$res = $this->asignarFolio($fk_serie);
+			if ( !$res['success'] ) return $res;
+			$msg='Pedido Guardado';
+			if ( intval($folio) != intval($res['folio']) ){
+				$msgType='info';
+				$msg.='<br>El sistema asign&oacute; el folio correspondiente. ('.$res['folio'].')';
+			}
+			$folio=$res['folio'];
+		//	print_r($res);
 			//           CREAR
 			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie, folio=:folio';
 			$sth = $dbh->prepare($sql);
@@ -279,19 +332,27 @@ class PedidoModel extends Modelo{
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 			$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
 			$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
-			$msg='Pedido Guardado';
+			
 			$exito = $sth->execute();
 			//Terminar transaccion y desbloquear tabla
+			
+			if ($exito){
+				$pk=$dbh->lastInsertId();
+				$dbh->commit();
+			}else{
+				$dbh->rollBack();
+			}
 		}else{
 			//	         ACTUALIZAR
-			$sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento, fk_serie=:fk_serie,folio=:folio WHERE '.$this->pk.'=:pk';
+			// $sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento, fk_serie=:fk_serie,folio=:folio WHERE '.$this->pk.'=:pk';
+			$sql='UPDATE '.$this->tabla.' SET fecha=:fecha, vencimiento=:vencimiento WHERE '.$this->pk.'=:pk';
 			$sth = $dbh->prepare($sql);
-			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
+			//$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
 			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
-			$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
-			$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
+			//$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
+			//$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
 			$msg='Pedido Actualizado';
 			$exito = $sth->execute();
 		}
@@ -304,7 +365,7 @@ class PedidoModel extends Modelo{
 			$msg    = $error[2];
 			$pedido=$params;
 		}else{
-			if ( empty($pk) ) $pk=$dbh->lastInsertId();
+			
 			$res=$this->procesarClones($pk,$params);
 			if (!$res['success']) return $res;
 			$pedido=$this->obtener($pk);
@@ -313,6 +374,7 @@ class PedidoModel extends Modelo{
 		return array(
 			'success'=>$exito,
 			'msg'=>$msg,
+			'msgType'=>$msgType,
 			'datos'=>$pedido
 		);
 		

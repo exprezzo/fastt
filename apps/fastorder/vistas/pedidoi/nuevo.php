@@ -60,7 +60,7 @@
 			<input type='hidden' name='id' class="txtId" value="<?php echo $id; ?>" />	
 			<input type='hidden' name='id_tmp' class="txtIdTmp" value="<?php echo $id_tmp; ?>" />	
 			<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />
-			<input type='hidden' name='serie' class="txtFkSerie" value="<?php echo $fk_serie; ?>" />
+			<input type='hidden'  name='serie' class="txtFkSerie" value="<?php echo $fk_serie; ?>" />
 			<div style='display:inline-block;'>
 				<div class="inputBox" style='margin-bottoms:5px;display:inline;'>		
 					<label style="width:auto;">Almacen:</label>
@@ -74,7 +74,7 @@
 				</div>	
 				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
 					<label style="width:auto;">Folio:</label>
-					<input type='text' name='folo' class="txtFolio" value="<?php echo $folio; ?>" style="width:50px;" />
+					<input readonly="readonly" type='text' name='folo' class="txtFolio" value="<?php echo $folio; ?>" style="width:50px;" />
 				</div>
 				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
 					<label style="width:auto;">Fecha:</label>
