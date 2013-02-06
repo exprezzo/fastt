@@ -1,5 +1,6 @@
 ﻿var ListaPedidos=function(){
 	this.init=function(tabId){
+		
 		this.omitirFI=false;
 		this.omitirFF=false;
 		this.omitirFV=false;
@@ -57,9 +58,9 @@
 							me.omitirFI=true;
 						}
 						if (me.omitirFI){
-							 $(me.tabId+' input.txtFechaI').css('color','white');
+							 $(me.tabId+' input.txtFechaI').css('color','transparent');
 						}else{
-						    $(me.tabId+' input.txtFechaI').css('color','black');
+						    $(me.tabId+' input.txtFechaI').css('color','');
 						}
 					break;
 					case 'omitirFF':
@@ -69,9 +70,9 @@
 							me.omitirFF=true;
 						}
 						if (me.omitirFF){
-							 $(me.tabId+' input.txtFechaF').css('color','white');
+							 $(me.tabId+' input.txtFechaF').css('color','transparent');
 						}else{
-						    $(me.tabId+' input.txtFechaF').css('color','black');
+						    $(me.tabId+' input.txtFechaF').css('color','');
 						}
 					break;
 					case 'omitirFV':
@@ -81,9 +82,9 @@
 							me.omitirFV=true;
 						}
 						if (me.omitirFV){
-							 $(me.tabId+' input.txtVencimiento').css('color','white');
+							 $(me.tabId+' input.txtVencimiento').css('color','transparent');
 						}else{
-						    $(me.tabId+' input.txtVencimiento').css('color','black');
+						    $(me.tabId+' input.txtVencimiento').css('color','');
 						}
 					break;					
 					default:						 
@@ -109,18 +110,24 @@
 		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true, date: new Date()});	
 	};
 	this.configurarGrid=function(tabId){
-		var pageSize=10;
-		var hContainer = $('#tabs').height();
-
-		var hNav= $('#tabs .ui-tabs-nav').height();
-
-		var newH = hContainer-hNav;
-		var altoHeaderGrid = 38;
-
-		newH=newH - (2*altoHeaderGrid);
-		newH=parseInt(newH/altoHeaderGrid);
-		pageSize=newH-1;		
-
+		var wh=$(window).height();
+	//	return false;
+		var offset = $(tabId + ' #lista_pedidos_internos').offset();
+		
+		
+				
+		var altoHeaderGrid = $(tabId + ' #lista_pedidos_internos thead > tr').height();
+		
+		altoHeaderGrid=37 //TODAVIA NO ESTA RENDEREADO
+		var disponible = wh - (offset.top +altoHeaderGrid);
+		
+		
+		
+		nh=parseInt(disponible/altoHeaderGrid);
+		
+		//alert("offset.top: "+offset.top + " wh: " + wh + ' altoHeaderGrid: ' + altoHeaderGrid + 'disponible: ' + disponible);
+		pageSize=nh -1;		
+		//alert(pageSize);
 		//var totalRows=<?php //echo isset($this->total)?$this->total: 0 ?>;
 		var campos=[
 			{ name: "id"  },
@@ -144,6 +151,7 @@
 		dataSource.reader.read= function (datasource) {
 			
 			var totalRows=datasource.data.totalRows;			
+			//alert("totalRows: "+totalRows);
 			datasource.data = datasource.data.rows;
 			datasource.data.totalRows = totalRows;
 			dataReader.read(datasource);
@@ -153,6 +161,7 @@
 
 		// gridPedidos.wijgrid();
 		var me=this;
+		//alert("pageSize: "+pageSize);
 		gridPedidos.wijgrid({
 			dynamic: true,
 			allowColSizing:true,

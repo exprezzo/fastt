@@ -97,6 +97,8 @@ class PedidoModel extends Modelo{
 		
 		$start=empty($params['start'])? 0 : intval($params['start']);
 		$pageSize=empty($params['pageSize'])? 9 : intval($params['pageSize']);
+		
+		//echo $pageSize;
 		$f1=empty($params['fechai'])? '' : $params['fechai'];
 		$f2=empty($params['fechaf'])? '' : $params['fechaf'];
 		
