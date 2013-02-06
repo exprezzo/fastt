@@ -6,9 +6,14 @@ require_once '../apps/'.$_PETICION->modulo.'/modelos/serie_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/estado_pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/vistas/reporte.php';
 class Pedidoi extends Controlador{	
 
-	
+	function imprimir(){
+		$rep=new ReportePedido();
+		$rep->imprimir
+		echo "imprime";
+	}
 
 	function verlista(){
 		return $this->verPedidos();

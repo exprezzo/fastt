@@ -98,7 +98,7 @@
 						console.log("cmd"	); console.log(cmd);
 					break;
 					case 'imprimir':
-						alert("Imprimir en construcción");						
+						alert("Imprimir en construcción");
 					break;
 				}
 				

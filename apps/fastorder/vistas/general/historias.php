@@ -72,6 +72,7 @@ Sprint 1<br/>
 
 <ul>
 	<li>Sugerido pedido interno = max - Inventario ini   Si Inv Ini <= Punto Reorden</li>
+	<li>Agregar boton al lado del combo almacen, al presionar, pre - cargar en el grid todos los articulos manejados por ese almacen</li>
 	<li>enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro.</li>
 	<li>teclas ràpidas.</li>
 	<li>Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco.</li>
@@ -79,15 +80,13 @@ Sprint 1<br/>
 	<li>Permitir agregar nuevos varias veces.</li>
 	<li>Permitir configurar si la información en un módulo se almacena en el cliente hasta que se de guardar o temporalmente en el servidor cada vez que cambias algún valor.</li>
 	<li>Agrupar las opciones en módulos de acuerdo a su uso por parte del usuario p ej. si soy almacenista veo info de articulso, pedidos, entradas y salida y si soy cobrador, nada más veo clientes y saldos.</li>
+	<li>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden</li>
 	<li><span>Concentración:Se mostrará una lista de los pedidos internos sin surtir(solicitado) se le permitirá al usuario seleccionar y correr el proceso
 		<br/>	de concentración que mostrará una ventana agrupando por grupo y por producto todos los registros de productos similares.
 		<br/>	Al final se tendrá una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
 	</li>
-	<li>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden</li>
-	<li></li>
-	<li></li>
-	<li></li>
-	<li></li>
+	
+	
 </ul>
 
 </div>
