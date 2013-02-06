@@ -135,3 +135,11 @@ Funcionará bajo la configuración de usabilidad geral.
 
 Al final se tendrá una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
 
+
+2013 02 05 Minuta
+<td>Módulo</td><td>Descripción</td><td>Estado</td><td>Hora Inicio</td><td>Hora Final</td><td>Responsable</td><td>Tiempo Invertido</td>
+<td>Pedido Interno</td><td>Pedido, el nombre correcto del primer módulo es "Pedido Interno" para que se corriga en las pantallas.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
+<td>Pedido Interno</td><td>En los filtros de Pedido Interno Cuando no se estable fecha final pero si vencimiento mostrar todos a partir de fecha vencimiento.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
+<td>Pedido Interno</td><td>Agregar titulo al estado en la lista de pedidos internos.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
+<td>Pedido Interno</td><td>El Inventario Inical se almacenrá en su registro corresponidente del stock del almacen una vez que se guarde el pedido interno.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
+<td>Pedido Interno</td><td>Solo se puede modificar pedidos internos que esten en estado solicitado, se pudiera abrir de solo lectura pero no modificar.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
