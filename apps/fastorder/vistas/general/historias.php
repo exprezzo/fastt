@@ -16,25 +16,12 @@
 </style>
 
 Historias de usuario:
-<ul>
-	<li>Que me ayude con la operacion del dia.</li>
-	<br />
-	
-	<li>Quiero que el sistema considere mis estrategias de venta</li>
-	<li>Quiero que el sistema considere a todas las sucursales</li>
-	
-	
-	<li>Quiero tener la existencia f&iacute;sica y del sistema en sincron&iacute;a.</li>
-	<li>Quiero que el sistema registre la perdida de mercancia, ya sea por caducidad, da&ntilde;o u otros, y me ayude a reducir esa permida como sea posible</li>
-	<li>que haga una estimaci&oacute;n de lo que voy a necesitar en el dia.</li>
-	<li>Quiero que haga estimaciones de varios dias, tomando en cuenta la caducidad del producto</li>
-	<li>Quiero saber como entr&oacute; y como sali&oacute; la mercancia.</li>
-	<li>Como cajero, quiero registrar todas las comandas.</li>
-	<li>Como encargado del almac&eacute;n, me gustar&iacute;a que las comandas servidas se descontaran del inventario.</li>
-	<li>Quiero que el sistema registre la variaci&oacute;n diaria entre lo contado y lo supuesto.</li>
-	<li>Quiero que registre la propina diaria y como fue repartida</li>
-	<br/>
-	<li>Como usuario, quiero que el sistema mantenga un historial de mensajes (en especial los de error).</li>		
+<br>
+Backlog:
+<ul>	
+	<li>Quiero poder entrar al sistema, usando mi cuenta de twiter, facebook, gmail, o con la contraseña del sitio.</li>
+	<li>Como desarrollador, quiero documentacion que me ayude a desarrollar en el framework</li>
+	<li>Como usuario, quiero que el sistema mantenga un historial de mensajes (en especial los de error).</li>
 	<li>Como usuario, quiero manipular el orden de las columnas en los grids y que asi se queden.</li>
 	<li>Como usuario, cuando modifico un parametro de busqueda, quiero que asi permanezca aunque salga del sistema.</li>
 	<li>Como usuario, quiero que el tama&ntilde;o de grids se adapte a los diferentes dispositivos y orientaciones de pantalla.</li>
@@ -42,43 +29,68 @@ Historias de usuario:
 	<li>Como webmaster, quiero un historial de sucesos en especial de error, para supervisar y dar seguimiento.</li>
 </ul>
 
-Sprint 1 29/Ene/2013 <br/>
+Sprint 1<br/>
 <ul>
-	<li></li>
+	<li class="listo">Pedido Interno - Agregar en el filtro el almac&eacute;n.</li>
+	<li class="listo">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</li>
+	<li class="listo">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.(12:00-2:20pm, 2hrs 20min)</li>
+	<li class="listo">Pedido Interno - El grid del listado de insumos se agrupa por grupo y se ordena de acuerdo a campo articulostock.grupoposicion y los que sean sugeribles.</li>
+	<li class="listo">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</li> 
+	<li class="listo">Pedido Interno - Campos a modificiar: Nombre Articulo, Inventario inicial, Pedido.</li>
+	<li class="listo">Pedido Interno - Agregar en el filtro Estado de Documentos. (3:30pm - 5:19pm, 1:49)</li>
+	<li class="listo">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Caducado.</li>
+	<li class="listo">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado. (12:55-1:05, 0:10)</li>
+	<li class="listo">Pedido Interno - Folio y serie
+		<ul>			
+			<li >Guardar Serie (campo requerido) (8:00pm-8:44 pm,0:44)</li>
+			<li >Al cambiar/seleccionar almac&eacute;n, seleccionar serie default en automático (8:45pm-10:13pm, 1:28)</li>
+			<li>Al seleccionar serie, seleccionar siguiente folio en automático (9:07-9:20, 0:20)</li>
+			<li>Al guardar, asignar el folio correspondiente (impedir folios duplicados), en caso de ser diferente al pre-asignado, notificar al usuario (10:38-12:50, 2:12)</li>
+			<li>Si no hay folios disponibles,  impedir guardar</li>
+		</ul>
+	</li>
+	<li class="enproceso">Pedido Interno - Permitir buscar articulos por codigo.</li>
 </ul>
 
-Documentos:<br />
-<ul>
-	<li>Comanda</li>
-	<li>Pedido</li>
-	<li>Nota salida</li>
-	<li>Nota de venta</li>	
-</ul>
-
-Tareas Sprint 1<br/>
-<p class="listo">Pedido Interno - Agregar en el filtro el almac&eacute;n.</p>
-<p class="listo">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</p>
-<p class="pendiente">Pedido Interno - Agregar en el filtro Estado de Documentos.</p>
-<p class="enproceso">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.</p>
-<p class="enproceso">Pedido Interno - La lista de la B&uacute;squeda tiene que tener lo siguiente, Folio y serie; Almacen, Fecha, Fecha Vencimiento, Estado.</p>
-<p class="pendiente">Pedido Interno - Estados: Solicitado, Concentrado, Parcialmente Surtido, Surtido, Cancelado, Caducado.</p>
-<p class="enproceso">Pedido Interno - Folio y serie de acuerdo a almac&eacute;n y al dar nuevo y empezar la captura sugerir&aacute; el siguiente y si hay un cambio al momento de guardar se le avisar&aacute; al usuario.</p>
-<p class="listo">Pedido Interno - El grid del listado de insumos se agrupa por grupo y se ordena de acuerdo a campo articulostock.grupoposicion y los que sean sugeribles.</p>
-<p class="listo">Pedido Interno - El grid: Listar los campos como sigue: Codigo articulo, Nombre Articulo, Unidad Medida, M&aacute;ximo, M&iacute;nimo, P Reorden, Inventario Inicial, Sugerido x Sistema, Pedido, Pendiente.</p> 
-<p class="listo">Pedido Interno - Campos a modificiar: Nombre Articulo, Inventario inicial, Pedido.</p>
-<p class="enproceso">Pedido Interno - Permitir buscar articulos por codigo.</p>
 
 <h3>Sprint 2 </h3> (##/##/####)<br/>
 <ul>
 	<li></li>
 </ul>
 
-
 <p class="pendiente">Configuraci&oacute;n - Crear un modo de configuraci&oacute;n para jalar la serie y el folio que le sigue por almac&eacute;n.</p>
 <p class="pendiente">Al Logear preguntar la sucursal y el almac&eacute;n si se puede almacenar por default el &uacute;ltimo seleccionado.</p>
-<p class="pendiente">Formatos de Impresi&oacute;n para pedido interno.</p> 
+<p class="pendiente">Formatos de Impresi&oacute;n para pedido interno.</p>
+<h3>Bugs</h3>
+<ul>
+	<li>Edicion Pedido: Aveces, los headers del grid articulos se muestran colapsados (con un ancho muy pequeño que no deja ver ni el texto)</li>
+	<li>Cuando seleccionas manualmente una serie, deja de funcionar la seleccion automatica desde el combo almacen</li>
+</ul>
+<div>
 
+<h3>01/02/2013</h3>
 
+<ul>
+	<li>Sugerido pedido interno = max - Inventario ini   Si Inv Ini <= Punto Reorden</li>
+	<li>enter para captura rÃ pida y que se pase a la siguiente lÃ¬nea en la misma columna y si ya es la Ãºltima automÃ¡ticamente agregue un nuevo registro.</li>
+	<li>teclas rÃ pidas.</li>
+	<li>Si utilizÃ³ tabs en la captura que al llegar al final de una fila, automÃ¡ticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco.</li>
+	<li>cuando se modifique registro y se pretenda cerrar registro que te pregunte si deseas guardar los cambios, si, no y cancelar.</li>
+	<li>Permitir agregar nuevos varias veces.</li>
+	<li>Permitir configurar si la informaciÃ³n en un mÃ³dulo se almacena en el cliente hasta que se de guardar o temporalmente en el servidor cada vez que cambias algÃºn valor.</li>
+	<li>Agrupar las opciones en mÃ³dulos de acuerdo a su uso por parte del usuario p ej. si soy almacenista veo info de articulso, pedidos, entradas y salida y si soy cobrador, nada mÃ¡s veo clientes y saldos.</li>
+	<li><span>ConcentraciÃ³n:Se mostrarÃ¡ una lista de los pedidos internos sin surtir(solicitado) se le permitirÃ¡ al usuario seleccionar y correr el proceso
+		<br/>	de concentraciÃ³n que mostrarÃ¡ una ventana agrupando por grupo y por producto todos los registros de productos similares.
+		<br/>	Al final se tendrÃ¡ una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
+	</li>
+	<li>sugerido en concentraciÃ³n es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden</li>
+	<li></li>
+	<li></li>
+	<li></li>
+	<li></li>
+</ul>
+
+</div>
 
 
 

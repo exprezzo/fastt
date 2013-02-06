@@ -97,47 +97,152 @@ class PedidoModel extends Modelo{
 		
 		$start=empty($params['start'])? 0 : intval($params['start']);
 		$pageSize=empty($params['pageSize'])? 9 : intval($params['pageSize']);
-		$f1=empty($params['fechai'])? '1000-01-01' : $params['fechai'];
-		$f2=empty($params['fechaf'])? '2040-01-01' : $params['fechaf'];
+		
+		//echo $pageSize;
+		$f1=empty($params['fechai'])? '' : $params['fechai'];
+		$f2=empty($params['fechaf'])? '' : $params['fechaf'];
+		
 		$idalmacen=empty($params['idalmacen'])? 0 : $params['idalmacen'];
-		$vencimiento=empty($params['vencimiento'])? '2040-01-01' : $params['vencimiento'];
+		$vencimiento=empty($params['vencimiento'])? '' : $params['vencimiento'];
+		$idestado=empty($params['idestado'])? 0 : $params['idestado'];
 		
-		$sql='select COUNT(ped.id) as total FROM pedidos ped where fecha between :f1 and :f2  AND (vencimiento between :vencimiento and :f2)';
+		$sql='select COUNT(ped.id) as total FROM pedidos ped ';
 		
+		$filtros='';
+		if ( !empty($f1)&& !empty($f2) ){
+			$filtros='WHERE (fecha between :f1 and :f2) ';
+		}else{			
+		    if ( !empty($f1) ){
+				$filtros.=' WHERE fecha >= :f1 ';				
+			}
+			
+			if ( !empty($f2) ){
+				$filtros.=' WHERE fecha <= :f2 ';
+			}
+		}
+			
+		if ( !empty($vencimiento) && !empty($f2) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
+			$filtros.=' (vencimiento between :vencimiento and :f2) ';						
+		}else if ( !empty($vencimiento) && !empty($f1) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
+			$filtros.=' (vencimiento between :f1 and :vencimiento) ';						
+		}
 		
 		if ( !empty($idalmacen) ){
-			$sql.=' AND fk_almacen=:idalmacen';
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='fk_almacen=:idalmacen ';
 		}
+		
+		if ( !empty($idestado) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='idestado=:idestado ';
+		}
+		
+		$sql.=$filtros;
+	//	echo $sql;
 		$model=$this;
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
-		$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
-		$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
-		$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
-		if ( !empty($idalmacen) ){
+		if ( !empty($f1) ){			
+			//echo 'f1';
+			$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
+		}
+		if ( !empty($f2) ){			
+			//echo 'F2';
+			$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
+		}		
+		if ( !empty($vencimiento) && ( !empty($f2) || !empty($f1) ) ){			
+			//echo 'FV';
+			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
+		}
+		
+		if ( !empty($idalmacen) ){			
 			$sth->bindValue(":idalmacen",$idalmacen,PDO::PARAM_INT);			
 		}
-		$datos=$model->execute($sth);
-		
+		if ( !empty($idestado) ){			
+			$sth->bindValue(":idestado",$idestado,PDO::PARAM_INT);			
+		}
+		$datos=$model->execute($sth);		
+	//	print_r($datos	);
 		$total=$datos['datos'][0]['total'];
 		
-		$sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
-		LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
-		WHERE (fecha between :f1 and :f2) AND (vencimiento between :vencimiento and :f2)';
-		if ( !empty($idalmacen) ){
-			$sql.=' AND fk_almacen=:idalmacen';
+		$sql='select ped.*,CONCAT(sn.serie," ", folio ) as serie,st.nombre as estado, DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
+			LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
+			LEFT JOIN series sn ON sn.id = ped.fk_serie 
+			LEFT JOIN estado_pedido st ON st.id = ped.idestado 
+			';
+		
+		$filtros='';
+		if ( !empty($f1)&& !empty($f2) ){
+			$filtros='WHERE fecha between :f1 and :f2';
+		}else{
+			if ( !empty($f1) ){
+				$filtros.=' WHERE fecha >= :f1 ';				
+			}
+			
+			if ( !empty($f2) ){
+				$filtros.=' WHERE fecha <= :f2 ';				
+			}
 		}
 		
+		if ( !empty($vencimiento) && !empty($f2) ){
+			$filtros.=empty($filtros)? 'WHERE ': ' AND ';		
+			$filtros.='(vencimiento between :vencimiento and :f2)';
+		}else if ( !empty($vencimiento) && !empty($f1) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
+			$filtros.='(vencimiento between :f1 and :vencimiento)';						
+		}
+		
+		if ( !empty($idalmacen) ){
+			$filtros.=empty($filtros)? 'WHERE ': ' AND ';
+			$filtros.='fk_almacen=:idalmacen';
+		}
+		
+		if ( !empty($idestado) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='idestado=:idestado ';
+		}
+		
+		$sql.=$filtros;
+		// if ( !empty($vencimiento) ){
+			// $sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
+			// LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
+			// WHERE (fecha between :f1 and :f2) AND (vencimiento between :vencimiento and :f2)';
+		// }else{
+			// $sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
+			// LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
+			// WHERE (fecha between :f1 and :f2)';
+		// }
+		
+		// if ( !empty($idalmacen) ){
+			// $sql.=' AND fk_almacen=:idalmacen';
+		// }
+		
 		$sql.=' ORDER BY ped.fecha DESC LIMIT :start,:limit';		
+		
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
 		$sth->bindValue(':start',$start, PDO::PARAM_INT);		
-		$sth->bindValue(':limit',$pageSize, PDO::PARAM_INT);
-		$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
-		$sth->bindValue(":f2",$f2,PDO::PARAM_STR);		
-		$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
+		$sth->bindValue(':limit',$pageSize, PDO::PARAM_INT);		
+		
+		if ( !empty($f1) ){
+			$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
+		}
+		if ( !empty($f2) ){
+			$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
+		}		
+		
+		if ( !empty($vencimiento) && ( !empty($f2) || !empty($f1) ) ){
+			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
+		}
+		
 		if ( !empty($idalmacen) ){
 			$sth->bindValue(":idalmacen",$idalmacen,PDO::PARAM_INT);			
+		}
+		
+		if ( !empty($idestado) ){
+			$sth->bindValue(":idestado",$idestado,PDO::PARAM_INT);			
 		}
 		$datos=$model->execute($sth);
 		
@@ -146,32 +251,118 @@ class PedidoModel extends Modelo{
 			'datos'=>$datos['datos']
 		);
 	}
+	
+	function getError($sth){
+		$resp=array();
+		$error=$sth->errorInfo();
+		
+		$resp['success']=false;			
+		$resp['msg']=$error[2];
+		return $resp;
+	}
+	function asignarFolio($idFolio){		
+		//      http://dev.mysql.com/doc/refman/5.0/es/innodb-locking-reads.html		
+		try {
+			$db=$this->getConexion();
+			// $sql='START TRANSACTION;';
+			// $db->exec($sql);			
+			$db->beginTransaction();
+			
+			//Revisa que la serie tenga folios disponibles			
+			$sql='SELECT folio_f, sig_folio FROM series where id='.intval($idFolio).'  FOR UPDATE;';			
+			//Si no hay folios disponibles, devolver el error
+			$result = $db->query($sql);
+			if ( !$result ) return $this->getError($db);			
+			$row = $result->fetch(PDO::FETCH_ASSOC);						
+			if ( $row['folio_f'] < $row['sig_folio'] ) {
+				$db->rollBack( );
+				return array(
+					'success'=>false,
+					'msg'=>'Esta serie no tiene folios disponibles',
+					'tipoError'=>'info'
+				);
+			}
+			
+			$sig_folio=$row['sig_folio'];			
+			$sql= 'UPDATE series SET sig_folio = '.($sig_folio + 1).' WHERE id='.$idFolio.';';			
+			$db->exec($sql);			
+		}
+		catch(PDOException $e)
+		{
+			$db->rollBack( );
+			echo $e->getMessage();
+			die();
+		}		
+		$msgType='';
+		return array(
+			'success'=>true,
+			'folio'=>$sig_folio,
+			'msg'=>'',
+			'msgType'=>$msgType
+		);
+		/*			
+		compararlo con el anterior y guardar bandera para notificar al usuario en caso de cambio,
+		
+		guardar,
+		terminar transaccion,
+		desbloquear tabla folios.			
+		*/
+	}
+	
 	function guardar($params){
 		$dbh=$this->getConexion();
 		$pk			=empty($params[$this->pk]) ? 0 : $params[$this->pk];
 		$fk_almacen	=$params['almacen'];
 		$strFecha	=$params['fecha'];
-		$vencimiento	=$params['vencimiento'];
-		if ( empty($pk) ){
+		$vencimiento=$params['vencimiento'];
+		$fk_serie 	=intval($params['fk_serie']);
+		$folio 	=intval($params['folio']);
+		
+		$msgType='';
+		if ( empty($pk) ){			
+			$res = $this->asignarFolio($fk_serie);
+			if ( !$res['success'] ) return $res;
+			$msg='Pedido Guardado';
+			if ( intval($folio) != intval($res['folio']) ){
+				$msgType='info';
+				$msg.='<br>El sistema asign&oacute; el folio correspondiente. ('.$res['folio'].')';
+			}
+			$folio=$res['folio'];
+		//	print_r($res);
 			//           CREAR
-			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento';
+			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie, folio=:folio';
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
-			$msg='Pedido Guardado';
+			$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
+			$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
+			
+			$exito = $sth->execute();
+			//Terminar transaccion y desbloquear tabla
+			
+			if ($exito){
+				$pk=$dbh->lastInsertId();
+				$dbh->commit();
+			}else{
+				$dbh->rollBack();
+			}
 		}else{
 			//	         ACTUALIZAR
-			$sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento WHERE '.$this->pk.'=:pk';
+			// $sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento, fk_serie=:fk_serie,folio=:folio WHERE '.$this->pk.'=:pk';
+			$sql='UPDATE '.$this->tabla.' SET fecha=:fecha, vencimiento=:vencimiento WHERE '.$this->pk.'=:pk';
 			$sth = $dbh->prepare($sql);
-			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
+			//$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
 			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
+			//$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
+			//$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
 			$msg='Pedido Actualizado';
+			$exito = $sth->execute();
 		}
 		
-		$exito = $sth->execute();
+		
 		
 		if (!$exito){
 			$resp['success']=false;
@@ -179,7 +370,7 @@ class PedidoModel extends Modelo{
 			$msg    = $error[2];
 			$pedido=$params;
 		}else{
-			if ( empty($pk) ) $pk=$dbh->lastInsertId();
+			
 			$res=$this->procesarClones($pk,$params);
 			if (!$res['success']) return $res;
 			$pedido=$this->obtener($pk);
@@ -188,6 +379,7 @@ class PedidoModel extends Modelo{
 		return array(
 			'success'=>$exito,
 			'msg'=>$msg,
+			'msgType'=>$msgType,
 			'datos'=>$pedido
 		);
 		

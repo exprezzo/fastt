@@ -2,6 +2,8 @@
 
 require_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/almacen_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/serie_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/estado_pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
 class Pedidoi extends Controlador{	
@@ -12,6 +14,19 @@ class Pedidoi extends Controlador{
 		return $this->verPedidos();
 	}
 	
+	function getSeries(){
+		$idAlmacen=$_GET['idalmacen'];
+		$mod=new SerieModel();		
+		// $paging=$_GET['paging'];
+		// $start=intval($paging['pageIndex'])*9;				
+		$res=$mod->getSeries($start=0, $limit=9, $idAlmacen);				
+		
+		$respuesta=array(	
+			'rows'=>$res['datos'],
+			'totalRows'=> $res['total']
+		);
+		echo json_encode($respuesta);	
+	}
 	function eliminar(){
 		$modObj= $this->getModel();
 		$params=array();
@@ -70,7 +85,7 @@ class Pedidoi extends Controlador{
 		// $paging=$_GET['paging'];
 		// $start=intval($paging['pageIndex'])*9;		
 		$start=0;		
-		$idalmacen=$_REQUEST['idalmacen'];
+		$idalmacen=empty($_REQUEST['idalmacen'])? 0 :$_REQUEST['idalmacen'];
 		$res=$mod->paginar($start,90, $idalmacen);				
 		
 		$respuesta=array(	
@@ -156,11 +171,16 @@ class Pedidoi extends Controlador{
 			$vista= $this->getVista();					
 			return $vista->mostrar( '/index' );
 		}
+		$estados=array();
 		
 		$almMod= new AlmacenModel();
 		$res=$almMod->paginar();
 		$vista->almacenes=$res['datos'];
 		
+		$estMod= new EstadoPedidoModel();
+		$res=$estMod->paginar();
+		$vista->estados=$res['datos'];
+						
 		$vista->mostrar('pedidoi/lista_de_pedidos');
 	}
 	function pedidos(){
@@ -173,21 +193,34 @@ class Pedidoi extends Controlador{
 	function paginar(){
 		$mod=$this->getModel();
 		
-		$fechai=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechai']);
-		$fechaf=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechaf']);
-		$vencimiento=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['vencimiento']);
-		//print_r($fechai);
+		$fi='';
+		if ( !empty($_GET['fechai']) ){
+			$fechai=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechai']);
+			$fi=$fechai->format('Y-m-d').' 00:00:00';
+		}
+		
+		$ff='';
+		if ( !empty($_GET['fechaf']) ){
+			$fechaf=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['fechaf']);
+			$ff=$fechaf->format('Y-m-d').' 23:59:59';
+		}
+		
+		$fv='';
+		if ( !empty($_GET['vencimiento']) ){
+			$vencimiento=DateTime::createFromFormat ( 'd/m/Y' ,$_GET['vencimiento']);
+			$fv=$vencimiento->format('Y-m-d').' 00:00:00';
+		}								
 		
 		$paging=$_GET['paging']; //Datos de paginacion enviados por el componente js
 		if ($paging['pageSize']<0) $paging['pageSize']=0;
 		$params=array(	//Se traducen al lenguaje sql
 			'pageSize'=>$pageSize=intval($paging['pageSize']),
 			'start'=>intval($paging['pageIndex'])*$pageSize,
-			'fechai'=>$fechai->format('Y-m-d').' 00:00:00',
-			'fechaf'=>$fechaf->format('Y-m-d').' 23:59:59',
-			'vencimiento'=>$vencimiento->format('Y-m-d').' 00:00:00',
-			
-			'idalmacen'=>$_GET['idalmacen']
+			'fechai'=>$fi,
+			'fechaf'=>$ff,
+			'vencimiento'=>$fv,			
+			'idalmacen'=>$_GET['idalmacen'],
+			'idestado'=>$_GET['idestado']
 		);
 		
 		$res=$mod->paginar($params);				
@@ -232,6 +265,22 @@ class Pedidoi extends Controlador{
 			echo json_encode($res); exit;
 		}
 		
+		if ( empty($_POST['pedido']['fk_serie']) ){
+			$res=array(
+				'success'=>false,
+				'msg'=>'Debe seleccionar una serie'
+			);
+			echo json_encode($res); exit;
+		}
+		
+		if ( !isset($_POST['pedido']['folio']) || !is_numeric($_POST['pedido']['folio']) ){
+			$res=array(
+				'success'=>false,
+				'msg'=>'Debe asignar un <b>Folio</b> v&aacute;lido'
+			);
+			echo json_encode($res); exit;
+		}
+		
 		$fecha = DateTime::createFromFormat('d/m/Y', $pedido['fecha']);
 		$pedido['fecha']= $fecha->format('Y-m-d H:i:s');
 		
@@ -240,6 +289,10 @@ class Pedidoi extends Controlador{
 		
 		$model=$this->getModel();		
 		$res = $model->guardar($pedido);
+		
+		if (!$res['success']) {
+			echo json_encode($res); exit;
+		}
 		$pk=$res['datos']['id'];
 		
 		$pedido=$model->editar($pk);

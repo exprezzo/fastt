@@ -79,8 +79,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			
 			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
-			//TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			
-			//TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');
+			// TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			
+			// TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');
 			TabManager.add('/'+kore.modulo+'/general/historias','Historias de usuario',0,'scrum');
 			TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
 					
@@ -133,7 +133,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 		@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {}	/* iPhone, Android rules here */		
 		.link{cursor:pointer;}
 		.ui-tabs .ui-tabs-nav{	/* border-bottom:0; */	}
-		.ui-tabs .ui-tabs-hide {display: none !important;}		
+		 /*.ui-tabs .ui-tabs-hide {display: inline-block !important;}		*/
+		 .tbPedido.ui-tabs-hide {display: inline-block !important;}		
 		.main_header{display: none;width: 100%;border: 0;}
 		
 		.wijmo-wijsplitter-h-panel1.ui-resizable{
@@ -143,7 +144,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 				-o-transition:height .5s; 				/* Opera */					
 		}
 		
-		}
+		
 	</style>
 	
 </head>

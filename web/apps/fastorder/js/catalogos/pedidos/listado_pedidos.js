@@ -1,5 +1,10 @@
 ﻿var ListaPedidos=function(){
 	this.init=function(tabId){
+		
+		this.omitirFI=false;
+		this.omitirFF=false;
+		this.omitirFV=false;
+		
 		tabId = '#' + tabId;
 		this.tabId = tabId;
 		var tab=$('div'+tabId);		
@@ -21,8 +26,7 @@
 		var me=this;
 		
 		$(this.tabId+' .cmbAlmacen').wijcombobox({});
-		
-		
+		$(this.tabId+' .cmbEstado').wijcombobox({});
 		
 		$(tabId+ " > .tbPedidos").wijribbon({
 			click: function (e, cmd) {
@@ -47,14 +51,51 @@
 						var gridPedidos=$(me.tabId+" #lista_pedidos_internos");
 						gridPedidos.wijgrid('ensureControl', true);
 					break;
-					default:
+					case 'omitirFI':
+						if (me.omitirFI){
+								me.omitirFI=false;
+						} else{
+							me.omitirFI=true;
+						}
+						if (me.omitirFI){
+							 $(me.tabId+' input.txtFechaI').css('color','transparent');
+						}else{
+						    $(me.tabId+' input.txtFechaI').css('color','');
+						}
+					break;
+					case 'omitirFF':
+						if (me.omitirFF){
+								me.omitirFF=false;
+						} else{
+							me.omitirFF=true;
+						}
+						if (me.omitirFF){
+							 $(me.tabId+' input.txtFechaF').css('color','transparent');
+						}else{
+						    $(me.tabId+' input.txtFechaF').css('color','');
+						}
+					break;
+					case 'omitirFV':
+						if (me.omitirFV){
+								me.omitirFV=false;
+						} else{
+							me.omitirFV=true;
+						}
+						if (me.omitirFV){
+							 $(me.tabId+' input.txtVencimiento').css('color','transparent');
+						}else{
+						    $(me.tabId+' input.txtVencimiento').css('color','');
+						}
+					break;					
+					default:						 
 						$.gritter.add({
 							position: 'bottom-left',
-							title:"Informaci&oacute;n",
+							title:cmd.commandName,
 							text: "Acciones del toolbar en construcci&oacute;n",
-							image: '/images/info.png',
+							image: '/web/apps/fastorder/images/info.png',
 							class_name: 'my-sticky-class'
 						});
+						console.log("cmd"	); console.log(cmd);
 					break;
 					case 'imprimir':
 						alert("Imprimir en construcción");						
@@ -69,25 +110,35 @@
 		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true, date: new Date()});	
 	};
 	this.configurarGrid=function(tabId){
-		var pageSize=10;
-		var hContainer = $('#tabs').height();
-
-		var hNav= $('#tabs .ui-tabs-nav').height();
-
-		var newH = hContainer-hNav;
-		var altoHeaderGrid = 38;
-
-		newH=newH - (2*altoHeaderGrid);
-		newH=parseInt(newH/altoHeaderGrid);
-		pageSize=newH-1;		
-
+		var wh=$(window).height();
+	//	return false;
+		var offset = $(tabId + ' #lista_pedidos_internos').offset();
+		
+		
+				
+		var altoHeaderGrid = $(tabId + ' #lista_pedidos_internos thead > tr').height();
+		
+		altoHeaderGrid=37 //TODAVIA NO ESTA RENDEREADO
+		var disponible = wh - (offset.top +altoHeaderGrid);
+		
+		
+		
+		nh=parseInt(disponible/altoHeaderGrid);
+		
+		//alert("offset.top: "+offset.top + " wh: " + wh + ' altoHeaderGrid: ' + altoHeaderGrid + 'disponible: ' + disponible);
+		pageSize=nh -1;		
+		//alert(pageSize);
 		//var totalRows=<?php //echo isset($this->total)?$this->total: 0 ?>;
-		var dataReader = new wijarrayreader([
+		var campos=[
 			{ name: "id"  },
 			{ name: "fecha"},
 			{ name: "vencimiento"},
-			{ name: "nombreAlmacen"}
-		]);
+			{ name: "nombreAlmacen"},
+			{ name: 'idestado'},
+			{ name: 'estado'},
+			{ name: 'serie'}
+		];
+		var dataReader = new wijarrayreader(campos);
 
 		var dataSource = new wijdatasource({
 			proxy: new wijhttpproxy({
@@ -95,16 +146,12 @@
 				dataType: "json"
 			}),
 			dynamic:true,			
-			reader:new wijarrayreader([
-				 { name: "id"},
-				 { name: "fecha"},
-				 { name: "vencimiento"},
-				 { name: "nombreAlmacen"}
-			])
+			reader:new wijarrayreader(campos)
 		});
 		dataSource.reader.read= function (datasource) {
 			
 			var totalRows=datasource.data.totalRows;			
+			//alert("totalRows: "+totalRows);
 			datasource.data = datasource.data.rows;
 			datasource.data.totalRows = totalRows;
 			dataReader.read(datasource);
@@ -114,6 +161,7 @@
 
 		// gridPedidos.wijgrid();
 		var me=this;
+		//alert("pageSize: "+pageSize);
 		gridPedidos.wijgrid({
 			dynamic: true,
 			allowColSizing:true,
@@ -124,8 +172,23 @@
 			selectionMode:'singleRow',
 			data:dataSource,
 			columns: [ 
-				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
-				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'60%' }, 
+				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },								
+				{ dataKey: "estado", hidden:true, visible:false, headerText: "estado" },								
+				{dataKey: "idestado", headerText: "Estado",width:'20px',
+					cellFormatter: function (args) { 
+                            if (args.row.type & $.wijmo.wijgrid.rowType.data) { 
+                                args.$container 
+                                    .css("text-align", "center") 
+                                    .empty() 
+                                    .append($("<div title='"+args.row.data.estado+"'/>") 
+                                    .addClass('estado_pedido_'+args.row.data.idestado)); 
+								//args.row.data.Cover
+                                return true; 
+                            } 
+                        }  
+				}, 
+				{ dataKey: "serie",  headerText: "Serie" },
+				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'60%' }, 				
 				{dataKey: "fecha", headerText: "Fecha",width:'20%' },
 				{dataKey: "vencimiento", headerText: "Vencimiento",width:'20%' }
 				],
@@ -136,11 +199,14 @@
 			loading: function (dataSource, userData) {                            
 				var fi=$('#tabs '+me.tabId+' .txtFechaI').val();	
 				var ff=$('#tabs '+me.tabId+' .txtFechaF').val();			
-				
+				var fv = $('#tabs '+me.tabId+' .txtVencimiento').val();			
 				var idalmacen = $('#tabs '+me.tabId+' .cmbAlmacen').wijcombobox('option','selectedValue');
-				var vencimiento = $('#tabs '+me.tabId+' .txtVencimiento').val();
+				var idestado = $('#tabs '+me.tabId+' .cmbEstado').wijcombobox('option','selectedValue');
+                me.dataSource.proxy.options.data={idalmacen:idalmacen, idestado:idestado};
 				
-                me.dataSource.proxy.options.data={fechai:fi, fechaf:ff, idalmacen:idalmacen, vencimiento:vencimiento};
+				if ( !me.omitirFI) me.dataSource.proxy.options.data.fechai=fi;
+				if ( !me.omitirFF) me.dataSource.proxy.options.data.fechaf=ff;
+				if ( !me.omitirFV) me.dataSource.proxy.options.data.vencimiento=fv;				
             },
 			cellStyleFormatter: function(args) { 
 				if (args.column._originalDataKey=='fecha' || args.column._originalDataKey=='vencimiento'){
@@ -181,12 +247,12 @@ ListaPedidos.prototype.eliminar=function(){
 			var msg= (resp.msg)? resp.msg : '';
 			var title;
 			if ( resp.success == true	){
-				icon='/images/yes.png';
+				icon='/web/apps/fastorder/images/yes.png';
 				title= 'Success';				
 				var gridPedidos=$(me.tabId+" #lista_pedidos_internos");				
 				gridPedidos.wijgrid('ensureControl', true);  
 			}else{
-				icon= '/images/error.png';
+				icon= '/web/apps/fastorder/images/error.png';
 				title= 'Error';
 			}
 			
