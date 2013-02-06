@@ -13,8 +13,7 @@ var TabManager={
 				
 		this.refresLayout();
 	},
-	refresLayout:function(){
-		
+	refresLayout:function(){		
 		$('#tabs').height(screen.height);
 	},
 	add:function(url,titulo,id,iconCls){
@@ -38,9 +37,13 @@ var TabManager={
 			type: "POST",
 			url: url,
 			data: { tabId:tabId, pedidoId:id }
-		}).done(function( response ) {
-			$('#'+ tabId ).html(response);				
-			$tabs.wijtabs('select',tabId);			
+		}).done(function( response, b, c , d ) {
+			console.log(b);
+			console.log(c);
+			console.log(d);
+			//alert(tabId);
+			 $('#'+ tabId ).html(response);				
+			 $tabs.wijtabs('select',tabId);			
 		});
 	},
 	seleccionarTab:function(objId){

@@ -1,38 +1,31 @@
 var EdicionPedido = function(){
 	this.init=function(tabId, pedidoId, almacen){
+		this.tabId= '#'+tabId;		
 		
-		tabId = '#'+tabId;
-		this.tabId=tabId;
-		var tab=$('div'+tabId);
-		$('div'+tabId).css('padding','0');
-		$('div'+tabId).css('border','0 1px 1px 1px');
+		//estas dos linas deben estar en la hoja de estilos
+		$('div'+this.tabId).css('padding','0');
+		$('div'+this.tabId).css('border','0 1px 1px 1px');
 		
-		tab.addClass('frmPedido');
-		var tab=$('a[href="'+tabId+'"]');
-		tab.addClass('frmPedido');
+		this.agregarClase('frmPedido');		
 		
-		//Para identificar el contenido del tab
-		//var objId='pedidoi_id_'+pedidoId;								
-		//$('#tabs '+tabId).attr('objId',objId);
+		 this.configurarFormulario(this.tabId);
+		 this.configurarToolbar(this.tabId);		
+		 this.notificarAlCerrar();			
+		this.actualizarTitulo();
+	};
+	this.agregarClase=function(clase){
+		var tabId=this.tabId;
 		
+		var tab=$('div'+this.tabId);						
+		tab.addClass(clase);
 		
-		
-		this.configurarFormulario(tabId);
-		this.configurarToolbar(tabId);
-		// this.configurarListaArticulos(tabId);
-		
-		//Establecer titulo e icono
-		if (pedidoId>0){
-			$('a[href="'+tabId+'"]').html('Pedido-'+almacen+' ID: '+pedidoId);		
-			$(tabId+' .cmbAlmacen').wijcombobox( 'option', 'disabled', true );
-			$(tabId+' .cmbSerie').wijcombobox( 'option', 'disabled', true );
-		}else{
-			$('a[href="'+tabId+'"]').html('Nuevo Pedido');
-		}
-		//al cerrar notificar al servidor 
+		tab=$('a[href="'+tabId+'"]');
+		tab.addClass(clase);
+	}
+	this.notificarAlCerrar=function(){
+		var tabId = this.tabId;
 		 $('#tabs > ul a[href="'+tabId+'"] + span').click(function(){
-			 var tmp=$('.frmPedidoi .txtIdTmp');
-				
+			 var tmp=$('.frmPedidoi .txtIdTmp');				
 			if (tmp.length==1){
 				var id=$(tmp[0]).val();				
 				$.ajax({
@@ -43,10 +36,21 @@ var EdicionPedido = function(){
 					
 				});
 			}	
-	 });
-				
-				
-	};
+		 });
+	}
+	this.actualizarTitulo=function(){
+		var tabId = this.tabId;		
+		var pedidoId = $(tabId + ' .txtId').val();
+		if (pedidoId>0){
+			var serie = $(tabId+' .cmbSerie').wijcombobox( 'option', 'text');						
+			var folio = $(tabId+' .txtFolio').val();			
+			$('a[href="'+tabId+'"]').html('Ped. Int:'+serie+' '+folio);		
+			$(tabId+' .cmbAlmacen').wijcombobox( 'option', 'disabled', true );
+			$(tabId+' .cmbSerie').wijcombobox( 'option', 'disabled', true );
+		}else{
+			$('a[href="'+tabId+'"]').html('Nuevo Pedido Interno');
+		}
+	}
 	this.nuevo=function(){
 		var tabId=this.tabId;
 		var tab = $('#tabs '+tabId);
@@ -95,7 +99,10 @@ var EdicionPedido = function(){
 				tab.find('.cmbAlmacen').wijcombobox( 'option', 'disabled', true );
 				tab.find('.cmbSerie').wijcombobox( 'option', 'disabled', true );
 				
-				$('a[href="'+me.tabId+'"]').html('Pedido-'+resp.datos.nombreAlmacen+' ID: '+resp.datos.id);				
+				
+				
+				me.actualizarTitulo();
+				
 				var objId = '/'+kore.modulo+'/pedidoi/getPedido?id='+resp.datos.id;
 				objId = objId.toLowerCase();
 				$(me.tabId ).attr('objId',objId);
@@ -183,7 +190,8 @@ var EdicionPedido = function(){
 					// alert(tabId);
 					if (val !=0 ){
 						if (val==parseInt(datos.value) ){
-							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});														
+							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
+							me.actualizarTitulo();
 						}
 					}else{
 						if (parseInt(datos.es_default) == 1 ){							

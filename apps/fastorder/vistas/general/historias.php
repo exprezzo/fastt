@@ -21,6 +21,58 @@
 	.scrum h3{display:inline}
 </style>
 <h3>Sprint </h3>
+2013 02 05 Minuta
+<table>
+	<tr>
+		<td>M&oacute;dulo</td><td>Descripci&oacute;n</td><td>Estado</td><td>Hora Inicio</td><td>Hora Final</td><td>Responsable</td><td>Tiempo Invertido</td>
+	</tr>
+	<tr>
+		<td>Pedido Interno</td>
+		<td>Pedido, el nombre correcto del primer m&oacute;dulo es "Pedido Interno" para que se corriga en las pantallas.<br>Agrege el folio y la serie al encabezado.</td>
+		<td>proceso</td>
+		<td>10:10 am</td>
+		<td>10:55 am</td>
+		<td>Cesar</td>
+		<td>00:45</td>
+	</tr>
+	<tr>
+		<td>Pedido Interno</td>
+		<td>En los filtros de Pedido Interno Cuando no se estable fecha final pero si vencimiento mostrar todos a partir de fecha vencimiento.</td>
+		<td>Sin ver</td>
+		<td>10:57 am</td>
+		<td>11:07 AM</td>
+		<td>Cesar</td>
+		<td>00:10</td>
+	</tr>
+	<tr>
+		<td>Pedido Interno</td>
+		<td>Agregar titulo al estado en la lista de pedidos internos.</td>
+		<td>Sin ver</td>
+		<td>11:08 am</td>
+		<td>11:17 am</td>
+		<td>Cesar</td>
+		<td>00:09</td>
+	</tr>
+	<tr>
+		<td>Pedido Interno</td>
+		<td>Solo se puede modificar pedidos internos que esten en estado solicitado, se pudiera abrir de solo lectura pero no modificar.</td>
+		<td>Sin ver</td>
+		<td>11:19 am</td>
+		<td>11:29 am</td>
+		<td>Cesar</td>
+		<td>00:10</td>
+	</tr>
+	<tr>
+		<td>Pedido Interno</td>
+		<td>El Inventario Inical se almacenr&aacute; en su registro corresponidente del stock del almacen una vez que se guarde el pedido interno.</td>
+		<td>Sin ver</td>
+		<td>11:29 am</td>
+		<td>12:25</td>
+		<td>Cesar</td>
+		<td>00:56</td>
+	</tr>
+	
+</table>
 <ul>
 <li>Sugerido pedido interno = max - Inventario ini   Si Inv Ini <= Punto Reorden</li>
 	<li class="enproceso">Pedido Interno - Permitir buscar articulos por codigo.</li>
@@ -61,33 +113,7 @@
 	
 </ul>
 
-2013 02 05 Minuta
-<table>
-	<tr>
-		<td>M&oacute;dulo</td><td>Descripci&oacute;n</td><td>Estado</td><td>Hora Inicio</td><td>Hora Final</td><td>Responsable</td><td>Tiempo Invertido</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td>
-		<td>Pedido, el nombre correcto del primer m&oacute;dulo es "Pedido Interno" para que se corriga en las pantallas.</td>
-		<td>proceso</td>
-		<td>10:10 am</td>
-		<td></td>
-		<td>Cesar</td>
-		<td>0</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td><td>En los filtros de Pedido Interno Cuando no se estable fecha final pero si vencimiento mostrar todos a partir de fecha vencimiento.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td><td>Agregar titulo al estado en la lista de pedidos internos.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td><td>El Inventario Inical se almacenr&aacute; en su registro corresponidente del stock del almacen una vez que se guarde el pedido interno.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td><td>Solo se puede modificar pedidos internos que esten en estado solicitado, se pudiera abrir de solo lectura pero no modificar.</td><td>Sin ver</td><td></td><td></td><td>Cesar</td><td>0</td>
-	</tr>
-</table>
+
 
 
 <br>

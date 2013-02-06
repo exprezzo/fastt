@@ -107,26 +107,20 @@ class PedidoModel extends Modelo{
 		$idestado=empty($params['idestado'])? 0 : $params['idestado'];
 		
 		$sql='select COUNT(ped.id) as total FROM pedidos ped ';
-		
+				
 		$filtros='';
-		if ( !empty($f1)&& !empty($f2) ){
-			$filtros='WHERE (fecha between :f1 and :f2) ';
-		}else{			
-		    if ( !empty($f1) ){
-				$filtros.=' WHERE fecha >= :f1 ';				
-			}
-			
-			if ( !empty($f2) ){
-				$filtros.=' WHERE fecha <= :f2 ';
-			}
+		if ( !empty($f1) ){
+			$filtros.=' WHERE fecha >= :f1 ';				
 		}
-			
-		if ( !empty($vencimiento) && !empty($f2) ){
+		
+		if ( !empty($f2) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='fecha <= :f2 ';
+		}
+					
+		if ( !empty($vencimiento) ){
 			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
-			$filtros.=' (vencimiento between :vencimiento and :f2) ';						
-		}else if ( !empty($vencimiento) && !empty($f1) ){
-			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
-			$filtros.=' (vencimiento between :f1 and :vencimiento) ';						
+			$filtros.='  vencimiento >= :vencimiento  ';
 		}
 		
 		if ( !empty($idalmacen) ){
@@ -144,16 +138,13 @@ class PedidoModel extends Modelo{
 		$model=$this;
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
-		if ( !empty($f1) ){			
-			//echo 'f1';
+		if ( !empty($f1) ){						
 			$sth->bindValue(":f1",$f1,PDO::PARAM_STR);
 		}
-		if ( !empty($f2) ){			
-			//echo 'F2';
+		if ( !empty($f2) ){						
 			$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
 		}		
-		if ( !empty($vencimiento) && ( !empty($f2) || !empty($f1) ) ){			
-			//echo 'FV';
+		if ( !empty($vencimiento) ){			
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 		}
 		
@@ -163,8 +154,7 @@ class PedidoModel extends Modelo{
 		if ( !empty($idestado) ){			
 			$sth->bindValue(":idestado",$idestado,PDO::PARAM_INT);			
 		}
-		$datos=$model->execute($sth);		
-	//	print_r($datos	);
+		$datos=$model->execute($sth);			
 		$total=$datos['datos'][0]['total'];
 		
 		$sql='select ped.*,CONCAT(sn.serie," ", folio ) as serie,st.nombre as estado, DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
@@ -174,25 +164,19 @@ class PedidoModel extends Modelo{
 			';
 		
 		$filtros='';
-		if ( !empty($f1)&& !empty($f2) ){
-			$filtros='WHERE fecha between :f1 and :f2';
-		}else{
-			if ( !empty($f1) ){
-				$filtros.=' WHERE fecha >= :f1 ';				
-			}
-			
-			if ( !empty($f2) ){
-				$filtros.=' WHERE fecha <= :f2 ';				
-			}
+		if ( !empty($f1) ){
+			$filtros.=' WHERE fecha >= :f1 ';				
 		}
 		
-		if ( !empty($vencimiento) && !empty($f2) ){
-			$filtros.=empty($filtros)? 'WHERE ': ' AND ';		
-			$filtros.='(vencimiento between :vencimiento and :f2)';
-		}else if ( !empty($vencimiento) && !empty($f1) ){
-			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
-			$filtros.='(vencimiento between :f1 and :vencimiento)';						
+		if ( !empty($f2) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';
+			$filtros.='fecha <= :f2 ';
 		}
+					
+		if ( !empty($vencimiento) ){
+			$filtros.=empty($filtros)? ' WHERE ': ' AND ';					
+			$filtros.='  vencimiento >= :vencimiento  ';
+		}		
 		
 		if ( !empty($idalmacen) ){
 			$filtros.=empty($filtros)? 'WHERE ': ' AND ';
@@ -205,19 +189,6 @@ class PedidoModel extends Modelo{
 		}
 		
 		$sql.=$filtros;
-		// if ( !empty($vencimiento) ){
-			// $sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
-			// LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
-			// WHERE (fecha between :f1 and :f2) AND (vencimiento between :vencimiento and :f2)';
-		// }else{
-			// $sql='select ped.*,DATE_FORMAT(fecha,"%d/%m/%Y %H:%i:%s" ) as fecha,DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, alm.nombre as nombreAlmacen FROM pedidos ped
-			// LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen 
-			// WHERE (fecha between :f1 and :f2)';
-		// }
-		
-		// if ( !empty($idalmacen) ){
-			// $sql.=' AND fk_almacen=:idalmacen';
-		// }
 		
 		$sql.=' ORDER BY ped.fecha DESC LIMIT :start,:limit';		
 		
@@ -233,7 +204,7 @@ class PedidoModel extends Modelo{
 			$sth->bindValue(":f2",$f2,PDO::PARAM_STR);
 		}		
 		
-		if ( !empty($vencimiento) && ( !empty($f2) || !empty($f1) ) ){
+		if ( !empty($vencimiento)  ){
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 		}
 		
@@ -252,14 +223,7 @@ class PedidoModel extends Modelo{
 		);
 	}
 	
-	function getError($sth){
-		$resp=array();
-		$error=$sth->errorInfo();
-		
-		$resp['success']=false;			
-		$resp['msg']=$error[2];
-		return $resp;
-	}
+	
 	function asignarFolio($idFolio){		
 		//      http://dev.mysql.com/doc/refman/5.0/es/innodb-locking-reads.html		
 		try {
@@ -350,6 +314,13 @@ class PedidoModel extends Modelo{
 		}else{
 			//	         ACTUALIZAR
 			// $sql='UPDATE '.$this->tabla.' SET fk_almacen=:fk_almacen, fecha=:fecha, vencimiento=:vencimiento, fk_serie=:fk_serie,folio=:folio WHERE '.$this->pk.'=:pk';
+			$mod = $this->obtener($pk);
+			if (intval( intval($mod['idestado'])!==1) ){
+				return array(
+					'success'=>false,
+					'msg'=>'El pedido no puede modificarse<br />Solo los pedidos con estado <b>Solicitado</b> pueden modificarse.'
+				);
+			}
 			$sql='UPDATE '.$this->tabla.' SET fecha=:fecha, vencimiento=:vencimiento WHERE '.$this->pk.'=:pk';
 			$sth = $dbh->prepare($sql);
 			//$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
@@ -386,6 +357,7 @@ class PedidoModel extends Modelo{
 	}
 	
 	function procesarClones($fk_pedido, $params){
+		
 		$resp=array();
 		$fk_tmp=$params['IdTmp'];			
 		
@@ -408,8 +380,7 @@ class PedidoModel extends Modelo{
 		
 		//actualizar			
 		$sql='SELECT id, fk_articulo, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id!=0 AND fk_pedido=:fk_pedido';			
-		// $sql='INSERT INTO pedidos_productos (fk_articulo, fk_pedido, cantidad, idarticulopre)
-		// SELECT fk_articulo,:fk_pedido fk_pedido, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id=0';			
+		
 		$con = $this->getConexion();
 		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_pedido',$fk_pedido,PDO::PARAM_INT);
@@ -440,19 +411,32 @@ class PedidoModel extends Modelo{
 			
 		}
 		
+		//Antes de borrar, actualizo los stocks		
+		$idalmacen=$params['almacen'];
+		$sql='SELECT existencia,fk_articulo FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
+		$sth = $con->prepare($sql);							
+		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
+		$exito = $sth->execute();
+		if (!$exito) return $this->getError($sth);	
+		
+		$datos= $sth->fetchAll(PDO::FETCH_ASSOC);
+		foreach($datos as $dato){			
+			$sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idalmacen=:idalmacen';
+			$sth = $con->prepare($sql);							
+			$sth->bindValue(':existencia',$dato['existencia'],PDO::PARAM_INT);			
+			$sth->bindValue(':idarticulo',$dato['fk_articulo'],PDO::PARAM_INT);			
+			$sth->bindValue(':idalmacen',$idalmacen,PDO::PARAM_INT);			
+			$exito = $sth->execute();		
+			if (!$exito) return $this->getError($sth);	
+		}
+		
+		
 		//BORRAR TODO
 		$sql='DELETE FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
 		$sth = $con->prepare($sql);							
 		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);			
 		$exito = $sth->execute();			
-		if (!$exito){
-			$resp['success']=false;
-			$error=$sth->errorInfo();
-			$msg    = $error[2];					
-			$resp['success']=false;
-			$resp['msg']=$msg;
-			return $resp;
-		}
+		if (!$exito) return $this->getError($sth);
 		
 		//borrar
 		return array(

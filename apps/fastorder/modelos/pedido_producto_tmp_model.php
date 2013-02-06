@@ -31,13 +31,11 @@ class PedidoProductoTmpModel extends Modelo{
 			$sth->bindValue(":cantidad", $cantidad,PDO::PARAM_INT);
 			$sth->bindValue(":fk_pedido", $fk_pedido,PDO::PARAM_INT);			
 			$sth->bindValue(":fk_tmp", $fk_tmp,PDO::PARAM_STR);						
-			$sth->bindValue(":id", $id, PDO::PARAM_INT);
-			
+			$sth->bindValue(":id", $id, PDO::PARAM_INT);			
 			$sth->bindValue(":maximo", $maximo,PDO::PARAM_INT);			
 			$sth->bindValue(":minimo", $minimo,PDO::PARAM_INT);			
 			$sth->bindValue(":puntoreorden", $puntoreorden,PDO::PARAM_INT);			
-			$sth->bindValue(":existencia", $existencia,PDO::PARAM_INT);			
-			
+			$sth->bindValue(":existencia", $existencia,PDO::PARAM_INT);						
 			$msg='registro Creado';							
 		}else{
 			//	         ACTUALIZAR
@@ -49,18 +47,16 @@ class PedidoProductoTmpModel extends Modelo{
 			$sth->bindValue(":idarticulopre", $idarticulopre,PDO::PARAM_INT);			
 			$sth->bindValue(":cantidad", $cantidad,PDO::PARAM_INT);
 			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
-			$sth->bindValue(":fk_tmp", $fk_tmp,PDO::PARAM_STR);			
-			
+			$sth->bindValue(":fk_tmp", $fk_tmp,PDO::PARAM_STR);						
 			$sth->bindValue(":maximo", $maximo,PDO::PARAM_INT);			
 			$sth->bindValue(":minimo", $minimo,PDO::PARAM_INT);			
 			$sth->bindValue(":puntoreorden", $puntoreorden,PDO::PARAM_INT);			
 			$sth->bindValue(":existencia", $existencia,PDO::PARAM_INT);
 			$msg='registro Actualizado';		
-		}
-			
+		}		
 		$exito = $sth->execute();
 		
-		if (!$exito){			
+		if (!$exito){
 			$resp['success']=false;
 			$error=$sth->errorInfo();
 			$msg    = $error[2];
@@ -102,7 +98,7 @@ class PedidoProductoTmpModel extends Modelo{
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
 		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre, prod.codigo codigo, 
-		sto.maximo, sto.minimo, sto.puntoreorden, sto.existencia,cantidad pedido ,sto.puntoreorden - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- cantidad) pendiente,
+		sto.maximo, sto.minimo, sto.puntoreorden, pedprod.existencia,cantidad pedido ,sto.puntoreorden - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- cantidad) pendiente,
 		sto.idgrupo, sto.grupoposicion, gpo.nombre nombreGpo
 		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id

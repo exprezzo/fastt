@@ -15,7 +15,7 @@
 		tab.addClass('listaPedidos');
 		
 		var tab=$('a[href="'+tabId+'"]');
-		tab.html('Pedidos');
+		tab.html('Pedidos Internos');
 		tab.parent().addClass('listaPedidos');
 		tab.addClass('listaPedidos');
 		
@@ -174,21 +174,21 @@
 			columns: [ 
 				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },								
 				{ dataKey: "estado", hidden:true, visible:false, headerText: "estado" },								
-				{dataKey: "idestado", headerText: "Estado",width:'20px',
+				{dataKey: "idestado", headerText: "Estado",width:'12%',
 					cellFormatter: function (args) { 
                             if (args.row.type & $.wijmo.wijgrid.rowType.data) { 
                                 args.$container 
                                     .css("text-align", "center") 
                                     .empty() 
-                                    .append($("<div title='"+args.row.data.estado+"'/>") 
+                                    .append($("<div title='"+args.row.data.estado+"'></div><span style='background:none;vertical-align:midle;margin-left:6px;'>"+args.row.data.estado+"</div>") 
                                     .addClass('estado_pedido_'+args.row.data.idestado)); 
 								//args.row.data.Cover
                                 return true; 
                             } 
                         }  
 				}, 
-				{ dataKey: "serie",  headerText: "Serie" },
-				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'60%' }, 				
+				{ dataKey: "serie",  headerText: "Serie Folio" },
+				{dataKey: "nombreAlmacen", headerText: "Almac&eacute;n",width:'48%' }, 				
 				{dataKey: "fecha", headerText: "Fecha",width:'20%' },
 				{dataKey: "vencimiento", headerText: "Vencimiento",width:'20%' }
 				],
