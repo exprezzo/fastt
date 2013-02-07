@@ -141,7 +141,7 @@
 				'estimado' 		=>'01:00',
 				'modulo' 		=>'Pedido Interno',
 				'h_inicio'	 	=>'14:51',
-				'h_fin'	 		=>'',
+				'h_fin'	 		=>'04:09',
 				'duracion'  	=>'',
 				'diferencia'	=>''				
 			);

@@ -61,14 +61,17 @@ var EdicionArticulo=function (tabId){
 			}
 		});		
 		
-		// $(me.tabId+' .frmEditInlinePedido .txtPendiente').bind('keydown', function(e) {
-			// var code = e.keyCode || e.which;
-			// code=parseInt(code);
-			// if (code == 9) {
-				
-				// $(me.tabId+' .cmbCodigoWrap input').focus();
-			// }
-		// });
+		$(me.tabId+' .frmEditInlinePedido .txtPendiente').bind('keydown', function(e) {
+			e.preventDefault();
+			var code = e.keyCode || e.which;
+			code=parseInt(code);
+			if (code == 9) {				
+				//$(me.tabId+" input[name='vencimiento']").focus()
+				 var inputs=$(me.tabId+' .cmbCodigo + div[role="combobox"] input');
+				 $(inputs[0]).focus();
+				 me.guardar();
+			}
+		});
 		
 		
 	};
@@ -247,10 +250,8 @@ var EdicionArticulo=function (tabId){
 				
 				
 				//
-				var siguiente=parseInt(iActual)+1;
-				
-				if (siguiente>-1){
-					
+				var siguiente=parseInt(iActual)+1;				
+				if (siguiente>-1){					
 					var data = $(me.tabId+" .grid_articulos").wijgrid("data");										
 					var siguiente=parseInt(iActual)+1;
 					if (data[siguiente] != undefined){
