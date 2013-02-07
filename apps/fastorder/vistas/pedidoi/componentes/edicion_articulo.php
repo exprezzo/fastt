@@ -11,23 +11,21 @@
 	<form>
 		<input type="hidden" class="txtId" />
 		<!--input readonly="true" type="text" class="txtCodigo" placeholder="Codigo" style="display:inline-block;width:200px;"/-->
-		<div class="cmbCodigoWrap" style="display:inline-block;"  >
+		
 			<select class="cmbCodigo" placeholder="codigo">			
 				<option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 			</select>				
-		</div>
 		
+		<select class="cmbArticulo" placeholder="Articulo" itemId='cmbArticulo'>			
+		</select>				
 		<input readonly="true" placeholder="Presentacion"  class="txtPresentacion"/>
 			
 		<input readonly="true" placeholder="maximo" class="txtMaximo"/>
 		<input readonly="true" placeholder="minimo" class="txtMinimo"/>
 		<input readonly="true" placeholder="reorden" class="txtPuntoReorden"/>
-
-		<select class="cmbArticulo" placeholder="Articulo" itemId='cmbArticulo'>			
-		</select>				
-		<input placeholder="existencia" class="txtExistencia" value="0"    />
+		<input placeholder="existencia" class="txtExistencia" value="0" />
 		<input readonly="true" placeholder="sugerido" class="txtSugerido"/>
-		<input placeholder="cantidad pedida" class="txtPedido" style="z-index:9;" />
+		<input placeholder="cantidad pedida" class="txtPedido"/>
 		<input readonly="true" placeholder="pendiente" class="txtPendiente"/>		
 		<input type="hidden" class="txtFkArticulo" />
 		<input type="hidden" class="txtIdArticuloPre" />
