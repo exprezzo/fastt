@@ -98,7 +98,7 @@ class PedidoProductoTmpModel extends Modelo{
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
 		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre, prod.codigo codigo, 
-		sto.maximo, sto.minimo, sto.puntoreorden, pedprod.existencia,cantidad pedido ,sto.puntoreorden - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- cantidad) pendiente,
+		sto.maximo, sto.minimo, sto.puntoreorden, pedprod.existencia,cantidad pedido ,sto.maximo - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- cantidad) pendiente,
 		sto.idgrupo, sto.grupoposicion, gpo.nombre nombreGpo
 		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id

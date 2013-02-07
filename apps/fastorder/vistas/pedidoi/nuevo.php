@@ -67,18 +67,21 @@
 					<select class="cmbAlmacen" style='width:170px;'>			
 					</select>
 				</div>		
+				<div class="inputBox" style='margin-bottoms:5px;display:inline;'>							
+					<button class="btnCargarArticulos" >Cargar Articulos</button>
+				</div>		
 				<div class="inputBox" style='margin-bottoms:5px;display:inline;margin-left:10px;'>		
 					<label style="width:auto;">Serie:</label>
-					<select class="cmbSerie" style='width:170px;'>			
+					<select class="cmbSerie" style='width:70px;'>			
 					</select>
 				</div>	
 				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
 					<label style="width:auto;">Folio:</label>
-					<input readonly="readonly" type='text' name='folo' class="txtFolio" value="<?php echo $folio; ?>" style="width:50px;" />
+					<input readonly="readonly" type='text' name='folo' class="txtFolio" value="<?php echo $folio; ?>" style="width:70px;text-align:right;" />
 				</div>
 				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
 					<label style="width:auto;">Fecha:</label>
-					<input type='text' name='fecha' class="txtFecha" value="<?php echo $fecha; ?>" autofocus />
+					<input type='text' name='fecha' class="txtFecha" style='width:150px;' value="<?php echo $fecha; ?>" autofocus />
 				</div>
 				
 				<div class="inputBox" style='margin-bottom:8px;display:inline;height:26px;margin-left:10px;'>

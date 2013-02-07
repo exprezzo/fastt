@@ -95,7 +95,7 @@
 							image: '/web/apps/fastorder/images/info.png',
 							class_name: 'my-sticky-class'
 						});
-						console.log("cmd"	); console.log(cmd);
+						
 					break;
 					case 'imprimir':
 						alert("Imprimir en construcción");

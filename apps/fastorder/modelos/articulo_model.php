@@ -1,21 +1,30 @@
 <?php
 class ArticuloModel extends Modelo{
+	function buscarPorCodigo(){
 	
-	function paginar($start=0, $pageSize=9, $idalmacen=0){
-		$sql='select COUNT(id) as total FROM productos';
+	}
+	function paginar($start=0, $pageSize=9, $idalmacen=0, $codigo=''){
+		$sql='select COUNT(id) as total FROM productos WHERE codigo like :codigo';
 		$model=$this;
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
-		$datos=$model->execute($sth);
+		$sth->bindValue(':codigo','%'.$codigo.'%', PDO::PARAM_STR);
 		
-		$total=$datos['datos'][0]['total'];
+		$exito=$sth->execute();
+		if (!$exito) return $this->getError($sth);
+		
+		$datos =$sth->fetchAll(PDO::FETCH_ASSOC);
+		
+		
+		$total=$datos[0]['total'];
 		
 		$sql='SELECT pro.id, pro.nombre,pro.codigo, 
 		pre.idarticulopre, pre.descripcion presentacion,
 		sto.existencia, minimo, maximo, puntoreorden,idgrupo, grupoposicion
-		FROM productos pro
+		FROM productos pro 
 		LEFT JOIN articulopre pre ON pre.idarticulo=pro.id and pre.default=1
 		LEFT JOIN articulostock sto ON sto.idarticulo=pro.id and idalmacen=:idalmacen
+		WHERE pro.codigo like :codigo
 		LIMIT :start,:limit';
 		
 		$con=$model->getConexion();
@@ -23,12 +32,15 @@ class ArticuloModel extends Modelo{
 		$sth->bindValue(':start',$start, PDO::PARAM_INT);
 		$sth->bindValue(':limit',$pageSize, PDO::PARAM_INT);
 		$sth->bindValue(':idalmacen',$idalmacen, PDO::PARAM_INT);
+		$sth->bindValue(':codigo','%'.$codigo.'%', PDO::PARAM_STR);
 		
-		$datos=$model->execute($sth);
+		$exito=$sth->execute();
+		if ( !$exito) return $this->getError($sth);
 		
+		$datos =$sth->fetchAll(PDO::FETCH_ASSOC);
 		return array(
-			'total'=>$total,
-			'datos'=>$datos['datos']
+			'totalRows'=>$total,
+			'rows'=>$datos
 		);
 	}
 	

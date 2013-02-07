@@ -24,6 +24,33 @@ class PedidoModel extends Modelo{
 		);
 	}	
 	
+	function precargar($fk_tmp,$fk_pedido, $idalmacen){
+		$sql='DELETE FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
+		$con = $this->getConexion();
+		$sth = $con->prepare($sql);		
+		$sth->bindValue(':fk_tmp',$fk_tmp);				
+		$exito = $sth->execute();				
+		if (!$exito) return $this->getError($sth);
+		
+		$sql='INSERT INTO tmp_pedidos_productos (id, fk_articulo, fk_pedido,cantidad, idarticulopre, fk_tmp,maximo,minimo,existencia,puntoreorden)
+		SELECT 0 as id,stk.idarticulo as fk_articulo,:fk_pedido as fk_pedido, existencia as cantidad, pre.idarticulopre as idarticulopre,
+		:fk_tmp  fk_tmp, stk.maximo, stk.minimo, stk.existencia,stk.puntoreorden
+		FROM articulostock  stk
+		LEFT JOIN productos p ON p.id = stk.idarticulo
+		LEFT JOIN articulopre pre ON pre.idarticulo = stk.idarticulo AND pre.default=1
+		WHERE idalmacen=:idalmacen';
+		$sth = $con->prepare($sql);
+		$sth->bindValue(':fk_tmp',$fk_tmp);				
+		$sth->bindValue(':idalmacen',$idalmacen);				
+		$sth->bindValue(':fk_pedido',$fk_pedido);				
+		$exito = $sth->execute();				
+		if (!$exito) return $this->getError($sth);
+		
+		
+		
+		return array('success'=>true);
+	}
+	
 	function editar($idPedido){
 		$mod=$this->obtener($idPedido);		
 		$id_tmp=uniqid();

@@ -186,7 +186,7 @@ var EdicionPedido = function(){
 			loaded: function (data) {				
 				var val=parseInt( $('#tabs '+tabId+' .txtFkSerie').val() );								
 				$.each(data.items, function(index, datos) {					
-					// console.log(datos);
+					
 					// alert(tabId);
 					if (val !=0 ){
 						if (val==parseInt(datos.value) ){
@@ -232,7 +232,7 @@ var EdicionPedido = function(){
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
 			select: function (e, item) {
-				//console.log('item'); console.log(item); 
+				
 				$(tabId+' .txtFkSerie').val(item.value);
 				$(tabId+' .txtFolio').val(item.sig_folio);
 			}
@@ -310,6 +310,28 @@ var EdicionPedido = function(){
 	this.configurarFormulario=function(tabId){
 		$('#tabs '+tabId+' .txtFecha').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
 		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
+		var me=this;
+		$(tabId+' .btnCargarArticulos').click(function(e){
+			e.preventDefault();			
+			var params={
+				 idtmp:$(me.tabId+' .txtIdTmp').val(),
+				 idalmacen:$(me.tabId+' .txtFkAlmacen').val(),
+				 pedidoid:$(me.tabId+' .txtId').val()
+			};
+			$.ajax({
+				type: "POST",
+				url: '/'+kore.modulo+'/pedidoi/precargar',
+				data: params
+			}).done(function( response ) {				
+				var resp = eval('(' + response + ')');
+				if ( resp.success == true	){
+					var gridPedidos=$(me.tabId+" .grid_articulos");
+					gridPedidos.wijgrid('ensureControl', true);					
+				}
+			
+			});
+		});		
+		
 		//COMBO
 		
 		

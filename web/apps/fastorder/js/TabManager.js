@@ -38,9 +38,7 @@ var TabManager={
 			url: url,
 			data: { tabId:tabId, pedidoId:id }
 		}).done(function( response, b, c , d ) {
-			console.log(b);
-			console.log(c);
-			console.log(d);
+			
 			//alert(tabId);
 			 $('#'+ tabId ).html(response);				
 			 $tabs.wijtabs('select',tabId);			

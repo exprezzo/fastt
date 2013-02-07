@@ -10,13 +10,12 @@
 
 	<form>
 		<input type="hidden" class="txtId" />
-		<input readonly="true" type="text" class="txtCodigo" placeholder="Codigo" style="display:inline-block;width:200px;"/>
-		<select class="cmbArticulo" placeholder="Articulo">
-			<option value="1">a</option>
-			<option value="2">b</option>
-			<option value="3">c</option>
-			<option value="4">d</option>
-		</select>						
+		<!--input readonly="true" type="text" class="txtCodigo" placeholder="Codigo" style="display:inline-block;width:200px;"/-->
+		<select class="cmbCodigo" placeholder="codigo">			
+			<option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+		</select>				
+		<select class="cmbArticulo" placeholder="Articulo">			
+		</select>				
 		<input readonly="true" placeholder="Presentacion"  class="txtPresentacion"/>
 			
 		<input readonly="true" placeholder="maximo" class="txtMaximo"/>

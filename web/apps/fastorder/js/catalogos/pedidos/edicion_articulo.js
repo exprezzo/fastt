@@ -7,6 +7,7 @@ var EdicionArticulo=function (tabId){
 		this.configurarFormulario(tabId);	
 		this.configurarGrid(tabId);	
 		this.configurarComboDestino(tabId);
+		this.configurarComboCodigo();
 		this.configurarToolbar(tabId);		
 		var me=this;
 		
@@ -36,8 +37,29 @@ var EdicionArticulo=function (tabId){
 		
 		//$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox({});
 		this.configurarComboUM();
+		$(me.tabId+' .frmEditInlinePedido .txtExistencia').change(function(){
+			me.calcularSugerencia();
+		});
 		
+		$(me.tabId+' .frmEditInlinePedido .txtPedido').change(function(){
+			me.calcularSugerencia();
+		});
 		
+	};
+	this.calcularSugerencia=function(){
+		var me=this;
+		var reorden=parseInt( $(me.tabId+' .frmEditInlinePedido .txtPuntoReorden').val() );
+		var existencia=parseInt( $(me.tabId+' .frmEditInlinePedido .txtExistencia').val() );
+		var maximo=parseInt( $(me.tabId+' .frmEditInlinePedido .txtMaximo').val() );
+		var sugerido=0;
+		var pendiente=0;
+		if (existencia<=reorden){
+			sugerido = maximo-existencia;
+			var pedido=$(me.tabId+' .frmEditInlinePedido .txtPedido').val();
+			pendiente= sugerido - pedido;
+		}
+		$(me.tabId+' .frmEditInlinePedido .txtSugerido').val(sugerido);
+		$(me.tabId+' .frmEditInlinePedido .txtPendiente').val(pendiente);
 	};
 	this.configurarComboArticulo=function(){
 		//alert("asd");
@@ -71,7 +93,7 @@ var EdicionArticulo=function (tabId){
 		
 		var datasource = new wijdatasource({
 			reader:  new wijarrayreader(fields),
-			proxy: proxy,
+			proxy: proxy,	
 			loaded: function (data) {				
 				// var val=$('#tabs '+tabId+' .txtFkAlmacen').val();
 				// $.each(data.items, function(index, datos) {					
@@ -84,7 +106,7 @@ var EdicionArticulo=function (tabId){
 				 
 				 dataSource.proxy.options.data=dataSource.proxy.options.data || {};
 				 dataSource.proxy.options.data.idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();		
-            },
+            }
 		});
 		
 		// datasource.proxy.options.data={
@@ -126,15 +148,25 @@ var EdicionArticulo=function (tabId){
 				$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
 				$('#tabs '+tabId+' .txtIdArticuloPre').val(item.idarticulopre);
 				$('#tabs '+tabId+' .txtPresentacion').val(item.presentacion);
-				$('#tabs '+tabId+' .txtCodigo').val(item.codigo);
-				//$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
+				
+				var testArray = [
+					{value:item.value,label:item.codigo}
+				];
+				 var data=$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data');				
+				 data.data=testArray;
+				 data.items=testArray;
+				
+				 $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data',data);
+				 $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','selectedIndex',0);				
+				$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','text',item.codigo);
+				
 				$('#tabs '+tabId+' .txtMaximo').val(item.maximo);
 				$('#tabs '+tabId+' .txtMinimo').val(item.minimo);
 				$('#tabs '+tabId+' .txtPuntoReorden').val(item.puntoreorden);
 				$('#tabs '+tabId+' .txtExistencia').val(item.existencia);
 				
 				var sugerido=0;
-				console.log("item"); console.log(item)
+				
 				sugerido= parseInt(item.puntoreorden) -  parseInt(item.existencia);				
 				$('#tabs '+tabId+' .txtSugerido').val(sugerido);
 				
@@ -351,6 +383,113 @@ var EdicionArticulo=function (tabId){
 		// this.configurarComboUM(tabId);
 	};
 	
+	this.configurarComboCodigo=function(){		
+		var tabId=this.tabId;
+		var me=this;
+		var fields=[			
+			{name: 'presentacion'},
+			{name: 'idarticulopre'},
+			{name: 'nombre'},
+			{name: 'existencia'},
+			{name: 'minimo'},
+			{name: 'maximo'},
+			{name: 'puntoreorden'},
+		{
+			name: 'label',
+			mapping: 'codigo'
+		}, {
+			name: 'value',
+			mapping: 'id'
+		}, {
+			name: 'selected',
+			defaultValue: false
+		}];
+		
+		var myReader = new wijarrayreader(fields);
+		
+		var proxy = new wijhttpproxy({
+			url: '/'+kore.modulo+'/pedidoi/getCodigos',
+			dataType:"json"			
+		});
+		
+		var datasource = new wijdatasource({
+			reader:  new wijarrayreader(fields),
+			proxy: proxy,
+			loaded: function (data) {	
+							
+			},
+			loading: function (dataSource, userData) {                            				
+				 
+				 dataSource.proxy.options.data=dataSource.proxy.options.data || {};
+				 dataSource.proxy.options.data.idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();		
+            }
+		});
+		
+		datasource.reader.read= function (datasource) {			
+			var totalRows=datasource.data.totalRows;			
+			datasource.data = datasource.data.rows;
+			datasource.data.totalRows = totalRows;
+			myReader.read(datasource);
+		};			
+		
+		datasource.load();	
+		
+		var combo=$(tabId+' .cmbCodigo').wijcombobox({
+			data: datasource,
+			showTrigger: true,
+			minLength: 1,
+			forceSelectionText: false,
+			autoFilter: true,
+			// animationOptions: {
+				// animated: "Drop",
+				// duration: 1000
+			// },
+			
+			search: function (e, obj) {
+				
+			},
+			select: function (e, item) 
+			{			
+				//me.articuloSeleccionado=item;
+				
+				$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
+				$('#tabs '+tabId+' .txtIdArticuloPre').val(item.idarticulopre);
+				$('#tabs '+tabId+' .txtPresentacion').val(item.presentacion);
+				
+				
+				
+				
+				var testArray = [
+					{value:item.value, label:item.nombre}
+				];
+				var data=$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','data');				
+				
+				data.data=testArray;
+				data.items=testArray;
+				//console.log(data);
+				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','data',data);
+				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
+				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','text',item.nombre);				
+				
+				
+				
+				//$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
+				$('#tabs '+tabId+' .txtMaximo').val(item.maximo);
+				$('#tabs '+tabId+' .txtMinimo').val(item.minimo);
+				$('#tabs '+tabId+' .txtPuntoReorden').val(item.puntoreorden);
+				$('#tabs '+tabId+' .txtExistencia').val(item.existencia);
+				
+				var sugerido=0;
+				
+				sugerido= parseInt(item.puntoreorden) -  parseInt(item.existencia);				
+				$('#tabs '+tabId+' .txtSugerido').val(sugerido);
+				
+				$('#tabs '+tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
+				$('#tabs '+tabId+' .frmEditInlinePedido .txtPendiente').val(0); 
+			}
+		});
+						
+	};
 	this.configurarComboUM=function(){		
 		var tabId=this.tabId;
 		var fields=[{
@@ -402,7 +541,7 @@ var EdicionArticulo=function (tabId){
 				animated: "Drop",
 				duration: 1000
 			},
-			//forceSelectionText: true,
+			
 			search: function (e, obj) {
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
@@ -464,7 +603,7 @@ var EdicionArticulo=function (tabId){
 				// animated: "Drop",
 				// duration: 1000
 			// },
-			forceSelectionText: true,
+			forceSelectionText: false,
 			search: function (e, obj) {
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
@@ -494,7 +633,7 @@ var EdicionArticulo=function (tabId){
 		$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", '');			
 		$(me.tabId+' .frmEditInlinePedido .txtIdArticuloPre').val(0);
 		$(me.tabId+' .frmEditInlinePedido .txtPresentacion').val(''); //
-		$(me.tabId+' .frmEditInlinePedido .txtCodigo').val(''); //
+		//$(me.tabId+' .frmEditInlinePedido .txtCodigo').val(''); //
 		
 		var position = $(me.tabId+' table.grid_articulos thead > tr').position();				
 		var h = $(me.tabId+' table.grid_articulos thead > tr').height();
@@ -521,14 +660,28 @@ var EdicionArticulo=function (tabId){
 			
 			$(this.tabId+' .frmEditInlinePedido .txtFkArticulo').val(this.selected.fk_articulo);				
 			$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", this.selected.nombre);			
+			$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", this.selected.codigo);			
+			
+			// var testArray = [
+				// {value:this.selected.fk_articulo,label:this.selected.nombre, id:this.selected.fk_articulo,nombre:this.selected.nombre}
+			// ];
+			// var data=$('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data');				
+			// data.data=testArray;
+			// data.items=testArray;
+			// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data',data);
+			// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
+				
+			
 			$(this.tabId+' .frmEditInlinePedido .txtIdArticuloPre').val(this.selected.idarticulopre);
 			$(this.tabId+' .frmEditInlinePedido .txtPresentacion').val(this.selected.presentacion); //
-			$(this.tabId+' .frmEditInlinePedido .txtCodigo').val(this.selected.codigo); 
+			//$(this.tabId+' .frmEditInlinePedido .txtCodigo').val(this.selected.codigo); 
 			
 			var sugerido = parseInt(this.selected.puntoreorden) - parseInt(this.selected.existencia);
 			$(this.tabId+' .frmEditInlinePedido .txtSugerido').val(sugerido); 
 			//$(this.tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
 			$(this.tabId+' .frmEditInlinePedido .txtPendiente').val(sugerido - this.selected.pedido); 
+			
+			this.calcularSugerencia();
 		}
 		
 		this.mostrarEditor();

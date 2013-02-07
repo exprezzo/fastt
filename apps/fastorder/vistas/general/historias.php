@@ -7,7 +7,9 @@
 <script>
 	$(function(){
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
-		var selectorTab='#'+tabId;					
+		var selectorTab='#'+tabId;	
+		
+		$(selectorTab + " .tareas_sprint").wijgrid();
 	});
 </script>
 <style>
@@ -22,76 +24,161 @@
 </style>
 <h3>Sprint </h3>
 2013 02 05 Minuta
-<table>
-	<tr>
-		<td>M&oacute;dulo</td><td>Descripci&oacute;n</td><td>Estado</td><td>Hora Inicio</td><td>Hora Final</td><td>Responsable</td><td>Tiempo Invertido</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td>
-		<td>Pedido, el nombre correcto del primer m&oacute;dulo es "Pedido Interno" para que se corriga en las pantallas.<br>Agrege el folio y la serie al encabezado.</td>
-		<td>proceso</td>
-		<td>10:10 am</td>
-		<td>10:55 am</td>
-		<td>Cesar</td>
-		<td>00:45</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td>
-		<td>En los filtros de Pedido Interno Cuando no se estable fecha final pero si vencimiento mostrar todos a partir de fecha vencimiento.</td>
-		<td>Sin ver</td>
-		<td>10:57 am</td>
-		<td>11:07 AM</td>
-		<td>Cesar</td>
-		<td>00:10</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td>
-		<td>Agregar titulo al estado en la lista de pedidos internos.</td>
-		<td>Sin ver</td>
-		<td>11:08 am</td>
-		<td>11:17 am</td>
-		<td>Cesar</td>
-		<td>00:09</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td>
-		<td>Solo se puede modificar pedidos internos que esten en estado solicitado, se pudiera abrir de solo lectura pero no modificar.</td>
-		<td>Sin ver</td>
-		<td>11:19 am</td>
-		<td>11:29 am</td>
-		<td>Cesar</td>
-		<td>00:10</td>
-	</tr>
-	<tr>
-		<td>Pedido Interno</td>
-		<td>El Inventario Inical se almacenr&aacute; en su registro corresponidente del stock del almacen una vez que se guarde el pedido interno.</td>
-		<td>Sin ver</td>
-		<td>11:29 am</td>
-		<td>12:25</td>
-		<td>Cesar</td>
-		<td>00:56</td>
-	</tr>
-	
+<table class="tareas_sprint">
+	<thead>
+		<tr>
+			<td>Estado</td><td>M&oacute;dulo</td><td>Descripci&oacute;n</td><td>Hora Inicio</td><td>Hora Final</td><td>Responsable</td><td>Tiempo Invertido</td>
+		</tr>
+	</thead>
+		<tr>
+			<td>proceso</td>
+			<td>Pedido Interno</td>
+			<td>Pedido, el nombre correcto del primer m&oacute;dulo es "Pedido Interno" para que se corriga en las pantallas.<br>Agrege el folio y la serie al encabezado.</td>			
+			<td>10:10</td>
+			<td>10:55</td>
+			<td>Cesar</td>
+			<td>00:45</td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>En los filtros de Pedido Interno Cuando no se estable fecha final pero si vencimiento mostrar todos a partir de fecha vencimiento.</td>
+			
+			<td>10:57</td>
+			<td>11:07</td>
+			<td>Cesar</td>
+			<td>00:10</td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>Agregar titulo al estado en la lista de pedidos internos.</td>
+			
+			<td>11:08</td>
+			<td>11:17</td>
+			<td>Cesar</td>
+			<td>00:09</td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>Solo se puede modificar pedidos internos que esten en estado solicitado, se pudiera abrir de solo lectura pero no modificar.</td>
+			
+			<td>11:19</td>
+			<td>11:29</td>
+			<td>Cesar</td>
+			<td>00:10</td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>El Inventario Inical se almacenr&aacute; en su registro corresponidente del stock del almacen una vez que se guarde el pedido interno.</td>
+			
+			<td>11:29</td>
+			<td>12:25</td>
+			<td>Cesar</td>
+			<td>00:56</td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>sugerido = max - Inv_ini,  Si Inv_Ini <= Punto Reorden.
+				<br>Al modificar el campo Inv_ini o Pedido, recalcular.
+			</td>
+			
+			<td>12:30</td>
+			<td>01:10</td>
+			<td>Cesar</td>
+			<td>00:40</td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>Agregar boton al lado del combo almacen, al presionar, pre - cargar en el grid todos los articulos manejados por ese almacen.</td>
+			
+			<td>13:24</td>
+			<td>14:16</td>
+			<td>Cesar</td>
+			<td>00:52</td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>Pedido Interno - Permitir buscar articulos por codigo. (ligar con el combo articulo)</td>			
+			<td>16:07</td>
+			<td>18:21</td>
+			<td>Cesar</td>
+			<td>02:14</td>
+		</tr>
+		
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro.</td>
+			
+			<td></td>
+			<td></td>
+			<td>Cesar</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco.</td>
+			
+			<td></td>
+			<td></td>
+			<td>Cesar</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>Permitir agregar nuevos varias veces.</td>
+			
+			<td></td>
+			<td></td>
+			<td>Cesar</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>teclas ràpidas.</td>
+			
+			<td></td>
+			<td></td>
+			<td>Cesar</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Pedido Interno</td>
+			<td>cuando se modifique registro y se pretenda cerrar registro que te pregunte si deseas guardar los cambios, si, no y cancelar.</td>
+			
+			<td></td>
+			<td></td>
+			<td>Cesar</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Sin ver</td>
+			<td>Concentraci&oacute;n</td>
+			<td>Se mostrará una lista de los pedidos internos sin surtir(solicitado) se le permitirá al usuario seleccionar y correr el proceso
+			<br/>	de concentración que mostrará una ventana agrupando por grupo y por producto todos los registros de productos sim	ilares.
+			<br/>	Al final se tendrá una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
+			<br/>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden
+			</td>
+			
+			<td></td>
+			<td></td>
+			<td>Cesar</td>
+			<td></td>
+		</tr>
 </table>
 <ul>
-<li>Sugerido pedido interno = max - Inventario ini   Si Inv Ini <= Punto Reorden</li>
-	<li class="enproceso">Pedido Interno - Permitir buscar articulos por codigo.</li>
-	<li>Agregar boton al lado del combo almacen, al presionar, pre - cargar en el grid todos los articulos manejados por ese almacen</li>
-	<li>enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro.</li>
-	<li>teclas ràpidas.</li>
-	<p class="pendiente">Configuraci&oacute;n - Crear un modo de configuraci&oacute;n para jalar la serie y el folio que le sigue por almac&eacute;n.</p>
-	<li>Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco.</li>
-	<li>cuando se modifique registro y se pretenda cerrar registro que te pregunte si deseas guardar los cambios, si, no y cancelar.</li>
-	<li>Permitir agregar nuevos varias veces.</li>
-	<li>Permitir configurar si la información en un módulo se almacena en el cliente hasta que se de guardar o temporalmente en el servidor cada vez que cambias algún valor.</li>
-	<li>Agrupar las opciones en módulos de acuerdo a su uso por parte del usuario p ej. si soy almacenista veo info de articulso, pedidos, entradas y salida y si soy cobrador, nada más veo clientes y saldos.</li>
-	<li>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden</li>
-	<li><span>Concentración:Se mostrará una lista de los pedidos internos sin surtir(solicitado) se le permitirá al usuario seleccionar y correr el proceso
-		<br/>	de concentración que mostrará una ventana agrupando por grupo y por producto todos los registros de productos similares.
-		<br/>	Al final se tendrá una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
-	</li>
-	<li>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden</li>
-	<li><hr /></li>	
+	
+	<li><h4>Revisado: 05/feb/2013</h4><hr /><li>
 	<li class="listo">Pedido Interno - Agregar en el filtro el almac&eacute;n.</li>
 	<li class="listo">Pedido Interno - Agregar en el filtro la fecha vencimiento ( un solo campo y filtrar&aacute; de acuerdo a los pedidos internos cuya fecha de venccimiento sea mayor o igual a la fecha.)</li>
 	<li class="listo">Pedido Interno - Las fechas pueden quedar vac&iacute;as en los filtros de b&uacute;squeda.(12:00-2:20pm, 2hrs 20min)</li>
@@ -119,8 +206,11 @@
 <br>
 <h3>Backlog: </h3>
 <ul>	
-	<p class="pendiente">Al Logear preguntar la sucursal y el almac&eacute;n si se puede almacenar por default el &uacute;ltimo seleccionado.</p>
-	<p class="pendiente">Formatos de Impresi&oacute;n para pedido interno.</p>
+	<li>Permitir configurar si la información en un módulo se almacena en el cliente hasta que se de guardar o temporalmente en el servidor cada vez que cambias algún valor.</li>
+	<li>Agrupar las opciones en módulos de acuerdo a su uso por parte del usuario p ej. si soy almacenista veo info de articulso, pedidos, entradas y salida y si soy cobrador, nada más veo clientes y saldos.</li>
+	<li>Configuraci&oacute;n - Crear un modo de configuraci&oacute;n para jalar la serie y el folio que le sigue por almac&eacute;n.</li>	
+	<li>Al Logear preguntar la sucursal y el almac&eacute;n si se puede almacenar por default el &uacute;ltimo seleccionado.</li>
+	<li>Formatos de Impresi&oacute;n para pedido interno.</li>
 	<li>Quiero poder entrar al sistema, usando mi cuenta de twiter, facebook, gmail, o con la contrase&ntilde;a del sitio.</li>
 	<li>Como desarrollador, quiero documentacion que me ayude a desarrollar en el framework</li>
 	<li>Como usuario, quiero que el sistema mantenga un historial de mensajes (en especial los de error).</li>
@@ -130,17 +220,6 @@
 	<li>Como usuario, quiero poder configurar el tama&ntilde;o de grids dependiendo del dispositivo y orientacion de pantalla.</li>
 	<li>Como webmaster, quiero un historial de sucesos en especial de error, para supervisar y dar seguimiento.</li>
 </ul>
-<h3>Concentraci&oacute;n:</h3>
-<br/>
-Se mostrar&aacute; una lista de los pedidos internos sin surtir(solicitado) se le permitir&aacute; al usuario seleccionar y correr el proceso de concentraci&oacute;n que 
-mostrar&aacute; una ventana agrupando por grupo y por producto todos los registros de productos similares.
-<br/>
-sugerido en concentraci&oacute;n es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden
-<br/>
-Funcionar&aacute; bajo la configuraci&oacute;n de usabilidad geral.
-<br/>
-Al final se tendr&aacute; una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
-
 </div>
 <script type="text/javascript">
 $( function(){

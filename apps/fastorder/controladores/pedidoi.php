@@ -1,6 +1,7 @@
 <?php
 
 require_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_model.php';
+
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_stock_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/almacen_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/serie_model.php';
@@ -19,6 +20,28 @@ class Pedidoi extends Controlador{
 		return $this->verPedidos();
 	}
 	
+	function getCodigos(){
+		
+		$mod=new ArticuloModel();				
+		$start=0;		
+		$idalmacen=empty($_REQUEST['idalmacen'])? 0 :$_REQUEST['idalmacen'];
+		$res=$mod->paginar($start,90, $idalmacen, $codigo='');				
+		
+		echo json_encode($res);	
+	}
+	
+	
+	function precargar(){
+		$idalmacen=$_REQUEST['idalmacen'];
+		$idTmp=$_REQUEST['idtmp'];
+		$pedidoid=$_REQUEST['pedidoid'];
+		
+		$mod=$this->getModel();
+		$res=$mod->precargar($idTmp,$pedidoid, $idalmacen);
+		echo json_encode($res);
+		//Borra todos los temporales, carga los articulos de la tabla articulos stock
+		
+	}
 	function getSeries(){
 		$idAlmacen=$_GET['idalmacen'];
 		$mod=new SerieModel();		
@@ -93,11 +116,7 @@ class Pedidoi extends Controlador{
 		$idalmacen=empty($_REQUEST['idalmacen'])? 0 :$_REQUEST['idalmacen'];
 		$res=$mod->paginar($start,90, $idalmacen);				
 		
-		$respuesta=array(	
-			'rows'=>$res['datos'],
-			'totalRows'=> $res['total']
-		);
-		echo json_encode($respuesta);	
+		echo json_encode($res);	
 	}
 	function getUnidadesMedida(){
 	
