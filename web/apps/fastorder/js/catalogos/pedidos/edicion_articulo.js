@@ -17,6 +17,7 @@ var EdicionArticulo=function (tabId){
 		
 		$(this.tabId+' .frmEditInlinePedido .btnGuardar').click(function(){			
 			//$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');				
+			$(me.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(-2);
 			me.guardar();
 		});
 		
@@ -45,6 +46,17 @@ var EdicionArticulo=function (tabId){
 			me.calcularSugerencia();
 		});
 		
+		// $(me.tabId+' .frmEditInlinePedido input').unbind('onkeypress');		
+		// $(me.tabId+' .frmEditInlinePedido input').unbind('keydown');		
+//		 $(me.tabId+' .frmEditInlinePedido input').unbind('onkeydown');		
+		
+		//$(me.tabId+' .frmEditInlinePedido input').unbind('keypress');		
+		$(me.tabId+' .frmEditInlinePedido input').bind('keyup', function(e) {
+			if(e.keyCode==13){
+				//guardar cambios, buscar el siguiente.
+				me.guardar();
+			}
+		});		
 	};
 	this.calcularSugerencia=function(){
 		var me=this;
@@ -200,6 +212,11 @@ var EdicionArticulo=function (tabId){
 			fk_pedido	:$(this.tabId+' .frmPedidoi .txtId').val(),
 			fk_tmp		:$(this.tabId+' .frmPedidoi .txtIdTmp').val()
 		}
+		
+		var iActual=$(this.tabId+' .frmEditInlinePedido .txtDataItemIndex').val();
+		
+		var iActual=parseInt(iActual);
+		
 		var me=this;
 		$.ajax({
 			type: "POST",
@@ -215,9 +232,28 @@ var EdicionArticulo=function (tabId){
 				title= 'Success';
 				
 				
-				$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');								
-				$(me.tabId+' .grid_articulos').wijgrid('ensureControl', true);
+				//
+				var siguiente=parseInt(iActual)+1;
 				
+				if (siguiente>-1){
+					
+					var data = $(me.tabId+" .grid_articulos").wijgrid("data");										
+					var siguiente=parseInt(iActual)+1;
+					if (data[siguiente] != undefined){
+						me.selected=data[siguiente];
+						me.selected.dataItemIndex=siguiente;						
+						me.selected.editandoId=me.selected.id_tmp;
+						me.editar();
+					}else{
+						me.selected=data[0];
+						me.selected.dataItemIndex=0;						
+						me.selected.editandoId=me.selected.id_tmp;
+						me.editar();
+					}
+				}else{
+					$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');								
+				}
+				$(me.tabId+' .grid_articulos').wijgrid('ensureControl', true);				
 			}else{				
 				icon= '/web/apps/fastorder/images/error.png';
 				title= 'Error';					
@@ -326,7 +362,7 @@ var EdicionArticulo=function (tabId){
 			],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
-					args.$rows.attr('pedidoId',args.data.id);
+					args.$rows.attr('rowId',args.data.id_tmp);
 			},
 			cellStyleFormatter: function(args) { 
 			 if (args.column._originalDataKey=='fecha'){				
@@ -338,19 +374,29 @@ var EdicionArticulo=function (tabId){
 		var me=this;
 		
 		gridPedidos.wijgrid({ selectionChanged: function (e, args) { 					
+			
+			
 			var item=args.addedCells.item(0);
+			
 			var row=item.row();
+			console.log("row");
+			console.log(row);
 			var data=row.data;			
 			me.selected=data;			
+			me.selected.dataItemIndex=row.dataItemIndex;
 			
 		} });
 		
-		gridPedidos.wijgrid({ loaded: function (e) { 
-			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                
-							
-				var position = $(e.currentTarget).position();				
-				$(me.tabId+' .frmEditInlinePedido').css('visibility','visible');				
+		gridPedidos.wijgrid({ loaded: function (e) {
+			if (me.selected.editandoId != undefined){
+				var position = $(me.tabId + ' tr[rowId="'+me.selected.editandoId+'"]').position();				
 				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
+			}
+			
+		
+			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                
+				
+				
 		
 				// var w=$(me.tabId+' table.grid_articulos th:eq(0)').width();
 				// $(me.tabId+' .frmEditInlinePedido form  > input.txtCodigo').css('width',w-5);			
@@ -626,14 +672,24 @@ var EdicionArticulo=function (tabId){
 	};
 	this.nuevo=function(){		
 		var me=this;
+		
+		$(me.tabId+' .frmEditInlinePedido .txtIdTmp').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtMaximo').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtMinimo').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtExistencia').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtPedido').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtSugerido').val(0);
+		$(me.tabId+' .frmEditInlinePedido .txtPendiente').val(0);				
 		$(me.tabId+' .frmEditInlinePedido').css('top','38px');
-		$(me.tabId+' .frmEditInlinePedido .txtId').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',0);
+		$(me.tabId+' .frmEditInlinePedido .txtId').val(0);		
 		$(me.tabId+' .frmEditInlinePedido .txtFkArticulo').val(0);				
 		$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", '');			
+		$(me.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", '');					
 		$(me.tabId+' .frmEditInlinePedido .txtIdArticuloPre').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtPresentacion').val(''); //
-		//$(me.tabId+' .frmEditInlinePedido .txtCodigo').val(''); //
+		$(me.tabId+' .frmEditInlinePedido .txtPresentacion').val(''); 		
+		$(this.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(-1);
+		
 		
 		var position = $(me.tabId+' table.grid_articulos thead > tr').position();				
 		var h = $(me.tabId+' table.grid_articulos thead > tr').height();
@@ -646,44 +702,54 @@ var EdicionArticulo=function (tabId){
 	this.editar=function(){		
 		//Cargar los datos en el editor
 		
-		if (this.selected !=undefined){
-			
-			$(this.tabId+' .frmEditInlinePedido .txtId').val(this.selected.id);
-			$(this.tabId+' .frmEditInlinePedido .txtIdTmp').val(this.selected.id_tmp);
-			$(this.tabId+' .frmEditInlinePedido .txtPedido').val(this.selected.pedido);
-			$(this.tabId+' .frmEditInlinePedido .txtMaximo').val(this.selected.maximo);
-			$(this.tabId+' .frmEditInlinePedido .txtMinimo').val(this.selected.minimo);
-			$(this.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(this.selected.puntoreorden);
-			$(this.tabId+' .frmEditInlinePedido .txtExistencia').val(this.selected.existencia);
-			
-			//$(this.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',this.selected.cantidad);
-			
-			$(this.tabId+' .frmEditInlinePedido .txtFkArticulo').val(this.selected.fk_articulo);				
-			$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", this.selected.nombre);			
-			$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", this.selected.codigo);			
-			
-			// var testArray = [
-				// {value:this.selected.fk_articulo,label:this.selected.nombre, id:this.selected.fk_articulo,nombre:this.selected.nombre}
-			// ];
-			// var data=$('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data');				
-			// data.data=testArray;
-			// data.items=testArray;
-			// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data',data);
-			// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
-				
-			
-			$(this.tabId+' .frmEditInlinePedido .txtIdArticuloPre').val(this.selected.idarticulopre);
-			$(this.tabId+' .frmEditInlinePedido .txtPresentacion').val(this.selected.presentacion); //
-			//$(this.tabId+' .frmEditInlinePedido .txtCodigo').val(this.selected.codigo); 
-			
-			var sugerido = parseInt(this.selected.puntoreorden) - parseInt(this.selected.existencia);
-			$(this.tabId+' .frmEditInlinePedido .txtSugerido').val(sugerido); 
-			//$(this.tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
-			$(this.tabId+' .frmEditInlinePedido .txtPendiente').val(sugerido - this.selected.pedido); 
-			
-			this.calcularSugerencia();
-		}
+		if (this.selected ==undefined) return false;
 		
+			
+		$(this.tabId+' .frmEditInlinePedido .txtId').val(this.selected.id);
+		$(this.tabId+' .frmEditInlinePedido .txtIdTmp').val(this.selected.id_tmp);
+		$(this.tabId+' .frmEditInlinePedido .txtPedido').val(this.selected.pedido);
+		$(this.tabId+' .frmEditInlinePedido .txtMaximo').val(this.selected.maximo);
+		$(this.tabId+' .frmEditInlinePedido .txtMinimo').val(this.selected.minimo);
+		$(this.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(this.selected.puntoreorden);
+		$(this.tabId+' .frmEditInlinePedido .txtExistencia').val(this.selected.existencia);
+		
+		//$(this.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',this.selected.cantidad);
+		
+		$(this.tabId+' .frmEditInlinePedido .txtFkArticulo').val(this.selected.fk_articulo);				
+		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", this.selected.nombre);			
+		$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", this.selected.codigo);			
+		
+		$(this.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(this.selected.dataItemIndex);
+		
+		// var testArray = [
+			// {value:this.selected.fk_articulo,label:this.selected.nombre, id:this.selected.fk_articulo,nombre:this.selected.nombre}
+		// ];
+		// var data=$('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data');				
+		// data.data=testArray;
+		// data.items=testArray;
+		// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data',data);
+		// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
+		
+		var focused = $(':focus');
+		$(focused).select();
+		
+		$(this.tabId+' .frmEditInlinePedido .txtIdArticuloPre').val(this.selected.idarticulopre);
+		$(this.tabId+' .frmEditInlinePedido .txtPresentacion').val(this.selected.presentacion); //
+		//$(this.tabId+' .frmEditInlinePedido .txtCodigo').val(this.selected.codigo); 
+		
+		var sugerido = parseInt(this.selected.puntoreorden) - parseInt(this.selected.existencia);
+		$(this.tabId+' .frmEditInlinePedido .txtSugerido').val(sugerido); 
+		//$(this.tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
+		$(this.tabId+' .frmEditInlinePedido .txtPendiente').val(sugerido - this.selected.pedido); 
+		
+		this.calcularSugerencia();
+		
+		
+		var position = $(this.tabId + ' tr[rowId="'+this.selected.id_tmp+'"]').position();				
+		$(this.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
+		$(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
+		
+				
 		this.mostrarEditor();
 		
 	};
@@ -726,7 +792,7 @@ var EdicionArticulo=function (tabId){
 		
 				
 		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');						
-	//	$(this.tabId+' .frmEditInlinePedido .cmbUm').wijcombobox('repaint');				
+			$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox('repaint');				
 	};
 	// this.mostrarTabEdicionArticulo=function(){
 		// var data=this.selected;

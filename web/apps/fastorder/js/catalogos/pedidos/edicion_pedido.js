@@ -311,7 +311,9 @@ var EdicionPedido = function(){
 		$('#tabs '+tabId+' .txtFecha').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
 		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
 		var me=this;
-		$(tabId+' .btnCargarArticulos').click(function(e){
+		$( ".btnCargarArticulos" )
+		  .button()
+		  .click(function( e ) {			
 			e.preventDefault();			
 			var params={
 				 idtmp:$(me.tabId+' .txtIdTmp').val(),
@@ -330,7 +332,11 @@ var EdicionPedido = function(){
 				}
 			
 			});
-		});		
+		  });
+	  
+		// $(tabId+' .btnCargarArticulos').click(function(e){
+			
+		// });		
 		
 		//COMBO
 		

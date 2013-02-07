@@ -3,7 +3,7 @@
 	$(function(){
 		var  tabId="<?php echo $_REQUEST['tabId']; ?>";
 		var frmEdicionArticulo = new EdicionArticulo(tabId);
-		 frmEdicionArticulo.init(tabId);
+		frmEdicionArticulo.init(tabId);
 	});
 </script>
 <div class="frmEditInlinePedido" style="">
@@ -28,6 +28,7 @@
 		<input type="hidden" class="txtFkArticulo" />
 		<input type="hidden" class="txtIdArticuloPre" />
 		<input type="hidden" class="txtIdTmp" />
+		<input type="hidden" class="txtDataItemIndex" style="min-width:200px !important;" />
 	</form>
 	<div class="toolbarFormPedidoInline">
 

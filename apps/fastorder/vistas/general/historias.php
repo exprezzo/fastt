@@ -27,154 +27,198 @@
 <table class="tareas_sprint">
 	<thead>
 		<tr>
-			<td>Estado</td><td>M&oacute;dulo</td><td>Descripci&oacute;n</td><td>Hora Inicio</td><td>Hora Final</td><td>Responsable</td><td>Tiempo Invertido</td>
-		</tr>
-	</thead>
-		<tr>
-			<td>proceso</td>
-			<td>Pedido Interno</td>
-			<td>Pedido, el nombre correcto del primer m&oacute;dulo es "Pedido Interno" para que se corriga en las pantallas.<br>Agrege el folio y la serie al encabezado.</td>			
-			<td>10:10</td>
-			<td>10:55</td>
-			<td>Cesar</td>
-			<td>00:45</td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>En los filtros de Pedido Interno Cuando no se estable fecha final pero si vencimiento mostrar todos a partir de fecha vencimiento.</td>
+			<?php 
+			$tareas=array();
 			
-			<td>10:57</td>
-			<td>11:07</td>
-			<td>Cesar</td>
-			<td>00:10</td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>Agregar titulo al estado en la lista de pedidos internos.</td>
 			
-			<td>11:08</td>
-			<td>11:17</td>
-			<td>Cesar</td>
-			<td>00:09</td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>Solo se puede modificar pedidos internos que esten en estado solicitado, se pudiera abrir de solo lectura pero no modificar.</td>
 			
-			<td>11:19</td>
-			<td>11:29</td>
-			<td>Cesar</td>
-			<td>00:10</td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>El Inventario Inical se almacenr&aacute; en su registro corresponidente del stock del almacen una vez que se guarde el pedido interno.</td>
 			
-			<td>11:29</td>
-			<td>12:25</td>
-			<td>Cesar</td>
-			<td>00:56</td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>sugerido = max - Inv_ini,  Si Inv_Ini <= Punto Reorden.
-				<br>Al modificar el campo Inv_ini o Pedido, recalcular.
-			</td>
+			$tareas[]=array(				
+				'tarea'		 	=>'Pedido, el nombre correcto del primer m&oacute;dulo es "Pedido Interno" para que se corriga en las pantallas.
+			<br>Agrege el folio y la serie al encabezado.',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'10:10',
+				'h_fin'	 		=>'10:55',
+				'duracion'  	=>'00:45',
+				'diferencia'	=>''				
+			);
 			
-			<td>12:30</td>
-			<td>01:10</td>
-			<td>Cesar</td>
-			<td>00:40</td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>Agregar boton al lado del combo almacen, al presionar, pre - cargar en el grid todos los articulos manejados por ese almacen.</td>
+			$tareas[]=array(				
+				'tarea'		 	=>'En los filtros de Pedido Interno Cuando no se estable fecha final pero si vencimiento mostrar todos a partir de fecha vencimiento.',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'10:57',
+				'h_fin'	 		=>'11:07',
+				'duracion'  	=>'00:10',
+				'diferencia'	=>''				
+			);
 			
-			<td>13:24</td>
-			<td>14:16</td>
-			<td>Cesar</td>
-			<td>00:52</td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>Pedido Interno - Permitir buscar articulos por codigo. (ligar con el combo articulo)</td>			
-			<td>16:07</td>
-			<td>18:21</td>
-			<td>Cesar</td>
-			<td>02:14</td>
-		</tr>
-		
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro.</td>
 			
-			<td></td>
-			<td></td>
-			<td>Cesar</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco.</td>
+			$tareas[]=array(				
+				'tarea'		 	=>'Agregar titulo al estado en la lista de pedidos internos',
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'11:08',
+				'h_fin'	 		=>'11:17',
+				'duracion'  	=>'00:09',
+				'diferencia'	=>''				
+			);
+				
+			$tareas[]=array(				
+				'tarea'		 	=>'Solo se puede modificar pedidos internos que esten en estado solicitado, se pudiera abrir de solo lectura pero no modificar',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'11:19',
+				'h_fin'	 		=>'11:29',
+				'duracion'  	=>'00:10',
+				'diferencia'	=>''				
+			);
 			
-			<td></td>
-			<td></td>
-			<td>Cesar</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>Permitir agregar nuevos varias veces.</td>
+			$tareas[]=array(				
+				'tarea'		 	=>'El Inventario Inical se almacenr&aacute; en su registro corresponidente del stock del almacen una vez que se guarde el pedido interno',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'11:29',
+				'h_fin'	 		=>'12:25',
+				'duracion'  	=>'00:56',
+				'diferencia'	=>''				
+			);
 			
-			<td></td>
-			<td></td>
-			<td>Cesar</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>teclas ràpidas.</td>
+			$tareas[]=array(				
+				'tarea'		 	=>'sugerido = max - Inv_ini,  Si Inv_Ini <= Punto Reorden.
+			<br>Al modificar el campo Inv_ini o Pedido, recalcular',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'12:30',
+				'h_fin'	 		=>'01:10',
+				'duracion'  	=>'00:40',
+				'diferencia'	=>''				
+			);
 			
-			<td></td>
-			<td></td>
-			<td>Cesar</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Pedido Interno</td>
-			<td>cuando se modifique registro y se pretenda cerrar registro que te pregunte si deseas guardar los cambios, si, no y cancelar.</td>
+			$tareas[]=array(				
+				'tarea'		 	=>'Agregar boton al lado del combo almacen, al presionar, pre - cargar en el grid todos los articulos manejados por ese almacen',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'13:24',
+				'h_fin'	 		=>'14:16',
+				'duracion'  	=>'00:52',
+				'diferencia'	=>''				
+			);
 			
-			<td></td>
-			<td></td>
-			<td>Cesar</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Sin ver</td>
-			<td>Concentraci&oacute;n</td>
-			<td>Se mostrará una lista de los pedidos internos sin surtir(solicitado) se le permitirá al usuario seleccionar y correr el proceso
+			$tareas[]=array(				
+				'tarea'		 	=>'Pedido Interno - Permitir buscar articulos por codigo. (ligar con el combo articulo)',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'16:07',
+				'h_fin'	 		=>'18:21',
+				'duracion'  	=>'02:14',
+				'diferencia'	=>''				
+			);
+			
+			$tareas[]=array(				
+				'tarea'		 	=>'enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro',				
+				'responsable'	=>'',
+				'estimado' 		=>'2:00',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'10:30',
+				'h_fin'	 		=>'01:14',
+				'duracion'  	=>'02:44',
+				'diferencia'	=>''				
+			);
+			
+			$tareas[]=array(				
+				'tarea' 		=>'Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco',				
+				'responsable'	=>'',
+				'estimado' 		=>'',
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''				
+			);
+			
+			$tareas[]=array(				
+				'tarea'		 	=>'Permitir agregar nuevos varias veces',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''				
+			);
+			
+			$tareas[]=array(				
+				'tarea'		 	=>'teclas ràpidas.',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''				
+			);
+			
+			$tareas[]=array(				
+				'tarea'		 	=>'cuando se modifique registro y se pretenda cerrar registro que te pregunte si deseas guardar los cambios, si, no y cancelar',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Pedido Interno',
+				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''				
+			);
+			
+			$tareas[]=array(				
+				'tarea'		 	=>'Se mostrará una lista de los pedidos internos sin surtir(solicitado) se le permitirá al usuario seleccionar y correr el proceso
 			<br/>	de concentración que mostrará una ventana agrupando por grupo y por producto todos los registros de productos sim	ilares.
 			<br/>	Al final se tendrá una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
-			<br/>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden
-			</td>
+			<br/>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden',				
+				'responsable'	=>'',
+				'estimado' 		=>'',				
+				'modulo' 		=>'Concentraci&oacute;n',
+				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''				
+			);
 			
-			<td></td>
-			<td></td>
-			<td>Cesar</td>
-			<td></td>
+			?>		
+			<td>Tarea</td>
+			<td>Responsable</td>
+			<td>Estimaci&oacute;n</td>			
+			<td>M&oacute;dulo</td>
+			<td>Hora Inicio</td>
+			<td>Hora Final</td>
+			<td>Duraci&oacute;n</td>
+			<td>Diferencia de estimación</td>
 		</tr>
+	</thead>
+		<?php 
+			foreach($tareas as $tarea){
+				echo '<tr>
+			<td>'.$tarea['tarea'].'</td>
+			<td>'.$tarea['responsable'].'</td>
+			<td>'.$tarea['estimado'].'</td>			
+			<td>'.$tarea['modulo'].'</td>
+			<td>'.$tarea['h_inicio'].'</td>
+			<td>'.$tarea['h_fin'].'</td>
+			<td>'.$tarea['duracion'].'</td>
+			<td>'.$tarea['diferencia'].'</td>
+					</tr>';
+			}
+		?>
+		
 </table>
 <ul>
 	

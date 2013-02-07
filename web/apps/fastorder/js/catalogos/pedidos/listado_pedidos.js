@@ -180,7 +180,7 @@
                                 args.$container 
                                     .css("text-align", "center") 
                                     .empty() 
-                                    .append($("<div title='"+args.row.data.estado+"'></div><span style='background:none;vertical-align:midle;margin-left:6px;'>"+args.row.data.estado+"</div>") 
+                                    .append($("<div title='"+args.row.data.estado+"'></div><span style='background:none;vertical-align:middle;margin-left:6px;'>"+args.row.data.estado+"</div>") 
                                     .addClass('estado_pedido_'+args.row.data.idestado)); 
 								//args.row.data.Cover
                                 return true; 
