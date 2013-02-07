@@ -125,22 +125,22 @@
 			);
 			
 			$tareas[]=array(				
-				'tarea'		 	=>'enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro',				
+				'tarea'		 	=>'Navegacion con la tecla enter: <br />enter para captura ràpida y que se pase a la siguiente lìnea en la misma columna y si ya es la última automáticamente agregue un nuevo registro',				
 				'responsable'	=>'',
 				'estimado' 		=>'2:00',				
 				'modulo' 		=>'Pedido Interno',
-				'h_inicio'	 	=>'10:30',
-				'h_fin'	 		=>'01:14',
-				'duracion'  	=>'02:44',
+				'h_inicio'	 	=>'10:30-13:14',
+				'h_fin'	 		=>'14:00-14:46',
+				'duracion'  	=>'03:28',
 				'diferencia'	=>''				
 			);
 			
 			$tareas[]=array(				
-				'tarea' 		=>'Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco',				
+				'tarea' 		=>'Navegacion con tecla <b>Tab</b>:<br /> Si utilizó tabs en la captura que al llegar al final de una fila, automáticamente se pase a la siguiente y habilite captura de registro si hay uno sino que agregue un registro en blanco',				
 				'responsable'	=>'',
-				'estimado' 		=>'',
+				'estimado' 		=>'01:00',
 				'modulo' 		=>'Pedido Interno',
-				'h_inicio'	 	=>'',
+				'h_inicio'	 	=>'14:51',
 				'h_fin'	 		=>'',
 				'duracion'  	=>'',
 				'diferencia'	=>''				

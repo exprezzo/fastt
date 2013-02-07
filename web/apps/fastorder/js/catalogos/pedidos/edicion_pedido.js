@@ -14,11 +14,9 @@ var EdicionPedido = function(){
 		this.actualizarTitulo();
 	};
 	this.agregarClase=function(clase){
-		var tabId=this.tabId;
-		
+		var tabId=this.tabId;		
 		var tab=$('div'+this.tabId);						
-		tab.addClass(clase);
-		
+		tab.addClass(clase);		
 		tab=$('a[href="'+tabId+'"]');
 		tab.addClass(clase);
 	}

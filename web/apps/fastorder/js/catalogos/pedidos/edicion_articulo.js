@@ -52,11 +52,25 @@ var EdicionArticulo=function (tabId){
 		
 		//$(me.tabId+' .frmEditInlinePedido input').unbind('keypress');		
 		$(me.tabId+' .frmEditInlinePedido input').bind('keyup', function(e) {
+			var code = e.keyCode || e.which;
+			code=parseInt(code);
+	
 			if(e.keyCode==13){
 				//guardar cambios, buscar el siguiente.
 				me.guardar();
 			}
 		});		
+		
+		// $(me.tabId+' .frmEditInlinePedido .txtPendiente').bind('keydown', function(e) {
+			// var code = e.keyCode || e.which;
+			// code=parseInt(code);
+			// if (code == 9) {
+				
+				// $(me.tabId+' .cmbCodigoWrap input').focus();
+			// }
+		// });
+		
+		
 	};
 	this.calcularSugerencia=function(){
 		var me=this;
