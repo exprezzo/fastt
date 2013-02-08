@@ -159,23 +159,30 @@
 			
 			$tareas[]=array(				
 				'tarea'		 	=>'teclas ràpidas.<ul>				
-				<li>Ctrl + Alt + W: para cerrar pestaña</li>				
-				<li>Ctrl + Alt + N: Nuevo Registro</li>
-				<li>Ctrl + G: guardar</li>				
-				<li>Del: eliminar</li>				
 				
+				<li style="display:inline-block;"><h4>Crud</h4></li>				
+				<li class="listo">Ctrl + Alt + N: Nuevo Registro</li>
+				<li class="listo">Ctrl + G: guardar</li>				
+				<li class="listo">Del: eliminar</li>				
 				<li>Ctrl + P: imprimir</li>
 				<li>Ctrl + D: Duplicar</li>
 				<li>Ctrl + E: Enviar por correo</li>				
 				<li>Tecla Esc, para salir del editor</li>				
 				<li>Ctrl + A: Agregar nuevo detalle</li>								
+								
+				<li style="display:inline-block;"><h4>Navegacion en tabs</h4></li>
+				<li class="listo">Ctrl + Alt + W: para cerrar pestaña</li>				
+				<li>Ctrl + P: Sig Tab</li>
+				<li>Ctrl + P: Tab Anterior</li>
+				
+				
 				</ul>',				
 				'responsable'	=>'',
 				'estimado' 		=>'04:00',				
 				'modulo' 		=>'Pedido Interno',
 				'h_inicio'	 	=>'18:09',
 				'h_fin'	 		=>'21:47',
-				'duracion'  	=>'03:36',
+				'duracion'  	=>'xx:xx',
 				'diferencia'	=>''
 			);
 			
@@ -184,7 +191,7 @@
 				'responsable'	=>'',
 				'estimado' 		=>'03:00',				
 				'modulo' 		=>'Pedido Interno',
-				'h_inicio'	 	=>'',
+				'h_inicio'	 	=>'09:51',
 				'h_fin'	 		=>'',
 				'duracion'  	=>'',
 				'diferencia'	=>''				

@@ -23,9 +23,7 @@ shortcut = {
 		}
 
 		var ele = opt.target
-		if(typeof opt.target == 'string') ele = document.getElementById(opt.target);
-		console.log("opt.target"); console.log(opt.target);
-		console.log("ele"); console.log(ele);
+		if(typeof opt.target == 'string') ele = document.getElementById(opt.target);		
 		var ths = this;
 		shortcut_combination = shortcut_combination.toLowerCase();
 

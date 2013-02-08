@@ -2,10 +2,19 @@ var tab_counter = 1;
 var TabManager={
 	init:function(target){
 		$tabs = $(target).wijtabs({		   
-		   tabTemplate: '<li><a  href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>'		   
+		   tabTemplate: '<li><a  href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>',
+		    beforeremove: function (e, params) { 
+				//obtener el tab con ese index, ejecutarle la funcion beforeclose, si es que tiene
+				var tab=$(params.el).data('tabObj');
+				if (tab!=undefined && tab.close != undefined){
+					return tab.close();
+				}else{
+					return true;
+				}				
+			} 		   
 		});
 		this.tabs=$tabs;
-		// addTab button: opens the Add tab dialog box		
+
 		$('#tabs span.ui-icon-close').live('click', function () {
 			var index = $('li', $tabs).index($(this).parent());
 			$tabs.wijtabs('remove', index);
@@ -26,11 +35,11 @@ var TabManager={
 		if (id!=0){
 			if ( this.seleccionarTab(objId) == true)
 				return true;
-		}
+		}		
+		var res=$tabs.wijtabs('add','#'+ tabId, titulo);	//Los agrego antes de la peticion ajax.		
 		
 		tab_counter++;
 		
-		$tabs.wijtabs('add','#'+ tabId, titulo);	//Los agrego antes de la peticion ajax.
 		$('#'+ tabId ).attr('objId',objId);
 		if (iconCls!=undefined){
 			var tab=$('a[href="#'+tabId+'"]');
@@ -52,7 +61,20 @@ var TabManager={
 		if (tabListaPedidos.length == 0){
 			return false;
 		}else if (tabListaPedidos.length > 0){ //Seleccionar el tab											
+			
 			var tabs = $('#tabs > div[role="tabpanel"]');
+			//busca el indice del tab
+			var idTab=$(tabListaPedidos).attr('id');
+			
+			var tabs=$('#tabs > div');
+			for(var i=0; i<tabs.length; i++){
+				if ( $(tabs[i]).attr('id') == idTab ){					
+					$("#tabs").wijtabs('select', i);
+					return true;
+				}
+			}
+			
+			/*
 			$.each(tabs, function(index, element) {
 				var jElement = $(element);
 				//si el elemento tiene el atributo  [objId]==objId, seleccionar
@@ -87,7 +109,7 @@ var TabManager={
 						return true;
 					}
 				}				
-			});	
+			});	 */
 			return true;
 		}
 	}

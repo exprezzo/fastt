@@ -1,9 +1,9 @@
-<script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/edicion_articulo.js"></script>
+
 <script>
 	$(function(){
-		var  tabId="<?php echo $_REQUEST['tabId']; ?>";
-		var frmEdicionArticulo = new EdicionArticulo(tabId);
-		frmEdicionArticulo.init(tabId);
+		// var  tabId="<?php echo $_REQUEST['tabId']; ?>";
+		// var frmEdicionArticulo = new EdicionArticulo(tabId);
+		// frmEdicionArticulo.init(tabId);
 	});
 </script>
 <div class="frmEditInlinePedido" style="">

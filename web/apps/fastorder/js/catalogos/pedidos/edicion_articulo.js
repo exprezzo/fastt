@@ -1,9 +1,8 @@
 
 var EdicionArticulo=function (tabId){
-	this.init=function(tabId){		
-		tabId = '#'+tabId;				
+	this.init=function(tabId, padre){							
 		this.tabId=tabId;
-		
+		this.padre=padre;
 		this.configurarFormulario(tabId);	
 		this.configurarGrid(tabId);	
 		this.configurarComboDestino(tabId);
@@ -249,7 +248,7 @@ var EdicionArticulo=function (tabId){
 				title= 'Success';
 				
 				
-				//
+				me.padre.editado=true;
 				var siguiente=parseInt(iActual)+1;				
 				if (siguiente>-1){					
 					var data = $(me.tabId+" .grid_articulos").wijgrid("data");										
@@ -393,9 +392,7 @@ var EdicionArticulo=function (tabId){
 			
 			var item=args.addedCells.item(0);
 			
-			var row=item.row();
-			console.log("row");
-			console.log(row);
+			var row=item.row();			
 			var data=row.data;			
 			me.selected=data;			
 			me.selected.dataItemIndex=row.dataItemIndex;
@@ -529,7 +526,7 @@ var EdicionArticulo=function (tabId){
 				
 				data.data=testArray;
 				data.items=testArray;
-				//console.log(data);
+				
 				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','data',data);
 				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
 				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','text',item.nombre);				

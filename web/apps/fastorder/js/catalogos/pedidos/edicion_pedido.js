@@ -1,6 +1,25 @@
 var EdicionPedido = function(){
+	this.editado=false;
+	this.saveAndClose=false;
+	
+	this.close=function(){	
+		
+		if (this.editado){
+			var res=confirm('Â¿Guardar antes de salir?');
+			if (res===true){
+				this.saveAndClose=true;
+				this.guardar();
+				return false;
+			}else{
+				return true
+			}			
+		}else{
+			return true;
+		}		
+	};
 	this.init=function(tabId, pedidoId, almacen){
 		this.tabId= '#'+tabId;		
+		
 		
 		var tab=$('div'+this.tabId);
 		//estas dos linas deben estar en la hoja de estilos
@@ -22,7 +41,10 @@ var EdicionPedido = function(){
 			// 'propagate':true
 			// ,'target':'div'+this.tabId
 		// })
-		
+		var me=this;
+		$(this.tabId + '.frmPedidoi input').change(function(){
+			me.editado=true;		
+		});
 		tab.data('tabObj',this);
 		
 		// var me=this;
@@ -32,6 +54,11 @@ var EdicionPedido = function(){
 			// }, 
 			// { 'type':'keydown', 'propagate':false, 'target':tabId} 
 		// );  
+		
+		
+		var frmEdicionArticulo = new EdicionArticulo();
+		frmEdicionArticulo.init(this.tabId, this);
+		
 	};
 	this.agregarClase=function(clase){
 		var tabId=this.tabId;		
@@ -42,7 +69,8 @@ var EdicionPedido = function(){
 	}
 	this.notificarAlCerrar=function(){
 		var tabId = this.tabId;
-		 $('#tabs > ul a[href="'+tabId+'"] + span').click(function(){
+		 $('#tabs > ul a[href="'+tabId+'"] + span').click(function(e){
+			//e.preventDefault();
 			 var tmp=$('.frmPedidoi .txtIdTmp');				
 			if (tmp.length==1){
 				var id=$(tmp[0]).val();				
@@ -74,6 +102,7 @@ var EdicionPedido = function(){
 		var tab = $('#tabs '+tabId);
 		$('a[href="'+tabId+'"]').html('Nuevo Pedido');
 		tab.find('.txtId').val(0);
+		me.editado=false;
 	};	
 	this.guardar=function(){
 		var tabId=this.tabId;
@@ -117,31 +146,48 @@ var EdicionPedido = function(){
 				tab.find('.cmbAlmacen').wijcombobox( 'option', 'disabled', true );
 				tab.find('.cmbSerie').wijcombobox( 'option', 'disabled', true );
 				
-				
-				
 				me.actualizarTitulo();
-				
+				me.editado=false;
 				var objId = '/'+kore.modulo+'/pedidoi/getPedido?id='+resp.datos.id;
 				objId = objId.toLowerCase();
 				$(me.tabId ).attr('objId',objId);
 				
 				var gridPedidos=$(me.tabId+" .grid_articulos");
 				gridPedidos.wijgrid('ensureControl', true);
-						
+				
+				$.gritter.add({
+					position: 'bottom-left',
+					title:title,
+					text: msg,
+					image: icon,
+					class_name: 'my-sticky-class'
+				});
+				
+				if (me.saveAndClose===true){
+					//busca el indice del tab
+					var idTab=$(me.tabId).attr('id');
+					var tabs=$('#tabs > div');
+					for(var i=0; i<tabs.length; i++){
+						if ( $(tabs[i]).attr('id') == idTab ){
+							$('#tabs').wijtabs('remove', i);
+						}
+					}
+				}
 			}else{
 				icon= '/web/apps/fastorder/images/error.png';
 				title= 'Error';					
+				$.gritter.add({
+					position: 'bottom-left',
+					title:title,
+					text: msg,
+					image: icon,
+					class_name: 'my-sticky-class'
+				});
 			}
 			
 			//cuando es true, envia tambien los datos guardados.
 			//actualiza los valores del formulario.
-			$.gritter.add({
-				position: 'bottom-left',
-				title:title,
-				text: msg,
-				image: icon,
-				class_name: 'my-sticky-class'
-			});
+			
 		});
 	};	
 	this.eliminar=function(){
@@ -250,7 +296,7 @@ var EdicionPedido = function(){
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
 			select: function (e, item) {
-				
+				me.editado=true;
 				$(tabId+' .txtFkSerie').val(item.value);
 				$(tabId+' .txtFolio').val(item.sig_folio);
 			}
@@ -320,15 +366,29 @@ var EdicionPedido = function(){
 				$(me.tabId +' .cmbSerie').wijcombobox('option', 'selectedIndex',-1)
 				//$(me.tabId +' .cmbSerie + div input').val('')
 				
-				
+				me.editado=true;
 				me.dataSerie.load();
 			}
 		});
 	};
-	this.configurarFormulario=function(tabId){
-		$('#tabs '+tabId+' .txtFecha').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
-		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ dateFormat: 'd/M/yyyy', showTrigger: true});		
+	this.configurarFormulario=function(tabId){		
 		var me=this;
+		
+		$('#tabs '+tabId+' .txtFecha').wijinputdate({ 
+			dateFormat: 'd/M/yyyy', showTrigger: true,
+			dateChanged: function(e, arg){
+				me.editado=true;
+			}
+		});		
+		
+		
+		$('#tabs '+tabId+' .txtVencimiento').wijinputdate({ 
+			dateFormat: 'd/M/yyyy', showTrigger: true,
+			dateChanged: function(e, arg){
+				me.editado=true;
+			}
+		});		
+		
 		$( ".btnCargarArticulos" )
 		  .button()
 		  .click(function( e ) {			
@@ -345,6 +405,7 @@ var EdicionPedido = function(){
 			}).done(function( response ) {				
 				var resp = eval('(' + response + ')');
 				if ( resp.success == true	){
+					me.editado=true;
 					var gridPedidos=$(me.tabId+" .grid_articulos");
 					gridPedidos.wijgrid('ensureControl', true);					
 				}
@@ -377,12 +438,14 @@ var EdicionPedido = function(){
 			
 			$(this.tabId + ' .toolbarFormPedido .btnGuardar').click( function(){
 				me.guardar();
+				me.editado=true;
 			} );
 			
 			$(this.tabId + ' .toolbarFormPedido .btnEliminar').click( function(){
 				var r=confirm("¿Eliminar el elemento?");
 				if (r==true){
 				  me.eliminar();
+				  me.editado=true;
 				}
 			} );
 			

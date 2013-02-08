@@ -224,8 +224,7 @@
 				if ( !me.omitirFV) me.dataSource.proxy.options.data.vencimiento=fv;				
             },
 			cellStyleFormatter: function(args) { 
-				if (args.column._originalDataKey=='fecha' || args.column._originalDataKey=='vencimiento'){
-					// console.log(args);		
+				if (args.column._originalDataKey=='fecha' || args.column._originalDataKey=='vencimiento'){					
 					args.$cell.addClass("colFecha");
 				}			 
 			} 
