@@ -403,7 +403,9 @@ var EdicionArticulo=function (tabId){
 		} });
 		
 		gridPedidos.wijgrid({ loaded: function (e) {
-			if (me.selected.editandoId != undefined){
+			// $(me.tabId+' .grid_articulos tbody tr:first-child div').focus();
+			
+			if (me.selected != undefined && me.selected.editandoId != undefined){
 				var position = $(me.tabId + ' tr[rowId="'+me.selected.editandoId+'"]').position();				
 				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
 			}

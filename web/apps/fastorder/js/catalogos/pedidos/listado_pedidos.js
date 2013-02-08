@@ -1,4 +1,14 @@
 ﻿var ListaPedidos=function(){
+	this.nuevo=function(){
+		TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo Pedido');
+	};
+	this.borrar=function(){
+		if (this.selected==undefined) return false;
+		var r=confirm("¿Eliminar el pedido?");
+		if (r==true){
+		  this.eliminar();
+		}
+	}
 	this.init=function(tabId){
 		
 		this.omitirFI=false;
@@ -8,6 +18,8 @@
 		tabId = '#' + tabId;
 		this.tabId = tabId;
 		var tab=$('div'+tabId);		
+		
+		tab.data('tabObj',this);
 		
 		$('div'+tabId).css('padding','0px 0 0 0');
 		$('div'+tabId).css('margin-top','0px');
@@ -21,6 +33,8 @@
 		
 		this.configurarToolbar(tabId);		
 		this.configurarGrid(tabId);
+		
+		
 	};
 	this.configurarToolbar=function(tabId){
 		var me=this;
@@ -32,7 +46,8 @@
 			click: function (e, cmd) {
 				switch(cmd.commandName){
 					case 'nuevo':
-						TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo Pedido');				
+						
+						me.nuevo();
 					break;
 					case 'editar':
 						if (me.selected!=undefined){													

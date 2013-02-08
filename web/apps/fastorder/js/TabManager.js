@@ -23,8 +23,11 @@ var TabManager={
 		
 		var objId = url+'?id='+id;
 		objId = objId.toLowerCase();
-		if ( this.seleccionarTab(objId) == true)
-			return true;
+		if (id!=0){
+			if ( this.seleccionarTab(objId) == true)
+				return true;
+		}
+		
 		tab_counter++;
 		
 		$tabs.wijtabs('add','#'+ tabId, titulo);	//Los agrego antes de la peticion ajax.

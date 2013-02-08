@@ -322,6 +322,7 @@ class Pedidoi extends Controlador{
 		
 		$pedido=$model->editar($pk);
 		$res['datos']=$pedido;
+		
 		echo json_encode($res);
 	}
 	function cerrar(){

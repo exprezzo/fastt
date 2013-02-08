@@ -95,8 +95,9 @@ class PedidoModel extends Modelo{
 		
 		$id=$idPedido;
 				
-		$sql = 'SELECT ped.*,alm.nombre as nombreAlmacen FROM '.$this->tabla.' ped
+		$sql = 'SELECT ped.*,se.serie ,alm.nombre as nombreAlmacen FROM '.$this->tabla.' ped
 		LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen
+		LEFT JOIN series se ON se.id = ped.fk_serie
 		WHERE ped.'.$this->pk.'=:id';		
 		
 		$con = $this->getConexion();
@@ -373,6 +374,9 @@ class PedidoModel extends Modelo{
 			if (!$res['success']) return $res;
 			$pedido=$this->obtener($pk);
 		}
+		
+		//print_r($pedido);
+		$msg.='<br/>Pedido Interno: '.$pedido['serie'].' '.$pedido['folio'];
 		
 		return array(
 			'success'=>$exito,

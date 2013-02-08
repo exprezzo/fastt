@@ -2,9 +2,10 @@ var EdicionPedido = function(){
 	this.init=function(tabId, pedidoId, almacen){
 		this.tabId= '#'+tabId;		
 		
+		var tab=$('div'+this.tabId);
 		//estas dos linas deben estar en la hoja de estilos
-		$('div'+this.tabId).css('padding','0');
-		$('div'+this.tabId).css('border','0 1px 1px 1px');
+		tab.css('padding','0');
+		tab.css('border','0 1px 1px 1px');
 		
 		this.agregarClase('frmPedido');		
 		
@@ -12,6 +13,25 @@ var EdicionPedido = function(){
 		 this.configurarToolbar(this.tabId);		
 		 this.notificarAlCerrar();			
 		this.actualizarTitulo();
+		
+		//http://www.openjs.com/scripts/events/keyboard_shortcuts/
+		// shortcut.add("Ctrl+B",function() {
+			// alert("The bookmarks of your browser will show up after this alert...");
+		// },{
+			// 'type':'keydown',
+			// 'propagate':true
+			// ,'target':'div'+this.tabId
+		// })
+		
+		tab.data('tabObj',this);
+		
+		// var me=this;
+		// shortcut.add("Ctrl+S", 
+			// function() { 
+				// me.guardar();
+			// }, 
+			// { 'type':'keydown', 'propagate':false, 'target':tabId} 
+		// );  
 	};
 	this.agregarClase=function(clase){
 		var tabId=this.tabId;		

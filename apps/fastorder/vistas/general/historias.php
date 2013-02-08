@@ -141,31 +141,42 @@
 				'estimado' 		=>'01:00',
 				'modulo' 		=>'Pedido Interno',
 				'h_inicio'	 	=>'14:51',
-				'h_fin'	 		=>'04:09',
-				'duracion'  	=>'',
+				'h_fin'	 		=>'16:09',
+				'duracion'  	=>'1:18',
 				'diferencia'	=>''				
 			);
 			
 			$tareas[]=array(				
 				'tarea'		 	=>'Permitir agregar nuevos varias veces',				
 				'responsable'	=>'',
-				'estimado' 		=>'',				
+				'estimado' 		=>'00:20',
 				'modulo' 		=>'Pedido Interno',
-				'h_inicio'	 	=>'',
-				'h_fin'	 		=>'',
-				'duracion'  	=>'',
-				'diferencia'	=>''				
+				'h_inicio'	 	=>'16:45',
+				'h_fin'	 		=>'16:52',
+				'duracion'  	=>'00:08',
+				'diferencia'	=>''
 			);
 			
 			$tareas[]=array(				
-				'tarea'		 	=>'teclas ràpidas.',				
+				'tarea'		 	=>'teclas ràpidas.<ul>				
+				<li>Ctrl + Alt + W: para cerrar pestaña</li>				
+				<li>Ctrl + Alt + N: Nuevo Registro</li>
+				<li>Ctrl + G: guardar</li>				
+				<li>Del: eliminar</li>				
+				
+				<li>Ctrl + P: imprimir</li>
+				<li>Ctrl + D: Duplicar</li>
+				<li>Ctrl + E: Enviar por correo</li>				
+				<li>Tecla Esc, para salir del editor</li>				
+				<li>Ctrl + A: Agregar nuevo detalle</li>								
+				</ul>',				
 				'responsable'	=>'',
-				'estimado' 		=>'',				
+				'estimado' 		=>'04:00',				
 				'modulo' 		=>'Pedido Interno',
-				'h_inicio'	 	=>'',
-				'h_fin'	 		=>'',
-				'duracion'  	=>'',
-				'diferencia'	=>''				
+				'h_inicio'	 	=>'18:09',
+				'h_fin'	 		=>'21:47',
+				'duracion'  	=>'03:36',
+				'diferencia'	=>''
 			);
 			
 			$tareas[]=array(				

@@ -12,6 +12,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<!--link href="/js/jquery-ui-1.9.2.custom/css/flick/jquery-ui-1.9.2.custom.css" rel="stylesheet"-->	
 	<script src="/web/apps/fastorder/libs/jquery-1.8.3.js"></script>
 	<script src="/web/apps/fastorder/libs/jquery-ui-1.9.2.custom/jquery-ui-1.9.2.custom.js"></script>  
+	
+	
 	<!--Theme-->
 	<!--link href="http://cdn.wijmo.com/themes/rocket/jquery-wijmo.css" rel="stylesheet" type="text/css"  /-->
 	<?php 
@@ -39,6 +41,9 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<link href="/web/apps/fastorder/libs/Gritter-master/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
 	<script src="/web/apps/fastorder/libs/Gritter-master/js/jquery.gritter.min.js" type="text/javascript"></script>
 	
+	
+	<script src="/web/apps/fastorder/libs/shortcut.js"></script>  
+	
 	<link href="/web/apps/fastorder/css/estilos.css" rel="stylesheet" type="text/css" />
 	<script src="/web/apps/fastorder/js/funciones.js" type="text/javascript"></script>
 	<script src="/web/apps/fastorder/js/TabManager.js" type="text/javascript"></script>
@@ -48,6 +53,61 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			window.location='/'+kore.modulo+'/user/logout';
 		}
 		$(function () {			
+			shortcut.add("Ctrl+S", 
+				function() { 
+					var tab=$('#tabs > div[aria-hidden="false"]');
+					var tabObj = tab.data('tabObj');
+					if (tabObj!=undefined && tabObj.guardar!=undefined){
+						tabObj.guardar();
+					}
+					
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document} 
+			);  
+			
+			shortcut.add("Ctrl+Alt+W", 
+				function() { 
+					//busca el tab seleccionado
+					var tab=$('#tabs > div[aria-hidden="false"]');
+					var idTab=tab.attr('id');					
+					var tabs=$('#tabs > div');
+					for(var i=0; i<tabs.length; i++){
+						if ( $(tabs[i]).attr('id') == idTab ){
+							$('#tabs').wijtabs('remove', i);
+						}
+					}
+					
+					
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document} 
+			); 
+			
+			shortcut.add("Ctrl+Alt+N", 
+				function() { 
+					var tab=$('#tabs > div[aria-hidden="false"]');
+					var tabObj = tab.data('tabObj');
+					if (tabObj!=undefined && tabObj.nuevo!=undefined){
+						tabObj.nuevo();
+					}
+					
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document} 
+			); 
+			
+			shortcut.add("Delete", 
+				function() { 
+					var tab=$('#tabs > div[aria-hidden="false"]');
+					var tabObj = tab.data('tabObj');
+					if (tabObj!=undefined && tabObj.borrar!=undefined){
+						tabObj.borrar();
+					}
+					
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document} 
+			); 
+			
+			
+			
 			kore={
 				modulo:'<?php echo $_PETICION->modulo; ?>',
 				controlador:'<?php echo $_PETICION->controlador; ?>',
