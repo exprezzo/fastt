@@ -182,7 +182,7 @@
 			$tareas[]=array(				
 				'tarea'		 	=>'cuando se modifique registro y se pretenda cerrar registro que te pregunte si deseas guardar los cambios, si, no y cancelar',				
 				'responsable'	=>'',
-				'estimado' 		=>'',				
+				'estimado' 		=>'03:00',				
 				'modulo' 		=>'Pedido Interno',
 				'h_inicio'	 	=>'',
 				'h_fin'	 		=>'',
@@ -196,12 +196,12 @@
 			<br/>	Al final se tendrá una lista de productos que suman todos los requerimientos de los pedidos internos solicitados.
 			<br/>sugerido en concentración es:    Max - (Suma Can pedido Interno -  Inv Ini)   si (suma can pedido interno - Inv Ini) <= Punto Reorden',				
 				'responsable'	=>'',
-				'estimado' 		=>'',				
+				'estimado' 		=>'30:00',
 				'modulo' 		=>'Concentraci&oacute;n',
 				'h_inicio'	 	=>'',
 				'h_fin'	 		=>'',
 				'duracion'  	=>'',
-				'diferencia'	=>''				
+				'diferencia'	=>''
 			);
 			
 			?>		

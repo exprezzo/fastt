@@ -1137,6 +1137,7 @@
             b[d ? "removeClass" : "addClass"]("wijmo-wijcombobox-loading")
         },
         _onListLoaded: function (g, h) {
+			//console.log("h"); console.log(h);
             var c = h.self,
                 k, i, j, d, f, e;
             k = c._input;
@@ -40878,7 +40879,7 @@ var __extends = this.__extends || function (b, c) {
                     dateFormat: "t"
                 });
                 this._editEventDialog.find(".wijmo-wijev-allday").wijcheckbox().change(a.proxy(this._eventDialogEnsureTimePartState, this));
-                this._editEventDial og.find(".wijmo-wijev-subject,.wijmo-wijev-location,.wijmo-wijev-description").wijtextbox();
+                this._editEventDialog.find(".wijmo-wijev-subject,.wijmo-wijev-location,.wijmo-wijev-description").wijtextbox();
                 this._editEventDialog.find(".wijmo-wijev-save").button().click(a.proxy(function () {
                     try {
                         var a = this._validateAndReadApptDialogFields(this._editEventDialog);
