@@ -217,8 +217,8 @@
 				'estimado' 		=>'03:00',
 				'modulo' 		=>'Ped Int',
 				'h_inicio'	 	=>'09/02/12 09:00',
-				'h_fin'	 		=>'',
-				'duracion'  	=>'',
+				'h_fin'	 		=>'09/02/12 01:58',
+				'duracion'  	=>'04:58',
 				'diferencia'	=>''
 			);
 			
