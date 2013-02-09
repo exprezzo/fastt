@@ -81,6 +81,7 @@ class Pedidoi extends Controlador{
 		$mod=new PedidoProductoTmpModel();		
 		$res = $mod->guardar($datos);		
 		//$res['success']=false;
+		if ($res['success']==true) $res['msg']='';
 		echo json_encode($res);
 	}
 	function getModel(){		

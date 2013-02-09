@@ -18,11 +18,17 @@
 		
 		<select class="cmbArticulo" placeholder="Articulo" itemId='cmbArticulo'>			
 		</select>				
-		<input readonly="true" placeholder="Presentacion"  class="txtPresentacion"/>
+		<input readonly="true" placeholder="Presentacion"  class="txtPresentacion" style="text-align:center;"/>
+		<div class="divNumerosStock divLabel" >
+			<ul>
+				
+			</ul>
 			
-		<input readonly="true" placeholder="maximo" class="txtMaximo"/>
-		<input readonly="true" placeholder="minimo" class="txtMinimo"/>
-		<input readonly="true" placeholder="reorden" class="txtPuntoReorden"/>
+		</div>
+		
+		<input readonly="true" type="hidden" placeholder="maximo" class="txtMaximo"/>
+		<input type="hidden" type="hidden" readonly="true" placeholder="minimo" class="txtMinimo"/>
+		<input type="hidden" type="hidden" readonly="true" placeholder="reorden" class="txtPuntoReorden"/>
 		<input placeholder="existencia" class="txtExistencia" value="0" />
 		<input readonly="true" placeholder="sugerido" class="txtSugerido"/>
 		<input placeholder="cantidad pedida" class="txtPedido"/>

@@ -187,14 +187,14 @@
 			selectionMode:'singleRow',
 			data:dataSource,
 			columns: [ 
-				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },								
+			    { dataKey: "id", hidden:true, visible:false, headerText: "ID" },								
 				{ dataKey: "estado", hidden:true, visible:false, headerText: "estado" },								
 				{dataKey: "idestado", headerText: "Estado",width:'12%',
-					cellFormatter: function (args) { 
-                            if (args.row.type & $.wijmo.wijgrid.rowType.data) { 
-                                args.$container 
-                                    .css("text-align", "center") 
-                                    .empty() 
+					cellFormatter: function (args) {
+                            if (args.row.type & $.wijmo.wijgrid.rowType.data) {
+                                args.$container
+                                    .css("text-align", "center")
+                                    .empty()
                                     .append($("<div title='"+args.row.data.estado+"'></div><span style='background:none;vertical-align:middle;margin-left:6px;'>"+args.row.data.estado+"</div>") 
                                     .addClass('estado_pedido_'+args.row.data.idestado)); 
 								//args.row.data.Cover

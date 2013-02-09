@@ -1,5 +1,6 @@
 
 var EdicionArticulo=function (tabId){
+	
 	this.init=function(tabId, padre){							
 		this.tabId=tabId;
 		this.padre=padre;
@@ -355,14 +356,26 @@ var EdicionArticulo=function (tabId){
 				{ dataKey: "codigo", headerText: "Codigo"},
 				{dataKey: "nombre", headerText: "Art&iacute;culo"},
 				{dataKey: "presentacion", headerText: "Presentacion"},
-				{dataKey: "maximo", headerText: "M&aacute;ximo"},
-				{dataKey: "minimo", headerText: "M&iacute;nimo"},
-				{dataKey: "puntoreorden", headerText: "P Reorden"},
+				{dataKey: "maximo", headerText: "L&iacute;mites",
+					cellFormatter: function (args) {
+						if (args.row.type & $.wijmo.wijgrid.rowType.data) {
+							args.$container
+								.css("text-align", "center")
+								.empty()
+								.append($("<ul style='margin:0;padding:0;'><li>"+args.row.data.maximo+"</li><li>"+args.row.data.puntoreorden+"</li><li>"+args.row.data.minimo+"</li></ul>") 
+								.addClass('stock_numbers')); 
+							//args.row.data.Cover
+							return true; 
+						} 
+					}
+				},
+				{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo"},
+				{dataKey: "puntoreorden",visible:false,  headerText: "P Reorden"},
 				{dataKey: "existencia", headerText: "I. Inicial"},
 				{dataKey: "sugerido", headerText: "Sugerido"},
 				{dataKey: "pedido", headerText: "Pedido"},
 				{dataKey: "pendiente", headerText: "Pendiente"},						
-				{ dataKey: "id", hidden:true, visible:false, headerText: "ID" },
+				{ dataKey: "id", visible:false, headerText: "ID" },
 				{ dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
 				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
 				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},
@@ -411,7 +424,7 @@ var EdicionArticulo=function (tabId){
 			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                
 				
 				
-		
+				console.log("e"); console.log(e);
 				// var w=$(me.tabId+' table.grid_articulos th:eq(0)').width();
 				// $(me.tabId+' .frmEditInlinePedido form  > input.txtCodigo').css('width',w-5);			
 				
@@ -425,7 +438,7 @@ var EdicionArticulo=function (tabId){
 				// var w=$(me.tabId+' table.grid_articulos th:eq(2)').width();
 				// $(me.tabId+' .frmEditInlinePedido form  > div:eq(3)').css('width',w-5);				
 				
-				me.editar();
+				me.editar(e.currentTarget);
 			});			
 		} });
 	};
@@ -688,9 +701,10 @@ var EdicionArticulo=function (tabId){
 		var me=this;
 		
 		$(me.tabId+' .frmEditInlinePedido .txtIdTmp').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtMaximo').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtMinimo').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(0);
+		// $(me.tabId+' .frmEditInlinePedido .txtMaximo').val(0);
+		// $(me.tabId+' .frmEditInlinePedido .txtMinimo').val(0);
+		// $(me.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(0);
+		 $(me.tabId+' .frmEditInlinePedido .divNumerosStock ').html(0);
 		$(me.tabId+' .frmEditInlinePedido .txtExistencia').val(0);
 		$(me.tabId+' .frmEditInlinePedido .txtPedido').val(0);
 		$(me.tabId+' .frmEditInlinePedido .txtSugerido').val(0);
@@ -713,7 +727,7 @@ var EdicionArticulo=function (tabId){
 		me.mostrarEditor();
 		
 	};
-	this.editar=function(){		
+	this.editar=function(target){		
 		//Cargar los datos en el editor
 		
 		if (this.selected ==undefined) return false;
@@ -722,17 +736,25 @@ var EdicionArticulo=function (tabId){
 		$(this.tabId+' .frmEditInlinePedido .txtId').val(this.selected.id);
 		$(this.tabId+' .frmEditInlinePedido .txtIdTmp').val(this.selected.id_tmp);
 		$(this.tabId+' .frmEditInlinePedido .txtPedido').val(this.selected.pedido);
-		$(this.tabId+' .frmEditInlinePedido .txtMaximo').val(this.selected.maximo);
-		$(this.tabId+' .frmEditInlinePedido .txtMinimo').val(this.selected.minimo);
-		$(this.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(this.selected.puntoreorden);
+		// $(this.tabId+' .frmEditInlinePedido .txtMaximo').val(this.selected.maximo);
+		// $(this.tabId+' .frmEditInlinePedido .txtMinimo').val(this.selected.minimo);
+		// $(this.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(this.selected.puntoreorden);
+		
+		var ul="<ul> <li>";
+		ul+=this.selected.maximo+"</li><li>"+this.selected.puntoreorden+"</li><li>";
+		ul+=this.selected.minimo+"</li></ul>";
+		$(this.tabId+' .frmEditInlinePedido .divNumerosStock').html(ul);
+		
+		
+		
+		
 		$(this.tabId+' .frmEditInlinePedido .txtExistencia').val(this.selected.existencia);
 		
 		//$(this.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',this.selected.cantidad);
 		
 		$(this.tabId+' .frmEditInlinePedido .txtFkArticulo').val(this.selected.fk_articulo);				
 		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", this.selected.nombre);			
-		$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", this.selected.codigo);			
-		
+		$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", this.selected.codigo);					
 		$(this.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(this.selected.dataItemIndex);
 		
 		// var testArray = [
@@ -759,15 +781,17 @@ var EdicionArticulo=function (tabId){
 		this.calcularSugerencia();
 		
 		
-		var position = $(this.tabId + ' tr[rowId="'+this.selected.id_tmp+'"]').position();				
-		$(this.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
-		$(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
+		target=$(this.tabId + ' tr[rowId="'+this.selected.id_tmp+'"]');
+		console.log("target"); console.log(target);
+		 var position = $(this.tabId + ' tr[rowId="'+this.selected.id_tmp+'"]').position();						
+		  $(this.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
+		 $(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
 		
 				
-		this.mostrarEditor();
+		this.mostrarEditor(target[0]);
 		
 	};
-	this.mostrarEditor=function(){		
+	this.mostrarEditor=function(target){		
 		//$(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
 		
 		var me=this;
@@ -796,17 +820,27 @@ var EdicionArticulo=function (tabId){
 				editores.push( $(todos[i]) );						
 			}
 		}
+		var cel,w,h;
 		
-		for(var i=0; i<editores.length; i++){					
-			w=$(me.tabId+' table.grid_articulos th:eq('+i+')').width();					
-			$(editores[i]).css('width',w-6);				
+		for(var i=0; i<editores.length; i++){				
+			cel=$(target).find('td:eq('+i+')');
+			w=cel.width();
+			h=cel.height();
+		
+			// w=$(me.tabId+' table.grid_articulos tbody tr td:eq('+i+')').width();					
+			
+			$(editores[i]).css('width',w-3);				
+			$(editores[i]).css('height',h);				
+			
+			position=cel.position();
+			$(editores[i]).position(position);				
 		}
 		
-		
-		
-				
+		$(this.tabId+' .frmEditInlinePedido div[role="combobox"] input').height(h-8);
 		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');						
-			$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox('repaint');				
+		$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox('repaint');				
+		
+		
 	};
 	// this.mostrarTabEdicionArticulo=function(){
 		// var data=this.selected;

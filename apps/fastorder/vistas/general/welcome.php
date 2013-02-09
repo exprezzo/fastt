@@ -20,3 +20,8 @@
 </script>
 <div style="margin-top:-29px;">
 <h1>Bienvenido</h1>
+
+Hola, para una mejor experiencia te recomendamos resoluciones mayores a 1000px.
+
+<h4>Fast Order en versión beta, estará lista para el viernes 15.</h4>
+

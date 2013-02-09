@@ -4,7 +4,7 @@ form.frmPedidoi label{
 		/* display:inline-block; */
 	}
 	
-div.frmPedido{ width: 800px !important; display: inline-block !important; padding:8px; /*border:#b7c7e1 1px solid !important; /* box-shadow: 10px 10px 5px #888888; */ margin-top:-7px; left:100px;}
+div.frmPedido{ width: 800px !important; display: inline-block !important; padding:8px; border:#b7c7e1 1px solid !important; box-shadow: 10px 10px 5px #888888;  margin-top:-7px; left:100px;}
 div.frmPedido .formTitle{display:block; padding:0px 0 0 6px; cursor:move; }
 div.frmPedido .formTitle .closeBtn{cursor:pointer; width:16px; height:16px; display:inline-block; }
 
@@ -42,7 +42,7 @@ div.frmPedido .pnlDer{display: inline-block !important; margin-top: 3px; vertica
 .frmEditInlinePedido .cmbArticulo{width:226px;}	
 .frmEditInlinePedido .txtCantidad{width:235px;}	
 .frmEditInlinePedido .cmbUm{width:186px;}
-.frmEditInlinePedido form {background:white; border:black 1px solid;border-radius:10px; box-shadow: 10px 10px 5px #888888;}
+.frmEditInlinePedido form { background:white; border:black 1px solid;border-radius:10px; box-shadow: 10px 10px 5px #888888;}
 .toolbarFormPedidoInline {display: inline-block; margin-top:-1px;  }
 .toolbarFormPedidoInline .boton{border-radius:9px;	margin-left:78px; border:#e3e2d9 1px solid;display: inline-block; padding: 5px 3px 5px 3px; cursor:pointer;
 	background:white; border:black 1px solid;border-radius:10px; box-shadow: 10px 10px 5px #888888; opacity:.5; 
@@ -74,3 +74,4 @@ div.frmPedido{
 .btnCargarArticulos span.ui-button-text{
 	padding:0 8px 0 8px !important;
 }
+

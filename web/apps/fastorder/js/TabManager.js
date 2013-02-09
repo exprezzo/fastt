@@ -53,7 +53,16 @@ var TabManager={
 			
 			//alert(tabId);
 			 $('#'+ tabId ).html(response);				
+			 
 			 $tabs.wijtabs('select',tabId);			
+			 
+			var tabObj = $('#'+ tabId ).data('tabObj');
+			console.log( "tabObj" ); console.log( tabObj );
+			if (tabObj != undefined &&   tabObj.activate != undefined){
+				tabObj.activate();
+			}
+			
+			 //$('#'+ tabId ).html(response);				
 		});
 	},
 	seleccionarTab:function(objId){

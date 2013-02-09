@@ -192,8 +192,8 @@
 				'estimado' 		=>'03:00',				
 				'modulo' 		=>'Pedido Interno',
 				'h_inicio'	 	=>'09:51',
-				'h_fin'	 		=>'',
-				'duracion'  	=>'',
+				'h_fin'	 		=>'13:19',
+				'duracion'  	=>'03:28',
 				'diferencia'	=>''				
 			);
 			
@@ -206,6 +206,17 @@
 				'estimado' 		=>'30:00',
 				'modulo' 		=>'Concentraci&oacute;n',
 				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''
+			);
+			
+			$tareas[]=array(				
+				'tarea'		 	=>'optimizar para resolución de 1024',
+				'responsable'	=>'',
+				'estimado' 		=>'03:00',
+				'modulo' 		=>'Ped Int',
+				'h_inicio'	 	=>'09/02/12 09:00',
 				'h_fin'	 		=>'',
 				'duracion'  	=>'',
 				'diferencia'	=>''

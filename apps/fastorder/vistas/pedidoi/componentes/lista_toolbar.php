@@ -14,39 +14,53 @@
 		background: transparent;
 		border: 0;
 	}
+	.crud_tb li{
+		display:inline-block !important;
+	}
+	.crud_tb span{
+		text-align:center !important;
+	}
+	.cmbAlmacenW input, .cmbEstadoW input{height:19px;}
 </style>
 
 <?php $tabId=$_REQUEST['tabId']; ?>
 
-<div class="ribbon tbPedidos">
+<div class="ribbon tbPedidos ">
 	<ul>
 		 <li><a href="#tbPedido_<?php echo $tabId; ?>">Format</a></li>		 
 	</ul>
 	<div id="tbPedido_<?php echo $tabId; ?>" class="tbPedido">
-		<div style="display:inline-block;vertical-align:top;"> 
-			<button title="Nuevo" class="" name="nuevo">
-					<span class="btnNuevo"></span>
-					<span>Nuevo</span>
-				</button>				
-				<button title="Editar" class="" name="editar">
-					<span class="btnEditar"></span>
-					<span>Editar</span>
-				</button>
-				<button title="Eliminar" class="" name="eliminar">
-					<span class="btnEliminar"></span>
-					<span>Eliminar</span>
-				</button>
-				<button title="Imprimir" class="" name="imprimir">
-					<div class="btnImprimir"></div>
-					<span>Imprimir</span>
-				</button>				
-		</div>
-		<ul style="display:inline-block;">
-			<li></li>			
-				
-				
-			 
-			 <li>				
+		<div style="vertical-align:top;"> 
+			<div  style="display:inline-block;margin-bottom:10px;">
+				<div title="Acciones" class="wijmo-wijribbon-dropdownbutton">
+					<button title="Font Name" name="acciones">Acciones</button>
+					<ul class ="crud_tb">
+						<li >
+							<button title="Nuevo" class="" name="nuevo">
+									<span class="btnNuevo"></span>
+									<span>Nuevo</span>
+							</button>				
+						</li>
+						<li>
+							<button title="Editar" class="" name="editar">
+								<span class="btnEditar"></span>
+								<span>Editar</span>
+							</button>
+						</li>
+						<li>
+							<button title="Eliminar" class="" name="eliminar">
+								<span class="btnEliminar"></span>
+								<span>Eliminar</span>
+							</button>
+						</li>
+						<li>
+							<button title="Imprimir" class="" name="imprimir">
+								<div class="btnImprimir"></div>
+								<span>Imprimir</span>
+							</button>				
+						</li>
+					</ul>
+				</div>			
 				<span class="tbFecha">										
 					<input type='text' name='fecha' class="txtFechaI"  />
 					<span class="ui-button-text">Fecha Inicial</span>
@@ -67,9 +81,42 @@
 					<input type="checkbox" id="<?php echo $tabId; ?>_chkOmitirFV"></input><label for="<?php echo $tabId; ?>_chkOmitirFV" name="omitirFV" title="Bold" class="">Omitir</label>
 					<br/>
 				</span>	
-			</li>
-			<li>
-				<span class="cmbAlmacenW">
+				<!--div title="Acciones" class="wijmo-wijribbon-dropdownbutton">
+					<button title="Font Name" name="acciones">mas</button>
+					<ul class="li_combos">
+						<li>
+							<span class="cmbAlmacenW" style="position:relative; display:inline-block;">
+								<select class="cmbAlmacen">
+									<?php 
+									// echo '<option value="0">--todos--</option>';
+									// foreach($this->almacenes as $almacen){
+										// echo '<option value="'.$almacen['id'].'">'.$almacen['nombre'].'</option>';
+									// }
+									?>						
+									
+									
+								</select>
+								<br />
+								<span class="ui-button-text">Almac&eacute;n</span><br/>
+							</span>
+						</li>
+						<li>
+							<span class="cmbEstadoW" style="display:inline-block;">
+								<select class="cmbEstado">
+									<?php 
+									// echo '<option value="0">--todos--</option>';
+									// foreach($this->estados as $estado){
+										// echo '<option value="'.$estado['id'].'">'.$estado['nombre'].'</option>';
+									// }
+									?>													
+								</select>
+								<br>
+								<span class="ui-button-text">Estado</span><br/>
+							</span>	
+						</li>
+					</ul>
+				</div-->
+				<span class="cmbAlmacenW" style="position:relative; display:inline-block;">
 					<select class="cmbAlmacen">
 						<?php 
 						echo '<option value="0">--todos--</option>';
@@ -83,31 +130,23 @@
 					<br />
 					<span class="ui-button-text">Almac&eacute;n</span><br/>
 				</span>
-			</li>
-			<li>
-				<span class="cmbEstadoW">
-					<select class="cmbEstado">
-						<?php 
-						echo '<option value="0">--todos--</option>';
-						foreach($this->estados as $estado){
-							echo '<option value="'.$estado['id'].'">'.$estado['nombre'].'</option>';
-						}
-						?>													
-					</select>
-					<br>
-					<span class="ui-button-text">Estado</span><br/>
-				</span>				
-			</li>			
-			 
-			
-			
+				<span class="cmbEstadoW" style="display:inline-block;">
+								<select class="cmbEstado">
+									<?php 
+									echo '<option value="0">--todos--</option>';
+									foreach($this->estados as $estado){
+										echo '<option value="'.$estado['id'].'">'.$estado['nombre'].'</option>';
+									}
+									?>													
+								</select>
+								<br>
+								<span class="ui-button-text">Estado</span><br/>
+							</span>	
 				
-			
-				<button title="Refresh" class="" name="refresh" style="float:right;">
-					<span class="btnRefresh"></span>
-					<span>Actualizar</span>
-				</button>		
-			
-		</ul>
+			</div>
+			<button title="Refresh" class="" name="refresh" style="position:absolute;;right:0;">
+				<span class="btnRefresh"></span>
+				<span>Actualizar</span>
+			</button>	
 	</div>
 </div>

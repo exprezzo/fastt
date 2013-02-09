@@ -47,7 +47,7 @@ form{ padding:10px }
 
 .ribbon .ui-tabs-nav{display:none; }
 
-.ribbon .ui-button-icon-primary{top:5px;width:48px;height:48px;background-size:40px;background-repeat:no-repeat;background-position: 5px 4px;padding: 0;		}
+.ribbon .ui-button-icon-primary{top:5px;width:48px;height:48px;background-size:40px;background-repeat:no-repeat;background-position: 3px 4px;padding: 0;		}
 .ui-button-text{color:black !important;}
 
 .tbFecha{display:inline-block;position:relative;}

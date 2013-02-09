@@ -2,6 +2,11 @@ var EdicionPedido = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	
+	this.activate=function(){
+		var tabId=this.tabId;
+		var w=$(tabId+' .lblAlmacen').width();		
+		$(tabId+' .lblSerie').width(w);
+	}
 	this.close=function(){	
 		
 		if (this.editado){
