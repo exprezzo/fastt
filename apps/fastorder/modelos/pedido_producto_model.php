@@ -1,12 +1,10 @@
 <?php
 
 class PedidoProductoModel extends Modelo{
-	var $tablas=array('tmp_pedidos_productos','pedidos_productos');
-	var $ids=array('IdTmp','id');
-	var $indexTabla=0;
-	function getTabla(){
-		
-	}
+	var $tabla='pedidos_productos';
+	var $id='id';
+	
+	
 	function guardar($params){
 		$dbh=$this->getConexion();
 		
@@ -73,12 +71,9 @@ class PedidoProductoModel extends Modelo{
 		$start=$params['start'];
 		$pageSize=$params['limit'];
 		$fk_pedido=$params['fk_pedido'];
+		$idalmacen=empty($params['idalmacen'])? 0 :intval( $params['idalmacen']);
 		
-		//, $pageSize=9,$idPedido
-		
-		$sql='select COUNT(pedprod.id) as total FROM '.$this->tablas[$this->indexTabla].' pedprod
-		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
-		LEFT JOIN um um ON um.id = pedprod.fk_um
+		$sql='select COUNT(pedprod.id) as total FROM '.$this->tabla.' pedprod		
 		WHERE pedprod.fk_pedido=:fk_pedido';		
 		
 		$model=$this;
@@ -87,23 +82,34 @@ class PedidoProductoModel extends Modelo{
 		$sth->bindValue(':fk_pedido',$fk_pedido, PDO::PARAM_INT);
 		$datos=$model->execute($sth);
 		
-		$total=$datos['datos'][0]['total'];
+		if (!$datos['success']) return $datos;
 		
-		$sql = 'SELECT pedprod.*,prod.nombre as nombre,um.abrev as um,
-		maximo, minimo, puntoreorden, existencia
-		FROM '.$this->tablas[$this->indexTabla].' pedprod
+		$total=$datos['datos'][0]['total'];
+		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
+		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre, prod.codigo codigo, 
+		sto.maximo, sto.minimo, sto.puntoreorden, sto.existencia,cantidad pedido ,sto.maximo - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- cantidad) pendiente,
+		sto.grupoposicion, gpo.nombre nombreGpo
+		FROM '.$this->tabla.' pedprod
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
-		LEFT JOIN um um ON um.id = pedprod.fk_um
-		WHERE pedprod.fk_pedido=:fk_pedido limit :start,:limit';		
+		LEFT JOIN articulopre pre ON pedprod.idarticulopre =pre.idarticulopre
+		LEFT JOIN articulostock sto ON sto.idarticulo= pedprod.fk_articulo AND sto.idalmacen=:idalmacen
+		LEFT JOIN grupo_de_productos gpo ON  gpo.id=sto.idgrupo
+		WHERE pedprod.fk_pedido=:fk_pedido ORDER BY sto.grupoposicion, gpo.id limit :start,:limit';		
 				
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
 		 $sth->bindValue(':start',intval($start), PDO::PARAM_INT);
 		 $sth->bindValue(':limit',intval($pageSize), PDO::PARAM_INT);
 		$sth->bindValue(':fk_pedido',$fk_pedido, PDO::PARAM_INT);
+		$sth->bindValue(':idalmacen',$idalmacen, PDO::PARAM_INT);
+		
+		
 		$datos=$model->execute($sth);
 		
+		if (!$datos['success']) return $datos;
+		
 		return array(
+			'success'=>true,
 			'totalRows'=>$total,
 			'rows'=>$datos['datos']
 		);

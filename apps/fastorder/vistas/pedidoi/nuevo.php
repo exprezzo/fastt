@@ -58,18 +58,20 @@
 <link href='/web/apps/<?php echo $_PETICION->modulo; ?>/css/pedidoi.css' rel="stylesheet" type="text/css" />
 <script>
 	$( function(){
+		var articulos=<?php echo json_encode($this->pedido['articulos']); ?>;		
+		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
 		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
 		var edicion = new EdicionPedido();
-		edicion.init(tabId, pedidoId, almacen);
+		edicion.init(tabId, pedidoId, almacen, articulos);
 		$('#'+tabId+' .toolbarFormPedido .boton:not(.btnPrint, .btnEmail)').mouseenter(function(){
 			$(this).addClass("ui-state-hover");
 		});
 		
-		// $('#'+tabId+' .toolbarFormPedido .boton *').mouseenter(function(){						
-			 // $(this).parent('.boton').addClass("ui-state-hover");						
-		// });		
+		$('#'+tabId+' .toolbarFormPedido .boton *').mouseenter(function(){						
+			 $(this).parent('.boton').addClass("ui-state-hover");						
+		});
 		
 		$('#'+tabId+' .toolbarFormPedido .boton').mouseleave(function(e){			 
 				$(this).removeClass("ui-state-hover");			
@@ -154,16 +156,14 @@
 	<div class="cardArticulos">
 			<div style='display:inline-block;' class="pnlArticulos ui-widget-content">								
 				<table class="grid_articulos" style="width:98%;">
-					<thead>
-						<th>Producto</th> 
-						<th>Cantidad</th>
+					<thead>						
 					</thead>
-				  <tbody>
-					<tr><td></td> <td></td></tr>
-					<?php 
+				  <tbody>					
+					<?php
+						
 						if ( isset($this->pedido) )
 						foreach($this->pedido['articulos'] as $articulo){			
-						//	echo '<tr><td>'.$articulo['nombreProducto'].'</td> <td>'.$articulo['cantidad'].'</td></tr>';
+						//	echo '<tr><td>'.$articulo['nombre'].'</td> <td>'.$articulo['cantidad'].'</td></tr>';
 						}
 					?>
 					
@@ -171,7 +171,7 @@
 				</table>
 			</div>
 			
-			<?php $this->mostrar('pedidoi/componentes/edicion_articulo'); ?>
+			<?php //$this->mostrar('pedidoi/componentes/edicion_articulo'); ?>
 			
 		</div>
 	<div class="pnlDer" >

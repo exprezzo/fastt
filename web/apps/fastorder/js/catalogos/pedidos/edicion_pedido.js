@@ -22,7 +22,7 @@ var EdicionPedido = function(){
 			return true;
 		}		
 	};
-	this.init=function(tabId, pedidoId, almacen){
+	this.init=function(tabId, pedidoId, almacen, articulos){
 		this.tabId= '#'+tabId;		
 		
 		
@@ -39,30 +39,17 @@ var EdicionPedido = function(){
 		this.actualizarTitulo();
 		
 		//http://www.openjs.com/scripts/events/keyboard_shortcuts/
-		// shortcut.add("Ctrl+B",function() {
-			// alert("The bookmarks of your browser will show up after this alert...");
-		// },{
-			// 'type':'keydown',
-			// 'propagate':true
-			// ,'target':'div'+this.tabId
-		// })
+		
 		var me=this;
 		$(this.tabId + '.frmPedidoi input').change(function(){
 			me.editado=true;		
 		});
 		tab.data('tabObj',this);
-		
-		// var me=this;
-		// shortcut.add("Ctrl+S", 
-			// function() { 
-				// me.guardar();
-			// }, 
-			// { 'type':'keydown', 'propagate':false, 'target':tabId} 
-		// );  
+		 
 		
 		
 		var frmEdicionArticulo = new EdicionArticulo();
-		frmEdicionArticulo.init(this.tabId, this);
+		frmEdicionArticulo.init(this.tabId, this, articulos);
 		
 	};
 	this.agregarClase=function(clase){

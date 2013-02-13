@@ -1,11 +1,14 @@
 
 var EdicionArticulo=function (tabId){
 	
-	this.init=function(tabId, padre){							
+		
+	this.init=function(tabId, padre, articulos){							
 		this.tabId=tabId;
 		this.padre=padre;
-		this.configurarFormulario(tabId);	
-		this.configurarGrid(tabId);	
+		//this.configurarFormulario(tabId);	
+		this.configurarGrid(tabId, articulos);		
+		return true;
+		
 		this.configurarComboDestino(tabId);
 		this.configurarComboCodigo();
 		this.configurarToolbar(tabId);		
@@ -15,28 +18,18 @@ var EdicionArticulo=function (tabId){
 			$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');				
 		});				
 		
-		$(this.tabId+' .frmEditInlinePedido .btnGuardar').click(function(){			
-			//$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');				
+		$(this.tabId+' .frmEditInlinePedido .btnGuardar').click(function(){						
 			$(me.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(-2);
 			me.guardar();
 		});
-		
-		
-		// var w=$(me.tabId+' table.grid_articulos th:eq(0)').width();
-		// $(me.tabId+' .frmEditInlinePedido .cmbArticulo').css('width',w-5);				
-		// w=$(me.tabId+' table.grid_articulos th:eq(1)').width();
-		// $(me.tabId+' .frmEditInlinePedido .txtCantidad').css('width',w-5);				
-		// w=$(me.tabId+' table.grid_articulos th:eq(2)').width();				
-		// $(me.tabId+' .frmEditInlinePedido .cmbUm').css('width',w-5);	
+					
 		this.configurarComboArticulo();
 		$(me.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber({
             type: 'numeric',           
             decimalPlaces: 2,
             showSpinner: true			
         });
-		
-		
-		//$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox({});
+				
 		this.configurarComboUM();
 		$(me.tabId+' .frmEditInlinePedido .txtExistencia').change(function(){
 			me.calcularSugerencia();
@@ -45,18 +38,11 @@ var EdicionArticulo=function (tabId){
 		$(me.tabId+' .frmEditInlinePedido .txtPedido').change(function(){
 			me.calcularSugerencia();
 		});
-		
-		// $(me.tabId+' .frmEditInlinePedido input').unbind('onkeypress');		
-		// $(me.tabId+' .frmEditInlinePedido input').unbind('keydown');		
-//		 $(me.tabId+' .frmEditInlinePedido input').unbind('onkeydown');		
-		
-		//$(me.tabId+' .frmEditInlinePedido input').unbind('keypress');		
+				
 		$(me.tabId+' .frmEditInlinePedido input').bind('keyup', function(e) {
 			var code = e.keyCode || e.which;
-			code=parseInt(code);
-	
-			if(e.keyCode==13){
-				//guardar cambios, buscar el siguiente.
+			code=parseInt(code);	
+			if(e.keyCode==13){				
 				me.guardar();
 			}
 		});		
@@ -65,8 +51,7 @@ var EdicionArticulo=function (tabId){
 			e.preventDefault();
 			var code = e.keyCode || e.which;
 			code=parseInt(code);
-			if (code == 9) {				
-				//$(me.tabId+" input[name='vencimiento']").focus()
+			if (code == 9) {								
 				 var inputs=$(me.tabId+' .cmbCodigo + div[role="combobox"] input');
 				 $(inputs[0]).focus();
 				 me.guardar();
@@ -90,7 +75,7 @@ var EdicionArticulo=function (tabId){
 		$(me.tabId+' .frmEditInlinePedido .txtSugerido').val(sugerido);
 		$(me.tabId+' .frmEditInlinePedido .txtPendiente').val(pendiente);
 	};
-	this.configurarComboArticulo=function(){
+	this.configurarComboArticulo=function(target){
 		//alert("asd");
 		var tabId=this.tabId;
 		 
@@ -157,7 +142,7 @@ var EdicionArticulo=function (tabId){
 		
 		datasource.load();
 		var me=this;
-		var combo=$('#tabs '+tabId+' .cmbArticulo').wijcombobox({
+		var combo=$(target).wijcombobox({
 			data: datasource,
 			showTrigger: true,
 			autoFilter: false,
@@ -172,7 +157,7 @@ var EdicionArticulo=function (tabId){
 			},
 			select: function (e, item) 
 			{			
-				//me.articuloSeleccionado=item;
+				return true;
 				
 				$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
 				$('#tabs '+tabId+' .txtIdArticuloPre').val(item.idarticulopre);
@@ -203,6 +188,7 @@ var EdicionArticulo=function (tabId){
 				$('#tabs '+tabId+' .frmEditInlinePedido .txtPendiente').val(0); 
 			}
 		});
+		combo.focus();		
 		
 		
 	}
@@ -285,8 +271,8 @@ var EdicionArticulo=function (tabId){
 			});
 		});
 	},
-	this.configurarGrid=function(tabId){		
-		var fields=[			
+	this.configurarGrid=function(tabId, articulos){		
+		/*var fields=[			
 			{ name: "codigo"},			
 			{ name: "nombre"},
 			{ name: "presentacion"},
@@ -312,7 +298,7 @@ var EdicionArticulo=function (tabId){
 				dataType: "json"				
 			}),
 			
-			dynamic:true,			
+			dynamic:false,			
 			reader:new wijarrayreader(fields),
 			loading: function(e, data) { 
 				var id=$(me.tabId+' .frmPedidoi .txtId').val();					
@@ -333,30 +319,106 @@ var EdicionArticulo=function (tabId){
 			datasource.data.totalRows = totalRows;
 			dataReader.read(datasource);
 		};				
-		
-		 // this.gridArticulos= new Oct.EditableGrid({
-			// target: '#tabs '+this.tabId+" .grid_articulos"
-		// });
+		*/
 		
 		var gridPedidos=$('#tabs '+tabId+" .grid_articulos");				
 		
+		gridPedidos.bind('keydown', function(e) {
+			var code = e.keyCode || e.which;
+			code=parseInt(code);	
+			if(e.keyCode==13){				
+				alert("Enter");
+				//me.guardar();
+			}else if(e.keyCode==9){	
+				e.preventDefault();
+				var current = $(".grid_articulos").wijgrid("currentCell");
+				console.log("current");  console.log(current); 
+				
+				//alert("ri: "+current.rowIndex()+" ci:"+current.cellIndex());
+				
+				var cellIdx=current.cellIndex();
+				var rowIndex = current.rowIndex();
+				switch(cellIdx){
+					case 0:
+						cellIdx=1;
+					break;
+					case 1:
+						cellIdx=4;
+					break;
+					case 4:
+						cellIdx=6;
+					break;
+					case 6:
+						cellIdx=0;
+						rowIndex=3;
+					break;
+				}
+				
+				var cellInfo= $(".grid_articulos").wijgrid("currentCell",cellIdx, rowIndex );
+				console.log("cellInfo"); console.log(cellInfo); 
+				$(".grid_articulos").wijgrid("beginEdit");
+				
+				
+				// console.log("e"); console.log(e);
+				// console.log("e.target"); console.log(e.target);
+				
+				// var parent=$(e.target).parent();
+				// console.log("parent"); console.log(parent);
+				
+				// var sig = parent.next();
+				// console.log("sig"); console.log(sig);
+				// sig.focus();
+				// gridPedidos.wijgrid("beginEdit");
+				//me.editarSiguiente();
+			}
+		});
+		
+		
 		gridPedidos.wijgrid({
-			dynamic: true,
+			// dynamic: true,
 			allowColSizing:true,
 			allowPaging: true,
-			pageSize:5,
-			//allowEditing:false,
+			pageSize:2,
+			allowEditing:true,
 			allowColMoving: true,
 			//showGroupArea: true,
 			allowKeyboardNavigation:true,			
 			selectionMode:'singleRow',
-			data:dataSource,
-			beforeCellEdit: this.beforeCellEdit, 			
+			// data:dataSource,
+			beforeCellEdit: function(e, args) { 
+				
+				console.log("args"); console.log(args);
+				console.log(me);
+				var positions=new Array();
+				if (args.cell.column().editable === false){											
+					//return false;
+				}
+				
+				switch (args.cell.column().dataKey) { 
+					case "codigo": 
+						var combo=
+						$("<input />")
+							.val(args.cell.value()) 
+							.appendTo(args.cell.container().empty());   
+						args.handled = true;   
+						me.configurarComboCodigo(combo);
+					break; 
+					case "nombre": 
+						var combo=
+						$("<input />")
+							.val(args.cell.value()) 
+							.appendTo(args.cell.container().empty());   
+						args.handled = true;   
+						me.configurarComboArticulo(combo);
+					break; 
+				} 
+			}, 			
+			data:articulos,
 			columns: [ 
-				{ dataKey: "codigo", headerText: "Codigo"},
-				{dataKey: "nombre", headerText: "Art&iacute;culo"},
-				{dataKey: "presentacion", headerText: "Presentacion"},
-				{dataKey: "maximo", headerText: "L&iacute;mites",
+				{ dataKey: "codigo", headerText: "Codigo",width:"300px"},
+				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},
+				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
+				{dataKey: "maximo", headerText: "L&iacute;mites",editable:false,
 					cellFormatter: function (args) {
 						if (args.row.type & $.wijmo.wijgrid.rowType.data) {
 							args.$container
@@ -369,15 +431,17 @@ var EdicionArticulo=function (tabId){
 						} 
 					}
 				},
-				{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo"},
-				{dataKey: "puntoreorden",visible:false,  headerText: "P Reorden"},
+				{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo",editable:false},
+				{dataKey: "puntoreorden",visible:false,  headerText: "P Reorden",editable:false},
 				{dataKey: "existencia", headerText: "I. Inicial"},
-				{dataKey: "sugerido", headerText: "Sugerido"},
+				{dataKey: "sugerido", headerText: "Sugerido",editable:false},
 				{dataKey: "pedido", headerText: "Pedido"},
-				{dataKey: "pendiente", headerText: "Pendiente"},						
+				{dataKey: "pendiente", headerText: "Pendiente",editable:false},						
 				{ dataKey: "id", visible:false, headerText: "ID" },
 				{ dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
 				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
+				{dataKey: "fk_pedido", headerText: "fk_pedido", visible:false},
+				{dataKey: "cantidad", headerText: "cantidad", visible:false},
 				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},
 				{ visible:false, dataKey: "nombreGpo", groupInfo:{groupSingleRow: true,
 					 position: "header", 
@@ -399,6 +463,31 @@ var EdicionArticulo=function (tabId){
 			} 
 		});		
 		var me=this;
+		gridPedidos.wijgrid({ beforeCellUpdate:function(e, args) { 
+            switch (args.cell.column().dataKey) { 
+                case "Position": 
+                    args.value = args.cell.container().find("input").val(); 
+                    break; 
+  
+                case "Acquired": 
+                    var $editor = args.cell.container().find("input"), 
+                        value = $editor.wijinputnumber("getValue"), 
+                        curYear = new Date().getFullYear(); 
+  
+                    if (value < 1990 || value > curYear) { 
+                        $editor.addClass("ui-state-error") 
+  
+                        alert("value must be between 1990 and " + curYear); 
+  
+                        $editor.focus(); 
+  
+                        return false; 
+                    } 
+                      
+                    args.value = value; 
+                    break; 
+            } 
+        } });
 		
 		gridPedidos.wijgrid({ selectionChanged: function (e, args) { 					
 			
@@ -413,13 +502,11 @@ var EdicionArticulo=function (tabId){
 		} });
 		
 		gridPedidos.wijgrid({ loaded: function (e) {
-			// $(me.tabId+' .grid_articulos tbody tr:first-child div').focus();
-			
+			// $(me.tabId+' .grid_articulos tbody tr:first-child div').focus();			
 			if (me.selected != undefined && me.selected.editandoId != undefined){
 				var position = $(me.tabId + ' tr[rowId="'+me.selected.editandoId+'"]').position();				
 				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
-			}
-			
+			}			
 		
 			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                
 				
@@ -456,7 +543,7 @@ var EdicionArticulo=function (tabId){
 		// this.configurarComboUM(tabId);
 	};
 	
-	this.configurarComboCodigo=function(){		
+	this.configurarComboCodigo=function(target){		
 		var tabId=this.tabId;
 		var me=this;
 		var fields=[			
@@ -507,7 +594,7 @@ var EdicionArticulo=function (tabId){
 		
 		datasource.load();	
 		
-		var combo=$(tabId+' .cmbCodigo').wijcombobox({
+		var combo=target.wijcombobox({
 			data: datasource,
 			showTrigger: true,
 			minLength: 1,
@@ -529,9 +616,6 @@ var EdicionArticulo=function (tabId){
 				$('#tabs '+tabId+' .txtIdArticuloPre').val(item.idarticulopre);
 				$('#tabs '+tabId+' .txtPresentacion').val(item.presentacion);
 				
-				
-				
-				
 				var testArray = [
 					{value:item.value, label:item.nombre}
 				];
@@ -543,8 +627,6 @@ var EdicionArticulo=function (tabId){
 				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','data',data);
 				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
 				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','text',item.nombre);				
-				
-				
 				
 				//$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
 				$('#tabs '+tabId+' .txtMaximo').val(item.maximo);
@@ -561,7 +643,7 @@ var EdicionArticulo=function (tabId){
 				$('#tabs '+tabId+' .frmEditInlinePedido .txtPendiente').val(0); 
 			}
 		});
-						
+		combo.focus();			
 	};
 	this.configurarComboUM=function(){		
 		var tabId=this.tabId;

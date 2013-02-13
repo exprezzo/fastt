@@ -222,6 +222,17 @@
 				'diferencia'	=>''
 			);
 			
+			$tareas[]=array(				
+				'tarea'		 	=>'Detalles del pedido: procesar en el cliente',
+				'responsable'	=>'',
+				'estimado' 		=>'06:00',
+				'modulo' 		=>'Ped Int',
+				'h_inicio'	 	=>'12/02/12 15:31',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''
+			);
+			
 			?>		
 			<td>Tarea</td>
 			<td>Responsable</td>
@@ -249,6 +260,29 @@
 		?>
 		
 </table>
+
+<ul>
+	<li>DEfinir teclas de acceso rápido     luiguiok</li>
+	<li>Al final del renglón cachar el shift tab y prevenir el saldo línea.</li>
+	<li>Al modificar valores de inventario inicial y pedidos no se actualiza al regresar del servidor.</li>
+	<li>La resolución predeterminado por el momento será 1024x800px... el navegador a utilizar es el chrome</li>
+	<li>autoGuardar automático de documentos u objetos.</li>
+	<li>Separar la versión desarrollo de una versión estable y de pruebas o beta.</li>
+	<li><h4>Orden de Compra:</h4>
+		<ul>
+			<li>Campos Filtro:   Folio+serie, Fecha Inicial Docto, Fecha Final Docto, Fecha Vence, Estado, Proveedor.</li>
+			<li>Campos de captura:  Folio + Serie, automaticos configurable desde panel. *Panel Pendiente Back Log, Fecha Docto:, Proveedor</li>
+			<li>Estados (auto): Borrador, Enviado, Cancelado, Surtido, Parcialmente Surtido, Vencido.</li>			
+			<li>Detalle: Agrupado x grupo
+                     Agrupado x Articulo     ---> Campos: aticulo id, nombre/Descripcion, Unidad Base, //Presentación, Factor  //, Max, Min, P. Reor, Inv ini, suma ped int, sugerido, pedido
+                          Lista de Pedidos Interno Detalle relacionado si lo hay   --->  artículo de linea o wakal(compuesto), almacen pedido interno, cantidad solicitada.
+			</li>
+		</ul>                             
+   </li>
+	<li>Concentración de pedidos internos: Definir como se hará</li>
+	
+</ul>
+
 <ul>
 	
 	<li><h4>Revisado: 05/feb/2013</h4><hr /><li>
@@ -293,6 +327,10 @@
 	<li>Como usuario, quiero poder configurar el tama&ntilde;o de grids dependiendo del dispositivo y orientacion de pantalla.</li>
 	<li>Como webmaster, quiero un historial de sucesos en especial de error, para supervisar y dar seguimiento.</li>
 </ul>
+
+
+
+
 </div>
 <script type="text/javascript">
 $( function(){

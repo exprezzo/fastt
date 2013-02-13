@@ -173,9 +173,24 @@ class Pedidoi extends Controlador{
 		}
 		$mod=$this->getModel();
 		
-		$pedido = $mod->editar( $idPedido );
+		$pedido = $mod->obtener( $idPedido );
+		
+		$mod=new PedidoProductoModel();
+		
+		$params=array(	//Se traducen al lenguaje sql
+			'limit'=>$pageSize=50000,
+			'start'=>0,
+			'fk_pedido'=>$pedido['id'],
+			'idalmacen'=>$pedido['fk_almacen']
+		);
+		
+		$res=$mod->paginar($params);
+		
 		
 		$vista=$this->getVista();
+		
+		if ($res['success']) $pedido['articulos']=$res['rows'];		
+				
 		$vista->pedido=$pedido;
 		if ($mostrar==true){
 			$vista->mostrar('pedidoi/nuevo');

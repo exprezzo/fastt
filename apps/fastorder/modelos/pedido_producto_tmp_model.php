@@ -119,7 +119,7 @@ class PedidoProductoTmpModel extends Modelo{
 		
 		if (!$datos['success']) return $datos;
 		
-		return array(
+		return array(			
 			'totalRows'=>$total,
 			'rows'=>$datos['datos']
 		);
