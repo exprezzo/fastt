@@ -3,26 +3,16 @@ var EdicionArticulo=function (tabId){
 	
 		
 	this.init=function(tabId, padre, articulos){							
+		this.tmp_id=0;
 		this.tabId=tabId;
 		this.padre=padre;
 		//this.configurarFormulario(tabId);	
 		this.configurarGrid(tabId, articulos);		
-		return true;
-		
-		this.configurarComboDestino(tabId);
-		this.configurarComboCodigo();
 		this.configurarToolbar(tabId);		
+		return true;
+				
 		var me=this;
-		
-		$(this.tabId+' .frmEditInlinePedido .btnCancel').click(function(){			
-			$(me.tabId+' .frmEditInlinePedido').css('visibility','hidden');				
-		});				
-		
-		$(this.tabId+' .frmEditInlinePedido .btnGuardar').click(function(){						
-			$(me.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(-2);
-			me.guardar();
-		});
-					
+								
 		this.configurarComboArticulo();
 		$(me.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber({
             type: 'numeric',           
@@ -37,28 +27,7 @@ var EdicionArticulo=function (tabId){
 		
 		$(me.tabId+' .frmEditInlinePedido .txtPedido').change(function(){
 			me.calcularSugerencia();
-		});
-				
-		$(me.tabId+' .frmEditInlinePedido input').bind('keyup', function(e) {
-			var code = e.keyCode || e.which;
-			code=parseInt(code);	
-			if(e.keyCode==13){				
-				me.guardar();
-			}
-		});		
-		
-		$(me.tabId+' .frmEditInlinePedido .txtPendiente').bind('keydown', function(e) {
-			e.preventDefault();
-			var code = e.keyCode || e.which;
-			code=parseInt(code);
-			if (code == 9) {								
-				 var inputs=$(me.tabId+' .cmbCodigo + div[role="combobox"] input');
-				 $(inputs[0]).focus();
-				 me.guardar();
-			}
-		});
-		
-		
+		});				
 	};
 	this.calcularSugerencia=function(){
 		var me=this;
@@ -76,7 +45,7 @@ var EdicionArticulo=function (tabId){
 		$(me.tabId+' .frmEditInlinePedido .txtPendiente').val(pendiente);
 	};
 	this.configurarComboArticulo=function(target){
-		//alert("asd");
+		
 		var tabId=this.tabId;
 		 
 		var fields=[			
@@ -166,12 +135,12 @@ var EdicionArticulo=function (tabId){
 				var testArray = [
 					{value:item.value,label:item.codigo}
 				];
-				 var data=$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data');				
-				 data.data=testArray;
-				 data.items=testArray;
+				var data=$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data');
+				data.data=testArray;
+				data.items=testArray;
 				
-				 $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data',data);
-				 $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','selectedIndex',0);				
+				$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data',data);
+				$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','selectedIndex',0);
 				$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','text',item.codigo);
 				
 				$('#tabs '+tabId+' .txtMaximo').val(item.maximo);
@@ -181,16 +150,14 @@ var EdicionArticulo=function (tabId){
 				
 				var sugerido=0;
 				
-				sugerido= parseInt(item.puntoreorden) -  parseInt(item.existencia);				
+				sugerido= parseInt(item.puntoreorden) -  parseInt(item.existencia);
 				$('#tabs '+tabId+' .txtSugerido').val(sugerido);
 				
-				$('#tabs '+tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
-				$('#tabs '+tabId+' .frmEditInlinePedido .txtPendiente').val(0); 
+				$('#tabs '+tabId+' .frmEditInlinePedido .txtPedido').val(sugerido);
+				$('#tabs '+tabId+' .frmEditInlinePedido .txtPendiente').val(0);
 			}
 		});
-		combo.focus();		
-		
-		
+		combo.focus();
 	}
 	this.guardar=function(){
 		
@@ -271,8 +238,8 @@ var EdicionArticulo=function (tabId){
 			});
 		});
 	},
-	this.configurarGrid=function(tabId, articulos){		
-		/*var fields=[			
+	this.configurarGrid=function(tabId, articulos){
+		var fields=[			
 			{ name: "codigo"},			
 			{ name: "nombre"},
 			{ name: "presentacion"},
@@ -290,6 +257,16 @@ var EdicionArticulo=function (tabId){
 			{ name: "idarticulopre"},
 			{ name: "id"  }
 		];
+		
+		var rec={};
+		
+		$.each( fields, function(indexInArray, valueOfElement){
+			var campo=valueOfElement.name;
+			rec[campo]='';
+		
+		} );
+		this.rec=rec;
+		/*
 		var dataReader = new wijarrayreader(fields);
 		var me=this;
 		var dataSource = new wijdatasource({
@@ -323,53 +300,22 @@ var EdicionArticulo=function (tabId){
 		
 		var gridPedidos=$('#tabs '+tabId+" .grid_articulos");				
 		
+		var me=this;
 		gridPedidos.bind('keydown', function(e) {
 			var code = e.keyCode || e.which;
 			code=parseInt(code);	
-			if(e.keyCode==13){				
-				alert("Enter");
-				//me.guardar();
-			}else if(e.keyCode==9){	
-				e.preventDefault();
-				var current = $(".grid_articulos").wijgrid("currentCell");
-				console.log("current");  console.log(current); 
-				
-				//alert("ri: "+current.rowIndex()+" ci:"+current.cellIndex());
-				
-				var cellIdx=current.cellIndex();
-				var rowIndex = current.rowIndex();
-				switch(cellIdx){
-					case 0:
-						cellIdx=1;
-					break;
-					case 1:
-						cellIdx=4;
-					break;
-					case 4:
-						cellIdx=6;
-					break;
-					case 6:
-						cellIdx=0;
-						rowIndex=3;
-					break;
-				}
-				
-				var cellInfo= $(".grid_articulos").wijgrid("currentCell",cellIdx, rowIndex );
-				console.log("cellInfo"); console.log(cellInfo); 
-				$(".grid_articulos").wijgrid("beginEdit");
-				
-				
-				// console.log("e"); console.log(e);
-				// console.log("e.target"); console.log(e.target);
-				
-				// var parent=$(e.target).parent();
-				// console.log("parent"); console.log(parent);
-				
-				// var sig = parent.next();
-				// console.log("sig"); console.log(sig);
-				// sig.focus();
-				// gridPedidos.wijgrid("beginEdit");
-				//me.editarSiguiente();
+			if(e.keyCode==13){	
+				 var cellInfo= $(tabId+" .grid_articulos").wijgrid("currentCell");				
+				 cellIndex=cellInfo.cellIndex();							
+				 rowIndex = cellInfo.rowIndex();							
+				 // me.seleccionarSiguiente(true, rowIndex+1);
+				 // me.guardar();
+			}else if(e.keyCode==9  && e.shiftKey){	
+				e.preventDefault();								
+				me.seleccionarSiguiente(true);				
+			}else if(e.keyCode==9 ){	
+				e.preventDefault();								
+				me.seleccionarSiguiente();				
 			}
 		});
 		
@@ -378,39 +324,58 @@ var EdicionArticulo=function (tabId){
 			// dynamic: true,
 			allowColSizing:true,
 			allowPaging: true,
-			pageSize:2,
+			pageSize:9,
 			allowEditing:true,
 			allowColMoving: true,
 			//showGroupArea: true,
-			allowKeyboardNavigation:true,			
+			allowKeyboardNavigation:true,
 			selectionMode:'singleRow',
 			// data:dataSource,
-			beforeCellEdit: function(e, args) { 
+			beforeCellEdit: function(e, args) {
+				var row = args.cell.row() ;
 				
-				console.log("args"); console.log(args);
-				console.log(me);
-				var positions=new Array();
-				if (args.cell.column().editable === false){											
-					//return false;
-				}
-				
-				switch (args.cell.column().dataKey) { 
+				if (args.cell.column().editable === false){
+					return false;
+				}				
+
+				switch (args.cell.column().dataKey) { 					
 					case "codigo": 
 						var combo=
 						$("<input />")
 							.val(args.cell.value()) 
 							.appendTo(args.cell.container().empty());   
 						args.handled = true;   
+						
+						var domCel = args.cell.tableCell();
+						combo.css('width',	$(domCel).width()-10 );
+						combo.css('height',	$(domCel).height()-10 );
+						
 						me.configurarComboCodigo(combo);
-					break; 
+					break;
 					case "nombre": 
 						var combo=
 						$("<input />")
 							.val(args.cell.value()) 
 							.appendTo(args.cell.container().empty());   
+						
+						var domCel = args.cell.tableCell();
+						combo.css('width',	$(domCel).width()-10 );
+						combo.css('height',	$(domCel).height()-10 );
+						
 						args.handled = true;   
 						me.configurarComboArticulo(combo);
 					break; 
+					default:
+						var input=$("<input />")
+							.val(args.cell.value()) 
+							.appendTo(args.cell.container().empty()).focus();   							
+							
+						var domCel = args.cell.tableCell();						
+						input.css('width',	$(domCel).width()-10 );
+						input.css('height',	$(domCel).height()-10 );
+						args.handled = true;   
+						return true;
+					break;						
 				} 
 			}, 			
 			data:articulos,
@@ -418,21 +383,21 @@ var EdicionArticulo=function (tabId){
 				{ dataKey: "codigo", headerText: "Codigo",width:"300px"},
 				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
-				{dataKey: "maximo", headerText: "L&iacute;mites",editable:false,
-					cellFormatter: function (args) {
-						if (args.row.type & $.wijmo.wijgrid.rowType.data) {
-							args.$container
-								.css("text-align", "center")
-								.empty()
-								.append($("<ul style='margin:0;padding:0;'><li>"+args.row.data.maximo+"</li><li>"+args.row.data.puntoreorden+"</li><li>"+args.row.data.minimo+"</li></ul>") 
-								.addClass('stock_numbers')); 
-							//args.row.data.Cover
-							return true; 
-						} 
-					}
-				},
-				{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo",editable:false},
-				{dataKey: "puntoreorden",visible:false,  headerText: "P Reorden",editable:false},
+				// {dataKey: "maximo", headerText: "L&iacute;mites",editable:false,
+					// cellFormatter: function (args) {
+						// if (args.row.type & $.wijmo.wijgrid.rowType.data) {
+							// args.$container
+								// .css("text-align", "center")
+								// .empty()
+								// .append($("<ul style='margin:0;padding:0;'><li>"+args.row.data.maximo+"</li><li>"+args.row.data.puntoreorden+"</li><li>"+args.row.data.minimo+"</li></ul>") 
+								// .addClass('stock_numbers')); 							
+							// return true; 
+						// } 
+					// }
+				// },
+				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false},
+				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false},
+				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false},
 				{dataKey: "existencia", headerText: "I. Inicial"},
 				{dataKey: "sugerido", headerText: "Sugerido",editable:false},
 				{dataKey: "pedido", headerText: "Pedido"},
@@ -447,46 +412,38 @@ var EdicionArticulo=function (tabId){
 					 position: "header", 
 					outlineMode: "startExpanded", 
 					headerText: "{0}"
-				} },
-				
+				} },				
 				{ visible:false,dataKey: "grupoposicion"}
 			],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
 					args.$rows.attr('rowId',args.data.id_tmp);
 			},
-			cellStyleFormatter: function(args) { 
-			 if (args.column._originalDataKey=='fecha'){				
-				 args.$cell.addClass("colFecha");				
-			 }
-			
-			} 
+			cellStyleFormatter: function(args) {
+				 if (args.column._originalDataKey=='fecha'){
+					 args.$cell.addClass("colFecha");
+				 }
+			}
 		});		
 		var me=this;
 		gridPedidos.wijgrid({ beforeCellUpdate:function(e, args) { 
             switch (args.cell.column().dataKey) { 
                 case "Position": 
                     args.value = args.cell.container().find("input").val(); 
-                    break; 
-  
+                    break;   
                 case "Acquired": 
                     var $editor = args.cell.container().find("input"), 
                         value = $editor.wijinputnumber("getValue"), 
                         curYear = new Date().getFullYear(); 
-  
-                    if (value < 1990 || value > curYear) { 
-                        $editor.addClass("ui-state-error") 
-  
+                    if (value < 1990 || value > curYear) {
+                        $editor.addClass("ui-state-error");  
                         alert("value must be between 1990 and " + curYear); 
-  
                         $editor.focus(); 
-  
                         return false; 
                     } 
-                      
                     args.value = value; 
                     break; 
-            } 
+            }
         } });
 		
 		gridPedidos.wijgrid({ selectionChanged: function (e, args) { 					
@@ -508,26 +465,13 @@ var EdicionArticulo=function (tabId){
 				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
 			}			
 		
-			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                
-				
-				
-				console.log("e"); console.log(e);
-				// var w=$(me.tabId+' table.grid_articulos th:eq(0)').width();
-				// $(me.tabId+' .frmEditInlinePedido form  > input.txtCodigo').css('width',w-5);			
-				
-				// var w=$(me.tabId+' table.grid_articulos th:eq(1)').width();
-				// $(me.tabId+' .frmEditInlinePedido form  > div:eq(0)').css('width',w-5);				
-				
-				 // w=$(me.tabId+' table.grid_articulos th:eq(1)').width();
-				// $(me.tabId+' .frmEditInlinePedido form  > div:eq(2)').css('width',w);				
-				// $(me.tabId+' .frmEditInlinePedido form  .txtCantidad').css('width',w-25);				
-				
-				// var w=$(me.tabId+' table.grid_articulos th:eq(2)').width();
-				// $(me.tabId+' .frmEditInlinePedido form  > div:eq(3)').css('width',w-5);				
-				
-				me.editar(e.currentTarget);
+			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                				
+				// me.editar(e.currentTarget);
 			});			
 		} });
+				
+		this.numCols=$(tabId+' .grid_articulos thead th').length;
+		
 	};
 	
 	this.configurarFormulario=function(tabId){
@@ -542,7 +486,155 @@ var EdicionArticulo=function (tabId){
 		// this.configurarComboArticulos(tabId);
 		// this.configurarComboUM(tabId);
 	};
-	
+	this.seleccionarSiguienteOld = function(saltoLinea,nextRow ){
+		//Obtengo la celda seleccionada					
+		var idxNuevo, tabId, cellInfo, cellIndex, rowIndex, todoBien;
+		tabId=this.tabId;
+		cellInfo= $(tabId+" .grid_articulos").wijgrid("currentCell");		
+		
+		if (cellInfo.cellIndex){
+			cellIndex=cellInfo.cellIndex();							
+			rowIndex = cellInfo.rowIndex();					
+			idxNuevo=cellIndex+1;					
+		}			
+		
+		if (saltoLinea===true){			
+			rowIndex=nextRow;
+			idxNuevo=0;
+		}
+		var nuevo= $(tabId+" .grid_articulos").wijgrid("currentCell", idxNuevo, rowIndex );				
+		
+		if ( nuevo.column == undefined ||  cellIndex == nuevo.cellIndex()   ){
+			//seleccionar siguiente renglon o agregar un nuevo registro.						
+			this.seleccionarSiguiente(true, rowIndex + 1);
+		}else if ( nuevo.column().editable===false ){									
+			this.seleccionarSiguiente();
+		}else if ( nextRow && nuevo.rowIndex && nuevo.rowIndex() < nextRow){				
+			var data= $(tabId+" .grid_articulos").wijgrid('data');			
+			//revisar si el numero de regisrtos excede el numero pageSize para cambiar a la pagina correspondiente.			
+			data.push([]);
+			$(tabId+" .grid_articulos").wijgrid("ensureControl", true);
+			nuevo = $(tabId+" .grid_articulos").wijgrid("currentCell", 0, nextRow +1);
+			$(tabId+" .grid_articulos").wijgrid("beginEdit");
+			// this.seleccionarSiguiente(true, nextRow);
+			// return false;
+		}else{
+			//todoBien=true;
+			$(tabId+" .grid_articulos").wijgrid("beginEdit");
+		}		
+		
+		
+	};
+	this.seleccionarSiguiente = function(alreves, saltar){
+		//dos direcciones, hacia atras y hacia adelante.
+		//de la ultima caja editable de la fila, pasa a la siguiente fila.
+		//si se esta navegando alreves, del primer registro editable, pasa al registro anterior.
+		//si no hay otra fila, agrega un nuevo elemento.
+		//si está ubicado en el ultimo elemento de la pagina, pasar a la pagina siguiente .
+		//si está nvegando alrevés, y está ubicado en el primer elemento de la pagina, pasar a la pagina anterior.
+		
+		//Obtengo la celda seleccionada
+		var tabId, cellInfo, cellIndex, rowIndex,  row, nextCell, nextRow; 
+		tabId=this.tabId;
+		cellInfo= $(tabId+" .grid_articulos").wijgrid("currentCell");
+		
+		var direccion=	(alreves)? -1 : 1;
+		cellIndex=cellInfo.cellIndex();
+		rowIndex = cellInfo.rowIndex();
+		nextRow=rowIndex;
+		nextCell = cellIndex + direccion;
+		if (saltar){
+			nextCell=(alreves)? -1 : this.numCols + 1			
+		}
+		
+		
+		if ( nextCell<0 ){
+			//ir al registro anterior, cambiar de pagina
+			row=cellInfo.row();
+			var data = $(tabId+" .grid_articulos").wijgrid('data');
+			var pageSize = $(tabId+" .grid_articulos").wijgrid('option','pageSize');
+			var pageIndex = $(tabId+" .grid_articulos").wijgrid('option','pageIndex');
+			
+			dataItemIndex = row.dataItemIndex;
+			var fi= (pageSize * pageIndex);
+						
+			if ( dataItemIndex == fi){
+				if (pageIndex==0){
+					return false;
+				}
+				$(tabId+" .grid_articulos").wijgrid('option','pageIndex',pageIndex-1);
+				nextCell=0;
+				nextRow=pageSize*2;
+			}
+			
+			nextCell=this.numCols-1;
+			nextRow	= nextRow - 1;
+			
+			var cell;
+
+			if (nextCell>-1 && nextRow>-1){
+				while (true)
+				 {
+					cell = $(tabId+" .grid_articulos").wijgrid('currentCell',nextCell, nextRow);
+					if (cell.column == undefined ){
+						nextRow--;
+					}else{					
+						break;
+					}
+				}			
+			}else{
+				return false;
+			}
+		} else if ( nextCell>=this.numCols ){
+			nextCell=0;
+			//ir al registro siguiente, cambiar de pagina o agregar nuevo registro,
+			row=cellInfo.row();			
+			var data = $(tabId+" .grid_articulos").wijgrid('data');			 
+			var pageSize = $(tabId+" .grid_articulos").wijgrid('option','pageSize');
+			var pageIndex = $(tabId+" .grid_articulos").wijgrid('option','pageIndex');			 
+			//voy a ver si es el ultimo registro de la pagina
+			dataItemIndex = row.dataItemIndex;
+			var ip= (pageSize * pageIndex) - dataItemIndex;
+			
+			if ( (dataItemIndex+1) == data.length ){ 
+				//esta en el ultimo registro de la ultima pagina
+				//agregar nuevo, si esta al final de la pagina, despues de agregar registro, mover a la siguiente pagina
+				data.push(this.rec);
+				$(tabId+" .grid_articulos").wijgrid("ensureControl", true);
+				$(tabId+" .grid_articulos").wijgrid('option','pageIndex',pageIndex+1);			 				
+			}else if ( (ip+1) == pageSize ){
+				//esta al final de la pagina, cambiar de pagina
+				nextCell=0;
+				nextRow=-1;
+				$(tabId+" .grid_articulos").wijgrid('option','pageIndex',pageIndex+1);			 
+			}
+						
+			nextRow	= nextRow + 1;			
+			var cell;
+			
+			while (true)
+			 {
+				cell = $(tabId+" .grid_articulos").wijgrid('currentCell',nextCell, nextRow);
+				if (cell.column == undefined ){
+					nextRow++;
+				}else{						
+					break;
+				}
+			}
+			
+		}
+		
+		var nuevo = $(tabId+" .grid_articulos").wijgrid("currentCell",nextCell, nextRow);
+		
+		if ( nuevo.column().editable===false ){
+			this.seleccionarSiguiente(alreves);
+		}else{
+			$(tabId+" .grid_articulos").wijgrid("beginEdit");
+		}
+		
+		
+		
+	};
 	this.configurarComboCodigo=function(target){		
 		var tabId=this.tabId;
 		var me=this;
@@ -610,6 +702,7 @@ var EdicionArticulo=function (tabId){
 			},
 			select: function (e, item) 
 			{			
+				return true;
 				//me.articuloSeleccionado=item;
 				
 				$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
@@ -645,316 +738,39 @@ var EdicionArticulo=function (tabId){
 		});
 		combo.focus();			
 	};
-	this.configurarComboUM=function(){		
-		var tabId=this.tabId;
-		var fields=[{
-			name: 'label',
-			mapping: 'nombre'
-		}, {
-			name: 'value',
-			mapping: 'id'
-		}, {
-			name: 'selected',
-			defaultValue: false
-		}];
+	
+	
+	this.nuevo=function(){	
 		
-		var myReader = new wijarrayreader(fields);
-		
-		var proxy = new wijhttpproxy({
-			url: '/'+kore.modulo+'/pedidoi/getUnidadesMedida',
-			dataType:"json"			
-		});
-		
-		var datasource = new wijdatasource({
-			reader:  new wijarrayreader(fields),
-			proxy: proxy,
-			loaded: function (data) {	
-				//Seleccionar elemento
-				// var val=$('#tabs '+tabId+' .txtFkAlmacen').val();
-				// $.each(data.items, function(index, datos) {					
-					// if (parseInt(val)==parseInt(datos.id) ){						
-						// $('#tabs '+tabId+' .cmbAlmacen').wijcombobox({selectedIndex:index});
-					// }
-				// });				
-			}
-		});
-		
-		datasource.reader.read= function (datasource) {			
-			var totalRows=datasource.data.totalRows;			
-			datasource.data = datasource.data.rows;
-			datasource.data.totalRows = totalRows;
-			myReader.read(datasource);
-		};			
-		
-		datasource.load();	
-		var combo=$(tabId+' .cmbUm').wijcombobox({
-			data: datasource,
-			showTrigger: true,
-			minLength: 1,
-			autoFilter: false,
-			animationOptions: {
-				animated: "Drop",
-				duration: 1000
-			},
-			
-			search: function (e, obj) {
-				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
-			},
-			select: function (e, item) {				
-				
-				$('#tabs '+tabId+' .txtFkUm').val(item.value);
-			}
-		});
-						
-	};
-	this.configurarComboDestino=function(tabId){		
-		var fields=[{
-			name: 'label',
-			mapping: function (item) {
-				return item.nombre;
-			}
-		}, {
-			name: 'value',
-			mapping: 'id'
-		}, {
-			name: 'selected',
-			defaultValue: false
-		}];
-		
-		var myReader = new wijarrayreader(fields);
-		
-		var proxy = new wijhttpproxy({
-			url: '/'+kore.modulo+'/pedidoi/getArticulos',
-			dataType:"json"			
-		});
-		
-		var datasource = new wijdatasource({
-			reader:  new wijarrayreader(fields),
-			proxy: proxy,
-			loaded: function (data) {	
-				//Seleccionar elemento
-				// var val=$('#tabs '+tabId+' .txtFkAlmacen').val();
-				// $.each(data.items, function(index, datos) {					
-					// if (parseInt(val)==parseInt(datos.id) ){						
-						// $('#tabs '+tabId+' .cmbAlmacen').wijcombobox({selectedIndex:index});
-					// }
-				// });				
-			}
-		});
-		
-		datasource.reader.read= function (datasource) {			
-			var totalRows=datasource.data.totalRows;			
-			datasource.data = datasource.data.rows;
-			datasource.data.totalRows = totalRows;
-			myReader.read(datasource);
-		};			
-		
-		datasource.load();	
-		var combo=$(tabId+' .cmbDestino').wijcombobox({
-			data: datasource,
-			showTrigger: true,
-			minLength: 1,
-			// animationOptions: {
-				// animated: "Drop",
-				// duration: 1000
-			// },
-			forceSelectionText: false,
-			search: function (e, obj) {
-				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
-			},
-			select: function (e, item) {				
-				//$('#tabs '+tabId+' .txtFkAlmacen').val(item.id);				
-			}
-		});
-		
-		
-		// var animationOptions = {
-			 // animated: "Drop",
-			 // duration: 1000
-		// };
-		// combo.wijcombobox("option", "showingAnimation", animationOptions);		
-		// combo.wijcombobox("option", "hidingAnimation", animationOptions);
-	};
-	this.mostrarTabArticulos=function(){
-		//Posicionar tab Edicion articulo
-		this.mostrarTab(0);
-	};
-	this.nuevo=function(){		
-		var me=this;
-		
-		$(me.tabId+' .frmEditInlinePedido .txtIdTmp').val(0);
-		// $(me.tabId+' .frmEditInlinePedido .txtMaximo').val(0);
-		// $(me.tabId+' .frmEditInlinePedido .txtMinimo').val(0);
-		// $(me.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(0);
-		 $(me.tabId+' .frmEditInlinePedido .divNumerosStock ').html(0);
-		$(me.tabId+' .frmEditInlinePedido .txtExistencia').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtPedido').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtSugerido').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtPendiente').val(0);				
-		$(me.tabId+' .frmEditInlinePedido').css('top','38px');
-		$(me.tabId+' .frmEditInlinePedido .txtId').val(0);		
-		$(me.tabId+' .frmEditInlinePedido .txtFkArticulo').val(0);				
-		$(me.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", '');			
-		$(me.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", '');					
-		$(me.tabId+' .frmEditInlinePedido .txtIdArticuloPre').val(0);
-		$(me.tabId+' .frmEditInlinePedido .txtPresentacion').val(''); 		
-		$(this.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(-1);
-		
-		
-		var position = $(me.tabId+' table.grid_articulos thead > tr').position();				
-		var h = $(me.tabId+' table.grid_articulos thead > tr').height();
-		$(me.tabId+' .frmEditInlinePedido').css('visibility','visible');				
-		$(me.tabId+' .frmEditInlinePedido').css('top',position.top+h);	
-		
-		me.mostrarEditor();
-		
-	};
-	this.editar=function(target){		
-		//Cargar los datos en el editor
-		
-		if (this.selected ==undefined) return false;
-		
-			
-		$(this.tabId+' .frmEditInlinePedido .txtId').val(this.selected.id);
-		$(this.tabId+' .frmEditInlinePedido .txtIdTmp').val(this.selected.id_tmp);
-		$(this.tabId+' .frmEditInlinePedido .txtPedido').val(this.selected.pedido);
-		// $(this.tabId+' .frmEditInlinePedido .txtMaximo').val(this.selected.maximo);
-		// $(this.tabId+' .frmEditInlinePedido .txtMinimo').val(this.selected.minimo);
-		// $(this.tabId+' .frmEditInlinePedido .txtPuntoReorden').val(this.selected.puntoreorden);
-		
-		var ul="<ul> <li>";
-		ul+=this.selected.maximo+"</li><li>"+this.selected.puntoreorden+"</li><li>";
-		ul+=this.selected.minimo+"</li></ul>";
-		$(this.tabId+' .frmEditInlinePedido .divNumerosStock').html(ul);
-		
-		
-		
-		
-		$(this.tabId+' .frmEditInlinePedido .txtExistencia').val(this.selected.existencia);
-		
-		//$(this.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber('setText',this.selected.cantidad);
-		
-		$(this.tabId+' .frmEditInlinePedido .txtFkArticulo').val(this.selected.fk_articulo);				
-		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox("option", "text", this.selected.nombre);			
-		$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox("option", "text", this.selected.codigo);					
-		$(this.tabId+' .frmEditInlinePedido .txtDataItemIndex').val(this.selected.dataItemIndex);
-		
-		// var testArray = [
-			// {value:this.selected.fk_articulo,label:this.selected.nombre, id:this.selected.fk_articulo,nombre:this.selected.nombre}
-		// ];
-		// var data=$('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data');				
-		// data.data=testArray;
-		// data.items=testArray;
-		// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','data',data);
-		// $('#tabs '+this.tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
-		
-		var focused = $(':focus');
-		$(focused).select();
-		
-		$(this.tabId+' .frmEditInlinePedido .txtIdArticuloPre').val(this.selected.idarticulopre);
-		$(this.tabId+' .frmEditInlinePedido .txtPresentacion').val(this.selected.presentacion); //
-		//$(this.tabId+' .frmEditInlinePedido .txtCodigo').val(this.selected.codigo); 
-		
-		var sugerido = parseInt(this.selected.puntoreorden) - parseInt(this.selected.existencia);
-		$(this.tabId+' .frmEditInlinePedido .txtSugerido').val(sugerido); 
-		//$(this.tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
-		$(this.tabId+' .frmEditInlinePedido .txtPendiente').val(sugerido - this.selected.pedido); 
-		
-		this.calcularSugerencia();
-		
-		
-		target=$(this.tabId + ' tr[rowId="'+this.selected.id_tmp+'"]');
-		console.log("target"); console.log(target);
-		 var position = $(this.tabId + ' tr[rowId="'+this.selected.id_tmp+'"]').position();						
-		  $(this.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
-		 $(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
-		
-				
-		this.mostrarEditor(target[0]);
-		
-	};
-	this.mostrarEditor=function(target){		
-		//$(this.tabId+' .frmEditInlinePedido').css('visibility','visible');				
-		
-		var me=this;
-		var todos = $(me.tabId+' .frmEditInlinePedido form > *');								
-		var styles,w;
-		var found;
-		var editores=new Array();				
-		for (var i=0; i<todos.length; i++){
-			if ( $(todos[i]).attr("type")=='hidden' ){
-				continue;
-			}					
-			styles = $(todos[i]).attr("style");
-			if (styles==undefined){
-				editores.push( $(todos[i]) );
-				continue;					
-			}															
-			styles = $(todos[i]).attr("style").split(";");					
-			found = false;					
-			for (var ixS = 0; ixS < styles.length; ixS++) {					
-				if ( styles[ixS].trim().replace(' ','')==='display:none') {							
-					found = true;
-					break;
-				}
-			}
-			if (found == false){						
-				editores.push( $(todos[i]) );						
-			}
+		var tabId=this.padre.tabId;
+		var data= $(tabId+" .grid_articulos").wijgrid('data');							
+		var nuevo=new Array(this.rec);
+		this.tmp_id++;
+		nuevo[0].tmp_id=this.tmp_id;
+		var array3 = nuevo.concat(data); // Merges both arrays
+		data.length=0;
+		for(var i=0; i<array3.length; i++){
+			data.push( array3[i] );
 		}
-		var cel,w,h;
+
+		data.slice([]);
 		
-		for(var i=0; i<editores.length; i++){				
-			cel=$(target).find('td:eq('+i+')');
-			w=cel.width();
-			h=cel.height();
-		
-			// w=$(me.tabId+' table.grid_articulos tbody tr td:eq('+i+')').width();					
-			
-			$(editores[i]).css('width',w-3);				
-			$(editores[i]).css('height',h);				
-			
-			position=cel.position();
-			$(editores[i]).position(position);				
-		}
-		
-		$(this.tabId+' .frmEditInlinePedido div[role="combobox"] input').height(h-8);
-		$(this.tabId+' .frmEditInlinePedido .cmbArticulo').wijcombobox('repaint');						
-		$(this.tabId+' .frmEditInlinePedido .cmbCodigo').wijcombobox('repaint');				
-		
+		$(tabId+" .grid_articulos").wijgrid("ensureControl", true);
+		$(tabId+" .grid_articulos").wijgrid('option','pageIndex',0);			 
+		nuevo = $(tabId+" .grid_articulos").wijgrid("currentCell", 0, 0);
+		$(tabId+" .grid_articulos").wijgrid("beginEdit");
 		
 	};
-	// this.mostrarTabEdicionArticulo=function(){
-		// var data=this.selected;
-		// this.mostrarTab(1, data);
-	// };
-	this.mostrarTab=function(tabIndex, data){
-		
-		var tabId = this.tabId;
-		var elJQ=$(tabId+' .pnlArticulos');
-		var alto= elJQ.height();
-		var ancho= elJQ.width();
-		var position = elJQ.position();		
-		
-		var pnlArt=$(tabId+' .pnlEdicionArticulo');		
-		pnlArt.width(ancho);
-		pnlArt.height(alto);
-		pnlArt.css('top',position.top);
-		pnlArt.css('left',position.left);
-		//pnlArt.css('z-index',10);
-		if (tabIndex==0){
-			pnlArt.css('visibility','hidden');
-			$(tabId+' .pnlArticulos').css('visibility','visible');
-		}else if (tabIndex==1){
-			pnlArt.css('visibility','visible');
-			$(tabId+' .pnlArticulos').css('visibility','hidden');
-			
-		}		
-	};
+	
+	
+	
 	this.configurarToolbar=function(tabId){
 		var me=this;
+		
 		$(this.tabId+ ' .btnAgregar').click(function(){		
+			
 			me.nuevo();
+			
 		});
 	}
 }

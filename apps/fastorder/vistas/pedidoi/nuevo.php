@@ -155,7 +155,7 @@
 	</div>
 	<div class="cardArticulos">
 			<div style='display:inline-block;' class="pnlArticulos ui-widget-content">								
-				<table class="grid_articulos" style="width:98%;">
+				<table class="grid_articulos" style="">
 					<thead>						
 					</thead>
 				  <tbody>					

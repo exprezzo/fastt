@@ -7,20 +7,20 @@ var EdicionPedido = function(){
 		var w=$(tabId+' .lblAlmacen').width();		
 		$(tabId+' .lblSerie').width(w);
 	}
-	this.close=function(){	
+	this.close=function(){
 		
 		if (this.editado){
-			var res=confirm('Â¿Guardar antes de salir?');
+			var res=confirm('¿Guardar antes de salir?');
 			if (res===true){
 				this.saveAndClose=true;
 				this.guardar();
 				return false;
 			}else{
 				return true
-			}			
+			}
 		}else{
 			return true;
-		}		
+		}
 	};
 	this.init=function(tabId, pedidoId, almacen, articulos){
 		this.tabId= '#'+tabId;		
@@ -33,9 +33,9 @@ var EdicionPedido = function(){
 		
 		this.agregarClase('frmPedido');		
 		
-		 this.configurarFormulario(this.tabId);
-		 this.configurarToolbar(this.tabId);		
-		 this.notificarAlCerrar();			
+		this.configurarFormulario(this.tabId);
+		this.configurarToolbar(this.tabId);		
+		// this.notificarAlCerrar();			
 		this.actualizarTitulo();
 		
 		//http://www.openjs.com/scripts/events/keyboard_shortcuts/
@@ -52,6 +52,7 @@ var EdicionPedido = function(){
 		frmEdicionArticulo.init(this.tabId, this, articulos);
 		
 	};
+	//esta funcion pasara al plugin
 	this.agregarClase=function(clase){
 		var tabId=this.tabId;		
 		var tab=$('div'+this.tabId);						
@@ -100,6 +101,8 @@ var EdicionPedido = function(){
 		var tabId=this.tabId;
 		var tab = $('#tabs '+tabId);
 		var me=this;
+		var articulos=$(tabId+' .grid_articulos').wijgrid('data');
+		
 		var pedido={
 			id		: tab.find('.txtId').val(),
 			IdTmp		: tab.find('.txtIdTmp').val(),
@@ -107,8 +110,8 @@ var EdicionPedido = function(){
 			fecha	: tab.find('.txtFecha').val(),
 			fk_serie: tab.find('.txtFkSerie').val(),
 			vencimiento	: tab.find('.txtVencimiento').val(),
-			folio	: tab.find('.txtFolio').val()
-			
+			folio	: tab.find('.txtFolio').val(),
+			articulos: articulos
 		};
 		
 		//Envia los datos al servidor, el servidor responde success true o false.
@@ -399,27 +402,21 @@ var EdicionPedido = function(){
 				if ( resp.success == true	){
 					me.editado=true;
 					var gridPedidos=$(me.tabId+" .grid_articulos");
+					
+					var data= $(tabId+" .grid_articulos").wijgrid('data');
+					data.length=0;
+					for(var i=0; i<resp.articulos.length; i++){
+						data.push(resp.articulos[i]);
+					}
+					
+					//gridPedidos.wijgrid('data',resp.articulos);					
+					
 					gridPedidos.wijgrid('ensureControl', true);					
 				}
 			
 			});
 		  });
-	  
-		// $(tabId+' .btnCargarArticulos').click(function(e){
-			
-		// });		
-		
-		//COMBO
-		
-		
-		
-		
-		// var animationOptions = {
-			 // animated: "Drop",
-			 // duration: 1000
-		// };
-		// combo.wijcombobox("option", "showingAnimation", animationOptions);		
-		// combo.wijcombobox("option", "hidingAnimation", animationOptions);
+	  		
 		this.configCmbAlmacen();
 		this.configurarComboSerie();
 		
@@ -439,38 +436,7 @@ var EdicionPedido = function(){
 				  me.eliminar();
 				  me.editado=true;
 				}
-			} );
-			
-			
-			// $(tabId+ "> .tbPedido").wijribbon({
-				// click: function (e, cmd) {
-					// switch(cmd.commandName){
-						// case 'nuevo':
-							// TabManager.add('/admin/pedidoi/nuevo','Nuevo Pedido');				
-						// break;
-						// case 'guardar':
-							// me.guardar();
-						// break;
-						// case 'eliminar':
-							// me.nuevo();
-						// break;
-						
-						// default:						
-							// $.gritter.add({
-								// position: 'bottom-left',
-								// title:"Informaci&oacute;n",
-								// text: "Acciones del toolbar en construcci&oacute;n",
-								// image: '/images/info.png',
-								// class_name: 'my-sticky-class'
-							// });
-						// break;
-					// }
-					
-				// }
-			// });
-			
-			
-			
+			} );			
 	};
 		
 	

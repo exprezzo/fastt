@@ -223,16 +223,61 @@
 			);
 			
 			$tareas[]=array(				
-				'tarea'		 	=>'Detalles del pedido: procesar en el cliente',
+				'tarea'		 	=>'Detalles del pedido: procesar en el cliente
+				<ul>Agregar Nuevo Articulo</ul>
+				<ul>Precargar Articulos</ul>
+				<ul>Guardar</ul>
+				<ul>Eliminar Articulo</ul>				
+				<ul>Actualizar producto al seleccionar codigo (considerar la cancelacion de edicion para devolver el estado a todas las celdas modificadas)</ul>				
+				<ul>Actualizar codigo al seleccionar producto</ul>				
+				<ul>Actualizar sugerido y pendiente al modificar existencia o pedido</ul>
+				',
 				'responsable'	=>'',
 				'estimado' 		=>'06:00',
 				'modulo' 		=>'Ped Int',
-				'h_inicio'	 	=>'12/02/12 15:31',
-				'h_fin'	 		=>'',
+				'h_inicio'	 	=>'13/02/12 09:00',
+				'h_fin'	 		=>'13/02/12 15:00',
+				'duracion'  	=>'',
+				'diferencia'	=>''
+			);
+			$tareas[]=array(				
+				'tarea'		 	=>'Navegacion con tabs
+				<ul><li>Que funcione con shift tab para retroceder</li>				
+				<li>Que navege entre paginas (hacia atras y adelante)</li>
+				</ul>',
+				'responsable'	=>'',
+				'estimado' 		=>'06:00',
+				'modulo' 		=>'Ped Int',
+				'h_inicio'	 	=>'14/02/12 9:00',
+				'h_fin'	 		=>'15/02/12 5:58',
+				'duracion'  	=>'12',
+				'diferencia'	=>'6'
+			);
+			$tareas[]=array(				
+				'tarea'		 	=>'Navegacion con enter
+				<ul><li>Cambiar de pagina cuando sea necesario</li>
+				</ul>',
+				'responsable'	=>'',
+				'estimado' 		=>'06:00',
+				'modulo' 		=>'Ped Int',
+				'h_inicio'	 	=>'14/02/12 9:00',
+				'h_fin'	 		=>'14/02/12 01:10',
 				'duracion'  	=>'',
 				'diferencia'	=>''
 			);
 			
+			$tareas[]=array(				
+				'tarea'		 	=>'Crear accesos directos a los catálogos
+				<ul><li>Ctrl P: Pedidos Internos</li>
+				</ul>',
+				'responsable'	=>'',
+				'estimado' 		=>'',
+				'modulo' 		=>'Usabilidad',
+				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''
+			);
 			?>		
 			<td>Tarea</td>
 			<td>Responsable</td>

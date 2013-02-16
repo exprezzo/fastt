@@ -25,30 +25,30 @@ class PedidoModel extends Modelo{
 	}	
 	
 	function precargar($fk_tmp,$fk_pedido, $idalmacen){
-		$sql='DELETE FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
-		$con = $this->getConexion();
-		$sth = $con->prepare($sql);		
-		$sth->bindValue(':fk_tmp',$fk_tmp);				
-		$exito = $sth->execute();				
-		if (!$exito) return $this->getError($sth);
 		
-		$sql='INSERT INTO tmp_pedidos_productos (id, fk_articulo, fk_pedido,cantidad, idarticulopre, fk_tmp,maximo,minimo,existencia,puntoreorden)
-		SELECT 0 as id,stk.idarticulo as fk_articulo,:fk_pedido as fk_pedido, existencia as cantidad, pre.idarticulopre as idarticulopre,
-		:fk_tmp  fk_tmp, stk.maximo, stk.minimo, stk.existencia,stk.puntoreorden
+		$sql='SELECT 0 as id,stk.idarticulo as fk_articulo,:fk_pedido as fk_pedido, existencia as cantidad, pre.idarticulopre as idarticulopre,
+		:fk_tmp  fk_tmp, stk.maximo, stk.minimo, stk.existencia,stk.puntoreorden,stk.idgrupo , stk.grupoposicion ,gpo.nombre nombreGpo,
+		p.nombre,p.codigo,pre.descripcion presentacion,0 sugerido,0 pedido, 0 pendiente
 		FROM articulostock  stk
 		LEFT JOIN productos p ON p.id = stk.idarticulo
 		LEFT JOIN articulopre pre ON pre.idarticulo = stk.idarticulo AND pre.default=1
+		LEFT JOIN grupo_de_productos gpo ON  gpo.id=stk.idgrupo
 		WHERE idalmacen=:idalmacen';
+		$con=$this->getPdo();
 		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_tmp',$fk_tmp);				
 		$sth->bindValue(':idalmacen',$idalmacen);				
 		$sth->bindValue(':fk_pedido',$fk_pedido);				
 		$exito = $sth->execute();				
 		if (!$exito) return $this->getError($sth);
+		$datos = $sth->fetchAll(PDO::FETCH_ASSOC);
 		
 		
+		return array(
+			'success'=>true,
+			'articulos'=>$datos
 		
-		return array('success'=>true);
+		);
 	}
 	
 	function editar($idPedido){
