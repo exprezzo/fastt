@@ -56,9 +56,9 @@
 <script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/edicion_articulo.js"></script>
 <script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/edicion_pedido.js"></script>
 <link href='/web/apps/<?php echo $_PETICION->modulo; ?>/css/pedidoi.css' rel="stylesheet" type="text/css" />
-<script>
-	$( function(){
-		var articulos=<?php echo json_encode($this->pedido['articulos']); ?>;		
+<script>	
+	$( function(){		
+		var articulos=<?php echo json_encode($this->pedido['articulos']); ?>;				
 		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
 		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;

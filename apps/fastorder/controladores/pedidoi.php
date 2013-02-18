@@ -178,20 +178,22 @@ class Pedidoi extends Controlador{
 		$mod=new PedidoProductoModel();
 		
 		$params=array(	//Se traducen al lenguaje sql
-			'limit'=>$pageSize=50000,
-			'start'=>0,
-			'fk_pedido'=>$pedido['id'],
-			'idalmacen'=>$pedido['fk_almacen']
+			'limit'		=>$pageSize=50000,
+			'start'		=>0,
+			'fk_pedido'	=>$pedido['id'],
+			'idalmacen'	=>$pedido['fk_almacen']
 		);
 		
 		$res=$mod->paginar($params);
 		
-		
 		$vista=$this->getVista();
 		
-		if ($res['success']) $pedido['articulos']=$res['rows'];		
+		if ($res['success']) $pedido['articulos']=$res['rows'];	
 				
 		$vista->pedido=$pedido;
+		
+		
+		
 		if ($mostrar==true){
 			$vista->mostrar('pedidoi/nuevo');
 		}else{
@@ -265,20 +267,18 @@ class Pedidoi extends Controlador{
 		);
 		
 		$res=$mod->paginar($params);				
-			
-		$respuesta=array(	
-			'rows'=>$res['datos'],			
-			'totalRows'=> $res['total']			
+		
+		$respuesta=array(
+			'rows'=>$res['datos'],
+			'totalRows'=> $res['total']
 		);
 		echo json_encode($respuesta);
 	}
 	
 	function getAlmacenes(){
-	
-	
-		$mod=new AlmacenModel();		
+		$mod=new AlmacenModel();
 		// $paging=$_GET['paging'];
-		// $start=intval($paging['pageIndex'])*9;		
+		// $start=intval($paging['pageIndex'])*9;
 		$start=0;		
 		$res=$mod->paginar($start,9);				
 		
@@ -331,14 +331,34 @@ class Pedidoi extends Controlador{
 		$model=$this->getModel();		
 		$res = $model->guardar($pedido);
 		
-		if (!$res['success']) {
+		if (!$res['success']) {			
 			echo json_encode($res); exit;
 		}
 		$pk=$res['datos']['id'];
 		
-		$pedido=$model->editar($pk);
-		$res['datos']=$pedido;
+		$pedido=$res['datos'];
 		
+		//----------------
+		$mod=new PedidoProductoModel();
+		
+		$params=array(	//Se traducen al lenguaje sql
+			'limit'=>$pageSize=50000,
+			'start'=>0,
+			'fk_pedido'=>$pedido['id'],
+			'idalmacen'=>$pedido['fk_almacen']
+		);
+		
+		$resArts=$mod->paginar($params);		
+		
+		
+		
+		if (!$resArts['success']) {
+			echo json_encode($resArts); exit;		
+		} 
+		$pedido['articulos']=$resArts['rows'];		
+		//----------------
+		
+		$res['datos']=$pedido;		
 		echo json_encode($res);
 	}
 	function cerrar(){

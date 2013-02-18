@@ -104,14 +104,14 @@ var EdicionPedido = function(){
 		var articulos=$(tabId+' .grid_articulos').wijgrid('data');
 		
 		var pedido={
-			id		: tab.find('.txtId').val(),
+			id			: tab.find('.txtId').val(),
 			IdTmp		: tab.find('.txtIdTmp').val(),
-			almacen	: tab.find('.txtFkAlmacen').val(),
-			fecha	: tab.find('.txtFecha').val(),
-			fk_serie: tab.find('.txtFkSerie').val(),
+			almacen		: tab.find('.txtFkAlmacen').val(),
+			fecha		: tab.find('.txtFecha').val(),
+			fk_serie	: tab.find('.txtFkSerie').val(),
 			vencimiento	: tab.find('.txtVencimiento').val(),
-			folio	: tab.find('.txtFolio').val(),
-			articulos: articulos
+			folio		: tab.find('.txtFolio').val(),
+			articulos	: articulos
 		};
 		
 		//Envia los datos al servidor, el servidor responde success true o false.
@@ -125,6 +125,7 @@ var EdicionPedido = function(){
 			var resp = eval('(' + response + ')');
 			var msg= (resp.msg)? resp.msg : '';
 			var title;
+			
 			if ( resp.success == true	){
 				if (resp.msgType!=undefined && resp.msgType == 'info'){
 					icon='/web/apps/fastorder/images/yes.png';
@@ -132,9 +133,9 @@ var EdicionPedido = function(){
 					icon='/web/apps/fastorder/images/info.png';
 				}
 				
-				title= 'Success';				
+				title= 'Success';
 				tab.find('.txtId').val(resp.datos.id);
-				tab.find('.txtIdTmp').val(resp.datos.id_tmp);				
+				tab.find('.txtIdTmp').val(resp.datos.id_tmp);
 				tab.find('.txtFkAlmacen').val(resp.datos.fk_almacen);
 				tab.find('.txtFolio').val(resp.datos.folio);
 				tab.find('.txtFecha').wijinputdate('option','date', resp.datos.fecha); 
@@ -147,7 +148,15 @@ var EdicionPedido = function(){
 				objId = objId.toLowerCase();
 				$(me.tabId ).attr('objId',objId);
 				
-				var gridPedidos=$(me.tabId+" .grid_articulos");
+				
+				 var articulos=resp.datos.articulos;
+				 var gridPedidos=$(me.tabId+" .grid_articulos");
+				 var data=gridPedidos.wijgrid('data');
+				 data.length=0;
+				 for(var i=0; i<articulos.length; i++){
+					 data.push(articulos[i]);
+				 }
+				
 				gridPedidos.wijgrid('ensureControl', true);
 				
 				$.gritter.add({

@@ -66,8 +66,7 @@ class PedidoProductoModel extends Modelo{
 	}
 	
 	
-	function paginar($params){
-		
+	function paginar($params){		
 		$start=$params['start'];
 		$pageSize=$params['limit'];
 		$fk_pedido=$params['fk_pedido'];

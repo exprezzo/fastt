@@ -2,7 +2,7 @@
 var EdicionArticulo=function (tabId){
 	
 		
-	this.init=function(tabId, padre, articulos){							
+	this.init=function(tabId, padre, articulos){									
 		this.tmp_id=0;
 		this.tabId=tabId;
 		this.padre=padre;
@@ -486,45 +486,7 @@ var EdicionArticulo=function (tabId){
 		// this.configurarComboArticulos(tabId);
 		// this.configurarComboUM(tabId);
 	};
-	this.seleccionarSiguienteOld = function(saltoLinea,nextRow ){
-		//Obtengo la celda seleccionada					
-		var idxNuevo, tabId, cellInfo, cellIndex, rowIndex, todoBien;
-		tabId=this.tabId;
-		cellInfo= $(tabId+" .grid_articulos").wijgrid("currentCell");		
-		
-		if (cellInfo.cellIndex){
-			cellIndex=cellInfo.cellIndex();							
-			rowIndex = cellInfo.rowIndex();					
-			idxNuevo=cellIndex+1;					
-		}			
-		
-		if (saltoLinea===true){			
-			rowIndex=nextRow;
-			idxNuevo=0;
-		}
-		var nuevo= $(tabId+" .grid_articulos").wijgrid("currentCell", idxNuevo, rowIndex );				
-		
-		if ( nuevo.column == undefined ||  cellIndex == nuevo.cellIndex()   ){
-			//seleccionar siguiente renglon o agregar un nuevo registro.						
-			this.seleccionarSiguiente(true, rowIndex + 1);
-		}else if ( nuevo.column().editable===false ){									
-			this.seleccionarSiguiente();
-		}else if ( nextRow && nuevo.rowIndex && nuevo.rowIndex() < nextRow){				
-			var data= $(tabId+" .grid_articulos").wijgrid('data');			
-			//revisar si el numero de regisrtos excede el numero pageSize para cambiar a la pagina correspondiente.			
-			data.push([]);
-			$(tabId+" .grid_articulos").wijgrid("ensureControl", true);
-			nuevo = $(tabId+" .grid_articulos").wijgrid("currentCell", 0, nextRow +1);
-			$(tabId+" .grid_articulos").wijgrid("beginEdit");
-			// this.seleccionarSiguiente(true, nextRow);
-			// return false;
-		}else{
-			//todoBien=true;
-			$(tabId+" .grid_articulos").wijgrid("beginEdit");
-		}		
-		
-		
-	};
+	
 	this.seleccionarSiguiente = function(alreves, saltar){
 		//dos direcciones, hacia atras y hacia adelante.
 		//de la ultima caja editable de la fila, pasa a la siguiente fila.
@@ -594,18 +556,21 @@ var EdicionArticulo=function (tabId){
 			var pageIndex = $(tabId+" .grid_articulos").wijgrid('option','pageIndex');			 
 			//voy a ver si es el ultimo registro de la pagina
 			dataItemIndex = row.dataItemIndex;
-			var ip= (pageSize * pageIndex) - dataItemIndex;
+			var ip= (pageSize * (pageIndex+1) )-1;
 			
-			if ( (dataItemIndex+1) == data.length ){ 
+			
+			//alert("pageSize: "+pageSize+" pageIndex:" + pageIndex + " dataItemIndex: " + dataItemIndex + ' ip:' + ip);
+			
+			if ( (dataItemIndex+1) == data.length ){
 				//esta en el ultimo registro de la ultima pagina
 				//agregar nuevo, si esta al final de la pagina, despues de agregar registro, mover a la siguiente pagina
 				data.push(this.rec);
 				$(tabId+" .grid_articulos").wijgrid("ensureControl", true);
 				$(tabId+" .grid_articulos").wijgrid('option','pageIndex',pageIndex+1);			 				
-			}else if ( (ip+1) == pageSize ){
-				//esta al final de la pagina, cambiar de pagina
+			}else if ( ip==dataItemIndex ){
+				//esta al final de la pagina, cambiar de página				
 				nextCell=0;
-				nextRow=-1;
+				nextRow=-1;				
 				$(tabId+" .grid_articulos").wijgrid('option','pageIndex',pageIndex+1);			 
 			}
 						

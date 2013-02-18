@@ -49,19 +49,7 @@ class PedidoModel extends Modelo{
 			'articulos'=>$datos
 		
 		);
-	}
-	
-	function editar($idPedido){
-		$mod=$this->obtener($idPedido);		
-		$id_tmp=uniqid();
-		$mod['id_tmp']=$id_tmp;
-		
-		$res=$this->clonar($idPedido, $id_tmp, $mod['fk_almacen']);
-		if (!$res['success']){
-			print_r($res); exit;
-		}
-		return $mod;
-	}
+	}		
 	
 	function clonar($fk_pedido, $fk_tmp,$idalmacen){
 		$sql='INSERT INTO tmp_pedidos_productos (id, fk_articulo, fk_pedido,cantidad, idarticulopre, fk_tmp,maximo,minimo,existencia,puntoreorden)
@@ -252,7 +240,7 @@ class PedidoModel extends Modelo{
 	}
 	
 	
-	function asignarFolio($idFolio){		
+	function asignarFolio($idFolio){
 		//      http://dev.mysql.com/doc/refman/5.0/es/innodb-locking-reads.html		
 		try {
 			$db=$this->getConexion();
@@ -302,17 +290,19 @@ class PedidoModel extends Modelo{
 	}
 	
 	function guardar($params){
+		// print_r($params);
+	
 		$dbh=$this->getConexion();
 		$pk			=empty($params[$this->pk]) ? 0 : $params[$this->pk];
 		$fk_almacen	=$params['almacen'];
 		$strFecha	=$params['fecha'];
 		$vencimiento=$params['vencimiento'];
 		$fk_serie 	=intval($params['fk_serie']);
-		$folio 	=intval($params['folio']);
+		$folio 		=intval($params['folio']);
 		
 		$msgType='';
-		if ( empty($pk) ){			
-			$res = $this->asignarFolio($fk_serie);
+		if ( empty($pk) ){
+			$res = $this->asignarFolio( $fk_serie );
 			if ( !$res['success'] ) return $res;
 			$msg='Pedido Guardado';
 			if ( intval($folio) != intval($res['folio']) ){
@@ -320,7 +310,7 @@ class PedidoModel extends Modelo{
 				$msg.='<br>El sistema asign&oacute; el folio correspondiente. ('.$res['folio'].')';
 			}
 			$folio=$res['folio'];
-		//	print_r($res);
+		
 			//           CREAR
 			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie, folio=:folio';
 			$sth = $dbh->prepare($sql);
@@ -351,26 +341,18 @@ class PedidoModel extends Modelo{
 			}
 			$sql='UPDATE '.$this->tabla.' SET fecha=:fecha, vencimiento=:vencimiento WHERE '.$this->pk.'=:pk';
 			$sth = $dbh->prepare($sql);
-			//$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
-			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
-			$sth->bindValue(":pk",$pk,PDO::PARAM_INT);
-			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
-			//$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
-			//$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
+			$sth->bindValue(":fecha",		$strFecha,		PDO::PARAM_STR);
+			$sth->bindValue(":pk",			$pk,			PDO::PARAM_INT);
+			$sth->bindValue(":vencimiento",	$vencimiento,	PDO::PARAM_STR);
 			$msg='Pedido Actualizado';
 			$exito = $sth->execute();
 		}
 		
-		
-		
 		if (!$exito){
-			$resp['success']=false;
-			$error=$sth->errorInfo();
-			$msg    = $error[2];
-			$pedido=$params;
+			return $this->getError($sth);
 		}else{
-			
-			$res=$this->procesarClones($pk,$params);
+			//$res=$this->procesarClones($pk,$params);
+			$res=$this->guardarDetalles($pk,$params);			
 			if (!$res['success']) return $res;
 			$pedido=$this->obtener($pk);
 		}
@@ -384,89 +366,92 @@ class PedidoModel extends Modelo{
 			'msgType'=>$msgType,
 			'datos'=>$pedido
 		);
-		
 	}
 	
-	function procesarClones($fk_pedido, $params){
-		
-		$resp=array();
-		$fk_tmp=$params['IdTmp'];			
-		
-		$sql='INSERT INTO pedidos_productos (fk_articulo, fk_pedido, cantidad, idarticulopre)
-		SELECT fk_articulo,:fk_pedido fk_pedido, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id=0';
-		
+	function guardarDetalles($fk_pedido, $params){
+		//Insertar, Actualizar y borrar.
 		$con = $this->getConexion();
-		$sth = $con->prepare($sql);
-		$sth->bindValue(':fk_pedido',$fk_pedido,PDO::PARAM_INT);
-		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
-		$exito = $sth->execute();
+		$sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
+		
+		foreach($params['articulos'] as $detalle){
+			$sth = $con->prepare($sql);
+			$sth->bindValue(':fk_pedido',		$fk_pedido,		PDO::PARAM_INT);
+			$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
+			$sth->bindValue(':cantidad',		$detalle['cantidad'],		PDO::PARAM_INT);
+			$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
+			$exito = $sth->execute();
+			if (!$exito) return $this->getError($sth);
+		}
+		
+		$resp=array('success'=>true);
+		return $resp;
+		
+		$fk_tmp=$params['IdTmp'];
 		
 		$msg='ok';
 		if (!$exito){
 			$resp['success']=false;
 			$error=$sth->errorInfo();
 			$msg    = $error[2];
-			$elemeno=$params;			
+			$elemeno=$params;
 		}
 		
-		//actualizar			
-		$sql='SELECT id, fk_articulo, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id!=0 AND fk_pedido=:fk_pedido';			
+		//actualizar
+		$sql='SELECT id, fk_articulo, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id!=0 AND fk_pedido=:fk_pedido';
 		
 		$con = $this->getConexion();
 		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_pedido',$fk_pedido,PDO::PARAM_INT);
 		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
-		$res = $this->execute($sth);											
+		$res = $this->execute($sth);
 		if (!$res['success'])return $res;
-		foreach($res['datos'] as $elemento){				
+		foreach($res['datos'] as $elemento){
 			$fk_articulo=$elemento['fk_articulo'];
 			$cantidad=$elemento['cantidad'];
 			$id=$elemento['id'];
 			$idarticulopre=$elemento['idarticulopre'];
 			$sql='UPDATE pedidos_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, idarticulopre=:idarticulopre WHERE id=:id';
-			$sth = $con->prepare($sql);				
+			$sth = $con->prepare($sql);
 			$sth->bindValue(':fk_articulo',$fk_articulo,PDO::PARAM_INT);
 			$sth->bindValue(':cantidad',$cantidad,PDO::PARAM_INT);
 			$sth->bindValue(':idarticulopre',$idarticulopre,PDO::PARAM_INT);
-			
 			$sth->bindValue(':id',intval($id),PDO::PARAM_INT);
-			$exito = $sth->execute();			
+			$exito = $sth->execute();
 			if (!$exito){
 				$resp['success']=false;
 				$error=$sth->errorInfo();
-				$msg    = $error[2];					
+				$msg    = $error[2];
 				$resp['success']=false;
 				$resp['msg']=$msg;
 				return $resp;
 			}
-			
 		}
 		
 		//Antes de borrar, actualizo los stocks		
 		$idalmacen=$params['almacen'];
 		$sql='SELECT existencia,fk_articulo FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
-		$sth = $con->prepare($sql);							
+		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
 		$exito = $sth->execute();
-		if (!$exito) return $this->getError($sth);	
+		if (!$exito) return $this->getError($sth);
 		
 		$datos= $sth->fetchAll(PDO::FETCH_ASSOC);
-		foreach($datos as $dato){			
+		foreach($datos as $dato){
 			$sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idalmacen=:idalmacen';
-			$sth = $con->prepare($sql);							
-			$sth->bindValue(':existencia',$dato['existencia'],PDO::PARAM_INT);			
-			$sth->bindValue(':idarticulo',$dato['fk_articulo'],PDO::PARAM_INT);			
-			$sth->bindValue(':idalmacen',$idalmacen,PDO::PARAM_INT);			
-			$exito = $sth->execute();		
-			if (!$exito) return $this->getError($sth);	
+			$sth = $con->prepare($sql);
+			$sth->bindValue(':existencia',$dato['existencia'],PDO::PARAM_INT);
+			$sth->bindValue(':idarticulo',$dato['fk_articulo'],PDO::PARAM_INT);
+			$sth->bindValue(':idalmacen',$idalmacen,PDO::PARAM_INT);
+			$exito = $sth->execute();
+			if (!$exito) return $this->getError($sth);
 		}
 		
 		
 		//BORRAR TODO
 		$sql='DELETE FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
-		$sth = $con->prepare($sql);							
-		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);			
-		$exito = $sth->execute();			
+		$sth = $con->prepare($sql);
+		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
+		$exito = $sth->execute();
 		if (!$exito) return $this->getError($sth);
 		
 		//borrar
