@@ -224,13 +224,16 @@
 			
 			$tareas[]=array(				
 				'tarea'		 	=>'Detalles del pedido: procesar en el cliente
-				<ul>Agregar Nuevo Articulo</ul>
-				<ul>Precargar Articulos</ul>
-				<ul>Guardar</ul>
-				<ul>Eliminar Articulo</ul>				
-				<ul>Actualizar producto al seleccionar codigo (considerar la cancelacion de edicion para devolver el estado a todas las celdas modificadas)</ul>				
-				<ul>Actualizar codigo al seleccionar producto</ul>				
-				<ul>Actualizar sugerido y pendiente al modificar existencia o pedido</ul>
+				<ul>
+				<li class="listo">Agregar Nuevo Articulo</li>
+				<li class="listo">Precargar Articulos</li>
+				<li class="listo">Guardar</li>
+				<li>Eliminar Articulo</li>				
+				<li>Actualizar producto al seleccionar codigo (considerar la cancelacion de edicion para devolver el estado a todas las celdas modificadas)</li>				
+				<li>Actualizar codigo al seleccionar producto</li>				
+				<li>Actualizar sugerido y pendiente al modificar existencia o pedido</li>
+				<li class="listo">Al guardar, actualizar la existencia en la tabla </li>
+				</ul>
 				',
 				'responsable'	=>'',
 				'estimado' 		=>'06:00',
@@ -242,8 +245,8 @@
 			);
 			$tareas[]=array(				
 				'tarea'		 	=>'Navegacion con tabs
-				<ul><li>Que funcione con shift tab para retroceder</li>				
-				<li>Que navege entre paginas (hacia atras y adelante)</li>
+				<ul><li class="listo">Que funcione con shift tab para retroceder</li>				
+				<li class="listo">Que navege entre paginas (hacia atras y adelante)</li>
 				</ul>',
 				'responsable'	=>'',
 				'estimado' 		=>'06:00',
@@ -278,6 +281,8 @@
 				'duracion'  	=>'',
 				'diferencia'	=>''
 			);
+			
+			
 			?>		
 			<td>Tarea</td>
 			<td>Responsable</td>

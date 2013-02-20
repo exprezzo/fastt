@@ -371,19 +371,41 @@ class PedidoModel extends Modelo{
 	function guardarDetalles($fk_pedido, $params){
 		//Insertar, Actualizar y borrar.
 		$con = $this->getConexion();
-		$sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
 		
+		$idalmacen = $params['almacen'];
 		foreach($params['articulos'] as $detalle){
+			if ( empty($detalle['id']) ){
+				$sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
+				$sth = $con->prepare($sql);
+				$sth->bindValue(':fk_pedido',		$fk_pedido,		PDO::PARAM_INT);
+				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
+				$sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
+				$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
+				$exito = $sth->execute();
+				if (!$exito) return $this->getError($sth);
+			}else{
+				$sql='UPDATE pedidos_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, idarticulopre=:idarticulopre WHERE id=:id';
+				$sth = $con->prepare($sql);
+				$sth->bindValue(':id',		$detalle['id'],		PDO::PARAM_INT);
+				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
+				$sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
+				$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
+				$exito = $sth->execute();
+				if (!$exito) return $this->getError($sth);
+			}			
+			
+			$sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idalmacen=:idalmacen';
 			$sth = $con->prepare($sql);
-			$sth->bindValue(':fk_pedido',		$fk_pedido,		PDO::PARAM_INT);
-			$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
-			$sth->bindValue(':cantidad',		$detalle['cantidad'],		PDO::PARAM_INT);
-			$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
+			$sth->bindValue(':existencia',$detalle['existencia'],PDO::PARAM_INT);
+			$sth->bindValue(':idarticulo',$detalle['fk_articulo'],PDO::PARAM_INT);
+			$sth->bindValue(':idalmacen',$idalmacen,PDO::PARAM_INT);
 			$exito = $sth->execute();
 			if (!$exito) return $this->getError($sth);
-		}
-		
+		}		
 		$resp=array('success'=>true);
+		
+		
+		
 		return $resp;
 		
 		$fk_tmp=$params['IdTmp'];

@@ -7082,7 +7082,7 @@ var __extends = this.__extends || function (b, c) {
                 g = false,
                 f, h, e, c;
             if ((d === "input" || d === "option" || d === "select" || d === "textarea") && a(b.target).closest("tr.wijmo-wijgrid-datarow").length === 0) return true;
-            if (this.options.allowEditing) if ((b.which === a.ui.keyCode.ESCAPE || b.which === 113) && this.currentCell()._isValid() && this.currentCell()._isEdit()) {
+            if (this.options.allowEditing) if ((b.which === a.ui.keyCode.ESCAPE || b.which === 113) && this.currentCell()._isValid() && this.currentCell()._isEdit()) {				
                 this._endEditInternal(b);
                 return false
             } else if (b.which === 113) {
@@ -7290,7 +7290,7 @@ var __extends = this.__extends || function (b, c) {
             }
             return false
         },
-        _endEditInternal: function (c) {
+        _endEditInternal: function (c) {			
             if (this._canInteract() && this.options.allowEditing) {
                 var b = (new a.wijmo.wijgrid.cellEditorHelper).currentCellEditEnd(this, c);
                 b && !this._allowVirtualScrolling() && this._view().ensureHeight(this.currentCell().rowIndex());
@@ -12701,6 +12701,7 @@ var __extends = this.__extends || function (b, c) {
                 return g
             };
             this.currentCellEditEnd = function (f, k) {
+				
                 var c = f.currentCell(),
                     g = false,
                     o = f._view(),
@@ -12716,7 +12717,7 @@ var __extends = this.__extends || function (b, c) {
                             cell: c,
                             value: undefined
                         };
-                        if (g = f._trigger("beforeCellUpdate", null, b)) {
+                        if (g = f._trigger("beforeCellUpdate", null, b)) {							
                             if (b.value === undefined) b.value = e(f, c);
                             h = b.value;
                             try {
@@ -12745,8 +12746,13 @@ var __extends = this.__extends || function (b, c) {
                                 })
                             }
                         }
-                    } else g = true;
-                    if (g) {
+                    } else {						
+						f._trigger("cancelEdit", null, {
+                                    cell: c
+                                }); // zb:
+						g = true;
+					}
+                    if (g) {						
                         b = {
                             cell: c,
                             event: k,
@@ -27862,6 +27868,7 @@ var __extends = this.__extends || function (b, c) {
             return null
         },
         _escActionAssociated: function () {
+			
             var b = this,
                 a = b._getDesignViewWindow();
             a.document.selection !== undefined && a.document.selection.empty();
@@ -27880,7 +27887,7 @@ var __extends = this.__extends || function (b, c) {
             try {
                 if (b.ctrlKey) c = String.fromCharCode(b.keyCode).toLowerCase();
                 else switch (b.keyCode) {
-                    case 27:
+                    case 27:						
                         a._escActionAssociated();
                         break;
                     case 13:

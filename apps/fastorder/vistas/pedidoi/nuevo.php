@@ -59,7 +59,7 @@
 <script>	
 	$( function(){		
 		var articulos=<?php echo json_encode($this->pedido['articulos']); ?>;				
-		
+		console.log("articulos"); console.log(articulos);
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
 		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
@@ -145,36 +145,28 @@
 				<div class="inputBox" style='margin-bottom:8px;display:inline;height:26px;margin-left:10px;'>
 					<label style="width:auto;">Vencimiento:</label>
 					<input type='text' name='vencimiento' class="txtVencimiento" value="<?php echo $vencimiento; ?>"  />
-				</div>
-				
-			</div>
-			
+				</div>				
+			</div>			
 			<br />	
-		</form>
-		
+		</form>		
 	</div>
 	<div class="cardArticulos">
-			<div style='display:inline-block;' class="pnlArticulos ui-widget-content">								
+			<div style='display:inline-block;' class="pnlArticulos ui-widget-content">
 				<table class="grid_articulos" style="">
-					<thead>						
+					<thead>
 					</thead>
 				  <tbody>					
 					<?php
-						
 						if ( isset($this->pedido) )
-						foreach($this->pedido['articulos'] as $articulo){			
-						//	echo '<tr><td>'.$articulo['nombre'].'</td> <td>'.$articulo['cantidad'].'</td></tr>';
+						foreach($this->pedido['articulos'] as $articulo){
+							//	echo '<tr><td>'.$articulo['nombre'].'</td> <td>'.$articulo['cantidad'].'</td></tr>';
 						}
 					?>
-					
 				  </tbody>
 				</table>
 			</div>
-			
 			<?php //$this->mostrar('pedidoi/componentes/edicion_articulo'); ?>
-			
-		</div>
-	<div class="pnlDer" >
-		
+	</div>
+	<div class="pnlDer">
 	</div>
 </div>

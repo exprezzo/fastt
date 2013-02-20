@@ -45,6 +45,7 @@ var TabManager={
 			var tab=$('a[href="#'+tabId+'"]');
 			tab.addClass(iconCls);
 		}
+		var me=this;
 		$.ajax({
 			type: "POST",
 			url: url,
@@ -54,20 +55,25 @@ var TabManager={
 			//alert(tabId);
 			 $('#'+ tabId ).html(response);				
 			 
+			 me.seleccionarTab(objId);
 			 $tabs.wijtabs('select',tabId);			
 			 
 			var tabObj = $('#'+ tabId ).data('tabObj');
 			console.log( "tabObj" ); console.log( tabObj );
-			if (tabObj != undefined &&   tabObj.activate != undefined){
-				tabObj.activate();
+			if (tabObj != undefined ){
+				if (tabObj.activate != undefined){
+					tabObj.activate();
+				}
+				
 			}
 			
 			 //$('#'+ tabId ).html(response);				
 		});
 	},
 	seleccionarTab:function(objId){
-		var tabListaPedidos = $('#tabs > div[objId="'+objId+'"]'); //role="tabPanel",
-		if (tabListaPedidos.length == 0){
+		
+		var tabListaPedidos = $('#tabs > div[objId="'+objId+'"]'); //role="tabPanel",		
+		if (tabListaPedidos.length == 0){			
 			return false;
 		}else if (tabListaPedidos.length > 0){ //Seleccionar el tab											
 			
@@ -77,49 +83,14 @@ var TabManager={
 			
 			var tabs=$('#tabs > div');
 			for(var i=0; i<tabs.length; i++){
-				if ( $(tabs[i]).attr('id') == idTab ){					
+				if ( $(tabs[i]).attr('id') == idTab ){										
 					$("#tabs").wijtabs('select', i);
-					return true;
+					break;
 				}
 			}
 			
-			/*
-			$.each(tabs, function(index, element) {
-				var jElement = $(element);
-				//si el elemento tiene el atributo  [objId]==objId, seleccionar
-				if ( jElement.attr ){
-					if ( jElement.attr('objId')==objId ){
-						//Ocultar el panel anterior
-						var jAnt = $('#tabs > div[aria-hidden="false"]');
-						if ( jAnt.attr('objId')==objId) {							
-							//Si el tab es el mismo no hacer nada
-							return true;
-						}
-												
-						jAnt.addClass('ui-tabs-hide');
-						jElement.attr('aria-hidden',true);
-						//Desmarcar el tab anterior
-						var linkAnt = $('#tabs > ul li[aria-selected="true"]');		
-						linkAnt.attr('aria-selected',false);
-						linkAnt.removeClass('ui-tabs-selected');
-						linkAnt.removeClass('ui-state-active');						 
-						
-						//Marcar el nuevo tab
-						var selector='#tabs > ul a[href="#'+jElement.attr('id')+'"]';						
-						var activeTab = $(selector).parent();
-						activeTab.attr('aria-selected',true);
-						activeTab.addClass('ui-tabs-selected');
-						activeTab.addClass('ui-state-active');						 					
-						//Selecciona el nuevo
-						jElement.addClass('ui-tabs-selected');
-						jElement.removeClass('ui-tabs-hide');
-						jElement.attr('aria-hidden',false);
-						
-						return true;
-					}
-				}				
-			});	 */
-			return true;
+			
+			// return true;
 		}
 	}
 };

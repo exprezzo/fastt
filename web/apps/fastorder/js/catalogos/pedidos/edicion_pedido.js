@@ -102,6 +102,8 @@ var EdicionPedido = function(){
 		var tab = $('#tabs '+tabId);
 		var me=this;
 		var articulos=$(tabId+' .grid_articulos').wijgrid('data');
+		// console.log(articulos);
+		// return false;
 		
 		var pedido={
 			id			: tab.find('.txtId').val(),
