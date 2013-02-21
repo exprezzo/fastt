@@ -228,9 +228,9 @@
 				<li class="listo">Agregar Nuevo Articulo</li>
 				<li class="listo">Precargar Articulos</li>
 				<li class="listo">Guardar</li>
-				<li>Eliminar Articulo</li>				
-				<li>Actualizar producto al seleccionar codigo (considerar la cancelacion de edicion para devolver el estado a todas las celdas modificadas)</li>				
-				<li>Actualizar codigo al seleccionar producto</li>				
+				<li>Eliminar Articulo</li>
+				<li>Actualizar producto al seleccionar codigo (considerar la cancelacion de edicion para devolver el estado a todas las celdas modificadas)</li>
+				<li>Actualizar codigo al seleccionar producto</li>
 				<li>Actualizar sugerido y pendiente al modificar existencia o pedido</li>
 				<li class="listo">Al guardar, actualizar la existencia en la tabla </li>
 				</ul>
@@ -312,7 +312,7 @@
 </table>
 
 <ul>
-	<li>DEfinir teclas de acceso rápido     luiguiok</li>
+	<li>Definir teclas de acceso rápido     luiguiok</li>
 	<li>Al final del renglón cachar el shift tab y prevenir el saldo línea.</li>
 	<li>Al modificar valores de inventario inicial y pedidos no se actualiza al regresar del servidor.</li>
 	<li>La resolución predeterminado por el momento será 1024x800px... el navegador a utilizar es el chrome</li>

@@ -125,9 +125,11 @@ var EdicionArticulo=function (tabId){
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
 			select: function (e, item) 
-			{															
+			{		
+				 console.log("item"); console.log(item);
 				var rowdom=$(me.tabId+' .grid_articulos tbody tr:eq('+me.selected.sectionRowIndex +')');				
 				me.articulo=item;
+				rowdom.find('td:eq(0) div').html(item.codigo);
 				rowdom.find('td:eq(2) div').html(item.presentacion);
 				rowdom.find('td:eq(3) div').html(item.maximo);
 				rowdom.find('td:eq(4) div').html(item.minimo);
@@ -318,31 +320,28 @@ var EdicionArticulo=function (tabId){
 						var combo=
 						$("<input />")
 							.val(args.cell.value()) 
-							.appendTo(args.cell.container().empty());   
-						
+							.appendTo(args.cell.container().empty());
 						var domCel = args.cell.tableCell();
 						combo.css('width',	$(domCel).width()-10 );
-						combo.css('height',	$(domCel).height()-10 );
-						
-						args.handled = true;   
+						combo.css('height',	$(domCel).height()-10 );						
+						args.handled = true;
 						me.configurarComboArticulo(combo);
-					break; 
+					break;
 					default:
 						var input=$("<input />")
-							.val(args.cell.value()) 
-							.appendTo(args.cell.container().empty()).focus();   							
-							
-						var domCel = args.cell.tableCell();						
-						input.css('width',	$(domCel).width()-10 );
-						input.css('height',	$(domCel).height()-10 );
-						args.handled = true;   
+							.val(args.cell.value())
+							.appendTo(args.cell.container().empty()).focus();
+						var domCel = args.cell.tableCell();
+						input.css('width',	$(domCel).width()  -10 );
+						input.css('height',	$(domCel).height() -10 );
+						args.handled = true;
 						return true;
 					break;						
 				} 
 			}, 			
 			data:articulos,
 			columns: [ 
-				{ dataKey: "codigo", headerText: "Codigo",width:"300px"},
+				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
 				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
 				// {dataKey: "maximo", headerText: "L&iacute;mites",editable:false,
@@ -361,14 +360,15 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false},
 				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false},
 				{dataKey: "existencia", headerText: "I. Inicial"},
-				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
-						
-						
+				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {						
 						if (args.row.type & $.wijmo.wijgrid.rowType.data) {							
 							var sugerido=0;
 						//	alert(args.row.data.existencia);
 							if (parseInt(args.row.data.existencia) <= parseInt(args.row.data.puntoreorden) ){
 								sugerido = args.row.data.maximo-args.row.data.existencia;				
+								args.row.data.pendiente=args.row.data.sugerido - args.row.data.pedido;
+							}else{
+								args.row.data.pendiente=0;
 							}
 							args.row.data.sugerido=sugerido;
 							args.$container
@@ -379,24 +379,9 @@ var EdicionArticulo=function (tabId){
 						} 
 					}},
 				{dataKey: "pedido", headerText: "Pedido"},
-				{dataKey: "pendiente", headerText: "Pendiente",editable:false,
-					cellFormatter: function (args) {
-						// if (existencia<=reorden){
-			// sugerido = maximo-existencia;
-			// var pedido=$(me.tabId+' .frmEditInlinePedido .txtPedido').val();
-			// pendiente= sugerido - pedido;
-		// }
-						if (args.row.type & $.wijmo.wijgrid.rowType.data) {
-							console.log("row"); console.log(args.row);
-							args.$container
-								.css("text-align", "center")
-								.empty()
-								.append(args.row.data.sugerido - args.row.data.pedido); 							
-							return true; 
-						} 
-					}},
-				{ dataKey: "id", visible:false, headerText: "ID" },
-				{ dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
+				{dataKey: "pendiente", headerText: "Pendiente",editable:false},
+				{dataKey: "id", visible:false, headerText: "ID" },
+				{dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
 				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
 				{dataKey: "fk_pedido", headerText: "fk_pedido", visible:false},
 				{dataKey: "cantidad", headerText: "cantidad", visible:false},
@@ -406,7 +391,7 @@ var EdicionArticulo=function (tabId){
 					outlineMode: "startExpanded", 
 					headerText: "{0}"
 				} },				
-				{ visible:false,dataKey: "grupoposicion"}
+				{visible:false,dataKey: "grupoposicion"}
 			],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
@@ -424,9 +409,12 @@ var EdicionArticulo=function (tabId){
 				switch (args.cell.column().dataKey) {
 					case "nombre":
 						args.value = args.cell.container().find("input").val();
+						
 						if (me.articulo!=undefined){
 							var row=args.cell.row();						
 							row.data.presentacion=me.articulo.presentacion;
+							row.data.fk_articulo=me.articulo.value;
+							row.data.codigo=me.articulo.codigo;
 							row.data.maximo=me.articulo.maximo;
 							row.data.minimo=me.articulo.minimo;
 							row.data.puntoreorden=me.articulo.puntoreorden;
@@ -434,13 +422,69 @@ var EdicionArticulo=function (tabId){
 							row.data.sugerido=me.articulo.sugerido;
 							row.data.pedido=me.articulo.pedido;
 							row.data.pendiente=me.articulo.pendiente;
+							
+							// var testArray = [
+								// {value:row.data.value, label:row.data.codigo}
+							// ];
+							// var data=$('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data');				
+							
+							// data.data=testArray;
+							// data.items=testArray;
+							
+							// $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data',data);
+							// $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','selectedIndex',0);
+							// $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','text',row.data.codigo);												
 						}
 						
 						break;
 					case "codigo":
-						//args.value = args.cell.container().find("input").val();
-						break; 
+						args.value = args.cell.container().find("input").val();
+						if (me.articulo!=undefined){
+							var row=args.cell.row();						
+							row.data.presentacion=me.articulo.presentacion;
+							row.data.nombre=me.articulo.nombre;
+							row.data.fk_articulo=me.articulo.value;
+							
+							row.data.maximo=me.articulo.maximo;
+							row.data.minimo=me.articulo.minimo;
+							row.data.puntoreorden=me.articulo.puntoreorden;
+							row.data.existencia=me.articulo.existencia;
+							row.data.sugerido=me.articulo.sugerido;
+							row.data.pedido=me.articulo.pedido;
+							row.data.pendiente=me.articulo.pendiente;
+							
+							// var testArray = [
+								// {value:row.data.value, label:row.data.codigo}
+							// ];
+							// var data=$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','data');				
+							
+							// data.data=testArray;
+							// data.items=testArray;
+							
+							// $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','data',data);
+							// $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','selectedIndex',0);
+							// $('#tabs '+tabId+' .cmbCodigo').wijcombobox('option','text',row.data.codigo);												
+						}
+						break;
+					case "existencia":
+						args.value=args.cell.container().find("input").val();
+						// alert("existencia: "+args.value);
+						// console.log("args"); console.log(args);
+						var row=args.cell.row();
+						console.log("row"); console.log(row);
+						
+						if (args.value <= row.data.puntoreorden){
+							row.data.sugerido = row.data.maximo - args.value;
+							row.data.pendiente=row.data.sugerido-row.data.pedido
+						}else{
+							row.data.sugerido = 0;
+							row.data.pendiente=row.data.sugerido;
+						}
+						$(row.$rows).find('td:eq(7) div').html(row.data.sugerido);
+						$(row.$rows).find('td:eq(9) div').html(row.data.pendiente);
+						break;
 				}
+				me.articulo=undefined;
 			
 			},
 			cancelEdit:function(){				
@@ -449,11 +493,8 @@ var EdicionArticulo=function (tabId){
 		});
 		
 		gridPedidos.wijgrid({ selectionChanged: function (e, args) { 								
-			var item=args.addedCells.item(0);			
-			
-			
-			var row=item.row();			
-			
+			var item=args.addedCells.item(0);						
+			var row=item.row();						
 			var data=row.data;			
 			me.selected=data;			
 			me.selected.dataItemIndex=row.dataItemIndex;			
@@ -461,17 +502,17 @@ var EdicionArticulo=function (tabId){
 			
 		} });
 		
-		gridPedidos.wijgrid({ loaded: function (e) {
-			// $(me.tabId+' .grid_articulos tbody tr:first-child div').focus();			
-			if (me.selected != undefined && me.selected.editandoId != undefined){
-				var position = $(me.tabId + ' tr[rowId="'+me.selected.editandoId+'"]').position();				
-				$(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
-			}			
+		// gridPedidos.wijgrid({ loaded: function (e) {
+			 // $(me.tabId+' .grid_articulos tbody tr:first-child div').focus();			
+			// if (me.selected != undefined && me.selected.editandoId != undefined){
+				// var position = $(me.tabId + ' tr[rowId="'+me.selected.editandoId+'"]').position();				
+				// $(me.tabId+' .frmEditInlinePedido').css('top',position.top+'px');	
+			// }
 		
-			$(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                				
-				// me.editar(e.currentTarget);
-			});			
-		} });
+			// $(tabId+' .grid_articulos tbody tr').bind('dblclick', function (e) { 																											                				
+				 // me.editar(e.currentTarget);
+			// });			
+		// } });
 				
 		this.numCols=$(tabId+' .grid_articulos thead th').length;
 		
@@ -671,44 +712,32 @@ var EdicionArticulo=function (tabId){
 			},
 			select: function (e, item) 
 			{			
-				var data=$(me.tabId+' .grid_articulos').wijgrid('data');
-				// data[me.selected.dataItemIndex].pedido=9;
-				//$(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
+				var rowdom=$(me.tabId+' .grid_articulos tbody tr:eq('+me.selected.sectionRowIndex +')');				
+				me.articulo=item;
+				rowdom.find('td:eq(1) div').html(item.nombre);
+				rowdom.find('td:eq(2) div').html(item.presentacion);
+				rowdom.find('td:eq(3) div').html(item.maximo);
+				rowdom.find('td:eq(4) div').html(item.minimo);
+				rowdom.find('td:eq(5) div').html(item.puntoreorden);
+				rowdom.find('td:eq(6) div').html(item.existencia);
 				
-				console.log("me.selected"); console.log(me.selected);
+				
+				var reorden=parseInt( item.puntoreorden );
+				var existencia=parseInt( item.existencia );
+				var maximo=parseInt( item.maximo );
+				var sugerido=0;
+				var pendiente=0;
+				if (existencia<=reorden){
+					sugerido = maximo-existencia;					
+				}
+			
+				rowdom.find('td:eq(7) div').html(sugerido);
+				rowdom.find('td:eq(8) div').html(sugerido);
+				rowdom.find('td:eq(9) div').html(0);
+				me.articulo.pedido=sugerido;
+				me.articulo.sugerido=sugerido;
 				
 				return true;
-				//me.articuloSeleccionado=item;
-				
-				$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
-				$('#tabs '+tabId+' .txtIdArticuloPre').val(item.idarticulopre);
-				$('#tabs '+tabId+' .txtPresentacion').val(item.presentacion);
-				
-				var testArray = [
-					{value:item.value, label:item.nombre}
-				];
-				var data=$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','data');				
-				
-				data.data=testArray;
-				data.items=testArray;
-				
-				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','data',data);
-				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','selectedIndex',0);
-				$('#tabs '+tabId+' .cmbArticulo').wijcombobox('option','text',item.nombre);				
-				
-				//$('#tabs '+tabId+' .txtFkArticulo').val(item.value);
-				$('#tabs '+tabId+' .txtMaximo').val(item.maximo);
-				$('#tabs '+tabId+' .txtMinimo').val(item.minimo);
-				$('#tabs '+tabId+' .txtPuntoReorden').val(item.puntoreorden);
-				$('#tabs '+tabId+' .txtExistencia').val(item.existencia);
-				
-				var sugerido=0;
-				
-				sugerido= parseInt(item.puntoreorden) -  parseInt(item.existencia);				
-				$('#tabs '+tabId+' .txtSugerido').val(sugerido);
-				
-				$('#tabs '+tabId+' .frmEditInlinePedido .txtPedido').val(sugerido); 
-				$('#tabs '+tabId+' .frmEditInlinePedido .txtPendiente').val(0); 
 			}
 		});
 		combo.focus();			
