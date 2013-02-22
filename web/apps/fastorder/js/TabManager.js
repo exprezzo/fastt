@@ -85,7 +85,7 @@ var TabManager={
 			for(var i=0; i<tabs.length; i++){
 				if ( $(tabs[i]).attr('id') == idTab ){										
 					$("#tabs").wijtabs('select', i);
-					break;
+					return true;
 				}
 			}
 			

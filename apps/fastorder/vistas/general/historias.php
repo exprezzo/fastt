@@ -282,6 +282,17 @@
 				'diferencia'	=>''
 			);
 			
+			$tareas[]=array(				
+				'tarea'		 	=>'Documentar solución al bug del toolbar',				
+				'responsable'	=>'',
+				'estimado' 		=>'',
+				'modulo' 		=>'Nucleo',
+				'h_inicio'	 	=>'',
+				'h_fin'	 		=>'',
+				'duracion'  	=>'',
+				'diferencia'	=>''
+			);
+			
 			
 			?>		
 			<td>Tarea</td>

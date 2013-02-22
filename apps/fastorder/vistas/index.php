@@ -134,8 +134,9 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			ajustarTab(); //Ajusta la altura al tamaño en relacion al tamaño de la pantalla
 			iniciarLinkTabs(); //A los objetos con atributo linkTab=true,  se les agrega comportamiento ajax para abrir tabs.
 			
-			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
 			TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
+			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
+			
 			
 			
 			
@@ -143,9 +144,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			// TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			
 			// TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');
-			
-			
-					
+						
 			//TabManager.add('/'+kore.modulo+'/'+kore.controlador+'/'+kore.accion+'/');
 			
 			//TabManager.add('/'+kore.modulo+'/pedidoi/pedido');

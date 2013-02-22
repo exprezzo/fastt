@@ -2,6 +2,19 @@
 	this.nuevo=function(){
 		TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo Pedido');
 	};
+	this.activate=function(){
+		
+		// $(this.tabId+' .txtFechaI').wijinputdate();
+		
+		$(this.tabId+" .cmbAlmacen").wijcombobox('repaint');
+		$(this.tabId+" .cmbEstado").wijcombobox('repaint');
+		
+		
+		$(this.tabId+" .tbPedido").removeClass('ui-tabs-hide');
+		$(this.tabId+" .tbPedido  ~ .wijmo-wijribbon-panel").removeClass('ui-tabs-hide');
+		// alert("activar");
+		$(this.tabId+" .lista_de_pedidos").wijcombobox('doRefresh');
+	}
 	this.borrar=function(){
 		if (this.selected==undefined) return false;
 		var r=confirm("¿Eliminar el pedido?");
