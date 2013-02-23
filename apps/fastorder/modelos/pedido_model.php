@@ -22,10 +22,9 @@ class PedidoModel extends Modelo{
 			'success'=>true,
 			'datos'=>$params
 		);
-	}	
+	}
 	
-	function precargar($fk_tmp,$fk_pedido, $idalmacen){
-		
+	function precargar($fk_tmp,$fk_pedido, $idalmacen){		
 		$sql='SELECT 0 as id,stk.idarticulo as fk_articulo,:fk_pedido as fk_pedido, existencia as cantidad, pre.idarticulopre as idarticulopre,
 		:fk_tmp  fk_tmp, stk.maximo, stk.minimo, stk.existencia,stk.puntoreorden,stk.idgrupo , stk.grupoposicion ,gpo.nombre nombreGpo,
 		p.nombre,p.codigo,pre.descripcion presentacion,0 sugerido,0 pedido, 0 pendiente
@@ -374,7 +373,16 @@ class PedidoModel extends Modelo{
 		
 		$idalmacen = $params['almacen'];
 		foreach($params['articulos'] as $detalle){
-			if ( empty($detalle['id']) ){
+			if ( !empty($detalle['id']) && $detalle['eliminado']){
+				// $sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
+				// $sth = $con->prepare($sql);
+				// $sth->bindValue(':fk_pedido',		$fk_pedido,		PDO::PARAM_INT);
+				// $sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
+				// $sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
+				// $sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
+				// $exito = $sth->execute();
+				// if (!$exito) return $this->getError($sth);
+			}else if ( empty($detalle['id']) ){
 				$sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
 				$sth = $con->prepare($sql);
 				$sth->bindValue(':fk_pedido',		$fk_pedido,		PDO::PARAM_INT);

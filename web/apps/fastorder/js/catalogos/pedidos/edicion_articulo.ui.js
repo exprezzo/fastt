@@ -1,5 +1,10 @@
+/*
 
-var EdicionArticulo=function (tabId){
+var edUi=new EdicionArticuloUI();
+jQuery.extend( edicionArticulo , edUi );
+
+*/
+var EdicionArticuloUI=function (tabId){
 	
 		
 	this.init=function(tabId, padre, articulos){									
@@ -9,27 +14,7 @@ var EdicionArticulo=function (tabId){
 		//this.configurarFormulario(tabId);	
 		this.configurarGrid(tabId, articulos);		
 		this.configurarToolbar(tabId);		
-		return true;
-				
-		var me=this;
-								
-		this.configurarComboArticulo();
-		$(me.tabId+' .frmEditInlinePedido .txtCantidad').wijinputnumber({
-            type: 'numeric',           
-            decimalPlaces: 2,
-            showSpinner: true			
-        });
-				
-		this.configurarComboUM();
-		$(me.tabId+' .frmEditInlinePedido .txtExistencia').change(function(){
-			me.calcularSugerencia();
-		});
-		
-		$(me.tabId+' .frmEditInlinePedido .txtPedido').change(function(){
-			me.calcularSugerencia();
-		});		
-
-		
+		return true;		
 	};
 	this.calcularSugerencia=function(){
 		var me=this;
@@ -256,7 +241,6 @@ var EdicionArticulo=function (tabId){
 			{ name: "fk_articulo"},
 			{ name: "id_tmp"  },
 			{ name: "idarticulopre"},
-			{ name: "eliminado",default:false},
 			{ name: "id"  }
 		];
 		this.fields=fields;
@@ -273,17 +257,10 @@ var EdicionArticulo=function (tabId){
 		
 		var me=this;
 		gridPedidos.bind('keydown', function(e) {
-			
 			var code = e.keyCode || e.which;
 			code=parseInt(code);	
-			
-			// alert(e.keyCode);
-			if(e.keyCode==46){	
-				alert('eliminar');
-				me.eliminar();
-			}else if(e.keyCode==13){	
-				//Saltar al siguiente registro				 
-				me.navegarEnter(true);			 
+			if(e.keyCode==13){	
+				 //Saltar al siguiente registro
 			}else if(e.keyCode==9  && e.shiftKey){	
 				e.preventDefault();								
 				me.seleccionarSiguiente(true);				
@@ -361,10 +338,13 @@ var EdicionArticulo=function (tabId){
 		
 		gridPedidos.wijgrid({ 
 			beforeCellEdit: function(e, args) {
-				var row = args.cell.row() ;								
+				var row = args.cell.row() ;
+								
 				var index = args.cell.rowIndex();				
-				var sel=gridPedidos.wijgrid('selection');				
-				sel.addRows(index);				
+				var sel=gridPedidos.wijgrid('selection');
+				// sel.clear();
+				sel.addRows(index);
+				
 				
 				if (args.cell.column().editable === false){
 					return false;
@@ -390,7 +370,8 @@ var EdicionArticulo=function (tabId){
 							.val(args.cell.value()) 
 							.appendTo(args.cell.container().empty());
 						var domCel = args.cell.tableCell();
-						
+						// combo.css('width',	$(domCel).width()-10 );
+						// combo.css('height',	$(domCel).height()-10 );						
 						args.handled = true;
 						me.configurarComboArticulo(combo);
 					break;
@@ -407,13 +388,14 @@ var EdicionArticulo=function (tabId){
 				} 
 			}
 		});
-		gridPedidos.wijgrid({beforeCellUpdate:function(e, args) {
+		gridPedidos.wijgrid({ 
+			beforeCellUpdate:function(e, args) {
 				switch (args.cell.column().dataKey) {
 					case "nombre":
 						args.value = args.cell.container().find("input").val();
 						
 						if (me.articulo!=undefined){
-							var row=args.cell.row();
+							var row=args.cell.row();						
 							row.data.presentacion=me.articulo.presentacion;
 							row.data.fk_articulo=me.articulo.value;
 							row.data.codigo=me.articulo.codigo;
@@ -424,27 +406,28 @@ var EdicionArticulo=function (tabId){
 							row.data.sugerido=me.articulo.sugerido;
 							row.data.pedido=me.articulo.pedido;
 							row.data.pendiente=me.articulo.pendiente;
+							 alert(me.articulo.grupo);
 							row.data.nombreGpo=me.articulo.grupo;		
 							// gridPedidos.wijgrid('ensureControl');
 						}
+						
 						break;
 					case "codigo":
 						args.value = args.cell.container().find("input").val();
 						if (me.articulo!=undefined){
-							var row=args.cell.row();
+							var row=args.cell.row();						
 							row.data.presentacion=me.articulo.presentacion;
 							row.data.nombre=me.articulo.nombre;
 							row.data.fk_articulo=me.articulo.value;
+							
 							row.data.maximo=me.articulo.maximo;
 							row.data.minimo=me.articulo.minimo;
 							row.data.puntoreorden=me.articulo.puntoreorden;
 							row.data.existencia=me.articulo.existencia;
 							row.data.sugerido=me.articulo.sugerido;
 							row.data.pedido=me.articulo.pedido;
-							row.data.pendiente=me.articulo.pendiente;							
-							row.data.nombreGpo=me.articulo.grupo;
-							gridPedidos.wijgrid('ensureControl',true);
-							// console.log("data"); console.log(data);
+							row.data.pendiente=me.articulo.pendiente;
+														
 						}
 						break;
 					case "existencia":
@@ -466,7 +449,8 @@ var EdicionArticulo=function (tabId){
 			}			
 		});
 		
-		gridPedidos.wijgrid({cancelEdit:function(){				
+		gridPedidos.wijgrid({
+			cancelEdit:function(){				
 				$(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
 			}
 		});
@@ -516,18 +500,8 @@ var EdicionArticulo=function (tabId){
 		// this.configurarComboArticulos(tabId);
 		// this.configurarComboUM(tabId);
 	};
-	this.eliminar=function(){
-		alert('fn Eliminar');
-		var cellInfo= $(this.tabId+" .grid_articulos").wijgrid("currentCell");
-		var row = cellInfo.row();
-		console.log('row'); console.log(row);
-		row.data.eliminado=true;
-		
-	}
-	this.navegarEnter=function(){		
-		this.seleccionarSiguiente(false, true, true);		
-	}
-	this.seleccionarSiguiente = function(alreves, saltar,mantenerColumna){
+	
+	this.seleccionarSiguiente = function(alreves, saltar){
 		//dos direcciones, hacia atras y hacia adelante.
 		//de la ultima caja editable de la fila, pasa a la siguiente fila.
 		//si se esta navegando alreves, del primer registro editable, pasa al registro anterior.
@@ -545,13 +519,9 @@ var EdicionArticulo=function (tabId){
 		rowIndex = cellInfo.rowIndex();
 		nextRow=rowIndex;
 		nextCell = cellIndex + direccion;
-		
-		
 		if (saltar){
 			nextCell=(alreves)? -1 : this.numCols + 1			
 		}
-		
-		
 		
 		
 		if ( nextCell<0 ){
@@ -591,12 +561,8 @@ var EdicionArticulo=function (tabId){
 			}else{
 				return false;
 			}
-		} else if ( nextCell>=this.numCols || saltar){
+		} else if ( nextCell>=this.numCols ){
 			nextCell=0;
-			if (mantenerColumna){
-				// alert(' mantenerColumna: '+ cellIndex);
-				nextCell=cellIndex;
-			}
 			//ir al registro siguiente, cambiar de pagina o agregar nuevo registro,
 			row=cellInfo.row();			
 			var data = $(tabId+" .grid_articulos").wijgrid('data');			 
@@ -648,7 +614,6 @@ var EdicionArticulo=function (tabId){
 			}
 			
 		}
-		
 		
 		var nuevo = $(tabId+" .grid_articulos").wijgrid("currentCell",nextCell, nextRow);
 		

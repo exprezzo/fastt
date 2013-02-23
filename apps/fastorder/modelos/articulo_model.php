@@ -18,12 +18,13 @@ class ArticuloModel extends Modelo{
 		
 		$total=$datos[0]['total'];
 		
-		$sql='SELECT pro.id, pro.nombre,pro.codigo, 
+		$sql='SELECT pro.id, pro.nombre,pro.codigo, gpo.nombre grupo,
 		pre.idarticulopre, pre.descripcion presentacion,
 		sto.existencia, minimo, maximo, puntoreorden,idgrupo, grupoposicion
 		FROM productos pro 
 		LEFT JOIN articulopre pre ON pre.idarticulo=pro.id and pre.default=1
 		LEFT JOIN articulostock sto ON sto.idarticulo=pro.id and idalmacen=:idalmacen
+		LEFT JOIN grupo_de_productos gpo ON gpo.id= sto.idgrupo
 		WHERE pro.codigo like :codigo
 		LIMIT :start,:limit';
 		
