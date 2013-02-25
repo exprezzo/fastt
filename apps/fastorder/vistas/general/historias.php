@@ -239,10 +239,11 @@
 				'estimado' 		=>'06:00',
 				'modulo' 		=>'Ped Int',
 				'h_inicio'	 	=>'13/02/12 09:00',
-				'h_fin'	 		=>'13/02/12 15:00',
+				'h_fin'	 		=>'23/02/12 15:00',
 				'duracion'  	=>'',
 				'diferencia'	=>''
 			);
+			
 			$tareas[]=array(				
 				'tarea'		 	=>'Navegacion con tabs
 				<ul><li class="listo">Que funcione con shift tab para retroceder</li>				

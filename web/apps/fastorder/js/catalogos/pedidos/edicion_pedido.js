@@ -10,7 +10,7 @@ var EdicionPedido = function(){
 	this.close=function(){
 		
 		if (this.editado){
-			var res=confirm('¿Guardar antes de salir?');
+			var res=confirm('Â¿Guardar antes de salir?');
 			if (res===true){
 				this.saveAndClose=true;
 				this.guardar();

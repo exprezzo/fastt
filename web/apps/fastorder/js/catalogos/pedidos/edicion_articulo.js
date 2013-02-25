@@ -333,7 +333,7 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "fk_pedido", headerText: "fk_pedido", visible:false},
 				{dataKey: "cantidad", headerText: "cantidad", visible:false},
 				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},
-				{ visible:false, dataKey: "nombreGpo", groupInfo:{groupSingleRow: true,
+				{ visible:false, dataKey: "nombreGpo", groupInfo:{
 					 position: "header", 
 					outlineMode: "startExpanded", 
 					headerText: "{0}"
