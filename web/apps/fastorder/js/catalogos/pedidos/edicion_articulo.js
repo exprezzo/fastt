@@ -272,17 +272,15 @@ var EdicionArticulo=function (tabId){
 		var gridPedidos=$('#tabs '+tabId+" .grid_articulos");				
 		
 		var me=this;
-		gridPedidos.bind('keydown', function(e) {
-			
+		gridPedidos.bind('keydown', function(e) {		
 			var code = e.keyCode || e.which;
 			code=parseInt(code);	
 			
 			// alert(e.keyCode);
-			if(e.keyCode==46){	
-				alert('eliminar');
+			if(e.keyCode==46){					
 				me.eliminar();
 			}else if(e.keyCode==13){	
-				//Saltar al siguiente registro				 
+				//Saltar al siguiente registro
 				me.navegarEnter(true);			 
 			}else if(e.keyCode==9  && e.shiftKey){	
 				e.preventDefault();								
@@ -293,45 +291,40 @@ var EdicionArticulo=function (tabId){
 			}
 		});
 		
-		
-		gridPedidos.wijgrid({
-			// dynamic: true,
+		gridPedidos.wijgrid({			
 			allowColSizing:true,
 			allowPaging: true,
 			pageSize:9,
 			allowEditing:true,
-			allowColMoving: false,
-			//showGroupArea: true,
+			allowColMoving: false,			
 			allowKeyboardNavigation:true,
 			selectionMode:'singleRow',
-			// data:dataSource,					
 			data:articulos,
-			columns: [ 
+			columns: [
 				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
 				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},
-				{dataKey: "presentacion", headerText: "Presentacion", editable:false},				
+				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
 				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false},
 				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false},
 				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false},
 				{dataKey: "existencia", headerText: "I. Inicial"},
-				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {						
-						if (args.row.type & $.wijmo.wijgrid.rowType.data) {							
-							var sugerido=0;
-						//	alert(args.row.data.existencia);
-							if (parseInt(args.row.data.existencia) <= parseInt(args.row.data.puntoreorden) ){
-								sugerido = args.row.data.maximo-args.row.data.existencia;				
-								args.row.data.pendiente=args.row.data.sugerido - args.row.data.pedido;
-							}else{
-								args.row.data.pendiente=0;
-							}
-							args.row.data.sugerido=sugerido;
-							args.$container
-								.css("text-align", "center")
-								.empty()
-								.append(args.row.data.sugerido); 							
-							return true; 
-						} 
-					}},
+				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
+					if (args.row.type & $.wijmo.wijgrid.rowType.data) {
+						var sugerido=0;
+						if (parseInt(args.row.data.existencia) <= parseInt(args.row.data.puntoreorden) ){
+							sugerido = args.row.data.maximo-args.row.data.existencia;
+							args.row.data.pendiente=args.row.data.sugerido - args.row.data.pedido;
+						}else{
+							args.row.data.pendiente=0;
+						}
+						args.row.data.sugerido=sugerido;
+						args.$container
+							.css("text-align", "center")
+							.empty()
+							.append(args.row.data.sugerido);
+						return true;
+					}
+				}},
 				{dataKey: "pedido", headerText: "Pedido"},
 				{dataKey: "pendiente", headerText: "Pendiente",editable:false},
 				{dataKey: "id", visible:false, headerText: "ID" },
@@ -517,10 +510,11 @@ var EdicionArticulo=function (tabId){
 		// this.configurarComboUM(tabId);
 	};
 	this.eliminar=function(){
-		alert('fn Eliminar');
+		
 		var cellInfo= $(this.tabId+" .grid_articulos").wijgrid("currentCell");
 		var row = cellInfo.row();
-		console.log('row'); console.log(row);
+		var container=cellInfo.container();
+		$(this.tabId+" .grid_articulos 	tbody tr:eq("+cellInfo.rowIndex()+")").addClass('eliminado');		
 		row.data.eliminado=true;
 		
 	}

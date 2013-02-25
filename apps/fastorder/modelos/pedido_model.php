@@ -32,7 +32,7 @@ class PedidoModel extends Modelo{
 		LEFT JOIN productos p ON p.id = stk.idarticulo
 		LEFT JOIN articulopre pre ON pre.idarticulo = stk.idarticulo AND pre.default=1
 		LEFT JOIN grupo_de_productos gpo ON  gpo.id=stk.idgrupo
-		WHERE idalmacen=:idalmacen';
+		WHERE idalmacen=:idalmacen ORDER BY stk.idgrupo';
 		$con=$this->getPdo();
 		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_tmp',$fk_tmp);				
@@ -373,15 +373,12 @@ class PedidoModel extends Modelo{
 		
 		$idalmacen = $params['almacen'];
 		foreach($params['articulos'] as $detalle){
-			if ( !empty($detalle['id']) && $detalle['eliminado']){
-				// $sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
-				// $sth = $con->prepare($sql);
-				// $sth->bindValue(':fk_pedido',		$fk_pedido,		PDO::PARAM_INT);
-				// $sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
-				// $sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
-				// $sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
-				// $exito = $sth->execute();
-				// if (!$exito) return $this->getError($sth);
+			if ( !empty($detalle['id']) && !empty($detalle['eliminado']) ){
+				$sql='DELETE FROM pedidos_productos WHERE id=:id';
+				$sth = $con->prepare($sql);
+				$sth->bindValue(':id',		$detalle['id'],		PDO::PARAM_INT);				
+				$exito = $sth->execute();
+				if (!$exito) return $this->getError($sth);
 			}else if ( empty($detalle['id']) ){
 				$sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
 				$sth = $con->prepare($sql);

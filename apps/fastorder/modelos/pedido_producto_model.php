@@ -93,7 +93,7 @@ class PedidoProductoModel extends Modelo{
 		LEFT JOIN articulopre pre ON pedprod.idarticulopre =pre.idarticulopre
 		LEFT JOIN articulostock sto ON sto.idarticulo= pedprod.fk_articulo AND sto.idalmacen=:idalmacen
 		LEFT JOIN grupo_de_productos gpo ON  gpo.id=sto.idgrupo
-		WHERE pedprod.fk_pedido=:fk_pedido ORDER BY sto.grupoposicion, gpo.id limit :start,:limit';		
+		WHERE pedprod.fk_pedido=:fk_pedido ORDER BY sto.idgrupo, sto.grupoposicion, gpo.id limit :start,:limit';		
 				
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);

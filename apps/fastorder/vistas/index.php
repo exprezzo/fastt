@@ -205,6 +205,9 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 				-o-transition:height .5s; 				/* Opera */					
 		}
 		
+		.eliminado td{
+			background-color:#F9DADA !important;
+		}
 		
 	</style>
 	
