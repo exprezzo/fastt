@@ -295,6 +295,17 @@
 			);
 			
 			
+			$tareas[]=array(				
+				'tarea'		 	=>'Lista de orden de compra',				
+				'responsable'	=>'Cesar Octavio',
+				'estimado' 		=>'6:00',
+				'modulo' 		=>'Orden de compra',
+				'h_inicio'	 	=>'15:00 pm',
+				'h_fin'	 		=>'19:36 pm',
+				'duracion'  	=>' 4:36 pm',
+				'diferencia'	=>' +2:00 '
+			);
+			
 			?>		
 			<td>Tarea</td>
 			<td>Responsable</td>

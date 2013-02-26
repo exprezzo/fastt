@@ -20,6 +20,9 @@ span.ui-button-text { padding-top:40px !important; background-repeat: no-repeat;
 ul.ui-tabs-nav li a{ background-size:32px; }
 ul.ui-tabs-nav li a { -padding-top: 14px !important; -padding-bottom: 14px !important; padding-left: 38px !important; background-repeat: no-repeat;background-position:5px;	}
 ul.ui-tabs-nav li a.listaPedidos{ background-image:url('../images/supermono/paste.png'); }
+ul.ui-tabs-nav li a.lista_orden_compra{ background-image:url('../images/supermono/basket.png'); }
+
+
 ul.ui-tabs-nav li a.frmPedido{ background-image:url('../images/supermono/add-button.png'); }
 ul.ui-tabs-nav li a.welcome{ background-image:url('../images/supermono/home.png'); }
 ul.ui-tabs-nav li a.scrum{ background-image:url('../images/supermono/alarm-clock.png'); }
