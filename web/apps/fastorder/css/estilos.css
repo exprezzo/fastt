@@ -63,10 +63,18 @@ form{ padding:10px }
 .ribbon .btnAceptar{	background-image:url('../images/sub_black_accept.png') !important; }
 .ribbon .btnCancelar{	background-image:url('../images/undo.png') !important; }
 .ribbon .btnRefresh{	background-image:url('../images/token_dark_iconpack/playback_reload.png') !important; background-size: 29px; background-position: 10px;}
-.tbFecha > label{display: inline-block !important;
-position: absolute;
-right: 10px;
-margin-top: 4px;
+.ribbon .btnConcentrar{	background-image:url('../images/token_dark_iconpack/winamp.png') !important; background-size: 29px; }
+.ribbon .btnConcentrar{
+	background-position:8px 10px;
+}
+
+.ribbon .btnConcentrar .ui-button-text{display:none;}
+
+.tbFecha > label{
+	display: inline-block !important;
+	position: absolute;
+	right: 10px;
+	margin-top: 4px;
 }
 
 

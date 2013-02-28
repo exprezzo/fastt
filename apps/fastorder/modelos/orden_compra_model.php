@@ -1,10 +1,31 @@
 <?php
 include_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_model.php';
-include_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_tmp_model.php';
+// include_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_tmp_model.php';
 class OrdenCompraModel extends Modelo{
 	var $tabla='orden_compra';	
 	var $pk='id';
+	
+	function borrar( $params ){
+		if ( empty($params['id']) ){
+			throw new Exeption("Es necesario el parámetro 'id'");
+		};		
+		$id=$params['id'];
+		$sql = 'DELETE FROM '.$this->tabla.' WHERE id=:id';		
+		$con = $this->getConexion();
+		$sth = $con->prepare($sql);		
+		$sth->bindValue(':id',$id,PDO::PARAM_INT);		
+		$exito = $sth->execute();					
+		if ( !$exito ) return $this->getError($sth);
 		
+		$sql = 'DELETE FROM orden_compra_productos WHERE fk_orden_compra=:fk_orden_compra';		
+		$con = $this->getConexion();
+		$sth = $con->prepare($sql);		
+		$sth->bindValue(':fk_orden_compra',$id,PDO::PARAM_INT);		
+		$exito = $sth->execute();					
+		if ( !$exito ) return $this->getError($sth);
+		
+		return $exito;	
+	}
 	function nuevo(){
 		$params=array(
 			'id'=>0
@@ -244,7 +265,7 @@ class OrdenCompraModel extends Modelo{
 	}
 	
 	function guardar($params){
-		// print_r($params);
+		 // print_r($params);
 	
 		$dbh=$this->getConexion();
 		$pk			=empty($params[$this->pk]) ? 0 : $params[$this->pk];
@@ -253,6 +274,7 @@ class OrdenCompraModel extends Modelo{
 		$vencimiento=$params['vencimiento'];
 		$fk_serie 	=intval($params['fk_serie']);
 		$folio 		=intval($params['folio']);
+		$fk_proveedor	=intval($params['proveedor']);
 		
 		$msgType='';
 		if ( empty($pk) ){
@@ -266,14 +288,16 @@ class OrdenCompraModel extends Modelo{
 			$folio=$res['folio'];
 		
 			//           CREAR
-			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen , fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie, folio=:folio';
+			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen, idproveedor=:idproveedor, fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie, folio=:folio';
 			$sth = $dbh->prepare($sql);
 			$sth->bindValue(":fk_almacen",$fk_almacen,PDO::PARAM_INT);
+			$sth->bindValue(":idproveedor",$fk_proveedor,PDO::PARAM_INT);
 			$sth->bindValue(":fecha",$strFecha,PDO::PARAM_STR);
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 			$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
 			$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
 			
+			// echo $sql;
 			$exito = $sth->execute();
 			//Terminar transaccion y desbloquear tabla
 			
@@ -322,29 +346,29 @@ class OrdenCompraModel extends Modelo{
 		);
 	}
 	
-	function guardarDetalles($fk_pedido, $params){
+	function guardarDetalles($fk_orden_compra, $params){
 		//Insertar, Actualizar y borrar.
 		$con = $this->getConexion();
 		
-		$idproveedor = $params['almacen'];
+		$idproveedor = $params['proveedor'];
 		foreach($params['articulos'] as $detalle){
 			if ( !empty($detalle['id']) && !empty($detalle['eliminado']) ){
-				$sql='DELETE FROM pedidos_productos WHERE id=:id';
+				$sql='DELETE FROM orden_compra_productos WHERE id=:id';
 				$sth = $con->prepare($sql);
 				$sth->bindValue(':id',		$detalle['id'],		PDO::PARAM_INT);				
 				$exito = $sth->execute();
 				if (!$exito) return $this->getError($sth);
 			}else if ( empty($detalle['id']) ){
-				$sql='INSERT INTO pedidos_productos SET fk_articulo=:fk_articulo, fk_pedido=:fk_pedido, cantidad=:cantidad, idarticulopre=:idarticulopre';
+				$sql='INSERT INTO orden_compra_productos SET fk_articulo=:fk_articulo, fk_orden_compra=:fk_orden_compra, cantidad=:cantidad, idarticulopre=:idarticulopre';
 				$sth = $con->prepare($sql);
-				$sth->bindValue(':fk_pedido',		$fk_pedido,		PDO::PARAM_INT);
+				$sth->bindValue(':fk_orden_compra',		$fk_orden_compra,		PDO::PARAM_INT);
 				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
 				$sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
 				$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
 				$exito = $sth->execute();
 				if (!$exito) return $this->getError($sth);
 			}else{
-				$sql='UPDATE pedidos_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, idarticulopre=:idarticulopre WHERE id=:id';
+				$sql='UPDATE orden_compra_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, idarticulopre=:idarticulopre WHERE id=:id';
 				$sth = $con->prepare($sql);
 				$sth->bindValue(':id',		$detalle['id'],		PDO::PARAM_INT);
 				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
@@ -354,93 +378,18 @@ class OrdenCompraModel extends Modelo{
 				if (!$exito) return $this->getError($sth);
 			}			
 			
-			$sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idproveedor=:idproveedor';
-			$sth = $con->prepare($sql);
-			$sth->bindValue(':existencia',$detalle['existencia'],PDO::PARAM_INT);
-			$sth->bindValue(':idarticulo',$detalle['fk_articulo'],PDO::PARAM_INT);
-			$sth->bindValue(':idproveedor',$idproveedor,PDO::PARAM_INT);
-			$exito = $sth->execute();
-			if (!$exito) return $this->getError($sth);
+			// $sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idproveedor=:idproveedor';
+			// $sth = $con->prepare($sql);
+			// $sth->bindValue(':existencia',$detalle['existencia'],PDO::PARAM_INT);
+			// $sth->bindValue(':idarticulo',$detalle['fk_articulo'],PDO::PARAM_INT);
+			// $sth->bindValue(':idproveedor',$idproveedor,PDO::PARAM_INT);
+			// $exito = $sth->execute();
+			// if (!$exito) return $this->getError($sth);
 		}		
 		$resp=array('success'=>true);
 		
-		
-		
 		return $resp;
 		
-		$fk_tmp=$params['IdTmp'];
-		
-		$msg='ok';
-		if (!$exito){
-			$resp['success']=false;
-			$error=$sth->errorInfo();
-			$msg    = $error[2];
-			$elemeno=$params;
-		}
-		
-		//actualizar
-		$sql='SELECT id, fk_articulo, cantidad, idarticulopre from tmp_pedidos_productos WHERE fk_tmp=:fk_tmp AND id!=0 AND fk_pedido=:fk_pedido';
-		
-		$con = $this->getConexion();
-		$sth = $con->prepare($sql);
-		$sth->bindValue(':fk_pedido',$fk_pedido,PDO::PARAM_INT);
-		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
-		$res = $this->execute($sth);
-		if (!$res['success'])return $res;
-		foreach($res['datos'] as $elemento){
-			$fk_articulo=$elemento['fk_articulo'];
-			$cantidad=$elemento['cantidad'];
-			$id=$elemento['id'];
-			$idarticulopre=$elemento['idarticulopre'];
-			$sql='UPDATE pedidos_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, idarticulopre=:idarticulopre WHERE id=:id';
-			$sth = $con->prepare($sql);
-			$sth->bindValue(':fk_articulo',$fk_articulo,PDO::PARAM_INT);
-			$sth->bindValue(':cantidad',$cantidad,PDO::PARAM_INT);
-			$sth->bindValue(':idarticulopre',$idarticulopre,PDO::PARAM_INT);
-			$sth->bindValue(':id',intval($id),PDO::PARAM_INT);
-			$exito = $sth->execute();
-			if (!$exito){
-				$resp['success']=false;
-				$error=$sth->errorInfo();
-				$msg    = $error[2];
-				$resp['success']=false;
-				$resp['msg']=$msg;
-				return $resp;
-			}
-		}
-		
-		//Antes de borrar, actualizo los stocks		
-		$idproveedor=$params['almacen'];
-		$sql='SELECT existencia,fk_articulo FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
-		$sth = $con->prepare($sql);
-		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
-		$exito = $sth->execute();
-		if (!$exito) return $this->getError($sth);
-		
-		$datos= $sth->fetchAll(PDO::FETCH_ASSOC);
-		foreach($datos as $dato){
-			$sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idproveedor=:idproveedor';
-			$sth = $con->prepare($sql);
-			$sth->bindValue(':existencia',$dato['existencia'],PDO::PARAM_INT);
-			$sth->bindValue(':idarticulo',$dato['fk_articulo'],PDO::PARAM_INT);
-			$sth->bindValue(':idproveedor',$idproveedor,PDO::PARAM_INT);
-			$exito = $sth->execute();
-			if (!$exito) return $this->getError($sth);
-		}
-		
-		
-		//BORRAR TODO
-		$sql='DELETE FROM tmp_pedidos_productos WHERE fk_tmp=:fk_tmp';
-		$sth = $con->prepare($sql);
-		$sth->bindValue(':fk_tmp',$fk_tmp,PDO::PARAM_STR);
-		$exito = $sth->execute();
-		if (!$exito) return $this->getError($sth);
-		
-		//borrar
-		return array(
-			'success'=>$exito,
-			'msg'=>$msg
-		);
 	}
 	function cerrar($fk_tmp){
 		//BORRAR TODO

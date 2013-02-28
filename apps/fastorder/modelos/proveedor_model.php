@@ -6,9 +6,13 @@ class ProveedorModel extends Modelo{
 		$model=$this;
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
-		$datos=$model->execute($sth);
+		$exito=$sth->execute();
 		
-		$total=$datos['datos'][0]['total'];
+		if ( !$exito ) return $this->getError($sth);
+		
+		$datos=$sth->fetchAll(PDO::FETCH_ASSOC);
+		
+		$total=$datos[0]['total'];
 		
 		$sql='select *,id as value, nombre as label, nombre as nombreAlmacen FROM proveedor LIMIT :start,:limit';
 		$con=$model->getConexion();
@@ -18,6 +22,7 @@ class ProveedorModel extends Modelo{
 		$datos=$model->execute($sth);
 		
 		return array(
+			'success'=>true,
 			'total'=>$total,
 			'datos'=>$datos['datos']
 		);

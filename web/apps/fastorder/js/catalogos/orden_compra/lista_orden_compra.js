@@ -33,8 +33,8 @@
 			});
 		});
 }
-	this.nuevo=function(){
-		TabManager.add('/'+kore.modulo+'/orden_compra/nuevo','Nueva Orden Compra');
+	this.nuevo=function(){		
+		TabManager.add('/'+kore.modulo+'/orden_compra/nuevo','Nueva Orden de Compra');
 	};
 	this.activate=function(){
 		// vuelve a renderear estos elementos que presentaban problemas. (correccion de bug)
@@ -46,7 +46,7 @@
 	}
 	this.borrar=function(){
 		if (this.selected==undefined) return false;
-		var r=confirm("¿Eliminar el pedido?");
+		var r=confirm("¿Eliminar Orden de Compra?");
 		if (r==true){
 		  this.eliminar();
 		}
@@ -92,16 +92,16 @@
 		$(this.tabId+' .cmbProveedor').wijcombobox({});
 		$(this.tabId+' .cmbEstado').wijcombobox({});
 		
+		
 		$(tabId+ " > .lista_toolbar").wijribbon({
 			click: function (e, cmd) {
 				switch(cmd.commandName){
-					case 'nuevo':
-						
+					case 'nuevo':						
 						me.nuevo();
 					break;
 					case 'editar':
 						if (me.selected!=undefined){													
-							TabManager.add('/'+kore.modulo+'/'+this.controlador.nombre+'/getPedido','Editar Pedido',me.selected.id);
+							TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar Orden de Compra',me.selected.id);
 						}
 					break;
 					case 'eliminar':
@@ -285,9 +285,11 @@
 		
 		gridPedidos.wijgrid({ loaded: function (e) { 
 			$('.lista_orden_de_compra tr').bind('dblclick', function (e) { 			
-				var pedidoId=$(e.currentTarget).attr('pedidoId');
-				if (pedidoId==undefined || pedidoId=='' || pedidoId==0) return false;				
-				TabManager.add('/'+kore.modulo+'/'+this.controlador.nombre+'/editar','Editar '+this.catalogo.nombre,pedidoId);				
+				// var pedidoId=$(e.currentTarget).attr('pedidoId');
+				// if (pedidoId==undefined || pedidoId=='' || pedidoId==0) return false;				
+				console.log('me.selected'); console.log(me.selected);
+				var pedidoId=me.selected.id;
+				TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar '+me.catalogo.nombre,pedidoId);				
 			});			
 		} });
 	};

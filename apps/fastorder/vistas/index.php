@@ -22,10 +22,13 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 		
 		$rutaTema=getUrlTema('artic');
 		$rutaTema=getUrlTema(TEMA);
+		
+		$rutaMod='/web/apps/fastorder/css/mods/black-tie/black-tie.css';
 	?>
 	
 	<!--link href="http://cdn.wijmo.com/themes/arctic/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" /-->
 	<link href="<?php echo $rutaTema; ?>" rel="stylesheet" type="text/css" />
+	<!--link href="<?php //echo $rutaMod; ?>" rel="stylesheet" type="text/css" /-->
 	
 	<!--link href="/css/mods/rocket/mods.css" rel="stylesheet" type="text/css" /-->		
 	<!--link href="/css/themes/cobalt/jquery-wijmo.css" rel="stylesheet" type="text/css" title="rocket-jqueryui" /-->		
@@ -135,8 +138,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			iniciarLinkTabs(); //A los objetos con atributo linkTab=true,  se les agrega comportamiento ajax para abrir tabs.
 			
 			// TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
-			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
-			TabManager.add('/'+kore.modulo+'/general/historias','Historias de usuario',0,'scrum');
+			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');			
 			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',0,'');
 			
 			// TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			

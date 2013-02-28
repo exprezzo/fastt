@@ -254,7 +254,7 @@ var EdicionArticulo=function (tabId){
 			{ name: "pedido"},
 			{ name: "pendiente"},			
 			{ name: "fk_articulo"},
-			{ name: "id_tmp"  },
+			// { name: "id_tmp"  },
 			{ name: "idarticulopre"},
 			{ name: "eliminado",default:false},
 			{ name: "id"  }
@@ -328,9 +328,9 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "pedido", headerText: "Pedido"},
 				{dataKey: "pendiente", headerText: "Pendiente",editable:false},
 				{dataKey: "id", visible:false, headerText: "ID" },
-				{dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
+				// {dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
 				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
-				{dataKey: "fk_pedido", headerText: "fk_pedido", visible:false},
+				{dataKey: "fk_orden_compra", headerText: "fk_orden_compra", visible:false},
 				{dataKey: "cantidad", headerText: "cantidad", visible:false},
 				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},
 				{ visible:false, dataKey: "nombreGpo", groupInfo:{

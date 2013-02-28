@@ -53,8 +53,8 @@
 
 	}
 </style>
-<script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/edicion_articulo.js"></script>
-<script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/pedidos/edicion_pedido.js"></script>
+<script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/orden_compra/edicion_articulos.js"></script>
+<script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/orden_compra/edicion_orden_compra.js"></script>
 <link href='/web/apps/<?php echo $_PETICION->modulo; ?>/css/pedidoi.css' rel="stylesheet" type="text/css" />
 <script>	
 	$( function(){		
@@ -63,7 +63,7 @@
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
 		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
-		var edicion = new EdicionPedido();
+		var edicion = new EdicionOrdenCompra();
 		edicion.init(tabId, pedidoId, almacen, articulos);
 		$('#'+tabId+' .toolbarFormPedido .boton:not(.btnPrint, .btnEmail)').mouseenter(function(){
 			$(this).addClass("ui-state-hover");
@@ -97,7 +97,7 @@
 		$id_tmp= empty($this->pedido['id_tmp'])?0 : $this->pedido['id_tmp'];
 		$fk_serie= empty($this->pedido['fk_serie'])?0 : $this->pedido['fk_serie'];
 		$folio= empty($this->pedido['folio'])?0 : $this->pedido['folio'];
-		
+		$fk_proveedor= empty($this->pedido['idproveedor'])?0 : $this->pedido['idproveedor'];
 	}	
 ?>
 
@@ -118,6 +118,8 @@
 			<input type='hidden' name='id_tmp' class="txtIdTmp" value="<?php echo $id_tmp; ?>" />	
 			<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />
 			<input type='hidden'  name='serie' class="txtFkSerie" value="<?php echo $fk_serie; ?>" />
+			<input type='hidden'  name='serie' class="txtFkProveedor" value="<?php echo $fk_proveedor; ?>" />
+			
 			<div style='display:inline-block;'>
 				<div class="inputBox" style='margin-bottoms:5px;display:inline;'>		
 					<label class="lblSerie" style="width:auto;">Serie:</label>
@@ -128,14 +130,19 @@
 					<label style="width:auto;">Folio:</label>
 					<input readonly="readonly" type='text' name='folo' class="txtFolio" value="<?php echo $folio; ?>" style="width:70px;text-align:right;" />
 				</div>
+				<div class="inputBox" style='margin-bottoms:5px;display:inline;margin-left:10px;'>		
+					<label class="lblProveedor" style="width:auto;">Proveedor:</label>
+					<select class="cmbProveedor" style='width:170px;'>			
+					</select>
+				</div>
 				<br/>
 				<div class="inputBox" style='margin-bottoms:5px;display:inline;'>		
 					<label class="lblAlmacen" style="width:auto;">Almacen:</label>
 					<select class="cmbAlmacen" style='width:170px;'>			
 					</select>
-				</div>		
+				</div>
 				<div class="inputBox" style='margin-bottoms:5px;display:inline;'>							
-					<button class="btnCargarArticulos" >Cargar Articulos</button>
+					<button class="btnCargarArticulos" >Precargar</button>
 				</div>						
 				<div class="inputBox" style='margin-bottom:8px;display:inline;margin-left:10px;'>
 					<label style="width:auto;">Fecha:</label>

@@ -1,6 +1,7 @@
 <?php
 
 require_once '../apps/'.$_PETICION->modulo.'/modelos/orden_compra_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/orden_compra_producto_model.php';
 // require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_stock_model.php';
  require_once '../apps/'.$_PETICION->modulo.'/modelos/proveedor_model.php';
 // require_once '../apps/'.$_PETICION->modulo.'/modelos/serie_compra_model.php';
@@ -91,7 +92,7 @@ class Orden_Compra extends Controlador{
 		if ( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 			
 			$vista= $this->getVista();					
-			return $vista->mostrar( '/index' );
+			return $vista->mostrar( 'orden_compra/edicion' );
 		}
 		 $mod=$this->getModel();
 		 $mod->indexTabla=1;
@@ -99,14 +100,27 @@ class Orden_Compra extends Controlador{
 		 
 		 $vista=$this->getVista();
 		 $vista->pedido =$pedido['datos'];
-		 $vista->mostrar('ocompra/nuevo');
+		 $vista->mostrar('orden_compra/edicion');
 	}
 	
-	function abrir(){
+	function editar(){
 		$idPedido=empty($_REQUEST['id'])? 0 : $_REQUEST['id'];		
 		$pedido=$this->getOC($idPedido);		
 	}
-	
+	function getProveedores(){
+		
+		$provMod= new ProveedorModel();
+		$res=$provMod->paginar();
+		
+		if ( !$res['success']) echo json_encode($res);
+		
+		
+		echo json_encode( array(
+			'success'=>true,
+			'rows'=>$res['datos'],
+			'totalRows'=>$res['total'],
+		) );
+	}
 	function getOC($id = null){
 		if ($id==null){
 			$idPedido=$_REQUEST['pedidoId'];
@@ -119,13 +133,14 @@ class Orden_Compra extends Controlador{
 		
 		$pedido = $mod->obtener( $idPedido );
 		
-		$mod=new PedidoProductoModel();
+		$mod=new OrdenCompraProductoModel();
 		
 		$params=array(	//Se traducen al lenguaje sql
 			'limit'		=>$pageSize=50000,
 			'start'		=>0,
-			'fk_pedido'	=>$pedido['id'],
-			'idalmacen'	=>$pedido['fk_almacen']
+			'fk_orden_compra'	=>$pedido['id'],
+			'idalmacen'	=>$pedido['fk_almacen'],
+			'idproveedor'	=>$pedido['idproveedor'],
 		);
 		
 		$res=$mod->paginar($params);
@@ -139,7 +154,7 @@ class Orden_Compra extends Controlador{
 		
 		
 		if ($mostrar==true){
-			$vista->mostrar('pedidoi/nuevo');
+			$vista->mostrar('orden_compra/edicion');
 		}else{
 			return $vista;
 		}
@@ -176,11 +191,7 @@ class Orden_Compra extends Controlador{
 		return $this->mostrarVista($PETICION->controlador.'/lista');
 	}
 	
-	function verPedidos(){
-		
-						
-		$vista->mostrar('pedidoi/lista_de_pedidos');
-	}
+	
 	
 	
 	function paginar(){
@@ -283,6 +294,7 @@ class Orden_Compra extends Controlador{
 		$pedido['vencimiento']= $vencimiento->format('Y-m-d H:i:s');
 		
 		$model=$this->getModel();		
+		
 		$res = $model->guardar($pedido);
 		
 		if (!$res['success']) {			
@@ -293,12 +305,12 @@ class Orden_Compra extends Controlador{
 		$pedido=$res['datos'];
 		
 		//----------------
-		$mod=new PedidoProductoModel();
+		$mod=new OrdenCompraProductoModel();
 		
 		$params=array(	//Se traducen al lenguaje sql
 			'limit'=>$pageSize=50000,
 			'start'=>0,
-			'fk_pedido'=>$pedido['id'],
+			'fk_orden_compra'=>$pedido['id'],
 			'idalmacen'=>$pedido['fk_almacen']
 		);
 		
@@ -309,8 +321,9 @@ class Orden_Compra extends Controlador{
 		if (!$resArts['success']) {
 			echo json_encode($resArts); exit;		
 		} 
+		// print_r($resArts);
 		$pedido['articulos']=$resArts['rows'];		
-		//----------------
+		
 		
 		$res['datos']=$pedido;		
 		echo json_encode($res);

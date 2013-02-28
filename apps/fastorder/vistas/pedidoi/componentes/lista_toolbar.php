@@ -1,7 +1,12 @@
 <script type="text/javascript">
 	$(function () {
 	
-		
+		$( ".btnConcentrar" )
+		  .button()
+		  .click(function( event ) {
+			event.preventDefault();
+			alert("concentrar");
+		  });
 	});	
 </script>
 <style type="text/css">	
@@ -81,41 +86,7 @@
 					<input type="checkbox" id="<?php echo $tabId; ?>_chkOmitirFV"></input><label for="<?php echo $tabId; ?>_chkOmitirFV" name="omitirFV" title="Bold" class="">Omitir</label>
 					<br/>
 				</span>	
-				<!--div title="Acciones" class="wijmo-wijribbon-dropdownbutton">
-					<button title="Font Name" name="acciones">mas</button>
-					<ul class="li_combos">
-						<li>
-							<span class="cmbAlmacenW" style="position:relative; display:inline-block;">
-								<select class="cmbAlmacen">
-									<?php 
-									// echo '<option value="0">--todos--</option>';
-									// foreach($this->almacenes as $almacen){
-										// echo '<option value="'.$almacen['id'].'">'.$almacen['nombre'].'</option>';
-									// }
-									?>						
-									
-									
-								</select>
-								<br />
-								<span class="ui-button-text">Almac&eacute;n</span><br/>
-							</span>
-						</li>
-						<li>
-							<span class="cmbEstadoW" style="display:inline-block;">
-								<select class="cmbEstado">
-									<?php 
-									// echo '<option value="0">--todos--</option>';
-									// foreach($this->estados as $estado){
-										// echo '<option value="'.$estado['id'].'">'.$estado['nombre'].'</option>';
-									// }
-									?>													
-								</select>
-								<br>
-								<span class="ui-button-text">Estado</span><br/>
-							</span>	
-						</li>
-					</ul>
-				</div-->
+				
 				<span class="cmbAlmacenW" style="position:relative; display:inline-block;">
 					<select class="cmbAlmacen">
 						<?php 
@@ -141,10 +112,23 @@
 								</select>
 								<br>
 								<span class="ui-button-text">Estado</span><br/>
-							</span>	
+				</span>	
+				
+				
 				
 			</div>
-			<button title="Refresh" class="" name="refresh" style="position:absolute;;right:0;">
+			
+				
+					<button title="Concentrar" class="" name="concentrar" style="">
+							<span class="btnConcentrar"></span>
+							<span>Concentrar</span>
+					</button>					
+				
+			
+				
+			
+			
+			<button title="Refresh" class="" name="refresh" style="position:absolute;right:0;">
 				<span class="btnRefresh"></span>
 				<span>Actualizar</span>
 			</button>	

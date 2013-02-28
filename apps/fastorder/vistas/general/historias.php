@@ -305,6 +305,21 @@
 				'duracion'  	=>' 4:36 pm',
 				'diferencia'	=>' +2:00 '
 			);
+			$tareas[]=array(				
+				'tarea'		 	=>'orden de compra manual
+					<ul>
+						<li>Precarga de articulos</li>
+					</ul>
+				',				
+				'responsable'	=>'Cesar Octavio',
+				'estimado' 		=>'6:00',
+				'modulo' 		=>'Orden de compra',
+				'h_inicio'	 	=>'17:00 pm',
+				'h_fin'	 		=>'21:00 PM',
+				'duracion'  	=>'',
+				'diferencia'	=>''
+			);
+			
 			
 			?>		
 			<td>Tarea</td>
@@ -347,8 +362,12 @@
 			<li>Campos de captura:  Folio + Serie, automaticos configurable desde panel. *Panel Pendiente Back Log, Fecha Docto:, Proveedor</li>
 			<li>Estados (auto): Borrador, Enviado, Cancelado, Surtido, Parcialmente Surtido, Vencido.</li>			
 			<li>Detalle: Agrupado x grupo
-                     Agrupado x Articulo     ---> Campos: aticulo id, nombre/Descripcion, Unidad Base, //Presentación, Factor  //, Max, Min, P. Reor, Inv ini, suma ped int, sugerido, pedido
-                          Lista de Pedidos Interno Detalle relacionado si lo hay   --->  artículo de linea o wakal(compuesto), almacen pedido interno, cantidad solicitada.
+                Agrupado x Articulo     ---> Campos: aticulo id, nombre/Descripcion, Unidad Base, //Presentación, Factor  //, Max, Min, P. Reor, Inv ini, suma ped int, sugerido, pedido
+                Lista de Pedidos Interno Detalle relacionado si lo hay   --->  artículo de linea o wakal(compuesto), almacen pedido interno, cantidad solicitada.
+			</li>
+			<li>
+				Bandera de pendiente de concentrar para los pedidos internos.
+				Pedidos, Ordenes de Compra o Requisiciones se concentrarán a partir de la cantidad pendiente por concentrar.
 			</li>
 		</ul>                             
    </li>
@@ -386,6 +405,7 @@
 <br>
 <h3>Backlog: </h3>
 <ul>	
+	<li>Crear Interface de Artículos, para poder modificar almacenes prioridades y proveedores.</li>
 	<li>Permitir configurar si la información en un módulo se almacena en el cliente hasta que se de guardar o temporalmente en el servidor cada vez que cambias algún valor.</li>
 	<li>Agrupar las opciones en módulos de acuerdo a su uso por parte del usuario p ej. si soy almacenista veo info de articulso, pedidos, entradas y salida y si soy cobrador, nada más veo clientes y saldos.</li>
 	<li>Configuraci&oacute;n - Crear un modo de configuraci&oacute;n para jalar la serie y el folio que le sigue por almac&eacute;n.</li>	

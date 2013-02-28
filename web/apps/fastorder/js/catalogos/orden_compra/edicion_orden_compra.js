@@ -10,7 +10,7 @@ var EdicionOrdenCompra = function(){
 	this.close=function(){
 		
 		if (this.editado){
-			var res=confirm('Â¿Guardar antes de salir?');
+			var res=confirm('¿Guardar antes de salir?');
 			if (res===true){
 				this.saveAndClose=true;
 				this.guardar();
@@ -23,6 +23,10 @@ var EdicionOrdenCompra = function(){
 		}
 	};
 	this.init=function(tabId, pedidoId, almacen, articulos){
+		this.controlador={
+			nombre:'orden_compra'
+		}
+		
 		this.tabId= '#'+tabId;		
 		
 		
@@ -82,14 +86,15 @@ var EdicionOrdenCompra = function(){
 	this.actualizarTitulo=function(){
 		var tabId = this.tabId;		
 		var pedidoId = $(tabId + ' .txtId').val();
+		
 		if (pedidoId>0){
 			var serie = $(tabId+' .cmbSerie').wijcombobox( 'option', 'text');						
 			var folio = $(tabId+' .txtFolio').val();			
-			$('a[href="'+tabId+'"]').html('Ped. Int:'+serie+' '+folio);		
+			$('a[href="'+tabId+'"]').html('OC:'+serie+' '+folio);		
 			$(tabId+' .cmbAlmacen').wijcombobox( 'option', 'disabled', true );
 			$(tabId+' .cmbSerie').wijcombobox( 'option', 'disabled', true );
 		}else{
-			$('a[href="'+tabId+'"]').html('Nuevo Pedido Interno');
+			$('a[href="'+tabId+'"]').html('Nueva Orden de Compra');
 		}
 	}
 	this.nuevo=function(){
@@ -104,7 +109,7 @@ var EdicionOrdenCompra = function(){
 		var tab = $('#tabs '+tabId);
 		var me=this;
 		var articulos=$(tabId+' .grid_articulos').wijgrid('data');
-		// console.log(articulos);
+		 console.log('articulos'); console.log(articulos);
 		// return false;
 		
 		var pedido={
@@ -115,6 +120,7 @@ var EdicionOrdenCompra = function(){
 			fk_serie	: tab.find('.txtFkSerie').val(),
 			vencimiento	: tab.find('.txtVencimiento').val(),
 			folio		: tab.find('.txtFolio').val(),
+			proveedor	: tab.find('.txtFkProveedor').val(),
 			articulos	: articulos
 		};
 		
@@ -122,7 +128,7 @@ var EdicionOrdenCompra = function(){
 		
 		$.ajax({
 			type: "POST",
-			url: '/'+kore.modulo+'/pedidoi/guardar',
+			url: '/'+kore.modulo+'/'+this.controlador.nombre+'/guardar',
 			data: { pedido: pedido}
 		}).done(function( response ) {
 			
@@ -379,6 +385,75 @@ var EdicionOrdenCompra = function(){
 			}
 		});
 	};
+	this.configCmbProveedor=function(){
+		var tabId=this.tabId;
+		var me=this;
+		var fields=[{
+			name: 'label',
+			mapping: function (item) {
+				return item.label;
+			}
+		}, {
+			name: 'value',
+			mapping: 'label'
+		}, {
+			name: 'selected',
+			defaultValue: false
+		},{name:'id'}];
+		
+		var myReader = new wijarrayreader(fields);
+		
+		var proxy = new wijhttpproxy({
+			url: '/'+kore.modulo+'/orden_compra/getProveedores',
+			dataType:"json"			
+		});
+		
+		var datasource = new wijdatasource({
+			reader:  new wijarrayreader(fields),
+			proxy: proxy,
+			loaded: function (data) {				
+				 var val=$('#tabs '+tabId+' .txtFkProveedor').val();
+				$.each(data.items, function(index, datos) {					
+					if (parseInt(val)==parseInt(datos.id) ){						
+						$('#tabs '+tabId+' .cmbProveedor').wijcombobox({selectedIndex:index});
+					}
+				});				
+			}
+		});
+		
+		datasource.reader.read= function (datasource) {			
+			var totalRows=datasource.data.totalRows;			
+			datasource.data = datasource.data.rows;
+			datasource.data.totalRows = totalRows;
+			myReader.read(datasource);
+		};			
+		
+		datasource.load();	
+		var combo=$('#tabs '+tabId+' .cmbProveedor').wijcombobox({
+			data: datasource,
+			showTrigger: true,
+			minLength: 1,
+			autoFilter: false,
+			animationOptions: {
+				animated: "Drop",
+				duration: 1000
+			},
+			forceSelectionText: true,
+			search: function (e, obj) {
+				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
+			},
+			select: function (e, item) {				
+				$('#tabs '+me.tabId+' .txtFkProveedor').val(item.id);				
+				// $('#tabs '+me.tabId+' .txtFkSerie').val(0);	
+				
+				$(me.tabId +' .cmbSerie').wijcombobox('option', 'selectedIndex',-1)
+				//$(me.tabId +' .cmbSerie + div input').val('')
+				
+				me.editado=true;
+				me.dataSerie.load();
+			}
+		});
+	};
 	this.configurarFormulario=function(tabId){		
 		var me=this;
 		
@@ -432,7 +507,7 @@ var EdicionOrdenCompra = function(){
 	  		
 		this.configCmbAlmacen();
 		this.configurarComboSerie();
-		
+		this.configCmbProveedor();
 	};
 	this.configurarToolbar=function(tabId){		
 			
@@ -441,14 +516,14 @@ var EdicionOrdenCompra = function(){
 			$(this.tabId + ' .toolbarFormPedido .btnGuardar').click( function(){
 				me.guardar();
 				me.editado=true;
-			} );
+			});
 			
 			$(this.tabId + ' .toolbarFormPedido .btnEliminar').click( function(){
-				var r=confirm("Â¿Eliminar Orden de compra?");
+				var r=confirm("¿Eliminar Orden de compra?");
 				if (r==true){
 				  me.eliminar();
 				  me.editado=true;
 				}
-			} );			
+			});
 	};	
 }

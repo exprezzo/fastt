@@ -1,10 +1,34 @@
 <?php
 include '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_model.php';
-include_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_tmp_model.php';
+// include_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_tmp_model.php';
 class PedidoModel extends Modelo{
 	var $tabla='pedidos';	
 	var $pk='id';
+	
+	function concentrar(){
+		/*		
+		Concentración: Generacion automatica de ordenes de compra a partir de pedidos internos.
+		Consideraciones:
+			Cada proveedor tiene una lista de los productos que ofrece.
+			Un producto puede ser manejado por mas de un proveedor.
+			para saber a quien comprar, se genera un rankeo, para cada producto con todos los proveedores de ese producto.
 		
+		*/
+			
+		//De cada pedido interno, leer cada detalle que no haya sido concentrado por completo.
+		//acumula las cantidades faltantes por producto
+		//cuando el producto no tiene proveedores rankeados, se genera todo en una orden sin proveedor.
+		//cuando el producto tiene ranking, selecciona al proveedor con el mas  alto.
+		
+		/*
+		
+		Recetas: 
+		
+		*/
+			
+	}
+	
+	
 	function nuevo(){
 		$params=array(
 			'id'=>0

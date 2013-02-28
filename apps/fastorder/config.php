@@ -17,6 +17,7 @@ define ("NOMBRE_APL",'Fast Order');
 define ("PASS_AES",'faztA3s');
 
 define ("TEMA",'cobalt');
+// define ("TEMA",'black-tie');
 
 define ("PATH_MVC",'../mvc/');
 //define ("DEFAULT_CONTROLLER",'general');
