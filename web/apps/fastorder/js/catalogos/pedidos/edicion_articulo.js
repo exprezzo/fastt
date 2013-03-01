@@ -58,16 +58,9 @@ var EdicionArticulo=function (tabId){
 			{name: 'minimo'},
 			{name: 'maximo'},
 			{name: 'puntoreorden'},
-		{
-			name: 'label',
-			mapping: 'nombre'
-		}, {
-			name: 'value',
-			mapping: 'id'
-		}, {
-			name: 'selected',
-			defaultValue: false
-		}];
+			{name: 'label',mapping: 'nombre'}, 
+			{name: 'value',mapping: 'id'}, 
+			{name: 'selected',defaultValue: false}];
 		var me = this;
 		var myReader = new wijarrayreader(fields);
 		
@@ -420,6 +413,7 @@ var EdicionArticulo=function (tabId){
 							row.data.nombreGpo=me.articulo.grupo;		
 							// gridPedidos.wijgrid('ensureControl');
 						}
+						me.padre.editado=true;
 						break;
 					case "codigo":
 						args.value = args.cell.container().find("input").val();
@@ -439,6 +433,7 @@ var EdicionArticulo=function (tabId){
 							gridPedidos.wijgrid('ensureControl',true);
 							// console.log("data"); console.log(data);
 						}
+						me.padre.editado=true;
 						break;
 					case "existencia":
 						args.value=args.cell.container().find("input").val();						
@@ -453,7 +448,13 @@ var EdicionArticulo=function (tabId){
 						}
 						$(row.$rows).find('td:eq(7) div').html(row.data.sugerido);
 						$(row.$rows).find('td:eq(9) div').html(row.data.pendiente);
+						me.padre.editado=true;
 						break;
+					case 'pedido':
+						me.padre.editado=true;
+						alert("pedido");
+					break;
+					
 				}
 				me.articulo=undefined;		
 			}			

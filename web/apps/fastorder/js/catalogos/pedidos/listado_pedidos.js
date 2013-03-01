@@ -1,4 +1,34 @@
 ﻿var ListaPedidos=function(){
+	this.concentrar=function(){		
+		var me=this;
+		$.ajax({
+			type: "POST",
+			url: '/'+kore.modulo+'/'+me.controlador.nombre+'/concentrar'			
+		}).done(function( response ) {
+			
+			var resp = eval('(' + response + ')');
+			var msg= (resp.msg)? resp.msg : '';
+			var title;
+			
+			if ( resp.success == true	){
+				
+				var gridPedidos=$(me.tabId+" #lista_pedidos_internos");	
+				gridPedidos.wijgrid('ensureControl', true);
+				TabManager.add('/'+kore.modulo+'/orden_compra/index','Ordenes de Compra');
+								
+			}else{
+				icon= '/web/apps/fastorder/images/error.png';
+				title= 'Error';					
+				$.gritter.add({
+					position: 'bottom-left',
+					title:title,
+					text: msg,
+					image: icon,
+					class_name: 'my-sticky-class'
+				});
+			}			
+		});
+	};
 	this.nuevo=function(){
 		TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo Pedido');
 	};
@@ -23,7 +53,9 @@
 		}
 	}
 	this.init=function(tabId){
-		
+		this.controlador={
+			nombre:'pedidoi'
+		};
 		this.omitirFI=false;
 		this.omitirFF=false;
 		this.omitirFV=false;
@@ -56,10 +88,9 @@
 		$(this.tabId+' .cmbEstado').wijcombobox({});
 		
 		$(tabId+ " > .tbPedidos").wijribbon({
-			click: function (e, cmd) {
+			click: function (e, cmd) {				
 				switch(cmd.commandName){
-					case 'nuevo':
-						
+					case 'nuevo':						
 						me.nuevo();
 					break;
 					case 'editar':
@@ -74,8 +105,7 @@
 						  me.eliminar();
 						}
 					break;
-					case 'refresh':
-						
+					case 'refresh':						
 						var gridPedidos=$(me.tabId+" #lista_pedidos_internos");
 						gridPedidos.wijgrid('ensureControl', true);
 					break;
@@ -114,16 +144,18 @@
 						}else{
 						    $(me.tabId+' input.txtVencimiento').css('color','');
 						}
-					break;					
-					default:						 
+					break;
+					case 'concentrar':						
+						me.concentrar();
+					break;
+					default:
 						$.gritter.add({
 							position: 'bottom-left',
 							title:cmd.commandName,
-							text: "Acciones del toolbar en construcci&oacute;n",
+							text: "Acciones del toolbar en construcci&oacute;n: "+cmd.commandName,
 							image: '/web/apps/fastorder/images/info.png',
 							class_name: 'my-sticky-class'
 						});
-						
 					break;
 					case 'imprimir':
 						alert("Imprimir en construcción");
@@ -185,7 +217,7 @@
 			dataReader.read(datasource);
 		};				
 		this.dataSource=dataSource;
-		var gridPedidos=$("#lista_pedidos_internos");
+		var gridPedidos=$(this.tabId+" #lista_pedidos_internos");
 
 		// gridPedidos.wijgrid();
 		var me=this;

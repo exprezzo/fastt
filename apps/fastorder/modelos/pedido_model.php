@@ -12,20 +12,56 @@ class PedidoModel extends Modelo{
 			Cada proveedor tiene una lista de los productos que ofrece.
 			Un producto puede ser manejado por mas de un proveedor.
 			para saber a quien comprar, se genera un rankeo, para cada producto con todos los proveedores de ese producto.
-		
-		*/
 			
 		//De cada pedido interno, leer cada detalle que no haya sido concentrado por completo.
 		//acumula las cantidades faltantes por producto
 		//cuando el producto no tiene proveedores rankeados, se genera todo en una orden sin proveedor.
 		//cuando el producto tiene ranking, selecciona al proveedor con el mas  alto.
 		
-		/*
-		
 		Recetas: 
 		
 		*/
-			
+		
+		//De cada pedido interno, leer cada detalle que no haya sido concentrado por completo.
+		//(Ordenados por proveedor)
+		$sql='SELECT fk_articulo,idarticulopre, sum(cantidad) pedido
+		from 
+		pedidos_productos  p
+		LEFT JOIN productos pro ON pro.id=p.fk_articulo
+		WHERE status=1 AND cantidad > 0 GROUP BY fk_articulo';
+		$model=$this;
+		$con=$model->getConexion();
+		$sth=$con->prepare($sql);
+		$exito=$sth->execute();
+		if ( !$exito ) return $this->getError( $sth );
+		$productos=$sth->fetchAll(PDO::FETCH_ASSOC);
+		// print_r($productos);
+		
+		
+		$orden=array(
+			'almacen'=>1,
+			'fecha'=>date('Y-m-d H:i:s'),
+			'vencimiento'=>date('Y-m-d H:i:s'),
+			'folio'=>1,
+			'fk_serie'=>1,
+			'proveedor'=>1			
+		);
+		$orden['articulos']=$productos;		
+		$ordenMod=new OrdenCompraModel();
+		$res=$ordenMod->guardar( $orden );
+		
+		
+		if ( !$res['success'] ) return $res;
+		//
+		$sql='UPDATE pedidos SET idestado=2;';
+		$sth=$con->prepare($sql);
+		$exito=$sth->execute();
+		if ( !$exito ) return $this->getError( $sth );
+		//crear orden de compra
+		
+		return array(
+			'success'=>true
+		);
 	}
 	
 	
@@ -33,7 +69,7 @@ class PedidoModel extends Modelo{
 		$params=array(
 			'id'=>0
 		);
-		
+				
 		$params=array();
 		$params['id']=0;
 		$params['fk_almacen']=0;

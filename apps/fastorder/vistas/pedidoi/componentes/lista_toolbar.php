@@ -1,12 +1,7 @@
 <script type="text/javascript">
 	$(function () {
 	
-		$( ".btnConcentrar" )
-		  .button()
-		  .click(function( event ) {
-			event.preventDefault();
-			alert("concentrar");
-		  });
+		
 	});	
 </script>
 <style type="text/css">	

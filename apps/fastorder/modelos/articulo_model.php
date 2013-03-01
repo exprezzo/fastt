@@ -38,7 +38,7 @@ class ArticuloModel extends Modelo{
 		$exito=$sth->execute();
 		if ( !$exito) return $this->getError($sth);
 		
-		$datos =$sth->fetchAll(PDO::FETCH_ASSOC);
+		$datos =$sth->fetchAll( PDO::FETCH_ASSOC );
 		return array(
 			'totalRows'=>$total,
 			'rows'=>$datos

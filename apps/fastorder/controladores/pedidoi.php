@@ -8,10 +8,16 @@ require_once '../apps/'.$_PETICION->modulo.'/modelos/estado_pedido_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/vistas/pedidoi/reporte_pedido_pdf.php';
+
+require_once '../apps/'.$_PETICION->modulo.'/modelos/orden_compra_model.php';
+
 class Pedidoi extends Controlador{	
 	function concentrar(){
 		$mod=$this->getModel();
 		$res = $mod->concentrar( $params=array() );
+		// $res=array(
+			// 'success'=>true
+		// );
 		echo json_encode($res);
 	}
 	

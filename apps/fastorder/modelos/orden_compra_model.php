@@ -351,6 +351,7 @@ class OrdenCompraModel extends Modelo{
 		$con = $this->getConexion();
 		
 		$idproveedor = $params['proveedor'];
+		
 		foreach($params['articulos'] as $detalle){
 			if ( !empty($detalle['id']) && !empty($detalle['eliminado']) ){
 				$sql='DELETE FROM orden_compra_productos WHERE id=:id';

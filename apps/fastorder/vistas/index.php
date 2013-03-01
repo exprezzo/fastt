@@ -138,8 +138,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			iniciarLinkTabs(); //A los objetos con atributo linkTab=true,  se les agrega comportamiento ajax para abrir tabs.
 			
 			// TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
-			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');			
-			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',0,'');
+			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
+			// TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',0,'');
 			
 			// TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			
 			// TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');
@@ -207,7 +207,9 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 		.eliminado td{
 			background-color:#F9DADA !important;
 		}
-		
+		#tabs > ul > li.ui-state-active{
+			background: #ffe475 url(images/ui-bg_inset-hard_100_ffe475_1x100.png) bottom repeat-x !important;
+		}
 	</style>
 	
 </head>

@@ -5,8 +5,8 @@
 	}
 	.tbFecha input{
 		height: 30px;
-font-size: 17px;
-text-align: right;
+		font-size: 17px;
+		text-align: right;
 	}
 	
 	.tbFecha > div:first-child{
