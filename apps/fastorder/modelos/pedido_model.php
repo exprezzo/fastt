@@ -97,15 +97,14 @@ class PedidoModel extends Modelo{
 				'fk_serie'		=>1,
 				'proveedor'		=>$key
 			);
-			$orden['articulos']=$value;
-			
+			$orden['articulos']=$value;			
 			$res=$ordenMod->guardar( $orden );
 			if ( !$res['success'] ) return $res;
 		}
 		//
 		$sql='UPDATE pedidos SET idestado=2;';
-		$sth=$con->prepare($sql);
-		$exito=$sth->execute();
+		$sth=$con->prepare( $sql );
+		$exito=$sth->execute(  );
 		if ( !$exito ) return $this->getError( $sth );
 				
 		$sql='UPDATE pedidos_productos SET status=2;';

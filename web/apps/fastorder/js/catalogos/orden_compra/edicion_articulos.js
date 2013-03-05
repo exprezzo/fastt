@@ -310,7 +310,7 @@ var EdicionArticulo=function (tabId){
 				} },				
 				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px", groupInfo:{
 					position: "header", 
-					outlineMode: "startExpanded", 
+					outlineMode: "startCollapsed", 
 					headerText: "{0}"
 				}},
 				{dataKey: "origen", headerText: "Origen",width:"100px"},
@@ -336,7 +336,7 @@ var EdicionArticulo=function (tabId){
 						return true;
 					}
 				}},
-				{dataKey: "pedido", headerText: "Pedido"},
+				{dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: "n0", aggregate: "sum" },
 				{dataKey: "pendiente", headerText: "Pendiente",editable:false},
 				{dataKey: "id", visible:false, headerText: "ID" },
 				// {dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
