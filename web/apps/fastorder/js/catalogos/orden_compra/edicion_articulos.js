@@ -257,7 +257,8 @@ var EdicionArticulo=function (tabId){
 			// { name: "id_tmp"  },
 			{ name: "idarticulopre"},
 			{ name: "eliminado",default:false},
-			{ name: "id"  }
+			{ name: "id"  },
+			{ name: "origen"  }
 		];
 		this.fields=fields;
 		// var rec={};
@@ -302,7 +303,17 @@ var EdicionArticulo=function (tabId){
 			data:articulos,
 			columns: [
 				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
-				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},
+				{ visible:false, dataKey: "nombreGpo", groupInfo:{
+					 position: "header", 
+					outlineMode: "startExpanded", 
+					headerText: "{0}"
+				} },				
+				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px", groupInfo:{
+					position: "header", 
+					outlineMode: "startExpanded", 
+					headerText: "{0}"
+				}},
+				{dataKey: "origen", headerText: "Origen",width:"100px"},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
 				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false},
 				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false},
@@ -333,11 +344,7 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "fk_orden_compra", headerText: "fk_orden_compra", visible:false},
 				{dataKey: "cantidad", headerText: "cantidad", visible:false},
 				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},
-				{ visible:false, dataKey: "nombreGpo", groupInfo:{
-					 position: "header", 
-					outlineMode: "startExpanded", 
-					headerText: "{0}"
-				} },				
+				
 				{visible:false,dataKey: "grupoposicion"}
 			],
 			rowStyleFormatter: function(args) {

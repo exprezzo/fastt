@@ -88,6 +88,7 @@ class Orden_Compra extends Controlador{
 		);
 		echo json_encode($respuesta);	
 	}
+	
 	function nuevo(){		
 		if ( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 			
@@ -147,6 +148,7 @@ class Orden_Compra extends Controlador{
 		
 		$vista=$this->getVista();
 		
+		 // print_r($res); exit;
 		if ($res['success']) $pedido['articulos']=$res['rows'];	
 				
 		$vista->pedido=$pedido;
@@ -190,9 +192,6 @@ class Orden_Compra extends Controlador{
 		
 		return $this->mostrarVista($PETICION->controlador.'/lista');
 	}
-	
-	
-	
 	
 	function paginar(){
 		$mod=$this->getModel();

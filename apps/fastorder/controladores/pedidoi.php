@@ -15,9 +15,7 @@ class Pedidoi extends Controlador{
 	function concentrar(){
 		$mod=$this->getModel();
 		$res = $mod->concentrar( $params=array() );
-		// $res=array(
-			// 'success'=>true
-		// );
+		
 		echo json_encode($res);
 	}
 	

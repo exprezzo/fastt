@@ -10,12 +10,10 @@
 			var msg= (resp.msg)? resp.msg : '';
 			var title;
 			
-			if ( resp.success == true	){
-				
+			if ( resp.success == true	){				
 				var gridPedidos=$(me.tabId+" #lista_pedidos_internos");	
 				gridPedidos.wijgrid('ensureControl', true);
-				TabManager.add('/'+kore.modulo+'/orden_compra/index','Ordenes de Compra');
-								
+				TabManager.add('/'+kore.modulo+'/orden_compra/index','Ordenes de Compra',1);								
 			}else{
 				icon= '/web/apps/fastorder/images/error.png';
 				title= 'Error';					

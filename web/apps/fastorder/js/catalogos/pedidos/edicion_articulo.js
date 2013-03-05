@@ -151,7 +151,7 @@ var EdicionArticulo=function (tabId){
 				
 			}
 		});
-		combo.focus();
+		combo.focus().select();
 	}
 	this.guardar=function(){
 		
@@ -383,7 +383,7 @@ var EdicionArticulo=function (tabId){
 					default:
 						var input=$("<input />")
 							.val(args.cell.value())
-							.appendTo(args.cell.container().empty()).focus();
+							.appendTo(args.cell.container().empty()).focus().select();
 						var domCel = args.cell.tableCell();
 						input.css('width',	$(domCel).width()  -10 );
 						input.css('height',	$(domCel).height() -10 );
@@ -451,8 +451,7 @@ var EdicionArticulo=function (tabId){
 						me.padre.editado=true;
 						break;
 					case 'pedido':
-						me.padre.editado=true;
-						alert("pedido");
+						me.padre.editado=true;						
 					break;
 					
 				}
@@ -753,7 +752,7 @@ var EdicionArticulo=function (tabId){
 				return true;
 			}
 		});
-		combo.focus();			
+		combo.focus().select();			
 	};
 	
 	

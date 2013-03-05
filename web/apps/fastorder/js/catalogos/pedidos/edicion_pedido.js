@@ -27,6 +27,10 @@ var EdicionPedido = function(){
 		
 		
 		var tab=$('div'+this.tabId);
+		
+		$(this.tabId+' input').bind('select',function(){
+			$(this).select();
+		});
 		//estas dos linas deben estar en la hoja de estilos
 		tab.css('padding','0');
 		tab.css('border','0 1px 1px 1px');

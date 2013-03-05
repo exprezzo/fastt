@@ -2,7 +2,7 @@
 include '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_model.php';
 // include_once '../apps/'.$_PETICION->modulo.'/modelos/pedido_producto_tmp_model.php';
 class PedidoModel extends Modelo{
-	var $tabla='pedidos';	
+	var $tabla='pedidos';
 	var $pk='id';
 	
 	function concentrar(){
@@ -16,7 +16,7 @@ class PedidoModel extends Modelo{
 		//De cada pedido interno, leer cada detalle que no haya sido concentrado por completo.
 		//acumula las cantidades faltantes por producto
 		//cuando el producto no tiene proveedores rankeados, se genera todo en una orden sin proveedor.
-		//cuando el producto tiene ranking, selecciona al proveedor con el mas  alto.
+		//cuando el producto tiene ranking, selecciona al proveedor con el mas  alto.		
 		
 		Recetas: 
 		
@@ -28,36 +28,90 @@ class PedidoModel extends Modelo{
 		from 
 		pedidos_productos  p
 		LEFT JOIN productos pro ON pro.id=p.fk_articulo
-		WHERE status=1 AND cantidad > 0 GROUP BY fk_articulo';
+		WHERE status=1 AND cantidad > 0 AND tipo=1 GROUP BY fk_articulo';
 		$model=$this;
 		$con=$model->getConexion();
 		$sth=$con->prepare($sql);
 		$exito=$sth->execute();
 		if ( !$exito ) return $this->getError( $sth );
-		$productos=$sth->fetchAll(PDO::FETCH_ASSOC);
-		// print_r($productos);
+		$productos=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
+		$sql='SELECT pd.id fk_articulo, ap.idarticulopre, sum(pp.cantidad * ad.cantidad) pedido
+		FROM pedidos_productos pp
+		LEFT JOIN productos p ON p.id = pp.fk_articulo
+		LEFT JOIN articulo_detalle ad ON ad.idarticulo=p.id
+		LEFT JOIN productos pd ON pd.id = ad.fk_articulo
+		LEFT JOIN articulopre ap ON ap.idarticulo = pd.id
+		WHERE p.tipo=2 AND pp.status=1
+		GROUP BY pd.id';
+		$sth=$con->prepare($sql);
+		$exito=$sth->execute();
+		if ( !$exito ) return $this->getError( $sth );
+		$insumos=$sth->fetchAll(PDO::FETCH_ASSOC);
+		// print_r($insumos);
 		
-		$orden=array(
-			'almacen'=>1,
-			'fecha'=>date('Y-m-d H:i:s'),
-			'vencimiento'=>date('Y-m-d H:i:s'),
-			'folio'=>1,
-			'fk_serie'=>1,
-			'proveedor'=>1			
-		);
-		$orden['articulos']=$productos;		
+		for($i=0; $i<sizeof($productos);$i++ ){
+			for($y=0; $y<sizeof($insumos);$y++ ){
+				if ( $insumos[$y]['fk_articulo']==$productos[$i]['fk_articulo'] ){
+					$productos[$i]['pedido'] = floatval( $productos[$i]['pedido'] ) + floatval( $insumos[$y]['pedido'] );
+					$insumos[$y]['fk_articulo']='';
+				}
+			}
+		}
+		for($y=0; $y<sizeof($insumos); $y++ ){
+			if ( !empty( $insumos[$y]['fk_articulo'] ) ){
+				$productos[] = $insumos[$y];
+			}
+		}
+		
+		if ( empty($productos) ) {
+			return array(
+				'success'=>true
+			);
+		}
+		//En este punto los artiiculos ya estan concentrados, ahora voy a separarlos por prioridad de proveedor.
+		$sql='SELECT * FROM (SELECT fk_producto, fk_proveedor FROM proveedor_producto  ORDER BY prioridad ASC) ordenados GROUP BY fk_producto';
+		$sth=$con->prepare( $sql );
+		$exito=$sth->execute();
+		if ( !$exito ) return $this->getError( $sth );
+		$prioridades=$sth->fetchAll( PDO::FETCH_ASSOC );
+		
+		for($i=0; $i<sizeof($productos); $i++ ){
+			for($y=0; $y<sizeof($prioridades); $y++ ){
+				if ( $prioridades[$y]['fk_producto']==$productos[$i]['fk_articulo'] ){
+					$proveedor=$prioridades[$y]['fk_proveedor'];
+					//Al producto, agregar el detalle del pedido origen
+					$item=$productos[$i];
+					$separados[$proveedor][]=$item;					
+				}
+			}
+		}
+		
 		$ordenMod=new OrdenCompraModel();
-		$res=$ordenMod->guardar( $orden );
-		
-		
-		if ( !$res['success'] ) return $res;
+		foreach($separados as $key=>$value){
+			$orden=array(
+				'almacen'		=>3,
+				'fecha'			=>date('Y-m-d H:i:s'),
+				'vencimiento'	=>date('Y-m-d H:i:s'),
+				'folio'			=>1,
+				'fk_serie'		=>1,
+				'proveedor'		=>$key
+			);
+			$orden['articulos']=$value;
+			
+			$res=$ordenMod->guardar( $orden );
+			if ( !$res['success'] ) return $res;
+		}
 		//
 		$sql='UPDATE pedidos SET idestado=2;';
 		$sth=$con->prepare($sql);
 		$exito=$sth->execute();
 		if ( !$exito ) return $this->getError( $sth );
-		//crear orden de compra
+				
+		$sql='UPDATE pedidos_productos SET status=2;';
+		$sth=$con->prepare($sql);
+		// $exito=$sth->execute();
+		if ( !$exito ) return $this->getError( $sth );
 		
 		return array(
 			'success'=>true
