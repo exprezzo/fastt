@@ -346,7 +346,7 @@ class OrdenCompraModel extends Modelo{
 		);
 	}
 	
-	function guardarDetalles($fk_orden_compra, $params){
+	function guardarDetalles($fk_orden_compra, $params ){
 		//Insertar, Actualizar y borrar.
 		$con = $this->getConexion();
 		
@@ -360,9 +360,15 @@ class OrdenCompraModel extends Modelo{
 				$exito = $sth->execute();
 				if (!$exito) return $this->getError($sth);
 			}else if ( empty($detalle['id']) ){
-				$sql='INSERT INTO orden_compra_productos SET fk_articulo=:fk_articulo, fk_orden_compra=:fk_orden_compra, cantidad=:cantidad, idarticulopre=:idarticulopre';
+				
+				$sql='INSERT INTO orden_compra_productos SET fk_producto_origen=:fk_producto_origen, fk_almacen=:fk_almacen, fk_articulo=:fk_articulo, fk_orden_compra=:fk_orden_compra,fk_pedido_detalle=:fk_pedido_detalle, cantidad=:cantidad, idarticulopre=:idarticulopre';
 				$sth = $con->prepare($sql);
 				$sth->bindValue(':fk_orden_compra',		$fk_orden_compra,		PDO::PARAM_INT);
+				$sth->bindValue(':fk_pedido_detalle', $detalle['fk_pedido_detalle'],PDO::PARAM_INT);				
+				$sth->bindValue(':fk_almacen', $detalle['fk_almacen'], PDO::PARAM_INT);				
+				
+				$sth->bindValue(':fk_producto_origen', empty($detalle['fk_producto_origen'])? 0: $detalle['fk_producto_origen'], PDO::PARAM_INT);				
+				
 				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
 				$sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
 				$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);

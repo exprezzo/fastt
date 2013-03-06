@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50508
 File Encoding         : 65001
 
-Date: 2013-03-05 12:56:38
+Date: 2013-03-06 13:20:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -204,30 +204,11 @@ CREATE TABLE `orden_compra` (
   `folio` int(11) DEFAULT NULL,
   `fk_almacen` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra
 -- ----------------------------
-INSERT INTO `orden_compra` VALUES ('189', '3', '2013-03-05 10:58:26', '2013-03-05 10:58:26', '1', '1', '81', '3');
-INSERT INTO `orden_compra` VALUES ('190', '5', '2013-03-05 10:58:26', '2013-03-05 10:58:26', '1', '1', '82', '3');
-
--- ----------------------------
--- Table structure for `orden_compra_pedido_origen`
--- ----------------------------
-DROP TABLE IF EXISTS `orden_compra_pedido_origen`;
-CREATE TABLE `orden_compra_pedido_origen` (
-  `fk_detalle_orden_compra` int(11) DEFAULT NULL,
-  `fk_detalle_pedidoi` int(11) DEFAULT NULL,
-  `cantidad` int(11) DEFAULT NULL,
-  `fk_producto_origen` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of orden_compra_pedido_origen
--- ----------------------------
-INSERT INTO `orden_compra_pedido_origen` VALUES ('1667', '1439', '1500', '26');
-INSERT INTO `orden_compra_pedido_origen` VALUES ('1667', '1441', '500', '27');
 
 -- ----------------------------
 -- Table structure for `orden_compra_productos`
@@ -235,23 +216,19 @@ INSERT INTO `orden_compra_pedido_origen` VALUES ('1667', '1441', '500', '27');
 DROP TABLE IF EXISTS `orden_compra_productos`;
 CREATE TABLE `orden_compra_productos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_articulo` int(11) DEFAULT NULL,
+  `fk_producto_origen` int(11) DEFAULT NULL,
   `fk_orden_compra` int(11) DEFAULT NULL,
-  `cantidad` float(18,6) DEFAULT NULL,
-  `idarticulopre` int(11) unsigned DEFAULT NULL,
+  `fk_pedido_detalle` int(11) DEFAULT NULL,
+  `fk_almacen` int(11) DEFAULT NULL,
+  `fk_articulo` int(11) DEFAULT NULL,
+  `idarticulopre` int(11) DEFAULT NULL,
+  `cantidad` decimal(18,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1727 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra_productos
 -- ----------------------------
-INSERT INTO `orden_compra_productos` VALUES ('1664', '1', '189', '12.000000', '0');
-INSERT INTO `orden_compra_productos` VALUES ('1665', '4', '189', '23.000000', '0');
-INSERT INTO `orden_compra_productos` VALUES ('1666', '7', '189', '23.000000', '0');
-INSERT INTO `orden_compra_productos` VALUES ('1667', '22', '190', '18000.000000', null);
-INSERT INTO `orden_compra_productos` VALUES ('1668', '23', '190', '24.000000', null);
-INSERT INTO `orden_compra_productos` VALUES ('1669', '24', '190', '12.000000', null);
-INSERT INTO `orden_compra_productos` VALUES ('1670', '25', '190', '12.000000', null);
 
 -- ----------------------------
 -- Table structure for `pedidos`
@@ -424,6 +401,7 @@ INSERT INTO `proveedor_producto` VALUES ('19', '3', '1');
 INSERT INTO `proveedor_producto` VALUES ('20', '3', '1');
 INSERT INTO `proveedor_producto` VALUES ('21', '3', '1');
 INSERT INTO `proveedor_producto` VALUES ('22', '3', '1');
+INSERT INTO `proveedor_producto` VALUES ('27', '5', '1');
 
 -- ----------------------------
 -- Table structure for `series`
@@ -443,8 +421,8 @@ CREATE TABLE `series` (
 -- ----------------------------
 -- Records of series
 -- ----------------------------
-INSERT INTO `series` VALUES ('1', 'A', '1', '100', '99', '', '1');
-INSERT INTO `series` VALUES ('2', 'C', '1', '100', '3', '', '2');
+INSERT INTO `series` VALUES ('1', 'A', '1', '100', '91', '', '1');
+INSERT INTO `series` VALUES ('2', 'C', '1', '100', '1', '', '2');
 
 -- ----------------------------
 -- Table structure for `series_orden_compra`

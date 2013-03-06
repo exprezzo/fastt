@@ -247,6 +247,7 @@ var EdicionArticulo=function (tabId){
 			{ name: "maximo"},
 			{ name: "minimo"},
 			{ name: "puntoreorden"},
+			{ name: "almacen"},			
 			{ name: "existencia"},
 			{ name: "nombreGpo"},
 			{ name: "grupoposicion"},
@@ -302,18 +303,30 @@ var EdicionArticulo=function (tabId){
 			selectionMode:'singleRow',
 			data:articulos,
 			columns: [
-				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
+				{dataKey: "codigo", headerText: "Codigo",width:"300px", visible:false},
 				{ visible:false, dataKey: "nombreGpo", groupInfo:{
 					 position: "header", 
 					outlineMode: "startExpanded", 
 					headerText: "{0}"
-				} },				
+				} },{
+				// cellFormatter:function(args){
+					// if (args.row.type & $.wijmo.wijgrid.rowType.data) {
+						// args.$container
+							// .css("text-align", "center")
+							// .empty()
+							// .append('asdasds';
+						// return true;
+					// }
+					
+				// }
+				}	,			
 				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px", groupInfo:{
 					position: "header", 
-					outlineMode: "startCollapsed", 
+					outlineMode: "startExpanded", 
 					headerText: "{0}"
-				}},
-				{dataKey: "origen", headerText: "Origen",width:"100px"},
+				}, visible:false},
+				{dataKey: "origen", headerText: "Origen",width:"100px", visible:false},
+				{dataKey: "almacen", headerText: "Almacen"},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
 				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false},
 				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false},

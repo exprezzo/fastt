@@ -24,71 +24,74 @@ class PedidoModel extends Modelo{
 		
 		//De cada pedido interno, leer cada detalle que no haya sido concentrado por completo.
 		//(Ordenados por proveedor)
-		$sql='SELECT fk_articulo,idarticulopre, sum(cantidad) pedido
-		from 
-		pedidos_productos  p
-		LEFT JOIN productos pro ON pro.id=p.fk_articulo
-		WHERE status=1 AND cantidad > 0 AND tipo=1 GROUP BY fk_articulo';
-		$model=$this;
-		$con=$model->getConexion();
-		$sth=$con->prepare($sql);
-		$exito=$sth->execute();
-		if ( !$exito ) return $this->getError( $sth );
-		$productos=$sth->fetchAll( PDO::FETCH_ASSOC );
+		// $sql='SELECT fk_articulo, idarticulopre, sum(cantidad) pedido
+		// from 
+		// pedidos_productos  p
+		// LEFT JOIN productos pro ON pro.id=p.fk_articulo
+		// WHERE status=1 AND cantidad > 0 AND tipo=1 GROUP BY fk_articulo';
+				
+		$con=$this->getConexion();
 		
-		$sql='SELECT pd.id fk_articulo, ap.idarticulopre, sum(pp.cantidad * ad.cantidad) pedido
-		FROM pedidos_productos pp
-		LEFT JOIN productos p ON p.id = pp.fk_articulo
-		LEFT JOIN articulo_detalle ad ON ad.idarticulo=p.id
-		LEFT JOIN productos pd ON pd.id = ad.fk_articulo
-		LEFT JOIN articulopre ap ON ap.idarticulo = pd.id
-		WHERE p.tipo=2 AND pp.status=1
-		GROUP BY pd.id';
-		$sth=$con->prepare($sql);
-		$exito=$sth->execute();
-		if ( !$exito ) return $this->getError( $sth );
-		$insumos=$sth->fetchAll(PDO::FETCH_ASSOC);
-		// print_r($insumos);
-		
-		for($i=0; $i<sizeof($productos);$i++ ){
-			for($y=0; $y<sizeof($insumos);$y++ ){
-				if ( $insumos[$y]['fk_articulo']==$productos[$i]['fk_articulo'] ){
-					$productos[$i]['pedido'] = floatval( $productos[$i]['pedido'] ) + floatval( $insumos[$y]['pedido'] );
-					$insumos[$y]['fk_articulo']='';
-				}
-			}
-		}
-		for($y=0; $y<sizeof($insumos); $y++ ){
-			if ( !empty( $insumos[$y]['fk_articulo'] ) ){
-				$productos[] = $insumos[$y];
-			}
-		}
-		
-		if ( empty($productos) ) {
-			return array(
-				'success'=>true
-			);
-		}
-		//En este punto los artiiculos ya estan concentrados, ahora voy a separarlos por prioridad de proveedor.
-		$sql='SELECT * FROM (SELECT fk_producto, fk_proveedor FROM proveedor_producto  ORDER BY prioridad ASC) ordenados GROUP BY fk_producto';
+		//en esta consulta tengo la lista de articulos y el proveedor con mas prioridad
+		$sql='SELECT fk_proveedor,fk_producto fk_articulo FROM (
+			SELECT fk_producto, fk_proveedor FROM proveedor_producto  ORDER BY prioridad ASC) ordenados GROUP BY fk_producto';
 		$sth=$con->prepare( $sql );
 		$exito=$sth->execute();
 		if ( !$exito ) return $this->getError( $sth );
 		$prioridades=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
-		for($i=0; $i<sizeof($productos); $i++ ){
-			for($y=0; $y<sizeof($prioridades); $y++ ){
-				if ( $prioridades[$y]['fk_producto']==$productos[$i]['fk_articulo'] ){
-					$proveedor=$prioridades[$y]['fk_proveedor'];
-					//Al producto, agregar el detalle del pedido origen
-					$item=$productos[$i];
-					$separados[$proveedor][]=$item;					
-				}
-			}
-		}
+		//Ahora obtengo todos los detalles 
+		$sql='SELECT pe.fk_almacen, pp.fk_pedido, pp.id as fk_pedido_detalle,pp.fk_articulo as fk_producto_origen, pp.fk_articulo, pp.cantidad as pedido, pp.idarticulopre FROM 
+		pedidos_productos pp
+		left join pedidos pe ON pe.id = pp.fk_pedido
+		LEFT JOIN productos p ON p.id=pp.fk_articulo
+		WHERE pp.status=1 AND pp.cantidad>0 and p.tipo=1';
 		
+		$sth=$con->prepare($sql);
+		$exito=$sth->execute();
+		if ( !$exito ) return $this->getError( $sth );
+		$detalles=$sth->fetchAll( PDO::FETCH_ASSOC );
+		
+		$sql='SELECT pe.fk_almacen, pp.id as fk_pedido_detalle, pp.fk_articulo as fk_producto_origen, ad.fk_articulo ,
+		(pp.cantidad * ad.cantidad) as pedido, pp.idarticulopre	FROM 
+		pedidos_productos pp
+		left join pedidos pe ON pe.id = pp.fk_pedido
+		LEFT JOIN productos p ON p.id=pp.fk_articulo
+		LEFT JOIN articulo_detalle ad ON ad.idarticulo = pp.fk_articulo
+		WHERE pp.status=1 AND pp.cantidad>0 and p.tipo=2';
+		
+		$sth=$con->prepare($sql);
+		$exito=$sth->execute();
+		if ( !$exito ) return $this->getError( $sth );
+		$detallesRecetas=$sth->fetchAll( PDO::FETCH_ASSOC );
+		$detalles = array_merge( $detalles, $detallesRecetas);
+		
+		$numDetalles =sizeof($detalles) ;
+		if ($numDetalles==0) return array( 'success'=>true );		
+		$ordenes=array();
+		
+		function getProovedor( $articulo,$prioridades ){
+			
+			for($i=0; $i<sizeof($prioridades); $i++ ){
+				if ( $prioridades[$i]['fk_articulo'] == $articulo) return $prioridades[$i]['fk_proveedor'];
+			}
+			
+			return 0;
+		}
+		for($i=0; $i< $numDetalles ;$i++ ){
+			
+			
+			
+			$proveedor = getProovedor( $detalles[$i]['fk_articulo'],$prioridades );
+			
+			
+			if ( !isset($ordenes[$proveedor])   ) $ordenes[$proveedor]=array();
+			//se acumulan los detalles al proveedor
+			$ordenes[$proveedor][] =  $detalles[$i];
+		}
+				
 		$ordenMod=new OrdenCompraModel();
-		foreach($separados as $key=>$value){
+		foreach($ordenes as $key=>$value){
 			$orden=array(
 				'almacen'		=>3,
 				'fecha'			=>date('Y-m-d H:i:s'),
@@ -101,6 +104,7 @@ class PedidoModel extends Modelo{
 			$res=$ordenMod->guardar( $orden );
 			if ( !$res['success'] ) return $res;
 		}
+		
 		//
 		$sql='UPDATE pedidos SET idestado=2;';
 		$sth=$con->prepare( $sql );

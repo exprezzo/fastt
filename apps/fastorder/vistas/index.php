@@ -139,7 +139,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			// TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
 			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
-			// TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',0,'');
+			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');
 			
 			// TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			
 			// TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');

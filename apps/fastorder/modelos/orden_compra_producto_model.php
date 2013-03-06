@@ -86,13 +86,13 @@ class OrdenCompraProductoModel extends Modelo{
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
 		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre, prod.codigo codigo, 
-		pi.nombre origen,
+		prod.nombre producto,a.nombre as almacen,o.nombre origen,
 		sto.maximo, sto.minimo, sto.puntoreorden, sto.existencia,pedprod.cantidad pedido ,sto.maximo - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- pedprod.cantidad) pendiente,
 		sto.grupoposicion, gpo.nombre nombreGpo
-		FROM '.$this->tabla.' pedprod
-		LEFT JOIN orden_compra_pedido_origen po ON po.fk_detalle_orden_compra = pedprod.id
-		LEFT JOIN productos pi ON pi.id = po.fk_producto_origen
+		FROM '.$this->tabla.' pedprod		
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
+		LEFT JOIN productos o ON o.id = pedprod.fk_producto_origen
+		LEFT JOIN almacenes  a ON a.id = pedprod.fk_almacen
 		LEFT JOIN articulopre pre ON pedprod.idarticulopre =pre.idarticulopre
 		LEFT JOIN articulostock sto ON sto.idarticulo= pedprod.fk_articulo AND sto.idalmacen=:idalmacen
 		LEFT JOIN grupo_de_productos gpo ON  gpo.id=sto.idgrupo
