@@ -297,7 +297,7 @@ var EdicionArticulo=function (tabId){
 				me.seleccionarSiguiente();				
 			}
 		});
-		
+		var formatMoney='n'+kore.decimalPlacesMoney;
 		gridPedidos.wijgrid({			
 			allowColSizing:true,
 			allowPaging: true,
@@ -324,38 +324,36 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "almacen", headerText: "Almacen",editable:false},
 				{dataKey: "origen", headerText: "Origen",width:"100px",editable:false},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
-				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: "n2"},
-				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: "n2"},
-				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: "n2"},
-				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: "n2"},
-				{dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: "n2"},
+				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney},
+				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney},
+				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney},
+				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: formatMoney},
+				{dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
 				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
 					if (args.row.type & $.wijmo.wijgrid.rowType.data) {
 						var sugerido=0;
 						
 						var existencia = args.row.data.existencia - args.row.data.pedidoi;
 						
-						if (existencia <= parseInt(args.row.data.puntoreorden) ){
-							
+						if ( parseInt(args.row.data.puntoreorden) > existencia ){														
 							sugerido = args.row.data.maximo-existencia;
 							args.row.data.pendiente=sugerido - args.row.data.pedido;
-						}else{
+						}else{							
 							args.row.data.pendiente=0;
 						}
+						sugerido=sugerido.toFixed( kore.decimalPlacesMoney );
 						args.row.data.sugerido=sugerido;
 						args.$container
-							.css("text-align", "center")
+							.css("text-align", "right")
 							.empty()
 							.append(args.row.data.sugerido);
 						return true;
 					}
-				}, dataType: "number", dataFormatString: "n2"},
-				
-				{dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: "n2", aggregate: "sum" },
-				{dataKey: "pendiente", headerText: "Pendiente",editable:false, dataType: "number", dataFormatString: "n2"},
+				}, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},				
+				{dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: formatMoney, aggregate: "sum" },
+				{dataKey: "pendiente", headerText: "Pendiente",editable:false, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},
 				{dataKey: "id", visible:false, headerText: "ID" },
-				// {dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
-				
+				// {dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },				
 				{dataKey: "fk_orden_compra", headerText: "fk_orden_compra", visible:false},
 				{dataKey: "cantidad", headerText: "cantidad", visible:false},
 				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},				
@@ -486,29 +484,29 @@ var EdicionArticulo=function (tabId){
 						$(row.$rows).find('td:eq(7) div').html(row.data.sugerido);
 						$(row.$rows).find('td:eq(9) div').html(row.data.pendiente);
 						
-						// var gridPedidos=$('#tabs '+tabId+" .grid_articulos");
-						
-						
+						// var gridPedidos=$('#tabs '+tabId+" .grid_articulos");						
 						break;
 				}
-				me.articulo=undefined;		
-			}			
-		});
-		
-		$(me.tabId+' .grid_articulos').wijgrid({ afterCellUpdate: function (e, args) { 
-			$(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
-		} });
-		
-		gridPedidos.wijgrid({cancelEdit:function(){				
-				$(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
+				me.articulo=undefined;
 			}
 		});
-		gridPedidos.wijgrid({ selectionChanged: function (e, args) { 								
-			var item=args.addedCells.item(0);						
-			var row=item.row();						
-			var data=row.data;			
-			me.selected=data;			
-			me.selected.dataItemIndex=row.dataItemIndex;			
+		
+		$(me.tabId+' .grid_articulos').wijgrid({ afterCellUpdate: function (e, args) {
+			$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
+		} });
+		
+		gridPedidos.wijgrid({cancelEdit:function(){
+				// $(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
+				$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
+			}
+		});
+		
+		gridPedidos.wijgrid({ selectionChanged: function (e, args) {
+			var item=args.addedCells.item(0);
+			var row=item.row();
+			var data=row.data;
+			me.selected=data;
+			me.selected.dataItemIndex=row.dataItemIndex;
 			me.selected.sectionRowIndex=row.sectionRowIndex;
 			
 		} });
@@ -689,7 +687,9 @@ var EdicionArticulo=function (tabId){
 		if ( nuevo.column().editable===false ){
 			this.seleccionarSiguiente(alreves);
 		}else{			
-			$(tabId+" .grid_articulos").wijgrid("beginEdit");					
+			$(tabId+' .grid_articulos').wijgrid('doRefresh');
+			$(tabId+" .grid_articulos").wijgrid("beginEdit");
+			
 		}
 		
 		

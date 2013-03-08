@@ -52,6 +52,18 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<script src="/web/apps/fastorder/js/TabManager.js" type="text/javascript"></script>
 	
 	<script type="text/javascript">		
+		kore={
+			modulo:'<?php echo $_PETICION->modulo; ?>',
+			controlador:'<?php echo $_PETICION->controlador; ?>',
+			accion:'<?php echo $_PETICION->accion; ?>',
+			decimalPlacesMoney:2
+			// dafault:{
+				// modulo:
+				// controlador:
+				// accion:
+			// }			
+		};
+		
 		salir=function(){
 			window.location='/'+kore.modulo+'/user/logout';
 		}
@@ -125,16 +137,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			
 			
-			kore={
-				modulo:'<?php echo $_PETICION->modulo; ?>',
-				controlador:'<?php echo $_PETICION->controlador; ?>',
-				accion:'<?php echo $_PETICION->accion; ?>'
-				// dafault:{
-					// modulo:
-					// controlador:
-					// accion:
-				// }
-			};
+			
 			$.extend($.gritter.options, { 
 				position: 'bottom-right', // defaults to 'top-right' but can be 'bottom-left', 'bottom-right', 'top-left', 'top-right' 
 				fade_in_speed: 'medium', // how fast notifications fade in (string or int)
