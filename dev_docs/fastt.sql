@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50508
 File Encoding         : 65001
 
-Date: 2013-03-06 13:20:50
+Date: 2013-03-07 18:35:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -44,21 +44,38 @@ CREATE TABLE `articulopre` (
   `ultimocosto` decimal(12,5) NOT NULL DEFAULT '0.00000',
   `default` bit(1) DEFAULT NULL,
   PRIMARY KEY (`idarticulopre`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of articulopre
 -- ----------------------------
-INSERT INTO `articulopre` VALUES ('1', '1', 'pre 1', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('2', '2', 'pre 2', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('3', '3', 'pre 3', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('4', '4', 'pre 4', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('5', '5', 'pre 5', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('6', '1', 'pre 6', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('7', '2', 'a', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('8', '3', 'a', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('9', '4', 'a', '1.000', '0.00000', '');
-INSERT INTO `articulopre` VALUES ('10', '5', 'a', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('1', '1', 'pre_Piolin', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('2', '2', 'pre_Flor Feliz', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('3', '3', 'pre_Flor', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('4', '4', 'pre_Corazon', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('5', '5', 'pre_Rosita', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('16', '6', 'pre_Osito', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('17', '7', 'pre_Pez', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('18', '8', 'pre_Dinosaurio Trice', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('19', '9', 'pre_Dinosaurio Diplo', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('20', '10', 'pre_tortuga', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('21', '11', 'pre_ELmo', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('22', '12', 'pre_blanca nieves', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('23', '13', 'pre_Wini poh', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('24', '14', 'pre_Jessy vaquerita', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('25', '15', 'pre_Perro lanudo', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('26', '16', 'pre_Perro lasio', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('27', '17', 'pre_Caballito', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('28', '18', 'pre_Jaiba', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('39', '19', 'pre_Austin', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('40', '20', 'pre_Tasha', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('41', '21', 'pre_pulpo', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('42', '22', 'Kg', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('43', '23', 'pre_cebolla', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('44', '24', 'pre_ajo', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('45', '25', 'pre_cilantro', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('46', '26', 'Litro', '1.000', '0.00000', '');
+INSERT INTO `articulopre` VALUES ('47', '27', 'Litro', '1.000', '0.00000', '');
 
 -- ----------------------------
 -- Table structure for `articulostock`
@@ -78,7 +95,7 @@ CREATE TABLE `articulostock` (
   UNIQUE KEY `artalm` (`idarticulo`,`idalmacen`),
   KEY `articulo_idx` (`idarticulo`),
   KEY `almacen_idx` (`idalmacen`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of articulostock
@@ -104,12 +121,39 @@ INSERT INTO `articulostock` VALUES ('38', '18', '1', '3.00000', '1.00000', '5.00
 INSERT INTO `articulostock` VALUES ('39', '19', '1', '0.00000', '1.00000', '5.00000', '2.00000', '3', '19');
 INSERT INTO `articulostock` VALUES ('40', '20', '1', '2.00000', '1.00000', '5.00000', '2.00000', '3', '20');
 INSERT INTO `articulostock` VALUES ('41', '21', '1', '1.00000', '1.00000', '5.00000', '2.00000', '2', '21');
-INSERT INTO `articulostock` VALUES ('42', '22', '2', '0.00000', '11.00000', '50.00000', '10.00000', '4', '1');
-INSERT INTO `articulostock` VALUES ('43', '23', '2', '0.00000', '12.00000', '51.00000', '11.00000', '4', '2');
-INSERT INTO `articulostock` VALUES ('44', '24', '2', '0.00000', '13.00000', '52.00000', '12.00000', '4', '3');
-INSERT INTO `articulostock` VALUES ('45', '25', '2', '0.00000', '14.00000', '53.00000', '13.00000', '4', '4');
+INSERT INTO `articulostock` VALUES ('42', '22', '2', '10.00000', '11.00000', '50.00000', '10.00000', '4', '1');
+INSERT INTO `articulostock` VALUES ('43', '23', '2', '13.00000', '12.00000', '51.00000', '11.00000', '4', '2');
+INSERT INTO `articulostock` VALUES ('44', '24', '2', '13.00000', '13.00000', '52.00000', '12.00000', '4', '3');
+INSERT INTO `articulostock` VALUES ('45', '25', '2', '13.00000', '14.00000', '53.00000', '13.00000', '4', '4');
 INSERT INTO `articulostock` VALUES ('46', '26', '2', '0.00000', '15.00000', '54.00000', '14.00000', '4', '5');
 INSERT INTO `articulostock` VALUES ('47', '27', '2', '0.00000', '16.00000', '55.00000', '15.00000', '4', '6');
+INSERT INTO `articulostock` VALUES ('48', '1', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('49', '2', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('50', '3', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('51', '4', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('52', '5', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('53', '6', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('54', '7', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('55', '8', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('56', '9', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('57', '10', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('58', '11', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('59', '12', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('60', '13', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('61', '14', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('62', '15', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('63', '16', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('64', '17', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('65', '18', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('66', '19', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('67', '20', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('68', '21', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('70', '22', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('71', '23', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('72', '24', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('73', '25', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('74', '26', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('75', '27', '3', '13.00000', '1.00000', '5.00000', '3.00000', '1', '1');
 
 -- ----------------------------
 -- Table structure for `articulo_detalle`
@@ -126,31 +170,11 @@ CREATE TABLE `articulo_detalle` (
 -- ----------------------------
 -- Records of articulo_detalle
 -- ----------------------------
-INSERT INTO `articulo_detalle` VALUES ('26', '22', '500.00000', '5.00000', '5.00000');
+INSERT INTO `articulo_detalle` VALUES ('26', '22', '4.50000', '5.00000', '5.00000');
 INSERT INTO `articulo_detalle` VALUES ('26', '23', '2.00000', '6.00000', '6.00000');
 INSERT INTO `articulo_detalle` VALUES ('26', '24', '1.00000', '1.00000', '1.00000');
 INSERT INTO `articulo_detalle` VALUES ('26', '25', '1.00000', '1.00000', '1.00000');
-INSERT INTO `articulo_detalle` VALUES ('27', '22', '1000.00000', '5.00000', '5.00000');
-
--- ----------------------------
--- Table structure for `estado_orden_compra`
--- ----------------------------
-DROP TABLE IF EXISTS `estado_orden_compra`;
-CREATE TABLE `estado_orden_compra` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` char(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of estado_orden_compra
--- ----------------------------
-INSERT INTO `estado_orden_compra` VALUES ('1', 'Solicitado');
-INSERT INTO `estado_orden_compra` VALUES ('2', 'Concentrado');
-INSERT INTO `estado_orden_compra` VALUES ('3', 'Parcialmente Surtido');
-INSERT INTO `estado_orden_compra` VALUES ('4', 'Surtido');
-INSERT INTO `estado_orden_compra` VALUES ('5', 'Cancelado');
-INSERT INTO `estado_orden_compra` VALUES ('6', 'Caducado');
+INSERT INTO `articulo_detalle` VALUES ('27', '22', '0.50000', '5.00000', '5.00000');
 
 -- ----------------------------
 -- Table structure for `estado_pedido`
@@ -204,11 +228,30 @@ CREATE TABLE `orden_compra` (
   `folio` int(11) DEFAULT NULL,
   `fk_almacen` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra
 -- ----------------------------
+INSERT INTO `orden_compra` VALUES ('33', '5', '2013-03-07 18:34:34', '2013-03-07 18:34:34', '1', '1', '11', '3');
+
+-- ----------------------------
+-- Table structure for `orden_compra_estado`
+-- ----------------------------
+DROP TABLE IF EXISTS `orden_compra_estado`;
+CREATE TABLE `orden_compra_estado` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` char(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of orden_compra_estado
+-- ----------------------------
+INSERT INTO `orden_compra_estado` VALUES ('1', 'borrador');
+INSERT INTO `orden_compra_estado` VALUES ('2', 'ordenado');
+INSERT INTO `orden_compra_estado` VALUES ('3', 'surtido');
+INSERT INTO `orden_compra_estado` VALUES ('4', 'parcialmente surtido');
 
 -- ----------------------------
 -- Table structure for `orden_compra_productos`
@@ -223,12 +266,42 @@ CREATE TABLE `orden_compra_productos` (
   `fk_articulo` int(11) DEFAULT NULL,
   `idarticulopre` int(11) DEFAULT NULL,
   `cantidad` decimal(18,6) DEFAULT NULL,
+  `pedidoi` decimal(18,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra_productos
 -- ----------------------------
+INSERT INTO `orden_compra_productos` VALUES ('166', '25', '33', '1496', '2', '25', '45', '40.000000', '40.000000');
+INSERT INTO `orden_compra_productos` VALUES ('167', '22', '33', '1497', '2', '22', '42', '40.000000', '40.000000');
+INSERT INTO `orden_compra_productos` VALUES ('168', '27', '33', '1494', '2', '22', '47', '27.500000', '27.500000');
+INSERT INTO `orden_compra_productos` VALUES ('169', '26', '33', '1498', '2', '22', '46', '243.000000', '243.000000');
+INSERT INTO `orden_compra_productos` VALUES ('170', '26', '33', '1498', '2', '23', '46', '108.000000', '108.000000');
+INSERT INTO `orden_compra_productos` VALUES ('171', '26', '33', '1498', '2', '24', '46', '54.000000', '54.000000');
+INSERT INTO `orden_compra_productos` VALUES ('172', '26', '33', '1498', '2', '25', '46', '54.000000', '54.000000');
+
+-- ----------------------------
+-- Table structure for `orden_compra_series`
+-- ----------------------------
+DROP TABLE IF EXISTS `orden_compra_series`;
+CREATE TABLE `orden_compra_series` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `serie` char(255) NOT NULL,
+  `folio_i` int(11) DEFAULT NULL,
+  `folio_f` int(11) DEFAULT NULL,
+  `sig_folio` int(11) DEFAULT NULL,
+  `es_default` bit(1) DEFAULT NULL,
+  `idalmacen` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of orden_compra_series
+-- ----------------------------
+INSERT INTO `orden_compra_series` VALUES ('1', 'OC_1', '1', '1000', '12', '', '1');
+INSERT INTO `orden_compra_series` VALUES ('2', 'OC_2', '1', '1000', '1', '', '2');
+INSERT INTO `orden_compra_series` VALUES ('4', 'OC_3', '1', '1000', '1', '', '3');
 
 -- ----------------------------
 -- Table structure for `pedidos`
@@ -243,13 +316,12 @@ CREATE TABLE `pedidos` (
   `fk_serie` int(11) DEFAULT NULL,
   `folio` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos
 -- ----------------------------
-INSERT INTO `pedidos` VALUES ('119', '2', '2013-03-01 22:49:40', '2013-03-01 22:49:40', '2', '2', '2');
-INSERT INTO `pedidos` VALUES ('120', '1', '2013-03-01 16:03:14', '2013-03-01 16:03:14', '2', '1', '49');
+INSERT INTO `pedidos` VALUES ('125', '2', '2013-03-07 16:52:28', '2013-03-07 16:52:28', '2', '2', '5');
 
 -- ----------------------------
 -- Table structure for `pedidos_productos`
@@ -259,45 +331,22 @@ CREATE TABLE `pedidos_productos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fk_articulo` int(11) DEFAULT NULL,
   `fk_pedido` int(11) DEFAULT NULL,
-  `cantidad` float(18,6) DEFAULT NULL,
+  `cantidad` decimal(18,6) DEFAULT NULL,
   `idarticulopre` int(11) unsigned DEFAULT NULL,
   `status` tinyint(1) DEFAULT '1',
+  `concentrado` decimal(18,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1468 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1499 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos_productos
 -- ----------------------------
-INSERT INTO `pedidos_productos` VALUES ('1438', '22', '119', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1439', '26', '119', '12.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1440', '23', '119', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1441', '27', '119', '12.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1442', '24', '119', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1443', '25', '119', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1444', '1', '120', '0.000000', '1', '1');
-INSERT INTO `pedidos_productos` VALUES ('1445', '5', '120', '0.000000', '5', '1');
-INSERT INTO `pedidos_productos` VALUES ('1446', '2', '120', '0.000000', '2', '1');
-INSERT INTO `pedidos_productos` VALUES ('1447', '3', '120', '0.000000', '3', '1');
-INSERT INTO `pedidos_productos` VALUES ('1448', '9', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1449', '13', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1450', '17', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1451', '21', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1452', '6', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1453', '10', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1454', '14', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1455', '18', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1456', '7', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1457', '11', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1458', '15', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1459', '4', '120', '0.000000', '4', '1');
-INSERT INTO `pedidos_productos` VALUES ('1460', '8', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1461', '12', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1462', '16', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1463', '19', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1464', '20', '120', '0.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1465', '1', '119', '12.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1466', '4', '119', '23.000000', '0', '1');
-INSERT INTO `pedidos_productos` VALUES ('1467', '7', '119', '23.000000', '0', '1');
+INSERT INTO `pedidos_productos` VALUES ('1493', '23', '125', '0.000000', '43', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1494', '27', '125', '55.000000', '47', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1495', '24', '125', '0.000000', '44', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1496', '25', '125', '40.000000', '45', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1497', '22', '125', '40.000000', '42', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1498', '26', '125', '54.000000', '46', '1', null);
 
 -- ----------------------------
 -- Table structure for `productos`
@@ -416,32 +465,14 @@ CREATE TABLE `series` (
   `es_default` bit(1) DEFAULT NULL,
   `idalmacen` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of series
 -- ----------------------------
-INSERT INTO `series` VALUES ('1', 'A', '1', '100', '91', '', '1');
-INSERT INTO `series` VALUES ('2', 'C', '1', '100', '1', '', '2');
-
--- ----------------------------
--- Table structure for `series_orden_compra`
--- ----------------------------
-DROP TABLE IF EXISTS `series_orden_compra`;
-CREATE TABLE `series_orden_compra` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `serie` char(255) NOT NULL,
-  `folio_i` int(11) DEFAULT NULL,
-  `folio_f` int(11) DEFAULT NULL,
-  `sig_folio` int(11) DEFAULT NULL,
-  `es_default` bit(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of series_orden_compra
--- ----------------------------
-INSERT INTO `series_orden_compra` VALUES ('1', 'A', '1', '100', '4', '');
+INSERT INTO `series` VALUES ('1', 'PA', '1', '100', '1', '', '1');
+INSERT INTO `series` VALUES ('2', 'PC', '1', '100', '6', '', '2');
+INSERT INTO `series` VALUES ('3', 'PI_3', '1', '1000', '1', '', '3');
 
 -- ----------------------------
 -- Table structure for `system_users`

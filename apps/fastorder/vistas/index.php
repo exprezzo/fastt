@@ -68,6 +68,20 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 				{ 'type':'keydown', 'propagate':false, 'target':document} 
 			);  
 			
+			shortcut.add("Ctrl+Alt+P", 
+				function() { 
+					 TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document} 
+			); 
+			
+			shortcut.add("Ctrl+Alt+O", 
+				function() { 
+					 TabManager.add('/'+kore.modulo+'/orden_compra/index','Busqueda',1);
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document} 
+			); 
+			
 			shortcut.add("Ctrl+Alt+W", 
 				function() { 
 					//busca el tab seleccionado
@@ -138,7 +152,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			iniciarLinkTabs(); //A los objetos con atributo linkTab=true,  se les agrega comportamiento ajax para abrir tabs.
 			
 			// TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
-			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
+			// TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
 			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');
 			
 			// TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			

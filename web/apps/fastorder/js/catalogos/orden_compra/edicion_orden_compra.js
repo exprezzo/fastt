@@ -35,7 +35,8 @@ var EdicionOrdenCompra = function(){
 		tab.css('padding','0');
 		tab.css('border','0 1px 1px 1px');
 		
-		this.agregarClase('frmPedido');		
+		this.agregarClase('frmPedido');
+		this.agregarClase('frmOrdenCompra');		
 		
 		this.configurarFormulario(this.tabId);
 		this.configurarToolbar(this.tabId);		
@@ -254,7 +255,7 @@ var EdicionOrdenCompra = function(){
 		var myReader = new wijarrayreader(fields);
 		
 		var proxy = new wijhttpproxy({
-			url: '/'+kore.modulo+'/pedidoi/getSeries',
+			url: '/'+kore.modulo+'/'+this.controlador.nombre+'/getSeries',
 			dataType:"json"			
 		});
 		var me=this;
@@ -263,9 +264,13 @@ var EdicionOrdenCompra = function(){
 			proxy: proxy,
 			loaded: function (data) {				
 				var val=parseInt( $('#tabs '+tabId+' .txtFkSerie').val() );								
+				
+				
+				
 				$.each(data.items, function(index, datos) {					
 					
-					// alert(tabId);
+					 
+					 
 					if (val !=0 ){
 						if (val==parseInt(datos.value) ){
 							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});

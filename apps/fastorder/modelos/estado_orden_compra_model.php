@@ -1,6 +1,6 @@
 <?php
 class EstadoOrdenCompraModel extends Modelo{
-	var $tabla='estado_orden_compra';
+	var $tabla='orden_compra_estado';
 	function paginar($start=0, $pageSize=9){
 		$sql='select COUNT(ped.id) as total FROM '.$this->tabla.' ped';
 		$model=$this;

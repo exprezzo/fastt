@@ -51,7 +51,7 @@ class OrdenCompraModel extends Modelo{
 				
 		$sql = 'SELECT ped.*,se.serie ,alm.nombre as nombreAlmacen FROM '.$this->tabla.' ped
 		LEFT JOIN almacenes alm ON alm.id = ped.fk_almacen
-		LEFT JOIN series se ON se.id = ped.fk_serie
+		LEFT JOIN orden_compra_series se ON se.id = ped.fk_serie
 		WHERE ped.'.$this->pk.'=:id';		
 		
 		$con = $this->getConexion();
@@ -145,8 +145,8 @@ class OrdenCompraModel extends Modelo{
 			DATE_FORMAT(vencimiento,"%d/%m/%Y %H:%i:%s" ) as vencimiento, pro.nombre as nombreAlmacen 
 			FROM '.$this->tabla.' ped
 			LEFT JOIN proveedor pro ON pro.id = ped.idproveedor 
-			LEFT JOIN series_orden_compra sn ON sn.id = ped.fk_serie 
-			LEFT JOIN estado_pedido st ON st.id = ped.idestado 
+			LEFT JOIN orden_compra_series sn ON sn.id = ped.fk_serie 
+			LEFT JOIN orden_compra_estado st ON st.id = ped.idestado 
 			';
 		
 		$filtros='';
@@ -222,9 +222,9 @@ class OrdenCompraModel extends Modelo{
 			// $sql='START TRANSACTION;';
 			// $db->exec($sql);			
 			$db->beginTransaction();
-			
+			$tablaSeries='orden_compra_series';
 			//Revisa que la serie tenga folios disponibles			
-			$sql='SELECT folio_f, sig_folio FROM series where id='.intval($idFolio).'  FOR UPDATE;';			
+			$sql='SELECT folio_f, sig_folio FROM '.$tablaSeries.' where id='.intval($idFolio).'  FOR UPDATE;';			
 			//Si no hay folios disponibles, devolver el error
 			$result = $db->query($sql);
 			if ( !$result ) return $this->getError($db);			
@@ -239,7 +239,7 @@ class OrdenCompraModel extends Modelo{
 			}
 			
 			$sig_folio=$row['sig_folio'];			
-			$sql= 'UPDATE series SET sig_folio = '.($sig_folio + 1).' WHERE id='.$idFolio.';';			
+			$sql= 'UPDATE '.$tablaSeries.' SET sig_folio = '.($sig_folio + 1).' WHERE id='.$idFolio.';';			
 			$db->exec($sql);			
 		}
 		catch(PDOException $e)
@@ -265,8 +265,7 @@ class OrdenCompraModel extends Modelo{
 	}
 	
 	function guardar($params){
-		 // print_r($params);
-	
+		 // print_r($params);	
 		$dbh=$this->getConexion();
 		$pk			=empty($params[$this->pk]) ? 0 : $params[$this->pk];
 		$fk_almacen	=$params['almacen'];
@@ -285,8 +284,7 @@ class OrdenCompraModel extends Modelo{
 				$msgType='info';
 				$msg.='<br>El sistema asign&oacute; el folio correspondiente. ('.$res['folio'].')';
 			}
-			$folio=$res['folio'];
-		
+			$folio=$res['folio'];		
 			//           CREAR
 			$sql='INSERT INTO '.$this->tabla.' SET fk_almacen=:fk_almacen, idproveedor=:idproveedor, fecha= :fecha, vencimiento=:vencimiento, fk_serie=:fk_serie, folio=:folio';
 			$sth = $dbh->prepare($sql);
@@ -296,6 +294,7 @@ class OrdenCompraModel extends Modelo{
 			$sth->bindValue(":vencimiento",$vencimiento,PDO::PARAM_STR);
 			$sth->bindValue(":fk_serie",$fk_serie,PDO::PARAM_INT);
 			$sth->bindValue(":folio",$folio,PDO::PARAM_INT);
+			
 			
 			// echo $sql;
 			$exito = $sth->execute();
@@ -361,16 +360,17 @@ class OrdenCompraModel extends Modelo{
 				if (!$exito) return $this->getError($sth);
 			}else if ( empty($detalle['id']) ){
 				
-				$sql='INSERT INTO orden_compra_productos SET fk_producto_origen=:fk_producto_origen, fk_almacen=:fk_almacen, fk_articulo=:fk_articulo, fk_orden_compra=:fk_orden_compra,fk_pedido_detalle=:fk_pedido_detalle, cantidad=:cantidad, idarticulopre=:idarticulopre';
+				$sql='INSERT INTO orden_compra_productos SET fk_producto_origen=:fk_producto_origen, fk_almacen=:fk_almacen,pedidoi=:pedidoi, fk_articulo=:fk_articulo, fk_orden_compra=:fk_orden_compra,fk_pedido_detalle=:fk_pedido_detalle, cantidad=:cantidad, idarticulopre=:idarticulopre';
 				$sth = $con->prepare($sql);
 				$sth->bindValue(':fk_orden_compra',		$fk_orden_compra,		PDO::PARAM_INT);
-				$sth->bindValue(':fk_pedido_detalle', $detalle['fk_pedido_detalle'],PDO::PARAM_INT);				
-				$sth->bindValue(':fk_almacen', $detalle['fk_almacen'], PDO::PARAM_INT);				
+				$sth->bindValue(':fk_pedido_detalle', empty($detalle['fk_pedido_detalle'])? 0: $detalle['fk_pedido_detalle'],PDO::PARAM_INT);				
+				$sth->bindValue(':fk_almacen', empty($detalle['fk_almacen'])? 0: $detalle['fk_almacen'] , PDO::PARAM_INT);				
 				
 				$sth->bindValue(':fk_producto_origen', empty($detalle['fk_producto_origen'])? 0: $detalle['fk_producto_origen'], PDO::PARAM_INT);				
 				
 				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
 				$sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
+				$sth->bindValue(':pedidoi',		empty($detalle['pedidoi'])? 0: $detalle['pedidoi'],		PDO::PARAM_INT);
 				$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
 				$exito = $sth->execute();
 				if (!$exito) return $this->getError($sth);
@@ -385,13 +385,23 @@ class OrdenCompraModel extends Modelo{
 				if (!$exito) return $this->getError($sth);
 			}			
 			
-			// $sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idproveedor=:idproveedor';
-			// $sth = $con->prepare($sql);
-			// $sth->bindValue(':existencia',$detalle['existencia'],PDO::PARAM_INT);
-			// $sth->bindValue(':idarticulo',$detalle['fk_articulo'],PDO::PARAM_INT);
-			// $sth->bindValue(':idproveedor',$idproveedor,PDO::PARAM_INT);
-			// $exito = $sth->execute();
-			// if (!$exito) return $this->getError($sth);
+			if (isset($detalle['existencia']) ){
+				$sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idalmacen=:idalmacen';
+				 $sth = $con->prepare($sql);
+				 
+				 $sth->bindValue(':existencia',$detalle['existencia'],PDO::PARAM_INT);
+				 $sth->bindValue(':idarticulo',$detalle['fk_articulo'],PDO::PARAM_INT);
+				 $sth->bindValue(':idalmacen',empty($params['almacen'])? 0: $params['almacen'],PDO::PARAM_INT);
+				 $exito = $sth->execute();
+				 
+				 
+				 if (!$exito) {
+					$error=$this->getError($sth);
+					print_r($error);
+					return $error;
+				 }
+			}
+			 
 		}		
 		$resp=array('success'=>true);
 		

@@ -81,12 +81,6 @@
 	});
 </script>
 
-<!--div >
-	<button class='btnGuardar'>Guardar</button>
-	<button class='btnEliminar'>Eliminar</button>
-	<button class='btnNuevo'>Nuevo</button>
-</div-->
-
 <?php
 	if (isset($this->pedido)){
 		$fecha= $this->pedido['fecha'];
@@ -96,17 +90,9 @@
 		$id= isset($this->pedido)? $this->pedido['id'] : 0;
 		$id_tmp= empty($this->pedido['id_tmp'])?0 : $this->pedido['id_tmp'];
 		$fk_serie= empty($this->pedido['fk_serie'])?0 : $this->pedido['fk_serie'];
-		$folio= empty($this->pedido['folio'])?0 : $this->pedido['folio'];
-		
+		$folio= empty($this->pedido['folio'])?0 : $this->pedido['folio'];		
 	}	
 ?>
-
-
-<!--div class="formTitle ui-widget-header ">
-	<!-- BARRA DE TITULO --c
-	<span class="">PEDIDO</span>
-	<span class="closeBtn ui-icon ui-icon-close"></span>
-</div-->
 
 <div class="paneles" style="width:90%;">
 	<div class="pnlIzq">

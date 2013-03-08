@@ -57,6 +57,9 @@ class Pedidoi extends Controlador{
 		// $start=intval($paging['pageIndex'])*9;				
 		$res=$mod->getSeries($start=0, $limit=9, $idAlmacen);				
 		
+		if ( !$res['success'] ){
+			echo json_encode($res);	exit;
+		}
 		$respuesta=array(	
 			'rows'=>$res['datos'],
 			'totalRows'=> $res['total']

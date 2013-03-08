@@ -297,29 +297,32 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
 				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
-				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false},
-				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false},
-				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false},
-				{dataKey: "existencia", headerText: "I. Inicial"},
+				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: "n2"},
+				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: "n2"},
+				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: "n2"},
+				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: "n2"},
 				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
 					if (args.row.type & $.wijmo.wijgrid.rowType.data) {
 						var sugerido=0;
+						
 						if (parseInt(args.row.data.existencia) <= parseInt(args.row.data.puntoreorden) ){
 							sugerido = args.row.data.maximo-args.row.data.existencia;
-							args.row.data.pendiente=args.row.data.sugerido - args.row.data.pedido;
+							args.row.data.pendiente=sugerido - args.row.data.pedido;
 						}else{
 							args.row.data.pendiente=0;
 						}
+						
+						
 						args.row.data.sugerido=sugerido;
 						args.$container
-							.css("text-align", "center")
+							.css("text-align", "right")
 							.empty()
 							.append(args.row.data.sugerido);
 						return true;
 					}
-				}},
-				{dataKey: "pedido", headerText: "Pedido"},
-				{dataKey: "pendiente", headerText: "Pendiente",editable:false},
+				}, dataType: "number", dataFormatString: "n2"},
+				{dataKey: "pedido", headerText: "Pedido", dataType: "number", dataFormatString: "n2"},
+				{dataKey: "pendiente", headerText: "Pendiente",editable:false, dataType: "number", dataFormatString: "n2"},
 				{dataKey: "id", visible:false, headerText: "ID" },
 				{dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
 				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
@@ -374,10 +377,13 @@ var EdicionArticulo=function (tabId){
 						var combo=
 						$("<input />")
 							.val(args.cell.value()) 
-							.appendTo(args.cell.container().empty());
-						var domCel = args.cell.tableCell();
+							.appendTo(args.cell.container().empty());   
+						args.handled = true;   
 						
-						args.handled = true;
+						var domCel = args.cell.tableCell();
+						combo.css('width',	$(domCel).width()-10 );
+						combo.css('height',	$(domCel).height()-10 );
+						
 						me.configurarComboArticulo(combo);
 					break;
 					default:

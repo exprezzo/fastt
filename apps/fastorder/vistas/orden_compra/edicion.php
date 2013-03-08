@@ -1,5 +1,29 @@
 <style type="text/css">
 	.frmPedido .inputBox{display:inline-block !important; }
+	.frmOrdenCompra .wijmo-wijgrid-innercell{
+		padding-left:0 !important;
+	}
+	
+	.pnlIzq > div{
+		float:right;		
+	}
+	
+	.pnlIzq > form{
+		float:left;
+		padding-top:0;
+	}
+	
+	
+	tr[arial-level="2"] td{
+		background-color:black;
+		color:white;
+	}
+	
+	tr[arial-level="1"] td:nth-child(2){		
+		color:white !important;
+	}
+	
+	
 	.divLabel {vertical-align:bottom;text-alignt:right; text-align:right; display:inline-block;}
 .divNumerosStock ul{padding:0;margin:0;}
 .divNumerosStock li{display:inline ;padding:0;margin:0;}
@@ -52,6 +76,7 @@
 		.stock_numbers li{display:block;}
 
 	}
+	
 </style>
 <script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/orden_compra/edicion_articulos.js"></script>
 <script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/orden_compra/edicion_orden_compra.js"></script>
@@ -59,7 +84,7 @@
 <script>	
 	$( function(){		
 		var articulos=<?php echo json_encode($this->pedido['articulos']); ?>;				
-		console.log("articulos"); console.log(articulos);
+		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
 		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
@@ -81,12 +106,6 @@
 	});
 </script>
 
-<!--div >
-	<button class='btnGuardar'>Guardar</button>
-	<button class='btnEliminar'>Eliminar</button>
-	<button class='btnNuevo'>Nuevo</button>
-</div-->
-
 <?php
 	if (isset($this->pedido)){
 		$fecha= $this->pedido['fecha'];
@@ -96,17 +115,13 @@
 		$id= isset($this->pedido)? $this->pedido['id'] : 0;
 		$id_tmp= empty($this->pedido['id_tmp'])?0 : $this->pedido['id_tmp'];
 		$fk_serie= empty($this->pedido['fk_serie'])?0 : $this->pedido['fk_serie'];
+		
+		
 		$folio= empty($this->pedido['folio'])?0 : $this->pedido['folio'];
 		$fk_proveedor= empty($this->pedido['idproveedor'])?0 : $this->pedido['idproveedor'];
 	}	
 ?>
 
-
-<!--div class="formTitle ui-widget-header ">
-	<!-- BARRA DE TITULO --c
-	<span class="">PEDIDO</span>
-	<span class="closeBtn ui-icon ui-icon-close"></span>
-</div-->
 
 <div class="paneles" style="width:90%;">
 	<div class="pnlIzq">
@@ -118,8 +133,7 @@
 			<input type='hidden' name='id_tmp' class="txtIdTmp" value="<?php echo $id_tmp; ?>" />	
 			<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />
 			<input type='hidden'  name='serie' class="txtFkSerie" value="<?php echo $fk_serie; ?>" />
-			<input type='hidden'  name='serie' class="txtFkProveedor" value="<?php echo $fk_proveedor; ?>" />
-			
+			<input type='hidden'  name='serie' class="txtFkProveedor" value="<?php echo $fk_proveedor; ?>" />			
 			<div style='display:inline-block;'>
 				<div class="inputBox" style='margin-bottoms:5px;display:inline;'>		
 					<label class="lblSerie" style="width:auto;">Serie:</label>
@@ -163,12 +177,6 @@
 					<thead>
 					</thead>
 				  <tbody>					
-					<?php
-						if ( isset($this->pedido) )
-						foreach($this->pedido['articulos'] as $articulo){
-							//	echo '<tr><td>'.$articulo['nombre'].'</td> <td>'.$articulo['cantidad'].'</td></tr>';
-						}
-					?>
 				  </tbody>
 				</table>
 			</div>

@@ -5,6 +5,28 @@ class PedidoModel extends Modelo{
 	var $tabla='pedidos';
 	var $pk='id';
 	
+	function borrar( $params ){
+		if ( empty($params['id']) ){
+			throw new Exeption("Es necesario el parámetro 'id'");
+		};		
+		$id=$params['id'];
+		$sql = 'DELETE FROM '.$this->tabla.' WHERE id=:id';		
+		$con = $this->getConexion();
+		$sth = $con->prepare($sql);		
+		$sth->bindValue(':id',$id,PDO::PARAM_INT);		
+		$exito = $sth->execute();					
+		if ( !$exito ) return $this->getError($sth);
+		
+		$sql = 'DELETE FROM pedidos_productos WHERE fk_pedido=:fk_pedido';		
+		$con = $this->getConexion();
+		$sth = $con->prepare($sql);		
+		$sth->bindValue(':fk_pedido',$id,PDO::PARAM_INT);		
+		$exito = $sth->execute();					
+		if ( !$exito ) return $this->getError($sth);
+		
+		return $exito;	
+	}
+	
 	function concentrar(){
 		/*		
 		Concentración: Generacion automatica de ordenes de compra a partir de pedidos internos.
@@ -41,7 +63,7 @@ class PedidoModel extends Modelo{
 		$prioridades=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
 		//Ahora obtengo todos los detalles 
-		$sql='SELECT pe.fk_almacen, pp.fk_pedido, pp.id as fk_pedido_detalle,pp.fk_articulo as fk_producto_origen, pp.fk_articulo, pp.cantidad as pedido, pp.idarticulopre FROM 
+		$sql='SELECT pe.fk_almacen, pp.cantidad pedidoi , pp.fk_pedido, pp.id as fk_pedido_detalle,pp.fk_articulo as fk_producto_origen, pp.fk_articulo, pp.cantidad as pedido, pp.idarticulopre FROM 
 		pedidos_productos pp
 		left join pedidos pe ON pe.id = pp.fk_pedido
 		LEFT JOIN productos p ON p.id=pp.fk_articulo
@@ -52,8 +74,9 @@ class PedidoModel extends Modelo{
 		if ( !$exito ) return $this->getError( $sth );
 		$detalles=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
+		//ahora las recetas
 		$sql='SELECT pe.fk_almacen, pp.id as fk_pedido_detalle, pp.fk_articulo as fk_producto_origen, ad.fk_articulo ,
-		(pp.cantidad * ad.cantidad) as pedido, pp.idarticulopre	FROM 
+		(pp.cantidad * ad.cantidad) as pedido, (pp.cantidad * ad.cantidad) as pedidoi ,pp.idarticulopre	FROM 
 		pedidos_productos pp
 		left join pedidos pe ON pe.id = pp.fk_pedido
 		LEFT JOIN productos p ON p.id=pp.fk_articulo
@@ -97,7 +120,7 @@ class PedidoModel extends Modelo{
 				'fecha'			=>date('Y-m-d H:i:s'),
 				'vencimiento'	=>date('Y-m-d H:i:s'),
 				'folio'			=>1,
-				'fk_serie'		=>1,
+				'fk_serie'		=>4,
 				'proveedor'		=>$key
 			);
 			$orden['articulos']=$value;			

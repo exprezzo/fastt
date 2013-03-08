@@ -2,6 +2,7 @@
 
 require_once '../apps/'.$_PETICION->modulo.'/modelos/orden_compra_model.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/orden_compra_producto_model.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/orden_compra_serie_model.php';
 // require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_stock_model.php';
  require_once '../apps/'.$_PETICION->modulo.'/modelos/proveedor_model.php';
 // require_once '../apps/'.$_PETICION->modulo.'/modelos/serie_compra_model.php';
@@ -29,9 +30,11 @@ class Orden_Compra extends Controlador{
 	
 	function getSeries(){
 		$idAlmacen=$_GET['idalmacen'];
-		$mod=new SerieCompraModel();
+		$mod=new OrdenCompraSerieModel();
 		$res=$mod->getSeries($start=0, $limit=9, $idAlmacen);
-		
+		if ( !$res['success'] ){
+			echo json_encode($res);	exit;
+		}
 		$respuesta=array(
 			'rows'=>$res['datos'],
 			'totalRows'=> $res['total']
@@ -134,6 +137,12 @@ class Orden_Compra extends Controlador{
 		
 		$pedido = $mod->obtener( $idPedido );
 		
+		
+		if ( empty($pedido) ){
+			$pedido['id']=0;
+			$pedido['fk_almacen']=0;
+			$pedido['idproveedor']=0;
+		}
 		$mod=new OrdenCompraProductoModel();
 		
 		$params=array(	//Se traducen al lenguaje sql

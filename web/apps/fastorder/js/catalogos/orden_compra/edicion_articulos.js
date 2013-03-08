@@ -1,7 +1,7 @@
 
 var EdicionArticulo=function (tabId){
-	
 		
+	
 	this.init=function(tabId, padre, articulos){									
 		this.tmp_id=0;
 		this.tabId=tabId;
@@ -259,7 +259,12 @@ var EdicionArticulo=function (tabId){
 			{ name: "idarticulopre"},
 			{ name: "eliminado",default:false},
 			{ name: "id"  },
-			{ name: "origen"  }
+			{ name: "origen"  },
+			{ name: "fk_producto"  },
+			{ name: "pedidoi"  }
+			
+			
+			
 		];
 		this.fields=fields;
 		// var rec={};
@@ -303,41 +308,37 @@ var EdicionArticulo=function (tabId){
 			selectionMode:'singleRow',
 			data:articulos,
 			columns: [
-				{dataKey: "codigo", headerText: "Codigo",width:"300px", visible:false},
-				{ visible:false, dataKey: "nombreGpo", groupInfo:{
+				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
+				{  dataKey: "nombreGpo", groupInfo:{
 					 position: "header", 
 					outlineMode: "startExpanded", 
 					headerText: "{0}"
-				} },{
-				// cellFormatter:function(args){
-					// if (args.row.type & $.wijmo.wijgrid.rowType.data) {
-						// args.$container
-							// .css("text-align", "center")
-							// .empty()
-							// .append('asdasds';
-						// return true;
-					// }
-					
-				// }
-				}	,			
-				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px", groupInfo:{
+				},visible:false },			
+				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px",groupInfo:{
 					position: "header", 
 					outlineMode: "startExpanded", 
-					headerText: "{0}"
-				}, visible:false},
-				{dataKey: "origen", headerText: "Origen",width:"100px", visible:false},
-				{dataKey: "almacen", headerText: "Almacen"},
+					 headerText: "{0}",
+					 groupSingleRow: true
+				}},
+				{dataKey: "fk_articulo", headerText: "fk_articulo",visible:false},				
+				{dataKey: "almacen", headerText: "Almacen",editable:false},
+				{dataKey: "origen", headerText: "Origen",width:"100px",editable:false},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
-				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false},
-				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false},
-				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false},
-				{dataKey: "existencia", headerText: "I. Inicial"},
+				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: "n2"},
+				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: "n2"},
+				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: "n2"},
+				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: "n2"},
+				{dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: "n2"},
 				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
 					if (args.row.type & $.wijmo.wijgrid.rowType.data) {
 						var sugerido=0;
-						if (parseInt(args.row.data.existencia) <= parseInt(args.row.data.puntoreorden) ){
-							sugerido = args.row.data.maximo-args.row.data.existencia;
-							args.row.data.pendiente=args.row.data.sugerido - args.row.data.pedido;
+						
+						var existencia = args.row.data.existencia - args.row.data.pedidoi;
+						
+						if (existencia <= parseInt(args.row.data.puntoreorden) ){
+							
+							sugerido = args.row.data.maximo-existencia;
+							args.row.data.pendiente=sugerido - args.row.data.pedido;
 						}else{
 							args.row.data.pendiente=0;
 						}
@@ -348,17 +349,21 @@ var EdicionArticulo=function (tabId){
 							.append(args.row.data.sugerido);
 						return true;
 					}
-				}},
-				{dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: "n0", aggregate: "sum" },
-				{dataKey: "pendiente", headerText: "Pendiente",editable:false},
+				}, dataType: "number", dataFormatString: "n2"},
+				
+				{dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: "n2", aggregate: "sum" },
+				{dataKey: "pendiente", headerText: "Pendiente",editable:false, dataType: "number", dataFormatString: "n2"},
 				{dataKey: "id", visible:false, headerText: "ID" },
 				// {dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },			
-				{dataKey: "fk_articulo", headerText: "fk_articulo", visible:false},
+				
 				{dataKey: "fk_orden_compra", headerText: "fk_orden_compra", visible:false},
 				{dataKey: "cantidad", headerText: "cantidad", visible:false},
-				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},
-				
-				{visible:false,dataKey: "grupoposicion"}
+				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},				
+				{visible:false,dataKey: "grupoposicion"},
+				{dataKey: "fk_producto_origen", headerText: "fk_producto", visible:false},
+				{dataKey: "fk_pedido_detalle", headerText: "fk_pedido_detalle", visible:false},
+				{dataKey: "fk_almacen", headerText: "fk_almacen", visible:false},
+				{dataKey: "producto", headerText: "producto", visible:false},
 			],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
@@ -376,12 +381,14 @@ var EdicionArticulo=function (tabId){
 			beforeCellEdit: function(e, args) {
 				var row = args.cell.row() ;								
 				var index = args.cell.rowIndex();				
-				var sel=gridPedidos.wijgrid('selection');				
-				sel.addRows(index);				
+				
 				
 				if (args.cell.column().editable === false){
 					return false;
 				}				
+				
+				var sel=gridPedidos.wijgrid('selection');				
+				sel.addRows(index);				
 
 				switch (args.cell.column().dataKey) { 					
 					case "codigo": 
@@ -401,21 +408,26 @@ var EdicionArticulo=function (tabId){
 						var combo=
 						$("<input />")
 							.val(args.cell.value()) 
-							.appendTo(args.cell.container().empty());
-						var domCel = args.cell.tableCell();
+							.appendTo(args.cell.container().empty());   
+						args.handled = true;   
 						
-						args.handled = true;
+						var domCel = args.cell.tableCell();
+						combo.css('width',	$(domCel).width()-10 );
+						combo.css('height',	$(domCel).height()-10 );
+						
 						me.configurarComboArticulo(combo);
 					break;
 					default:
 						var input=$("<input />")
 							.val(args.cell.value())
-							.appendTo(args.cell.container().empty()).focus();
+							.appendTo(args.cell.container().empty()).focus().select();
+						args.handled = true;
+						
 						var domCel = args.cell.tableCell();
 						input.css('width',	$(domCel).width()  -10 );
 						input.css('height',	$(domCel).height() -10 );
-						args.handled = true;
-						return true;
+						
+						
 					break;						
 				} 
 			}
@@ -473,11 +485,19 @@ var EdicionArticulo=function (tabId){
 						}
 						$(row.$rows).find('td:eq(7) div').html(row.data.sugerido);
 						$(row.$rows).find('td:eq(9) div').html(row.data.pendiente);
+						
+						// var gridPedidos=$('#tabs '+tabId+" .grid_articulos");
+						
+						
 						break;
 				}
 				me.articulo=undefined;		
 			}			
 		});
+		
+		$(me.tabId+' .grid_articulos').wijgrid({ afterCellUpdate: function (e, args) { 
+			$(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
+		} });
 		
 		gridPedidos.wijgrid({cancelEdit:function(){				
 				$(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
