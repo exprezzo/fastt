@@ -261,10 +261,7 @@ var EdicionArticulo=function (tabId){
 			{ name: "id"  },
 			{ name: "origen"  },
 			{ name: "fk_producto"  },
-			{ name: "pedidoi"  }
-			
-			
-			
+			{ name: "pedidoi"  }						
 		];
 		this.fields=fields;
 		// var rec={};
@@ -327,7 +324,7 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney},
 				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney},
 				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney},
-				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: formatMoney},
+				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
 				{dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
 				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
 					if (args.row.type & $.wijmo.wijgrid.rowType.data) {
@@ -375,8 +372,7 @@ var EdicionArticulo=function (tabId){
 		});
 		var me=this;
 		
-		gridPedidos.wijgrid({ 
-			beforeCellEdit: function(e, args) {
+		gridPedidos.wijgrid({ beforeCellEdit: function(e, args) {
 				var row = args.cell.row() ;								
 				var index = args.cell.rowIndex();				
 				

@@ -16,6 +16,18 @@
 		
 	}
 	
+	.pnlIzq > div{
+		float:right;		
+	}
+	
+	.pnlIzq > form{
+		float:left;
+		
+		padding:0;
+		padding-right:10px;
+	}
+	
+	
 	@media screen and (min-width:1250px) { 
 		/* .divNumerosStock li:not(:first-child):before, .stock_numbers li:not(:first-child):before
 		{ 

@@ -63,10 +63,14 @@ class PedidoModel extends Modelo{
 		$prioridades=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
 		//Ahora obtengo todos los detalles 
-		$sql='SELECT pe.fk_almacen, pp.cantidad pedidoi , pp.fk_pedido, pp.id as fk_pedido_detalle,pp.fk_articulo as fk_producto_origen, pp.fk_articulo, pp.cantidad as pedido, pp.idarticulopre FROM 
+		$sql='SELECT pe.fk_almacen, pp.cantidad pedidoi , pp.fk_pedido, pp.id as fk_pedido_detalle,pp.fk_articulo as fk_producto_origen, pp.fk_articulo, 
+		sto.maximo- (sto.existencia - pp.cantidad) as pedido,
+		pp.idarticulopre 
+		FROM 
 		pedidos_productos pp
 		left join pedidos pe ON pe.id = pp.fk_pedido
 		LEFT JOIN productos p ON p.id=pp.fk_articulo
+		left join articulostock sto ON sto.idalmacen = 3 AND sto.idarticulo = pp.fk_articulo
 		WHERE pp.status=1 AND pp.cantidad>0 and p.tipo=1';
 		
 		$sth=$con->prepare($sql);
@@ -75,12 +79,14 @@ class PedidoModel extends Modelo{
 		$detalles=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
 		//ahora las recetas
-		$sql='SELECT pe.fk_almacen, pp.id as fk_pedido_detalle, pp.fk_articulo as fk_producto_origen, ad.fk_articulo ,
-		(pp.cantidad * ad.cantidad) as pedido, (pp.cantidad * ad.cantidad) as pedidoi ,pp.idarticulopre	FROM 
+		$sql='SELECT pe.fk_almacen, pp.id as fk_pedido_detalle, pp.fk_articulo as fk_producto_origen, ad.fk_articulo ,pp.idarticulopre	,
+		sto.maximo- ( sto.existencia - (pp.cantidad * ad.cantidad) ) as pedido, (pp.cantidad * ad.cantidad) as pedidoi
+		FROM 
 		pedidos_productos pp
 		left join pedidos pe ON pe.id = pp.fk_pedido
 		LEFT JOIN productos p ON p.id=pp.fk_articulo
 		LEFT JOIN articulo_detalle ad ON ad.idarticulo = pp.fk_articulo
+		left join articulostock sto ON sto.idalmacen = 3 AND sto.idarticulo = pp.fk_articulo
 		WHERE pp.status=1 AND pp.cantidad>0 and p.tipo=2';
 		
 		$sth=$con->prepare($sql);
@@ -123,21 +129,25 @@ class PedidoModel extends Modelo{
 				'fk_serie'		=>4,
 				'proveedor'		=>$key
 			);
-			$orden['articulos']=$value;			
+			$orden['articulos']=$value;
 			$res=$ordenMod->guardar( $orden );
 			if ( !$res['success'] ) return $res;
+			
+			foreach($orden['articulos'] as $item){
+				$sql='UPDATE pedidos_productos SET status=2, concentrado=cantidad WHERE id='.$item['fk_pedido_detalle'].';';
+				$sth=$con->prepare($sql);
+				$exito=$sth->execute();
+				if ( !$exito ) return $this->getError( $sth );
+			}
 		}
 		
 		//
 		$sql='UPDATE pedidos SET idestado=2;';
 		$sth=$con->prepare( $sql );
-		$exito=$sth->execute(  );
+		$exito=$sth->execute( );
 		if ( !$exito ) return $this->getError( $sth );
 				
-		$sql='UPDATE pedidos_productos SET status=2;';
-		$sth=$con->prepare($sql);
-		// $exito=$sth->execute();
-		if ( !$exito ) return $this->getError( $sth );
+		
 		
 		return array(
 			'success'=>true

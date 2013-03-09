@@ -87,7 +87,8 @@ class OrdenCompraProductoModel extends Modelo{
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
 		$sql = 'SELECT pedprod.*,prod.nombre as nombre,pre.descripcion as presentacion,pre.idarticulopre, prod.codigo codigo, 
 		prod.nombre producto,a.nombre as almacen,o.nombre origen,pedprod.pedidoi,
-		sto.maximo, sto.minimo, sto.puntoreorden, sto.existencia,pedprod.cantidad pedido ,sto.maximo - sto.existencia sugerido,((sto.puntoreorden - sto.existencia)- pedprod.cantidad) pendiente,
+		sto.maximo, sto.minimo, sto.puntoreorden, sto.existencia,pedprod.cantidad pedido ,
+		sto.maximo - sto.existencia sugerido, sto.maximo - (sto.existencia - pedprod.pedidoi) pendiente,
 		sto.grupoposicion, gpo.nombre nombreGpo
 		FROM '.$this->tabla.' pedprod		
 		LEFT JOIN productos prod ON pedprod.fk_articulo = prod.id
