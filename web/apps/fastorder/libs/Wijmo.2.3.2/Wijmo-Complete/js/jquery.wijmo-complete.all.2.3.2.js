@@ -7021,6 +7021,7 @@ var __extends = this.__extends || function (b, c) {
             this._trigger("rendered")
         },
         _onClick: function (b) {
+			
             if (!this._canInteract() || !b.target) return;
             var j = this._view(),
                 h = this._findUntilOuterDiv(b.target, {
@@ -7057,7 +7058,7 @@ var __extends = this.__extends || function (b, c) {
                 d.endUpdate()
             }
         },
-        _onDblClick: function (a) {
+        _onDblClick: function (a) {			
             this._beginEditInternal(a)
         },
         _onGroupBtnClick: function (e) {
@@ -7278,8 +7279,17 @@ var __extends = this.__extends || function (b, c) {
                 }
             }
         },
-        _beginEditInternal: function (d) {
+        _beginEditInternal: function (d) {			
+			if (d != undefined ){
+				var tr = d.target.parentNode.parentNode;						
+				if ( !$(tr).hasClass('wijmo-wijgrid-datarow') ) {				
+					this._trigger("beforeGroupEdit", null,d);
+					return;
+				}
+			}
+						
             if (this._canInteract() && this.options.allowEditing) {
+				
                 var c = this.currentCell().column(),
                     b;
                 if (c && !c.readOnly) {

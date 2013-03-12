@@ -255,7 +255,7 @@ var EdicionArticulo=function (tabId){
 			{ name: "pedido"},
 			{ name: "pendiente"},			
 			{ name: "fk_articulo"},
-			// { name: "id_tmp"  },
+		 // { name: "id_tmp"  },
 			{ name: "idarticulopre"},
 			{ name: "eliminado",default:false},
 			{ name: "id"  },
@@ -321,9 +321,9 @@ var EdicionArticulo=function (tabId){
 				{dataKey: "almacen", headerText: "Almacen",editable:false},
 				{dataKey: "origen", headerText: "Origen",width:"100px",editable:false},
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
-				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney},
-				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney},
-				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney},
+				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
+				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
+				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
 				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
 				{dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
 				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
@@ -372,14 +372,29 @@ var EdicionArticulo=function (tabId){
 		});
 		var me=this;
 		
+		
+		gridPedidos.wijgrid({ beforeGroupEdit: function(e, args) { //agregada al nucleo de Wijmo el 11-03-2013
+			// alert('beforeGroupEdit');
+			console.log("e");console.log(e);
+			console.log("args");console.log(args);
+			args.target.parent
+			var input=$("<input />");			
+				input.val(args.target.innerText) 
+				.appendTo( $(args.target ).empty()); 
+			
+		}});
+		
 		gridPedidos.wijgrid({ beforeCellEdit: function(e, args) {
-				var row = args.cell.row() ;								
+				var row = args.cell.row();								
 				var index = args.cell.rowIndex();				
 				
+				var column=args.cell.column();
 				
-				if (args.cell.column().editable === false){
+				if (column.editable === false){
+					// console.log( "column" );	console.log( column );					
+					
 					return false;
-				}				
+				}
 				
 				var sel=gridPedidos.wijgrid('selection');				
 				sel.addRows(index);				
@@ -498,6 +513,7 @@ var EdicionArticulo=function (tabId){
 		});
 		
 		gridPedidos.wijgrid({ selectionChanged: function (e, args) {
+			// alert('selectionChanged');
 			var item=args.addedCells.item(0);
 			var row=item.row();
 			var data=row.data;
@@ -529,6 +545,9 @@ var EdicionArticulo=function (tabId){
             });	
 		this.numCols=$(tabId+' .grid_articulos thead th').length;
 		
+		gridPedidos.find('td').bind('mousedown',function(e){ 
+			// alert("editar");
+		});
 	};
 	
 	this.configurarFormulario=function(tabId){

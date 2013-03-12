@@ -264,6 +264,9 @@ var EdicionArticulo=function (tabId){
 		
 		var gridPedidos=$('#tabs '+tabId+" .grid_articulos");				
 		
+		
+		
+		
 		var me=this;
 		gridPedidos.bind('keydown', function(e) {		
 			var code = e.keyCode || e.which;
@@ -500,6 +503,8 @@ var EdicionArticulo=function (tabId){
                 }
             });	
 		this.numCols=$(tabId+' .grid_articulos thead th').length;
+		
+		
 		
 	};
 	

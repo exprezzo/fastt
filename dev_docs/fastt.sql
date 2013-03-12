@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50508
 File Encoding         : 65001
 
-Date: 2013-03-08 17:32:53
+Date: 2013-03-12 11:42:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -228,13 +228,13 @@ CREATE TABLE `orden_compra` (
   `folio` int(11) DEFAULT NULL,
   `fk_almacen` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra
 -- ----------------------------
-INSERT INTO `orden_compra` VALUES ('41', '5', '2013-03-07 07:38:16', '2013-03-07 07:38:16', '1', '4', '4', '3');
-INSERT INTO `orden_compra` VALUES ('55', '5', '2013-03-08 16:34:52', '2013-03-08 16:34:52', '1', '4', '18', '3');
+INSERT INTO `orden_compra` VALUES ('59', '3', '2013-03-12 10:46:26', '2013-03-12 10:46:26', '1', '4', '22', '3');
+INSERT INTO `orden_compra` VALUES ('60', '5', '2013-03-12 10:46:26', '2013-03-12 10:46:26', '1', '4', '23', '3');
 
 -- ----------------------------
 -- Table structure for `orden_compra_estado`
@@ -269,27 +269,19 @@ CREATE TABLE `orden_compra_productos` (
   `cantidad` decimal(18,6) DEFAULT NULL,
   `pedidoi` decimal(18,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=434 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=480 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra_productos
 -- ----------------------------
-INSERT INTO `orden_compra_productos` VALUES ('331', '25', '41', '1532', '2', '25', '45', '40.000000', '40.000000');
-INSERT INTO `orden_compra_productos` VALUES ('332', '22', '41', '1533', '2', '22', '42', '40.000000', '40.000000');
-INSERT INTO `orden_compra_productos` VALUES ('333', '26', '41', '1534', '2', '22', '46', '243.000000', '243.000000');
-INSERT INTO `orden_compra_productos` VALUES ('334', '26', '41', '1534', '2', '23', '46', '108.000000', '108.000000');
-INSERT INTO `orden_compra_productos` VALUES ('335', '26', '41', '1534', '2', '24', '46', '54.000000', '54.000000');
-INSERT INTO `orden_compra_productos` VALUES ('336', '26', '41', '1534', '2', '25', '46', '54.000000', '54.000000');
-INSERT INTO `orden_compra_productos` VALUES ('337', '27', '41', '1536', '2', '22', '47', '27.500000', '27.500000');
-INSERT INTO `orden_compra_productos` VALUES ('425', '22', '55', '1680', '2', '22', '42', '25.000000', '20.000000');
-INSERT INTO `orden_compra_productos` VALUES ('426', '23', '55', '1682', '2', '23', '43', '12.000000', '20.000000');
-INSERT INTO `orden_compra_productos` VALUES ('427', '24', '55', '1684', '2', '24', '44', '16.000000', '20.000000');
-INSERT INTO `orden_compra_productos` VALUES ('428', '25', '55', '1685', '2', '25', '45', '12.000000', '20.000000');
-INSERT INTO `orden_compra_productos` VALUES ('429', '26', '55', '1681', '2', '22', '46', '82.000000', '90.000000');
-INSERT INTO `orden_compra_productos` VALUES ('430', '26', '55', '1681', '2', '23', '46', '32.000000', '40.000000');
-INSERT INTO `orden_compra_productos` VALUES ('431', '26', '55', '1681', '2', '24', '46', '12.000000', '20.000000');
-INSERT INTO `orden_compra_productos` VALUES ('432', '26', '55', '1681', '2', '25', '46', '12.000000', '20.000000');
-INSERT INTO `orden_compra_productos` VALUES ('433', '27', '55', '1683', '2', '22', '47', '2.000000', '10.000000');
+INSERT INTO `orden_compra_productos` VALUES ('472', '7', '59', '1713', '3', '7', '17', '-7.000000', '1.000000');
+INSERT INTO `orden_compra_productos` VALUES ('473', '11', '59', '1714', '3', '11', '21', '4.000000', '12.000000');
+INSERT INTO `orden_compra_productos` VALUES ('474', '15', '59', '1715', '3', '15', '25', '-7.000000', '1.000000');
+INSERT INTO `orden_compra_productos` VALUES ('475', '19', '59', '1716', '3', '19', '39', '4.000000', '12.000000');
+INSERT INTO `orden_compra_productos` VALUES ('476', '3', '59', '1719', '3', '3', '3', '24.000000', '32.000000');
+INSERT INTO `orden_compra_productos` VALUES ('477', '4', '59', '1720', '3', '4', '4', '5.000000', '12.000000');
+INSERT INTO `orden_compra_productos` VALUES ('478', '23', '60', '1717', '3', '23', '43', '26.000000', '34.000000');
+INSERT INTO `orden_compra_productos` VALUES ('479', '27', '60', '1718', '3', '22', '47', '-2.000000', '6.000000');
 
 -- ----------------------------
 -- Table structure for `orden_compra_series`
@@ -311,7 +303,7 @@ CREATE TABLE `orden_compra_series` (
 -- ----------------------------
 INSERT INTO `orden_compra_series` VALUES ('1', 'OC_1', '1', '1000', '15', '', '1');
 INSERT INTO `orden_compra_series` VALUES ('2', 'OC_2', '1', '1000', '1', '', '2');
-INSERT INTO `orden_compra_series` VALUES ('4', 'OC_3', '1', '1000', '19', '', '3');
+INSERT INTO `orden_compra_series` VALUES ('4', 'OC_3', '1', '1000', '24', '', '3');
 
 -- ----------------------------
 -- Table structure for `pedidos`
@@ -326,12 +318,12 @@ CREATE TABLE `pedidos` (
   `fk_serie` int(11) DEFAULT NULL,
   `folio` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos
 -- ----------------------------
-INSERT INTO `pedidos` VALUES ('136', '2', '2013-03-08 16:34:30', '2013-03-08 16:34:30', '2', '2', '10');
+INSERT INTO `pedidos` VALUES ('138', '3', '2013-03-12 10:46:22', '2013-03-12 10:46:22', '2', '3', '7');
 
 -- ----------------------------
 -- Table structure for `pedidos_productos`
@@ -346,17 +338,38 @@ CREATE TABLE `pedidos_productos` (
   `status` tinyint(1) DEFAULT '1',
   `concentrado` decimal(18,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1686 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1740 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos_productos
 -- ----------------------------
-INSERT INTO `pedidos_productos` VALUES ('1680', '22', '136', '20.000000', '42', '2', '20.000000');
-INSERT INTO `pedidos_productos` VALUES ('1681', '26', '136', '20.000000', '46', '2', '20.000000');
-INSERT INTO `pedidos_productos` VALUES ('1682', '23', '136', '20.000000', '43', '2', '20.000000');
-INSERT INTO `pedidos_productos` VALUES ('1683', '27', '136', '20.000000', '47', '2', '20.000000');
-INSERT INTO `pedidos_productos` VALUES ('1684', '24', '136', '20.000000', '44', '2', '20.000000');
-INSERT INTO `pedidos_productos` VALUES ('1685', '25', '136', '20.000000', '45', '2', '20.000000');
+INSERT INTO `pedidos_productos` VALUES ('1713', '7', '138', '1.000000', '17', '2', '1.000000');
+INSERT INTO `pedidos_productos` VALUES ('1714', '11', '138', '12.000000', '21', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1715', '15', '138', '1.000000', '25', '2', '1.000000');
+INSERT INTO `pedidos_productos` VALUES ('1716', '19', '138', '12.000000', '39', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1717', '23', '138', '34.000000', '43', '2', '34.000000');
+INSERT INTO `pedidos_productos` VALUES ('1718', '27', '138', '12.000000', '47', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1719', '3', '138', '32.000000', '3', '2', '32.000000');
+INSERT INTO `pedidos_productos` VALUES ('1720', '4', '138', '12.000000', '4', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1721', '8', '138', '0.000000', '18', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1722', '12', '138', '0.000000', '22', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1723', '16', '138', '0.000000', '26', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1724', '20', '138', '0.000000', '40', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1725', '24', '138', '0.000000', '44', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1726', '5', '138', '0.000000', '5', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1727', '9', '138', '0.000000', '19', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1728', '13', '138', '0.000000', '23', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1729', '17', '138', '0.000000', '27', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1730', '21', '138', '0.000000', '41', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1731', '25', '138', '0.000000', '45', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1732', '1', '138', '0.000000', '1', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1733', '6', '138', '0.000000', '16', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1734', '10', '138', '0.000000', '20', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1735', '14', '138', '0.000000', '24', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1736', '18', '138', '0.000000', '28', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1737', '22', '138', '0.000000', '42', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1738', '26', '138', '0.000000', '46', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1739', '2', '138', '0.000000', '2', '1', null);
 
 -- ----------------------------
 -- Table structure for `productos`
@@ -482,7 +495,7 @@ CREATE TABLE `series` (
 -- ----------------------------
 INSERT INTO `series` VALUES ('1', 'PA', '1', '100', '2', '', '1');
 INSERT INTO `series` VALUES ('2', 'PC', '1', '100', '11', '', '2');
-INSERT INTO `series` VALUES ('3', 'PI_3', '1', '1000', '6', '', '3');
+INSERT INTO `series` VALUES ('3', 'PI_3', '1', '1000', '8', '', '3');
 
 -- ----------------------------
 -- Table structure for `system_users`
@@ -507,7 +520,7 @@ CREATE TABLE `system_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `nick` (`nick`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of system_users
@@ -515,10 +528,10 @@ CREATE TABLE `system_users` (
 INSERT INTO `system_users` VALUES ('zesar1', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'cbibriesca@hotmail.com', '2', null, '1', 'Zesar X', 'pic_1.jpg', 'retro_blue_background.jpg', 'sdfas ad asdasd a dasd ad asd asd asd asd as asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd  as as as dasd sad asd asd asd asd asd asd as', '0', '1', '1', '1', '1355958733');
 INSERT INTO `system_users` VALUES ('cesarx', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'cesar@correo.com', '1', null, '2', '0', null, null, 'asdf', '1', '1', '1', '1', null);
 INSERT INTO `system_users` VALUES ('asdfasdf', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'asd@asd.com', '1', null, '3', '0', null, null, 'asdf', '1', '1', '1', '1', null);
-INSERT INTO `system_users` VALUES ('', 0x1E398E80A894F4559B8CB0E74C8BEBBA, '', '1', null, '4', '0', null, null, 'asfd', '1', '1', '1', '1', '1355891612');
 INSERT INTO `system_users` VALUES ('username', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'asdf@sadf.com', '1', null, '5', 'name', null, null, 'asdf', '1', '1', '1', '1', null);
 INSERT INTO `system_users` VALUES ('zesar2', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'zesar2@test.com', '1', null, '6', 'Zesar 2', null, null, null, '1', '1', '1', '0', null);
 INSERT INTO `system_users` VALUES ('fouser', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'userx2@email.com', '1', null, '10', '0', null, null, null, '1', '1', '1', '0', null);
+INSERT INTO `system_users` VALUES ('guillermo', 0x7F1300B33D82209DB71110F778FA07C4, '', '1', null, '11', '0', null, null, null, '1', '1', '1', '0', null);
 
 -- ----------------------------
 -- Table structure for `um`
