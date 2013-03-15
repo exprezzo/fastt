@@ -1136,8 +1136,7 @@
             a !== undefined && a[d ? "show" : "hide"]();
             b[d ? "removeClass" : "addClass"]("wijmo-wijcombobox-loading")
         },
-        _onListLoaded: function (g, h) {
-			//console.log("h"); console.log(h);
+        _onListLoaded: function (g, h) {			
             var c = h.self,
                 k, i, j, d, f, e;
             k = c._input;
@@ -5846,7 +5845,8 @@ var __extends = this.__extends || function (b, c) {
             else this._prepareColumnOptions(false);
             this._ownerise(true);
             this._field("allowVirtualScrolling", null);
-            if (d === true) {
+			
+            if (d === true) {				
                 if (!b.virtualMode) {
                     c.start = c.end = 0;
                     b._scrollValue = {
@@ -5856,10 +5856,10 @@ var __extends = this.__extends || function (b, c) {
                     }
                 }
                 this._dataStore.load(b)
-            } else {
+            } else {				
                 this.doRefresh(b);
                 this._loaded()
-            }
+            }			
         },
         doRefresh: function (b) {
             if (!a.isPlainObject(b)) b = {};
@@ -5886,7 +5886,7 @@ var __extends = this.__extends || function (b, c) {
                     a.each(c.data, function (b, a) {
                         e.sketchTable.push(e._buildSketchRow(a, b, d))
                     })
-                } else if (c.emptyData) {
+                } else if (c.emptyData) {					
                     d = this._field("visibleLeaves");
                     a.each(c.emptyData, function (b, a) {
                         e.sketchTable.push(e._buildSketchRowEmptyDataItem(a, d, b === c.emptyData.length - 1))
@@ -5899,7 +5899,7 @@ var __extends = this.__extends || function (b, c) {
             this._onRendered(b);
             b && a.isFunction(b.afterRefresh) && b.afterRefresh.apply(this, [b])
         },
-        _buildSketchRow: function (c, h, f) {
+        _buildSketchRow: function (c, h, f) {			 
             var e, g, d, b = [];
             for (e = 0, g = f.length; e < g; e++) {
                 d = f[e];
@@ -9015,7 +9015,7 @@ var __extends = this.__extends || function (b, c) {
                 }
                 i._field("groupedColumns", d);
                 for (c = 0, f = d.length; c < f; c++) {
-                    b = d[c];
+                    b = d[c];					
                     this._groupRowIdx = 0;
                     if (b.groupInfo && b.groupInfo.position && b.groupInfo.position !== "none" && b.dataIndex >= 0) {
                         b.groupInfo.level = h;
@@ -9036,8 +9036,11 @@ var __extends = this.__extends || function (b, c) {
                         return false
                     }
                 });
+				
                 for (k = 0; k < this._data.length; k++) {
+					
                     if (!(this._data[k].rowType & a.wijmo.wijgrid.rowType.data)) continue;
+					
                     b = this._getGroupCellRange(k, j, c);
                     i = true;
                     o = j.groupInfo.outlineMode === "startCollapsed";
@@ -9048,8 +9051,8 @@ var __extends = this.__extends || function (b, c) {
                     if (c && this._grid.options.groupIndent) for (m = b.r1; m <= b.r2; m++) this._addIndent(this._data[m][n], c);
                     l = !(j.groupInfo.groupSingleRow === false && b.r1 === b.r2);
                     switch (j.groupInfo.position) {
-                        case "header":
-                            d = this._addGroupRange(j.groupInfo, b, i, l);
+                        case "header":								
+                            d = this._addGroupRange(j.groupInfo, b, i, l);							
                             for (f = b.r1; f <= b.r2; f++) {
                                 this._data[f].__attr["aria-level"] = c + 1;
                                 if (!i) {
@@ -9120,6 +9123,7 @@ var __extends = this.__extends || function (b, c) {
                 }
             };
             this._buildGroupRow = function (n, l, f) {
+				
                 var e = n.owner,
                     c = e.owner,
                     r = c.owner,
@@ -9156,8 +9160,10 @@ var __extends = this.__extends || function (b, c) {
                         groupingEnd: l.r2,
                         isGroupHeader: f,
                         aggregate: k
-                    };
-                    if (this._grid._trigger("groupText", null, p)) b = p.text
+                    };					
+					var res=this._grid._trigger("groupText", null, p);					
+					if (res) b=p.text;
+					
                 } else {
                     if (b === undefined || b === null) {
                         if (f) b = "{1}: {0}";
@@ -9205,7 +9211,7 @@ var __extends = this.__extends || function (b, c) {
                 };
                 return h
             };
-            this._getAggregate = function (d, b, h, i, j) {
+            this._getAggregate = function (d, b, h, i, j) {				
                 var c = "",
                     g, f, e;
                 if (!b.aggregate || b.aggregate === "none") return c;
@@ -9220,6 +9226,7 @@ var __extends = this.__extends || function (b, c) {
                         groupingEnd: d.r2,
                         isGroupHeader: i
                     };
+					
                     if (this._grid._trigger("groupAggregate", null, g)) c = g.text
                 } else {
                     f = new a.wijmo.wijgrid.tally;
@@ -13638,7 +13645,7 @@ var __extends = this.__extends || function (b, c) {
     "use strict";
     a.extend(a.wijmo.wijgrid, {
         rowStyleFormatterHelper: function (b) {
-            if (!b) throw "invalid arguments";
+            if (!b) throw "invalid arguments";	
             this.format = function (j, l, k) {
                 var i = a.wijmo.wijgrid.renderState,
                     m = a.wijmo.wijgrid.rowType,

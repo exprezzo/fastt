@@ -135,9 +135,6 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 				{ 'type':'keydown', 'propagate':false, 'target':document} 
 			); 
 			
-			
-			
-			
 			$.extend($.gritter.options, { 
 				position: 'bottom-right', // defaults to 'top-right' but can be 'bottom-left', 'bottom-right', 'top-left', 'top-right' 
 				fade_in_speed: 'medium', // how fast notifications fade in (string or int)
@@ -148,8 +145,6 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			TabManager.init('#tabs');
 			
 			//Agregar opcion para salir
-			
-			//
 			
 			ajustarTab(); //Ajusta la altura al tamaño en relacion al tamaño de la pantalla
 			iniciarLinkTabs(); //A los objetos con atributo linkTab=true,  se les agrega comportamiento ajax para abrir tabs.
@@ -184,7 +179,6 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			$('.header_empresa').mouseleave(function(){
 				$(this).removeClass('ui-state-hover');
 			});
-			
 			
 			//$("#splitter").wijsplitter({ orientation: "horizontal" });
 			

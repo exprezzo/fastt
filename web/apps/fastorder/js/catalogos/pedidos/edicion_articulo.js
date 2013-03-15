@@ -252,6 +252,7 @@ var EdicionArticulo=function (tabId){
 			{ name: "eliminado",default:false},
 			{ name: "id"  }
 		];
+		
 		this.fields=fields;
 		// var rec={};
 		
@@ -297,8 +298,9 @@ var EdicionArticulo=function (tabId){
 			selectionMode:'singleRow',
 			data:articulos,
 			columns: [
-				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
-				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},
+								
+				{dataKey: "codigo", headerText: "Codigo",width:"300px"},				
+				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px"},				
 				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
 				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: "n2"},
 				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: "n2"},

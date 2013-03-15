@@ -19,8 +19,14 @@
 		color:white;
 	}
 	
-	tr[arial-level="1"] td:nth-child(2),tr[arial-level="1"] td:nth-child(3), tr[arial-level="1"] td:nth-child(4), tr[arial-level="1"] td:nth-child(5){		
+	/* tr[arial-level="1"] td:nth-child(2),tr[arial-level="1"] td:nth-child(3), tr[arial-level="1"] td:nth-child(4), tr[arial-level="1"] td:nth-child(5){		
 		color:white !important;
+	}
+	*/
+	
+	 tr[arial-level="1"] td{		
+		color:white !important;
+		border:none !important;
 	}
 	
 	

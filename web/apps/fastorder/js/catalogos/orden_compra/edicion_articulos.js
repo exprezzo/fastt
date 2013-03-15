@@ -240,28 +240,32 @@ var EdicionArticulo=function (tabId){
 		});
 	},
 	this.configurarGrid=function(tabId, articulos){
+		// var fields=[			
+			// { name: "codigo"},			
+			// { name: "nombre"},
+			// { name: "presentacion"},
+			// { name: "maximo"},
+			// { name: "minimo"},
+			// { name: "puntoreorden"},
+			// { name: "almacen"},			
+			// { name: "existencia"},
+			// { name: "nombreGpo"},
+			// { name: "grupoposicion"},
+			// { name: "sugerido"},
+			// { name: "pedido"},
+			// { name: "pendiente"},			
+			// { name: "fk_articulo"},		 
+			// { name: "idarticulopre"},
+			// { name: "eliminado",default:false},
+			// { name: "id"  },
+			// { name: "origen"  },
+			// { name: "fk_producto"  },
+			// { name: "pedidoi"  }						
+		// ];
+		
 		var fields=[			
-			{ name: "codigo"},			
-			{ name: "nombre"},
-			{ name: "presentacion"},
-			{ name: "maximo"},
-			{ name: "minimo"},
-			{ name: "puntoreorden"},
-			{ name: "almacen"},			
-			{ name: "existencia"},
-			{ name: "nombreGpo"},
-			{ name: "grupoposicion"},
-			{ name: "sugerido"},
-			{ name: "pedido"},
-			{ name: "pendiente"},			
-			{ name: "fk_articulo"},
-		 // { name: "id_tmp"  },
-			{ name: "idarticulopre"},
-			{ name: "eliminado",default:false},
-			{ name: "id"  },
-			{ name: "origen"  },
-			{ name: "fk_producto"  },
-			{ name: "pedidoi"  }						
+			{ name: "id"},			
+			{ name: "nombre"}
 		];
 		this.fields=fields;
 		// var rec={};
@@ -281,7 +285,7 @@ var EdicionArticulo=function (tabId){
 			code=parseInt(code);	
 			
 			// alert(e.keyCode);
-			if(e.keyCode==46){					
+			if(e.keyCode==46){
 				me.eliminar();
 			}else if(e.keyCode==13){	
 				//Saltar al siguiente registro
@@ -289,76 +293,159 @@ var EdicionArticulo=function (tabId){
 			}else if(e.keyCode==9  && e.shiftKey){	
 				e.preventDefault();								
 				me.seleccionarSiguiente(true);				
-			}else if(e.keyCode==9 ){	
-				e.preventDefault();								
-				me.seleccionarSiguiente();				
+			}else if(e.keyCode==9 ){
+				e.preventDefault();
+				me.seleccionarSiguiente();
 			}
 		});
 		var formatMoney='n'+kore.decimalPlacesMoney;
-		gridPedidos.wijgrid({			
+		gridPedidos.wijgrid({
 			allowColSizing:true,
 			allowPaging: true,
 			pageSize:9,
 			allowEditing:true,
-			allowColMoving: false,			
+			allowColMoving: false,
 			allowKeyboardNavigation:true,
 			selectionMode:'singleRow',
 			data:articulos,
+			groupText:function(e,args){
+				console.log("args"); console.log(args); 
+				// var obj=$.parseJSON(args.groupText);
+				 // Tuve que modificar wijmo para lograr esto.
+				 // console.log("obj"); console.log(obj);
+				// if (obj && obj.nombre) {
+					// gridPedidos.wijgrid('option','tmpText', obj.nombre);
+				// }else{
+					// gridPedidos.wijgrid('option','tmpText', '');
+				// }
+				
+				// args.groupText='aaaa';
+				// args.text='bbbbb'
+				// return true;
+			},
+			groupAggregate: function (e, args) { 
+						 console.log("args groupAggregate"); console.log( args);					
+						// console.log("args.column.dataKey"); console.log(args.column.dataKey);
+					switch( args.column.dataKey ){					
+						 
+						case 'maximo_pi':							
+							// alert(  args.data[args.groupingStart][args.column.dataIndex].value );
+							 // var data=gridPedidos.wijgrid('data');							
+							// if ( args.text=data[args.column.dataIndex-1]==undefined)return ;							
+							// args.text=data[args.column.dataIndex-1].maximo;
+							 args.text=args.data[args.groupingStart][5].value;
+						break;
+						case 'minimo_pi':
+							// var data=gridPedidos.wijgrid('data');							
+							// if ( args.text=data[args.column.dataIndex-1]==undefined)return ;							
+							// args.text=data[args.column.dataIndex -1].minimo;
+							// args.text=args.data[4].puntoreorden;
+							args.text=args.data[args.groupingStart][6].value;
+						break;
+						case 'reorden_pi':
+							// var data=gridPedidos.wijgrid('data');							
+							// console.log("data dataIndex: " + args.column.dataIndex); console.log(data);
+							// if ( args.text=data[args.column.dataIndex-1]!=undefined){
+								// args.text=data[args.column.dataIndex-1].puntoreorden;
+							// }							
+							// args.text= args.data[args.groupingStart][5]
+							args.text=args.data[args.groupingStart][7].value;
+						break;
+						case 'inicial_pi':
+							args.text=args.data[args.groupingStart][8].value;
+						break;
+					}
+					// conso
+					// data[args.column.dataIndex].maximo
+					// console.log("data"); console.log(data);
+					
+				 },
 			columns: [
-				{dataKey: "codigo", headerText: "Codigo",width:"300px"},
+				
 				{  dataKey: "nombreGpo", groupInfo:{
 					 position: "header", 
 					outlineMode: "startExpanded", 
-					headerText: "{0}"
+					headerText: "custom"
 				},visible:false },			
-				{dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px",groupInfo:{
-					position: "header", 
-					outlineMode: "startExpanded", 
-					 headerText: "{0}",
-					 groupSingleRow: true
-				}},
-				{dataKey: "fk_articulo", headerText: "fk_articulo",visible:false},				
-				{dataKey: "almacen", headerText: "Almacen",editable:false},
-				{dataKey: "origen", headerText: "Origen",width:"100px",editable:false},
-				{dataKey: "presentacion", headerText: "Presentacion", editable:false},
-				{dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				{dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				{dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				{dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
-				{dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				{dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
-					if (args.row.type & $.wijmo.wijgrid.rowType.data) {
-						var sugerido=0;
-						
-						var existencia = args.row.data.existencia - args.row.data.pedidoi;
-						
-						if ( parseInt(args.row.data.puntoreorden) > existencia ){														
-							sugerido = args.row.data.maximo-existencia;
-							args.row.data.pendiente=sugerido - args.row.data.pedido;
-						}else{							
-							args.row.data.pendiente=0;
-						}
-						sugerido=sugerido.toFixed( kore.decimalPlacesMoney );
-						args.row.data.sugerido=sugerido;
-						args.$container
-							.css("text-align", "right")
-							.empty()
-							.append(args.row.data.sugerido);
-						return true;
-					}
-				}, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},				
-				{dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: formatMoney, aggregate: "sum" },
-				{dataKey: "pendiente", headerText: "Pendiente",editable:false, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},
+				{dataKey: "producto", headerText: "Art&iacute;culo",width:"300px",cellFormatter: function(args) { args.formattedValue='';},
+					groupInfo:{
+						position: "header", 
+						outlineMode: "startExpanded", 
+						headerText: "{0}",					  
+						groupSingleRow: true
+				},visible:false, editable:false, aggregate:'custom'},
+				{dataKey: "codigo", visible:false, headerText: "Codigo",width:"300px",aggregate:'custom', editable:false, cellFormatter: function(args) { args.formattedValue='';}},
+				{dataKey: "producto_pi", headerText: "Origen", aggregate:'custom', editable:false},
+				{dataKey: "almacen_pi", headerText: "Almacen", aggregate:'custom', editable:false, },
+				{dataKey: "maximo",  visible:false, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+				{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+				{dataKey: "puntoreorden",visible:false,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+				{dataKey: "existencia",visible:false , headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "average"},
+				{dataKey: "maximo_pi",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},				
+				{dataKey: "minimo_pi",  visible:true, headerText: "Minimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+				{dataKey: "reorden_pi",  visible:true, headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+				{dataKey: "inicial_pi", headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "custom"},
+				{dataKey: "sugerido_pi", headerText: "Sugerido"},
+				{dataKey: "cantidad_pi", headerText: "Ped. Int.", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
+				{dataKey: "cantidad", headerText: "Ordenado", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
+				
+				{dataKey: "idproducto",visible:false},				
+				{dataKey: "idalmacen_pi",visible:false},
 				{dataKey: "id", visible:false, headerText: "ID" },
-				// {dataKey: "id_tmp", hidden:true, visible:false, headerText: "ID_TMP" },				
-				{dataKey: "fk_orden_compra", headerText: "fk_orden_compra", visible:false},
-				{dataKey: "cantidad", headerText: "cantidad", visible:false},
-				{dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},				
-				{visible:false,dataKey: "grupoposicion"},
-				{dataKey: "fk_producto_origen", headerText: "fk_producto", visible:false},
-				{dataKey: "fk_pedido_detalle", headerText: "fk_pedido_detalle", visible:false},
-				{dataKey: "fk_almacen", headerText: "fk_almacen", visible:false},
-				{dataKey: "producto", headerText: "producto", visible:false},
+				{dataKey: "pro_pi", visible:false }
+				// {dataKey: "codigo", headerText: "Codigo",width:"300px"},
+				// {  dataKey: "nombreGpo", groupInfo:{
+					 // position: "header", 
+					// outlineMode: "startExpanded", 
+					// headerText: "{0}"
+				// },visible:false },			
+				// {dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px",groupInfo:{
+					// position: "header", 
+					// outlineMode: "startExpanded", 
+					 // headerText: "{0}",
+					 // groupSingleRow: true
+				// }},
+				// {dataKey: "fk_articulo", headerText: "fk_articulo",visible:false},				
+				// {dataKey: "almacen", headerText: "Almacen",editable:false},
+				// {dataKey: "origen", headerText: "Origen",width:"100px",editable:false},
+				// {dataKey: "presentacion", headerText: "Presentacion", editable:false},
+				// {dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
+				// {dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
+				// {dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
+				// {dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
+				// {dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
+				// {dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
+					// if (args.row.type & $.wijmo.wijgrid.rowType.data) {
+						// var sugerido=0;
+						
+						// var existencia = args.row.data.existencia - args.row.data.pedidoi;
+						
+						// if ( parseInt(args.row.data.puntoreorden) > existencia ){														
+							// sugerido = args.row.data.maximo-existencia;
+							// args.row.data.pendiente=sugerido - args.row.data.pedido;
+						// }else{							
+							// args.row.data.pendiente=0;
+						// }
+						// sugerido=sugerido.toFixed( kore.decimalPlacesMoney );
+						// args.row.data.sugerido=sugerido;
+						// args.$container
+							// .css("text-align", "right")
+							// .empty()
+							// .append(args.row.data.sugerido);
+						// return true;
+					// }
+				// }, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},				
+				// {dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: formatMoney, aggregate: "sum" },
+				// {dataKey: "pendiente", headerText: "Pendiente",editable:false, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},
+				// {dataKey: "id", visible:false, headerText: "ID" },				
+				// {dataKey: "fk_orden_compra", headerText: "fk_orden_compra", visible:false},
+				// {dataKey: "cantidad", headerText: "cantidad", visible:false},
+				// {dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},				
+				// {visible:false,dataKey: "grupoposicion"},
+				// {dataKey: "fk_producto_origen", headerText: "fk_producto", visible:false},
+				// {dataKey: "fk_pedido_detalle", headerText: "fk_pedido_detalle", visible:false},
+				// {dataKey: "fk_almacen", headerText: "fk_almacen", visible:false},
+				// {dataKey: "producto", headerText: "producto", visible:false},
 			],
 			rowStyleFormatter: function(args) {
 				if (args.dataRowIndex>-1)
@@ -372,26 +459,49 @@ var EdicionArticulo=function (tabId){
 		});
 		var me=this;
 		
-		
-		gridPedidos.wijgrid({ beforeGroupEdit: function(e, args) { //agregada al nucleo de Wijmo el 11-03-2013
-			// alert('beforeGroupEdit');
-			console.log("e");console.log(e);
-			console.log("args");console.log(args);
-			args.target.parent
-			var input=$("<input />");			
-				input.val(args.target.innerText) 
-				.appendTo( $(args.target ).empty()); 
+		gridPedidos.wijgrid({ groupText: function (e, args) { 
+			// console.log("args); console.log(args);
 			
+		}} );
+		
+		gridPedidos.wijgrid({ beforeGroupEdit: function(e, args) { //agregada al nucleo de Wijmo el 11-03-2013		
+			
+			var input=$("<input style='text-align:right;' />");			
+				input.val(args.target.innerText) 
+				.appendTo( $(args.target ).empty() ); 				
+				
+			 
+				
+			jQuery.data( input, 'celda', args.target )				
+			input.focus();
+			
+			input.bind('change',function(){
+				alert('change');
+			});
+			
+			input.bind('blur',function(){
+				// alert('blur');
+				var input=$(this);				
+				
+				
+				// celda=jQuery.data(this,'celda');					
+				 var div=$('<div class="swijmo-wijgrid-innercell">'+input.val()+'</div>');									
+				// input.remove();
+				
+				 div.appendTo( input.parent().empty() );
+							
+				
+			});
 		}});
 		
-		gridPedidos.wijgrid({ beforeCellEdit: function(e, args) {
+		gridPedidos.wijgrid({ beforeCellEditX: function(e, args) {
 				var row = args.cell.row();								
 				var index = args.cell.rowIndex();				
 				
 				var column=args.cell.column();
 				
 				if (column.editable === false){
-					// console.log( "column" );	console.log( column );					
+								
 					
 					return false;
 				}
@@ -441,7 +551,7 @@ var EdicionArticulo=function (tabId){
 				} 
 			}
 		});
-		gridPedidos.wijgrid({beforeCellUpdate:function(e, args) {
+		gridPedidos.wijgrid({beforeCellUpdateX:function(e, args) {
 				switch (args.cell.column().dataKey) {
 					case "nombre":
 						args.value = args.cell.container().find("input").val();
@@ -478,7 +588,7 @@ var EdicionArticulo=function (tabId){
 							row.data.pendiente=me.articulo.pendiente;							
 							row.data.nombreGpo=me.articulo.grupo;
 							gridPedidos.wijgrid('ensureControl',true);
-							// console.log("data"); console.log(data);
+							
 						}
 						break;
 					case "existencia":
@@ -502,7 +612,7 @@ var EdicionArticulo=function (tabId){
 			}
 		});
 		
-		$(me.tabId+' .grid_articulos').wijgrid({ afterCellUpdate: function (e, args) {
+		$(me.tabId+' .grid_articulos').wijgrid({ afterCellUpdateX: function (e, args) {
 			$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
 		} });
 		
@@ -780,7 +890,7 @@ var EdicionArticulo=function (tabId){
 			{			
 				var rowdom=$(me.tabId+' .grid_articulos tbody tr:eq('+me.selected.sectionRowIndex +')');				
 				me.articulo=item;
-				console.log('item');console.log(item);
+				
 				rowdom.find('td:eq(1) div').html(item.nombre);
 				rowdom.find('td:eq(2) div').html(item.presentacion);
 				rowdom.find('td:eq(3) div').html(item.maximo);
