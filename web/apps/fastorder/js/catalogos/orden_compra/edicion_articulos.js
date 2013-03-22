@@ -58,6 +58,7 @@ var EdicionArticulo=function (tabId){
 			{name: 'minimo'},
 			{name: 'maximo'},
 			{name: 'puntoreorden'},
+			{name: 'nombre_almacen'},
 		{
 			name: 'label',
 			mapping: 'nombre'
@@ -72,7 +73,7 @@ var EdicionArticulo=function (tabId){
 		var myReader = new wijarrayreader(fields);
 		
 		var proxy = new wijhttpproxy({
-			url: '/'+kore.modulo+'/pedidoi/getArticulos',
+			url: '/'+kore.modulo+'/orden_compra/getArticulos',
 			dataType:"json"			
 		});
 		
@@ -87,22 +88,11 @@ var EdicionArticulo=function (tabId){
 					// }
 				// });				
 			},
-			loading: function (dataSource, userData) {                            				
-				 
+			loading: function (dataSource, userData) {				 
 				 dataSource.proxy.options.data=dataSource.proxy.options.data || {};
 				 dataSource.proxy.options.data.idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();		
             }
-		});
-		
-		// datasource.proxy.options.data={
-			// id		:$(this.tabId+' .frmPedidoi .txtId').val(),
-			// IdTmp	:$(this.tabId+' .frmPedidoi .txtIdTmp').val()
-		// };
-		
-		// datasource.proxy.options.data={
-			// id		:5,
-			// IdTmp	:6
-		// };
+		});		
 		
 		datasource.reader.read= function (datasource) {
 			var totalRows=datasource.data.totalRows;
@@ -126,17 +116,26 @@ var EdicionArticulo=function (tabId){
 			search: function (e, obj) {
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
-			select: function (e, item) 
-			{		
-				 
-				var rowdom=$(me.tabId+' .grid_articulos tbody tr:eq('+me.selected.sectionRowIndex +')');				
-				me.articulo=item;
+			select: function (e, item)
+			{
+				var rowdom=$(me.tabId+' .grid_articulos tbody tr:eq('+me.selected.sectionRowIndex +')');
+				me.articulo=item;				
+				
+				// var numCel=0;
+				// var dataKey;
+				// for(var $i=0; $i<me.columns.length; $i++ ){
+					// if (me.columns[$i].visible===false) continue;
+					// dataKey=me.columns[$i].dataKey;
+					// rowdom.find('td:eq('+numCel+') div').html(item[dataKey]);
+					// numCel++;
+				// }
+				
 				rowdom.find('td:eq(0) div').html(item.codigo);
-				rowdom.find('td:eq(2) div').html(item.presentacion);
-				rowdom.find('td:eq(3) div').html(item.maximo);
-				rowdom.find('td:eq(4) div').html(item.minimo);
-				rowdom.find('td:eq(5) div').html(item.puntoreorden);
-				rowdom.find('td:eq(6) div').html(item.existencia);
+				// rowdom.find('td:eq(2) div').html(item.presentacion);
+				rowdom.find('td:eq(2) div').html(item.maximo);
+				rowdom.find('td:eq(3) div').html(item.minimo);
+				rowdom.find('td:eq(4) div').html(item.puntoreorden);
+				rowdom.find('td:eq(5) div').html(item.existencia);
 				
 				
 				var reorden=parseInt( item.puntoreorden );
@@ -148,11 +147,13 @@ var EdicionArticulo=function (tabId){
 					sugerido = maximo-existencia;					
 				}
 			
+				rowdom.find('td:eq(6) div').html(sugerido);
 				rowdom.find('td:eq(7) div').html(sugerido);
 				rowdom.find('td:eq(8) div').html(sugerido);
 				rowdom.find('td:eq(9) div').html(0);
 				me.articulo.pedido=sugerido;
 				me.articulo.sugerido=sugerido;
+				me.articulo.pendiente=0;
 				
 				return true;
 				
@@ -189,10 +190,12 @@ var EdicionArticulo=function (tabId){
 		var iActual=parseInt(iActual);
 		
 		var me=this;
+		
+		
 		$.ajax({
 			type: "POST",
 			url: '/'+kore.modulo+'/pedidoi/guardarArticulo',
-			data: {datos:datos}
+			data: {datos:datos,stock:me.prods}
 		}).done(function( response ) {
 									
 			var resp = eval('(' + response + ')');
@@ -239,50 +242,15 @@ var EdicionArticulo=function (tabId){
 			});
 		});
 	},
-	this.configurarGrid=function(tabId, articulos){
-		// var fields=[			
-			// { name: "codigo"},			
-			// { name: "nombre"},
-			// { name: "presentacion"},
-			// { name: "maximo"},
-			// { name: "minimo"},
-			// { name: "puntoreorden"},
-			// { name: "almacen"},			
-			// { name: "existencia"},
-			// { name: "nombreGpo"},
-			// { name: "grupoposicion"},
-			// { name: "sugerido"},
-			// { name: "pedido"},
-			// { name: "pendiente"},			
-			// { name: "fk_articulo"},		 
-			// { name: "idarticulopre"},
-			// { name: "eliminado",default:false},
-			// { name: "id"  },
-			// { name: "origen"  },
-			// { name: "fk_producto"  },
-			// { name: "pedidoi"  }						
-		// ];
-		
-		var fields=[			
-			{ name: "id"},			
-			{ name: "nombre"}
-		];
-		this.fields=fields;
-		// var rec={};
-		
-		// $.each( fields, function(indexInArray, valueOfElement){
-			// var campo=valueOfElement.name;
-			// rec[campo]='';
-		
-		// } );
-		// this.rec=rec;		
-		
+	this.configurarGrid=function(tabId, articulos){			
 		var gridPedidos=$('#tabs '+tabId+" .grid_articulos");				
 		
 		var me=this;
-		gridPedidos.bind('keydown', function(e) {		
+		gridPedidos.delegate('td','keydown', function(e) {		
 			var code = e.keyCode || e.which;
 			code=parseInt(code);	
+			
+			
 			
 			// alert(e.keyCode);
 			if(e.keyCode==46){
@@ -292,13 +260,45 @@ var EdicionArticulo=function (tabId){
 				me.navegarEnter(true);			 
 			}else if(e.keyCode==9  && e.shiftKey){	
 				e.preventDefault();								
-				me.seleccionarSiguiente(true);				
-			}else if(e.keyCode==9 ){
+				me.seleccionarSiguiente(this,true);				
+			}else if(e.keyCode==9 ){				
 				e.preventDefault();
-				me.seleccionarSiguiente();
+				me.seleccionarSiguiente(this);
 			}
 		});
 		var formatMoney='n'+kore.decimalPlacesMoney;
+		var columns=[				
+			/* {  dataKey: "nombreGpo", groupInfo:{position: "header", outlineMode: "startExpanded", headerText: "custom"},visible:false },			*/
+			{dataKey: "producto", headerText: "Art&iacute;culo",width:100,cellFormatter: function(args) { args.formattedValue='';},
+				groupInfo:{
+					position: "header", 
+					outlineMode: "startExpanded", 
+					headerText: "{0}",					  
+					groupSingleRow: false
+			},visible:false, editable:false, aggregate:'custom'},				
+			{dataKey: "producto_pi",width:200,  headerText: "Origen", aggregate:'custom', editable:true},
+			{dataKey: "almacen_pi",  headerText: "Almacen", aggregate:'custom', editable:false},				
+			{dataKey: "maximo_pi",   headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			{dataKey: "minimo_pi",   headerText: "Minimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			{dataKey: "reorden_pi",  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			{dataKey: "inicial_pi",  headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "custom"},
+			{dataKey: "cantidad_pi", headerText: "Ped. Int.", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
+			{dataKey: "sugerido_pi", headerText: "Sugerido",dataType: 'number', aggregate:'custom'},			
+			{dataKey: "cantidad",  headerText: "Ordenado", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},				
+			{dataKey: "pendiente",headerText:'Pendiente', width:190,dataType: 'number'},
+			{dataKey: "productoJson",visible:true, width:0,  aggregate: "custom"},				
+			{dataKey: "codigo", visible:false, headerText: "Codigo",width:'100',aggregate:'custom', editable:false, cellFormatter: function(args) { args.formattedValue='';}},
+			{dataKey: "maximo",  visible:false, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+			{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+			{dataKey: "puntoreorden",visible:false,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+			{dataKey: "existencia",visible:false , headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "average"},
+			{dataKey: "idproducto",visible:false},				
+			{dataKey: "idalmacen_pi",visible:false},
+			{dataKey: "id", visible:false, headerText: "ID" },
+			{dataKey: "pro_pi", visible:false },
+			{dataKey: "fk_pedido_detalle", visible:false }						
+		];
+		this.columns=columns;
 		gridPedidos.wijgrid({
 			allowColSizing:true,
 			allowPaging: true,
@@ -308,176 +308,158 @@ var EdicionArticulo=function (tabId){
 			allowKeyboardNavigation:true,
 			selectionMode:'singleRow',
 			data:articulos,
-			groupText:function(e,args){
-				console.log("args"); console.log(args); 
-				// var obj=$.parseJSON(args.groupText);
-				 // Tuve que modificar wijmo para lograr esto.
-				 // console.log("obj"); console.log(obj);
-				// if (obj && obj.nombre) {
-					// gridPedidos.wijgrid('option','tmpText', obj.nombre);
-				// }else{
-					// gridPedidos.wijgrid('option','tmpText', '');
-				// }
+			ensureColumnsPxWidth:true,
+			columns:columns,			
+			groupText:function(e,args){					},	
+			groupAggregate: function (e, args, f, g) {
+				switch( args.column.dataKey ){
+					case 'sugerido_pi':																		
+						var prodId=args.data[ args.groupingStart][17].value;;
+						var index=prodId.toString();
 				
-				// args.groupText='aaaa';
-				// args.text='bbbbb'
-				// return true;
+						if ( me.padre.prods==undefined ){
+							me.padre.prods={};
+						}
+						if ( me.padre.prods[index] == undefined ){
+							me.padre.prods[index]={};
+						}
+														
+						me.padre.prods[index]['idalmacen']=$(me.tabId+ ' .txtFkAlmacen').val();												
+						
+						if ( me.padre.prods[index]['maximo_pi'] == undefined )												
+							me.padre.prods[index]['maximo_pi']= args.data[ args.groupingStart][13].value;
+							
+						if ( me.padre.prods[index]['minimo_pi'] == undefined )												
+							me.padre.prods[index]['minimo_pi']=args.data[ args.groupingStart][14].value;
+							
+						if ( me.padre.prods[index]['reorden_pi'] == undefined )												
+							me.padre.prods[index]['reorden_pi']=args.data[ args.groupingStart][15].value;
+							
+						if ( me.padre.prods[index]['inicial_pi'] == undefined )												
+							me.padre.prods[index]['inicial_pi']=args.data[ args.groupingStart][16].value;
+							
+						var maximo =me.padre.prods[index]['maximo_pi']*1,
+							minimo =me.padre.prods[index]['minimo_pi']*1,
+							reorden=me.padre.prods[index]['reorden_pi']*1, 
+							existencia =me.padre.prods[index]['inicial_pi'] *1,
+							pi=args.data[ args.groupingStart][18].value, 
+							sugerido=0;
+						
+						console.log("existencia");console.log(existencia);
+						console.log("reorden");console.log(reorden);
+						if (existencia <= reorden){
+							
+							sugerido=maximo-existencia;
+							
+						}
+						args.data[ args.groupingStart][18].value=sugerido;
+						args.text=sugerido;
+						
+					//---------------------------------
+					break;
+					case 'productoJson':						
+						args.text=args.data[args.groupingStart][17].value;						
+					break;
+					case 'maximo_pi':
+						var prodId=args.data[ args.groupingStart][17].value;;						
+						var index=prodId.toString();
+						// alert(index);
+						if (me.padre.prods && me.padre.prods[index]!=undefined && me.padre.prods[index]['maximo_pi']!=undefined ){
+							args.text=me.padre.prods[index]['maximo_pi'];
+						}else{
+							args.text=args.data[args.groupingStart][13].value;
+						}						
+					break;
+					case 'minimo_pi':
+						var prodId=args.data[ args.groupingStart][17].value;;						
+						var index=prodId.toString();
+						if (me.padre.prods && me.padre.prods[index]!=undefined && me.padre.prods[index]['minimo_pi']!=undefined ){
+							args.text=me.padre.prods[index]['minimo_pi'];
+						}else{
+							args.text=args.data[args.groupingStart][14].value;
+						}
+						
+					break;
+					case 'reorden_pi':
+						var prodId=args.data[ args.groupingStart][17].value;;						
+						var index=prodId.toString();
+						if (me.padre.prods && me.padre.prods[index]!=undefined && me.padre.prods[index]['reorden_pi']!=undefined ){
+							args.text=me.padre.prods[index]['reorden_pi'];
+						}else{
+							args.text=args.data[args.groupingStart][15].value;
+						}						
+					break;
+					case 'inicial_pi':
+						var prodId=args.data[ args.groupingStart][17].value;;						
+						var index=prodId.toString();
+						if (me.padre.prods && me.padre.prods[index]!=undefined && me.padre.prods[index]['inicial_pi']!=undefined ){
+							args.text=me.padre.prods[index]['inicial_pi'];
+						}else{
+							args.text=args.data[args.groupingStart][16].value;
+						}												
+					break;
+				}
 			},
-			groupAggregate: function (e, args) { 
-						 console.log("args groupAggregate"); console.log( args);					
-						// console.log("args.column.dataKey"); console.log(args.column.dataKey);
-					switch( args.column.dataKey ){					
-						 
-						case 'maximo_pi':							
-							// alert(  args.data[args.groupingStart][args.column.dataIndex].value );
-							 // var data=gridPedidos.wijgrid('data');							
-							// if ( args.text=data[args.column.dataIndex-1]==undefined)return ;							
-							// args.text=data[args.column.dataIndex-1].maximo;
-							 args.text=args.data[args.groupingStart][5].value;
-						break;
-						case 'minimo_pi':
-							// var data=gridPedidos.wijgrid('data');							
-							// if ( args.text=data[args.column.dataIndex-1]==undefined)return ;							
-							// args.text=data[args.column.dataIndex -1].minimo;
-							// args.text=args.data[4].puntoreorden;
-							args.text=args.data[args.groupingStart][6].value;
-						break;
-						case 'reorden_pi':
-							// var data=gridPedidos.wijgrid('data');							
-							// console.log("data dataIndex: " + args.column.dataIndex); console.log(data);
-							// if ( args.text=data[args.column.dataIndex-1]!=undefined){
-								// args.text=data[args.column.dataIndex-1].puntoreorden;
-							// }							
-							// args.text= args.data[args.groupingStart][5]
-							args.text=args.data[args.groupingStart][7].value;
-						break;
-						case 'inicial_pi':
-							args.text=args.data[args.groupingStart][8].value;
-						break;
-					}
-					// conso
-					// data[args.column.dataIndex].maximo
-					// console.log("data"); console.log(data);
+			rowStyleFormatter: function(args) {				
+				//como voy a saber que el registro no esta concentrado??
+				//facil, cuando no tiene establecida una relacion con el detalle								
+				if (args.dataRowIndex>-1){
+					args.$rows.attr('rowId',args.data.id_tmp);					
+					var fk= ( args.data.fk_pedido_detalle!=undefined )? parseInt(args.data.fk_pedido_detalle) : 0;					
+					if ( isNaN(fk ) || fk==0 ){
+						args.$rows.attr('singrupo','true');
+					}					
+				}else{					
+					args.$rows.attr('grupo_editable','true');
 					
-				 },
-			columns: [
-				
-				{  dataKey: "nombreGpo", groupInfo:{
-					 position: "header", 
-					outlineMode: "startExpanded", 
-					headerText: "custom"
-				},visible:false },			
-				{dataKey: "producto", headerText: "Art&iacute;culo",width:"300px",cellFormatter: function(args) { args.formattedValue='';},
-					groupInfo:{
-						position: "header", 
-						outlineMode: "startExpanded", 
-						headerText: "{0}",					  
-						groupSingleRow: true
-				},visible:false, editable:false, aggregate:'custom'},
-				{dataKey: "codigo", visible:false, headerText: "Codigo",width:"300px",aggregate:'custom', editable:false, cellFormatter: function(args) { args.formattedValue='';}},
-				{dataKey: "producto_pi", headerText: "Origen", aggregate:'custom', editable:false},
-				{dataKey: "almacen_pi", headerText: "Almacen", aggregate:'custom', editable:false, },
-				{dataKey: "maximo",  visible:false, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
-				{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
-				{dataKey: "puntoreorden",visible:false,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
-				{dataKey: "existencia",visible:false , headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "average"},
-				{dataKey: "maximo_pi",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},				
-				{dataKey: "minimo_pi",  visible:true, headerText: "Minimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
-				{dataKey: "reorden_pi",  visible:true, headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
-				{dataKey: "inicial_pi", headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "custom"},
-				{dataKey: "sugerido_pi", headerText: "Sugerido"},
-				{dataKey: "cantidad_pi", headerText: "Ped. Int.", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
-				{dataKey: "cantidad", headerText: "Ordenado", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
-				
-				{dataKey: "idproducto",visible:false},				
-				{dataKey: "idalmacen_pi",visible:false},
-				{dataKey: "id", visible:false, headerText: "ID" },
-				{dataKey: "pro_pi", visible:false }
-				// {dataKey: "codigo", headerText: "Codigo",width:"300px"},
-				// {  dataKey: "nombreGpo", groupInfo:{
-					 // position: "header", 
-					// outlineMode: "startExpanded", 
-					// headerText: "{0}"
-				// },visible:false },			
-				// {dataKey: "nombre", headerText: "Art&iacute;culo",width:"300px",groupInfo:{
-					// position: "header", 
-					// outlineMode: "startExpanded", 
-					 // headerText: "{0}",
-					 // groupSingleRow: true
-				// }},
-				// {dataKey: "fk_articulo", headerText: "fk_articulo",visible:false},				
-				// {dataKey: "almacen", headerText: "Almacen",editable:false},
-				// {dataKey: "origen", headerText: "Origen",width:"100px",editable:false},
-				// {dataKey: "presentacion", headerText: "Presentacion", editable:false},
-				// {dataKey: "maximo",  visible:true, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				// {dataKey: "minimo",  visible:true, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				// {dataKey: "puntoreorden",visible:true,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				// {dataKey: "existencia", headerText: "I. Inicial", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
-				// {dataKey: "pedidoi", headerText: "Pedido I",editable:false,  dataType: "number", dataFormatString: formatMoney, aggregate: "sum"},
-				// {dataKey: "sugerido", headerText: "Sugerido",editable:false,cellFormatter: function (args) {
-					// if (args.row.type & $.wijmo.wijgrid.rowType.data) {
-						// var sugerido=0;
-						
-						// var existencia = args.row.data.existencia - args.row.data.pedidoi;
-						
-						// if ( parseInt(args.row.data.puntoreorden) > existencia ){														
-							// sugerido = args.row.data.maximo-existencia;
-							// args.row.data.pendiente=sugerido - args.row.data.pedido;
-						// }else{							
-							// args.row.data.pendiente=0;
-						// }
-						// sugerido=sugerido.toFixed( kore.decimalPlacesMoney );
-						// args.row.data.sugerido=sugerido;
-						// args.$container
-							// .css("text-align", "right")
-							// .empty()
-							// .append(args.row.data.sugerido);
-						// return true;
-					// }
-				// }, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},				
-				// {dataKey: "pedido", headerText: "Pedido",  dataType: "number", dataFormatString: formatMoney, aggregate: "sum" },
-				// {dataKey: "pendiente", headerText: "Pendiente",editable:false, dataType: "number", dataFormatString: formatMoney,aggregate: "sum"},
-				// {dataKey: "id", visible:false, headerText: "ID" },				
-				// {dataKey: "fk_orden_compra", headerText: "fk_orden_compra", visible:false},
-				// {dataKey: "cantidad", headerText: "cantidad", visible:false},
-				// {dataKey: "idarticulopre", headerText: "idarticulopre", visible:false},				
-				// {visible:false,dataKey: "grupoposicion"},
-				// {dataKey: "fk_producto_origen", headerText: "fk_producto", visible:false},
-				// {dataKey: "fk_pedido_detalle", headerText: "fk_pedido_detalle", visible:false},
-				// {dataKey: "fk_almacen", headerText: "fk_almacen", visible:false},
-				// {dataKey: "producto", headerText: "producto", visible:false},
-			],
-			rowStyleFormatter: function(args) {
-				if (args.dataRowIndex>-1)
-					args.$rows.attr('rowId',args.data.id_tmp);
+				}
+					
 			},
 			cellStyleFormatter: function(args) {
-				 if (args.column._originalDataKey=='fecha'){
-					 args.$cell.addClass("colFecha");
-				 }
+				args.$cell.attr("dataindex",args.column._originalDataKey);				 
 			}
 		});
 		var me=this;
 		
-		gridPedidos.wijgrid({ groupText: function (e, args) { 
-			// console.log("args); console.log(args);
-			
+		gridPedidos.wijgrid({ groupText: function (e, args) { 			
 		}} );
 		
-		gridPedidos.wijgrid({ beforeGroupEdit: function(e, args) { //agregada al nucleo de Wijmo el 11-03-2013		
+		gridPedidos.wijgrid({ beforeGroupEdit: function(e, args) { //agregada al nucleo de Wijmo el 11-03-2013					
+			var tr=$(args.target).parents('tr');			
 			
-			var input=$("<input style='text-align:right;' />");			
-				input.val(args.target.innerText) 
+			var tds= tr.find('td');			
+			var size=tds.length;			
+			var last=tds[size-1];			
+			var div = $(last).find('div');
+								
+			var input=$("<input style='text-align:right;' />");
+				input.val( args.target.innerText ) 
 				.appendTo( $(args.target ).empty() ); 				
 				
-			 
-				
-			jQuery.data( input, 'celda', args.target )				
+			// jQuery.data( input, 'celda', args.target )
 			input.focus();
 			
+			
 			input.bind('change',function(){
-				alert('change');
+				
+				var prodId=div[0].innerHTML;
+				var index=prodId.toString();
+				
+				if ( me.padre.prods==undefined ){
+					me.padre.prods={};
+				}
+				if ( me.padre.prods[index] == undefined ){
+					me.padre.prods[index]={};
+				}
+								
+				var di=$(args.target).parent().attr('dataIndex');
+				console.log("di"); console.log(di);
+				
+				me.padre.prods[index][di]= $(this).val();				
+				
+				$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
 			});
+			
 			
 			input.bind('blur',function(){
 				// alert('blur');
@@ -485,37 +467,38 @@ var EdicionArticulo=function (tabId){
 				
 				
 				// celda=jQuery.data(this,'celda');					
-				 var div=$('<div class="swijmo-wijgrid-innercell">'+input.val()+'</div>');									
-				// input.remove();
+				// var di=$(args.target).parent().attr('dataIndex');				
 				
-				 div.appendTo( input.parent().empty() );
+				 // var div=$('<div class="swijmo-wijgrid-innercell">'+input.val()+'</div>');									
+				// input.remove();
+				// var di = input.parent().attr('dataIndex');
+				
+				 input.parent().empty().html( input.val() );
 							
 				
 			});
 		}});
 		
-		gridPedidos.wijgrid({ beforeCellEditX: function(e, args) {
+		gridPedidos.wijgrid({ beforeCellEdit: function(e, args) {
 				var row = args.cell.row();								
-				var index = args.cell.rowIndex();				
-				
+				var index = args.cell.rowIndex();								
 				var column=args.cell.column();
 				
 				if (column.editable === false){
-								
-					
 					return false;
 				}
 				
-				var sel=gridPedidos.wijgrid('selection');				
-				sel.addRows(index);				
+				var sel=gridPedidos.wijgrid('selection');
+				sel.addRows(index);
 
-				switch (args.cell.column().dataKey) { 					
-					case "codigo": 
+				// alert(args.cell.column().dataKey);
+				switch (args.cell.column().dataKey) {
+					case "codigo":
 						var combo=
 						$("<input />")
-							.val(args.cell.value()) 
-							.appendTo(args.cell.container().empty());   
-						args.handled = true;   
+							.val(args.cell.value())
+							.appendTo(args.cell.container().empty());
+						args.handled = true;
 						
 						var domCel = args.cell.tableCell();
 						combo.css('width',	$(domCel).width()-10 );
@@ -523,7 +506,8 @@ var EdicionArticulo=function (tabId){
 						
 						me.configurarComboCodigo(combo);
 					break;
-					case "nombre": 
+					case "producto_pi": 
+						
 						var combo=
 						$("<input />")
 							.val(args.cell.value()) 
@@ -536,7 +520,7 @@ var EdicionArticulo=function (tabId){
 						
 						me.configurarComboArticulo(combo);
 					break;
-					default:
+					default:						
 						var input=$("<input />")
 							.val(args.cell.value())
 							.appendTo(args.cell.container().empty()).focus().select();
@@ -551,25 +535,55 @@ var EdicionArticulo=function (tabId){
 				} 
 			}
 		});
-		gridPedidos.wijgrid({beforeCellUpdateX:function(e, args) {
+		gridPedidos.wijgrid({beforeCellUpdate:function(e, args) {
+			
 				switch (args.cell.column().dataKey) {
-					case "nombre":
+					case "producto_pi":
+						alert("producto_pi");
 						args.value = args.cell.container().find("input").val();
 						
 						if (me.articulo!=undefined){
+							alert("producto definido");
 							var row=args.cell.row();
-							row.data.presentacion=me.articulo.presentacion;
-							row.data.fk_articulo=me.articulo.value;
+							console.log(me.articulo);
+							row.data.idproducto=me.articulo.value;
+							row.data.producto = me.articulo.nombre;
+							row.data.pedido=me.articulo.pedido;
+							// row.data.fk_producto_origen=me.articulo.id;							
 							row.data.codigo=me.articulo.codigo;
 							row.data.maximo=me.articulo.maximo;
 							row.data.minimo=me.articulo.minimo;
 							row.data.puntoreorden=me.articulo.puntoreorden;
 							row.data.existencia=me.articulo.existencia;
-							row.data.sugerido=me.articulo.sugerido;
-							row.data.pedido=me.articulo.pedido;
+							row.data.sugerido=me.articulo.sugerido;							
 							row.data.pendiente=me.articulo.pendiente;
 							row.data.nombreGpo=me.articulo.grupo;		
 							// gridPedidos.wijgrid('ensureControl');
+							
+							
+			
+			// {dataKey: "almacen_pi",  headerText: "Almacen", aggregate:'custom', editable:false},				
+			// {dataKey: "maximo_pi",   headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			// {dataKey: "minimo_pi",   headerText: "Minimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			// {dataKey: "reorden_pi",  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			// {dataKey: "inicial_pi",  headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "custom"},
+			// {dataKey: "sugerido_pi", headerText: "Sugerido",dataType: 'number'},
+			// {dataKey: "cantidad_pi", headerText: "Ped. Int.", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
+			// {dataKey: "cantidad",  headerText: "Ordenado", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},				
+			// {dataKey: "pendiente",headerText:'Pendiente', width:190,dataType: 'number'},
+			// {dataKey: "productoJson",visible:true, width:0,  aggregate: "custom"},				
+			// {dataKey: "codigo", visible:false, headerText: "Codigo",width:'100',aggregate:'custom', editable:false, cellFormatter: function(args) { args.formattedValue='';}},
+			// {dataKey: "maximo",  visible:false, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+			// {dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+			// {dataKey: "puntoreorden",visible:false,  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
+			// {dataKey: "existencia",visible:false , headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "average"},
+			// {dataKey: "idproducto",visible:false},				
+			// {dataKey: "idalmacen_pi",visible:false},
+			// {dataKey: "id", visible:false, headerText: "ID" },
+			// {dataKey: "pro_pi", visible:false },
+			// {dataKey: "fk_pedido_detalle", visible:false }		
+							//actualizar el stock;
+							
 						}
 						break;
 					case "codigo":
@@ -616,8 +630,7 @@ var EdicionArticulo=function (tabId){
 			$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
 		} });
 		
-		gridPedidos.wijgrid({cancelEdit:function(){
-				// $(me.tabId+' .grid_articulos').wijgrid('ensureControl',true);
+		gridPedidos.wijgrid({cancelEdit:function(){		
 				$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
 			}
 		});
@@ -633,15 +646,15 @@ var EdicionArticulo=function (tabId){
 			
 		} });
 		
-		//corregir bug al expandir/colapsar
+		//en los grids agrupados, para corregir bug al expandir/colapsar
 		gridPedidos.click(function(){
 			
                 if($(this).hasClass("ui-icon-triangle-1-e"))
                 {
-				   gridPedidos.wijgrid('endEdit');
+					gridPedidos.wijgrid('endEdit');
 					var selectionObj = gridPedidos.wijgrid("selection");
-				   selectionObj.clear();
-                   gridPedidos.wijgrid('doRefresh');
+					selectionObj.clear();
+					gridPedidos.wijgrid('doRefresh');
 				   
                 }
 				
@@ -684,7 +697,7 @@ var EdicionArticulo=function (tabId){
 	this.navegarEnter=function(){		
 		this.seleccionarSiguiente(false, true, true);		
 	}
-	this.seleccionarSiguiente = function(alreves, saltar,mantenerColumna){
+	this.seleccionarSiguiente = function(target, alreves, saltar,mantenerColumna){
 		//dos direcciones, hacia atras y hacia adelante.
 		//de la ultima caja editable de la fila, pasa a la siguiente fila.
 		//si se esta navegando alreves, del primer registro editable, pasa al registro anterior.
@@ -692,9 +705,17 @@ var EdicionArticulo=function (tabId){
 		//si está ubicado en el ultimo elemento de la pagina, pasar a la pagina siguiente .
 		//si está nvegando alrevés, y está ubicado en el primer elemento de la pagina, pasar a la pagina anterior.
 		
+		
+		 var col = $(target).parent().children().index($(target));
+        var row = $(target).parent().parent().children().index($(target).parent());
+        alert('Row: ' + row + ', Column: ' + col);
+		
+		return true;
 		//Obtengo la celda seleccionada
 		var tabId, cellInfo, cellIndex, rowIndex,  row, nextCell, nextRow; 
 		tabId=this.tabId;
+		
+		
 		cellInfo= $(tabId+" .grid_articulos").wijgrid("currentCell");
 		
 		var direccion=	(alreves)? -1 : 1;
@@ -797,8 +818,9 @@ var EdicionArticulo=function (tabId){
 			while (true)
 			 {
 				cell = $(tabId+" .grid_articulos").wijgrid('currentCell',nextCell, nextRow);
-				if (cell.column == undefined ){
-					nextRow++;
+				if (cell.column == undefined ){					
+					break;
+					nextRow++;					 
 				}else{						
 					break;
 				}
@@ -809,12 +831,11 @@ var EdicionArticulo=function (tabId){
 		
 		var nuevo = $(tabId+" .grid_articulos").wijgrid("currentCell",nextCell, nextRow);
 		
-		if ( nuevo.column().editable===false ){
-			this.seleccionarSiguiente(alreves);
-		}else{			
+		if ( nuevo.column().editable===false ){			
+			this.seleccionarSiguiente(e, alreves);
+		}else{
 			$(tabId+' .grid_articulos').wijgrid('doRefresh');
-			$(tabId+" .grid_articulos").wijgrid("beginEdit");
-			
+			$(tabId+" .grid_articulos").wijgrid("beginEdit");			
 		}
 		
 		
@@ -924,8 +945,8 @@ var EdicionArticulo=function (tabId){
 	this.nuevo=function(){	
 		var rec={};
 		
-		$.each( this.fields, function(indexInArray, valueOfElement){
-			var campo=valueOfElement.name;
+		$.each( this.columns, function(indexInArray, valueOfElement){			
+			var campo=valueOfElement.dataKey;
 			rec[campo]='';
 		
 		} );

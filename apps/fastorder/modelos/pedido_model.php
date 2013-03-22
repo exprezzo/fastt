@@ -63,7 +63,7 @@ class PedidoModel extends Modelo{
 		$prioridades=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
 		//Ahora obtengo todos los detalles 
-		$sql='SELECT pe.fk_almacen, pp.cantidad pedidoi , pp.fk_pedido, pp.id as fk_pedido_detalle,pp.fk_articulo as fk_producto_origen, pp.fk_articulo, 
+		$sql='SELECT pe.fk_almacen, pp.cantidad pedidoi , pp.fk_pedido, pp.id as fk_pedido_detalle,pp.fk_articulo as fk_producto_origen, pp.fk_articulo as idproducto, 
 		sto.maximo- (sto.existencia - pp.cantidad) as pedido,
 		pp.idarticulopre 
 		FROM 
@@ -79,7 +79,7 @@ class PedidoModel extends Modelo{
 		$detalles=$sth->fetchAll( PDO::FETCH_ASSOC );
 		
 		//ahora las recetas
-		$sql='SELECT pe.fk_almacen, pp.id as fk_pedido_detalle, pp.fk_articulo as fk_producto_origen, ad.fk_articulo ,pp.idarticulopre	,
+		$sql='SELECT pe.fk_almacen, pp.id as fk_pedido_detalle, pp.fk_articulo as fk_producto_origen, ad.fk_articulo idproducto, pp.idarticulopre	,
 		sto.maximo- ( sto.existencia - (pp.cantidad * ad.cantidad) ) as pedido, (pp.cantidad * ad.cantidad) as pedidoi
 		FROM 
 		pedidos_productos pp
@@ -92,28 +92,21 @@ class PedidoModel extends Modelo{
 		$sth=$con->prepare($sql);
 		$exito=$sth->execute();
 		if ( !$exito ) return $this->getError( $sth );
-		$detallesRecetas=$sth->fetchAll( PDO::FETCH_ASSOC );
+		$detallesRecetas=$sth->fetchAll( PDO::FETCH_ASSOC );		
+		//Se mezclan los productos y los ingredientes de la receta.
 		$detalles = array_merge( $detalles, $detallesRecetas);
-		
-		$numDetalles =sizeof($detalles) ;
-		if ($numDetalles==0) return array( 'success'=>true );		
+		$numDetalles =sizeof($detalles);
+		if ($numDetalles==0) return array( 'success'=>true );
 		$ordenes=array();
 		
-		function getProovedor( $articulo,$prioridades ){
-			
+		function getProovedor( $articulo,$prioridades ){			
 			for($i=0; $i<sizeof($prioridades); $i++ ){
 				if ( $prioridades[$i]['fk_articulo'] == $articulo) return $prioridades[$i]['fk_proveedor'];
-			}
-			
+			}			
 			return 0;
 		}
 		for($i=0; $i< $numDetalles ;$i++ ){
-			
-			
-			
-			$proveedor = getProovedor( $detalles[$i]['fk_articulo'],$prioridades );
-			
-			
+			$proveedor = getProovedor( $detalles[$i]['idproducto'],$prioridades );			
 			if ( !isset($ordenes[$proveedor])   ) $ordenes[$proveedor]=array();
 			//se acumulan los detalles al proveedor
 			$ordenes[$proveedor][] =  $detalles[$i];
@@ -146,8 +139,6 @@ class PedidoModel extends Modelo{
 		$sth=$con->prepare( $sql );
 		$exito=$sth->execute( );
 		if ( !$exito ) return $this->getError( $sth );
-				
-		
 		
 		return array(
 			'success'=>true

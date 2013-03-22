@@ -81,10 +81,10 @@ class OrdenCompraProductoModel extends Modelo{
 		SELECT orpro.id id,alm.nombre as almacen_pi, orpro.cantidad cantidad,0 as pendiente,
 	procom.codigo codigo,procom.nombre producto, procom.id idproducto,procom.nombre producto,
 	CONCAT('{"nombre":"',procom.nombre,'","id":',procom.id ,'}') productoJson,
-	arsto.maximo, arsto.minimo, arsto.puntoreorden, arsto.existencia,  
+	arsto.maximo, arsto.minimo, arsto.puntoreorden, arsto.existencia,
 	arsto_pi.maximo maximo_pi, arsto_pi.minimo minimo_pi, arsto_pi.puntoreorden reorden_pi, arsto_pi.existencia inicial_pi, arsto_pi.idalmacen idalmacen_pi,
  pro_pi.nombre producto_pi, pro_pi.id pro_pi,
-"xxx" as sugerido_pi, pedpro.cantidad cantidad_pi
+0 as sugerido_pi, pedpro.cantidad cantidad_pi,orpro.fk_pedido_detalle fk_pedido_detalle
 FROM orden_compra_productos orpro
 LEFT JOIN orden_compra ordcom ON ordcom.id=orpro.fk_orden_compra
 LEFT JOIN productos procom ON procom.id=orpro.fk_articulo

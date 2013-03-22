@@ -6565,7 +6565,7 @@ var __extends = this.__extends || function (b, c) {
             a.end = Math.min(a.end, b - 1);
             return a
         },
-        _refresh: function () {
+        _refresh: function () {			
             (new a.wijmo.wijgrid.grouper).group(this, this.sketchTable, this._field("leaves"));
             (new a.wijmo.wijgrid.merger).merge(this.sketchTable, this._field("visibleLeaves"));
             var b = this._field("viewRenderBounds");
@@ -8112,6 +8112,7 @@ var __extends = this.__extends || function (b, c) {
             return a && a.options.allowSorting && this.options.allowSort && this.options.dataIndex >= 0
         },
         _refreshHeaderCell: function () {
+			
             var b = a('<span class="wijmo-wijgrid-group-button-close ui-state-default ui-corner-all"><span class="ui-icon ui-icon-close"></span></span>').bind("click." + this.widgetName, this, this._onCloseClick);
             this.element.html(this.options.headerText || "").prepend(b).bind("click." + this.widgetName, this, this._onHrefClick);
             if (this._canSort()) switch (this.options.sortDirection) {
@@ -8978,7 +8979,7 @@ var __extends = this.__extends || function (b, c) {
         grouper: function () {
             this.group = function (i, k, e) {
                 this._grid = i;
-                this._data = k;
+                this._data = k;				
                 this._leaves = e;
                 this._groupRowIdx = 0;
                 this._groupHelper = new a.wijmo.wijgrid.groupHelper;
@@ -9012,7 +9013,7 @@ var __extends = this.__extends || function (b, c) {
                     a.each(d, function (a, b) {
                         b.groupedIndex = a
                     })
-                }
+                }								
                 i._field("groupedColumns", d);
                 for (c = 0, f = d.length; c < f; c++) {
                     b = d[c];					
@@ -9041,7 +9042,7 @@ var __extends = this.__extends || function (b, c) {
 					
                     if (!(this._data[k].rowType & a.wijmo.wijgrid.rowType.data)) continue;
 					
-                    b = this._getGroupCellRange(k, j, c);
+                    b = this._getGroupCellRange(k, j, c);					
                     i = true;
                     o = j.groupInfo.outlineMode === "startCollapsed";
                     if (o || this._groupHelper.isParentCollapsed(this._leaves, b, c)) {
@@ -9051,10 +9052,12 @@ var __extends = this.__extends || function (b, c) {
                     if (c && this._grid.options.groupIndent) for (m = b.r1; m <= b.r2; m++) this._addIndent(this._data[m][n], c);
                     l = !(j.groupInfo.groupSingleRow === false && b.r1 === b.r2);
                     switch (j.groupInfo.position) {
-                        case "header":								
-                            d = this._addGroupRange(j.groupInfo, b, i, l);							
+                        case "header":		
+							
+                            d = this._addGroupRange(j.groupInfo, b, i, l);														
                             for (f = b.r1; f <= b.r2; f++) {
                                 this._data[f].__attr["aria-level"] = c + 1;
+								
                                 if (!i) {
                                     this._data[f].__style.display = "none";
                                     this._data[f].__attr["aria-hidden"] = true
@@ -9066,6 +9069,7 @@ var __extends = this.__extends || function (b, c) {
                             e = this._buildGroupRow(d, b, true, h);
                             this._data.splice(b.r1, 0, e);
                             e.__attr["arial-level"] = c;
+							e.__attr['idproducto']='xxx';
                             e.__attr["aria-expanded"] = i;
                             if (h) {
                                 e.__style.display = "none";
@@ -13650,7 +13654,7 @@ var __extends = this.__extends || function (b, c) {
                 var i = a.wijmo.wijgrid.renderState,
                     m = a.wijmo.wijgrid.rowType,
                     h = j.state,
-                    g = j;
+                    g = j;					
                 if (h === i.rendering) c(g, l, k);
                 else {
                     e(g, h & i.current);
@@ -13684,7 +13688,7 @@ var __extends = this.__extends || function (b, c) {
                         c = "wijmo-wijgrid-filterrow";
                         break;
                     case d.groupHeader:
-                        c = g + " wijmo-wijgrid-groupheaderrow";
+                        c = g + " wijmo-wijgrid-groupheaderrow";						
                         break;
                     case d.groupFooter:
                         c = g + " wijmo-wijgrid-groupfooterrow";

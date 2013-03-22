@@ -7,7 +7,7 @@ require_once '../apps/'.$_PETICION->modulo.'/modelos/orden_compra_serie_model.ph
  require_once '../apps/'.$_PETICION->modulo.'/modelos/proveedor_model.php';
 // require_once '../apps/'.$_PETICION->modulo.'/modelos/serie_compra_model.php';
  require_once '../apps/'.$_PETICION->modulo.'/modelos/estado_orden_compra_model.php';
-// require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
+ require_once '../apps/'.$_PETICION->modulo.'/modelos/articulo_model.php';
 // require_once '../apps/'.$_PETICION->modulo.'/modelos/um_model.php';
 
 class Orden_Compra extends Controlador{	
@@ -155,14 +155,16 @@ class Orden_Compra extends Controlador{
 		
 		$res=$mod->paginar($params);
 		
+		
 		$vista=$this->getVista();
 		
-		 // print_r($res); exit;
+		 
 		if ($res['success']) $pedido['articulos']=$res['rows'];	
 				
 		$vista->pedido=$pedido;
 		
 		
+		// 	print_r($pedido);exit;
 		
 		if ($mostrar==true){
 			$vista->mostrar('orden_compra/edicion');
@@ -294,6 +296,8 @@ class Orden_Compra extends Controlador{
 			);
 			echo json_encode($res); exit;
 		}
+		
+		 
 		
 		$fecha = DateTime::createFromFormat('d/m/Y', $pedido['fecha']);
 		$pedido['fecha']= $fecha->format('Y-m-d H:i:s');

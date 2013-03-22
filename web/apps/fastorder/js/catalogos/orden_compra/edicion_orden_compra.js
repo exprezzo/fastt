@@ -110,7 +110,8 @@ var EdicionOrdenCompra = function(){
 		var tab = $('#tabs '+tabId);
 		var me=this;
 		var articulos=$(tabId+' .grid_articulos').wijgrid('data');
-		 console.log('articulos'); console.log(articulos);
+		 
+		console.log('this.prods'); console.log(this.prods);
 		// return false;
 		
 		var pedido={
@@ -122,7 +123,8 @@ var EdicionOrdenCompra = function(){
 			vencimiento	: tab.find('.txtVencimiento').val(),
 			folio		: tab.find('.txtFolio').val(),
 			proveedor	: tab.find('.txtFkProveedor').val(),
-			articulos	: articulos
+			articulos	: articulos,
+			stock:this.prods
 		};
 		
 		//Envia los datos al servidor, el servidor responde success true o false.

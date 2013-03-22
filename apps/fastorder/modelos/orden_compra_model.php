@@ -348,8 +348,11 @@ class OrdenCompraModel extends Modelo{
 	function guardarDetalles($fk_orden_compra, $params ){
 		//Insertar, Actualizar y borrar.
 		$con = $this->getConexion();
-		
 		$idproveedor = $params['proveedor'];
+		
+		$almacen=$params['almacen'];
+		
+		
 		
 		foreach($params['articulos'] as $detalle){
 			if ( !empty($detalle['id']) && !empty($detalle['eliminado']) ){
@@ -363,46 +366,65 @@ class OrdenCompraModel extends Modelo{
 				$sql='INSERT INTO orden_compra_productos SET fk_producto_origen=:fk_producto_origen, fk_almacen=:fk_almacen,pedidoi=:pedidoi, fk_articulo=:fk_articulo, fk_orden_compra=:fk_orden_compra,fk_pedido_detalle=:fk_pedido_detalle, cantidad=:cantidad, idarticulopre=:idarticulopre';
 				$sth = $con->prepare($sql);
 				$sth->bindValue(':fk_orden_compra',		$fk_orden_compra,		PDO::PARAM_INT);
-				$sth->bindValue(':fk_pedido_detalle', empty($detalle['fk_pedido_detalle'])? 0: $detalle['fk_pedido_detalle'],PDO::PARAM_INT);				
-				$sth->bindValue(':fk_almacen', empty($detalle['fk_almacen'])? 0: $detalle['fk_almacen'] , PDO::PARAM_INT);				
-				
-				$sth->bindValue(':fk_producto_origen', empty($detalle['fk_producto_origen'])? 0: $detalle['fk_producto_origen'], PDO::PARAM_INT);				
-				
-				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
-				$sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
-				$sth->bindValue(':pedidoi',		empty($detalle['pedidoi'])? 0: $detalle['pedidoi'],		PDO::PARAM_INT);
-				$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
+				$sth->bindValue(':fk_articulo',		$detalle['idproducto'],	PDO::PARAM_INT);
+				$sth->bindValue(':idarticulopre',	empty($detalle['idarticulopre'])?0:$detalle['idarticulopre'],	PDO::PARAM_INT);
+				$sth->bindValue(':cantidad',		empty( $detalle['pedido'])? 0 : $detalle['pedido'],		PDO::PARAM_INT);
+				$sth->bindValue(':fk_pedido_detalle',  empty( $detalle['fk_pedido_detalle'] ) ? 0: $detalle['fk_pedido_detalle'] ,PDO::PARAM_INT);
+				$sth->bindValue(':fk_producto_origen', empty($detalle['fk_producto_origen']) ? $detalle['idproducto']: $detalle['fk_producto_origen'] , PDO::PARAM_INT);								
+				$sth->bindValue(':pedidoi',	empty( $detalle['pedido'])? 0 : $detalle['pedido'],		PDO::PARAM_INT);				
+				$sth->bindValue(':fk_almacen', empty( $detalle['fk_almacen'] ) ? $params['almacen']:$detalle['fk_almacen'], PDO::PARAM_INT);												
 				$exito = $sth->execute();
 				if (!$exito) return $this->getError($sth);
 			}else{
-				$sql='UPDATE orden_compra_productos SET fk_articulo=:fk_articulo, cantidad=:cantidad, idarticulopre=:idarticulopre WHERE id=:id';
+				$sql='UPDATE orden_compra_productos SET cantidad=:cantidad WHERE id=:id';
 				$sth = $con->prepare($sql);
 				$sth->bindValue(':id',		$detalle['id'],		PDO::PARAM_INT);
-				$sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
-				$sth->bindValue(':cantidad',		$detalle['pedido'],		PDO::PARAM_INT);
-				$sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
+				// $sth->bindValue(':fk_articulo',		$detalle['fk_articulo'],	PDO::PARAM_INT);
+				$sth->bindValue(':cantidad',		$detalle['cantidad'],		PDO::PARAM_INT);
+				// $sth->bindValue(':idarticulopre',	$detalle['idarticulopre'],	PDO::PARAM_INT);
 				$exito = $sth->execute();
 				if (!$exito) return $this->getError($sth);
 			}			
 			
-			if (isset($detalle['existencia']) ){
-				$sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idalmacen=:idalmacen';
-				 $sth = $con->prepare($sql);
+			// if (isset($detalle['existencia']) ){
+				// $sql='UPDATE articulostock SET existencia=:existencia WHERE idarticulo=:idarticulo AND idalmacen=:idalmacen';
+				 // $sth = $con->prepare($sql);
 				 
-				 $sth->bindValue(':existencia',$detalle['existencia'],PDO::PARAM_INT);
-				 $sth->bindValue(':idarticulo',$detalle['fk_articulo'],PDO::PARAM_INT);
-				 $sth->bindValue(':idalmacen',empty($params['almacen'])? 0: $params['almacen'],PDO::PARAM_INT);
-				 $exito = $sth->execute();
+				 // $sth->bindValue(':existencia',$detalle['existencia'],PDO::PARAM_INT);
+				 // $sth->bindValue(':idarticulo',$detalle['fk_articulo'],PDO::PARAM_INT);
+				 // $sth->bindValue(':idalmacen',empty($params['almacen'])? 0: $params['almacen'],PDO::PARAM_INT);
+				 // $exito = $sth->execute();
 				 
 				 
-				 if (!$exito) {
-					$error=$this->getError($sth);
-					print_r($error);
-					return $error;
-				 }
-			}
+				 // if (!$exito) {
+					// $error=$this->getError($sth);
+					// print_r($error);
+					// return $error;
+				 // }
+			// }
 			 
-		}		
+		}	
+
+		$params['stock'] = empty($params['stock'])? array() : $params['stock'];
+		foreach($params['stock'] as $key=>$detalle){
+			$sql='UPDATE articulostock SET existencia=:existencia,maximo=:maximo,minimo=:minimo,puntoreorden=:puntoreorden WHERE idarticulo=:idarticulo AND idalmacen=:idalmacen'; 
+			
+			$sth = $con->prepare($sql); 
+			$sth->bindValue(':maximo',$detalle['maximo_pi'],PDO::PARAM_INT);
+			$sth->bindValue(':minimo',$detalle['minimo_pi'],PDO::PARAM_INT);
+			$sth->bindValue(':puntoreorden',$detalle['reorden_pi'],PDO::PARAM_INT);
+			
+			$sth->bindValue(':existencia',$detalle['inicial_pi'],PDO::PARAM_INT);
+			$sth->bindValue(':idarticulo',$key,PDO::PARAM_INT);
+			$sth->bindValue(':idalmacen',$almacen,PDO::PARAM_INT);
+			$exito = $sth->execute();			 
+			if (!$exito) {
+				$error=$this->getError($sth);
+				// print_r($error);
+				return $error;
+			}
+			
+		}
 		$resp=array('success'=>true);
 		
 		return $resp;
