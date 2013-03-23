@@ -130,7 +130,7 @@ var EdicionArticulo=function (tabId){
 					// numCel++;
 				// }
 				
-				rowdom.find('td:eq(0) div').html(item.codigo);
+				// rowdom.find('td:eq(0) div').html(item.codigo);
 				// rowdom.find('td:eq(2) div').html(item.presentacion);
 				rowdom.find('td:eq(2) div').html(item.maximo);
 				rowdom.find('td:eq(3) div').html(item.minimo);
@@ -151,6 +151,9 @@ var EdicionArticulo=function (tabId){
 				rowdom.find('td:eq(7) div').html(sugerido);
 				rowdom.find('td:eq(8) div').html(sugerido);
 				rowdom.find('td:eq(9) div').html(0);
+				
+				console.log("item"); console.log(item);
+				
 				me.articulo.pedido=sugerido;
 				me.articulo.sugerido=sugerido;
 				me.articulo.pendiente=0;
@@ -248,11 +251,8 @@ var EdicionArticulo=function (tabId){
 		var me=this;
 		gridPedidos.delegate('td','keydown', function(e) {		
 			var code = e.keyCode || e.which;
-			code=parseInt(code);	
+			code=parseInt(code);				
 			
-			
-			
-			// alert(e.keyCode);
 			if(e.keyCode==46){
 				me.eliminar();
 			}else if(e.keyCode==13){	
@@ -269,24 +269,24 @@ var EdicionArticulo=function (tabId){
 		var formatMoney='n'+kore.decimalPlacesMoney;
 		var columns=[				
 			/* {  dataKey: "nombreGpo", groupInfo:{position: "header", outlineMode: "startExpanded", headerText: "custom"},visible:false },			*/
-			{dataKey: "producto", headerText: "Art&iacute;culo",width:100,cellFormatter: function(args) { args.formattedValue='';},
+			{dataKey: "producto", headerText: "Art&iacute;culo",cellFormatter: function(args) { args.formattedValue='';},
 				groupInfo:{
 					position: "header", 
 					outlineMode: "startExpanded", 
 					headerText: "{0}",					  
-					groupSingleRow: false
+					groupSingleRow: true
 			},visible:false, editable:false, aggregate:'custom'},				
-			{dataKey: "producto_pi",width:200,  headerText: "Origen", aggregate:'custom', editable:true},
+			{dataKey: "producto_pi",  headerText: "Origen", aggregate:'custom', editable:true},
 			{dataKey: "almacen_pi",  headerText: "Almacen", aggregate:'custom', editable:false},				
-			{dataKey: "maximo_pi",   headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
-			{dataKey: "minimo_pi",   headerText: "Minimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
-			{dataKey: "reorden_pi",  headerText: "Reorden",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			{dataKey: "maximo_pi",   headerText: "M&aacute;ximo",editable:true, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			{dataKey: "minimo_pi",   headerText: "Minimo",editable:true, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
+			{dataKey: "reorden_pi",  headerText: "Reorden",editable:true, dataType: "number", dataFormatString: formatMoney, aggregate: "custom"},
 			{dataKey: "inicial_pi",  headerText: "Existencia", dataType: "number", dataFormatString: formatMoney,  aggregate: "custom"},
-			{dataKey: "cantidad_pi", headerText: "Ped. Int.", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
-			{dataKey: "sugerido_pi", headerText: "Sugerido",dataType: 'number', aggregate:'custom'},			
+			{dataKey: "cantidad_pi", headerText: "Ped. Int.", editable:false, dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},
+			{dataKey: "sugerido_pi", headerText: "Sugerido",editable:false, dataType: 'number', aggregate:'custom'},			
 			{dataKey: "cantidad",  headerText: "Ordenado", dataType: "number", dataFormatString: formatMoney,  aggregate: "sum"},				
-			{dataKey: "pendiente",headerText:'Pendiente', width:190,dataType: 'number'},
-			{dataKey: "productoJson",visible:true, width:0,  aggregate: "custom"},				
+			{dataKey: "pendiente",headerText:'Pendiente', dataType: 'number'},
+			{dataKey: "productoJson",visible:false ,  aggregate: "custom"},				
 			{dataKey: "codigo", visible:false, headerText: "Codigo",width:'100',aggregate:'custom', editable:false, cellFormatter: function(args) { args.formattedValue='';}},
 			{dataKey: "maximo",  visible:false, headerText: "M&aacute;ximo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
 			{dataKey: "minimo",  visible:false, headerText: "M&iacute;nimo",editable:false, dataType: "number", dataFormatString: formatMoney, aggregate: "average"},
@@ -308,7 +308,7 @@ var EdicionArticulo=function (tabId){
 			allowKeyboardNavigation:true,
 			selectionMode:'singleRow',
 			data:articulos,
-			ensureColumnsPxWidth:true,
+			// ensureColumnsPxWidth:true,
 			columns:columns,			
 			groupText:function(e,args){					},	
 			groupAggregate: function (e, args, f, g) {
@@ -316,7 +316,10 @@ var EdicionArticulo=function (tabId){
 					case 'sugerido_pi':																		
 						var prodId=args.data[ args.groupingStart][17].value;;
 						var index=prodId.toString();
-				
+						if (index==""){
+							return false;
+						}
+						
 						if ( me.padre.prods==undefined ){
 							me.padre.prods={};
 						}
@@ -344,13 +347,9 @@ var EdicionArticulo=function (tabId){
 							existencia =me.padre.prods[index]['inicial_pi'] *1,
 							pi=args.data[ args.groupingStart][18].value, 
 							sugerido=0;
-						
-						console.log("existencia");console.log(existencia);
-						console.log("reorden");console.log(reorden);
-						if (existencia <= reorden){
-							
-							sugerido=maximo-existencia;
-							
+												
+						if (existencia <= reorden){							
+							sugerido=maximo-existencia;							
 						}
 						args.data[ args.groupingStart][18].value=sugerido;
 						args.text=sugerido;
@@ -363,7 +362,7 @@ var EdicionArticulo=function (tabId){
 					case 'maximo_pi':
 						var prodId=args.data[ args.groupingStart][17].value;;						
 						var index=prodId.toString();
-						// alert(index);
+						
 						if (me.padre.prods && me.padre.prods[index]!=undefined && me.padre.prods[index]['maximo_pi']!=undefined ){
 							args.text=me.padre.prods[index]['maximo_pi'];
 						}else{
@@ -406,9 +405,15 @@ var EdicionArticulo=function (tabId){
 				if (args.dataRowIndex>-1){
 					args.$rows.attr('rowId',args.data.id_tmp);					
 					var fk= ( args.data.fk_pedido_detalle!=undefined )? parseInt(args.data.fk_pedido_detalle) : 0;					
-					if ( isNaN(fk ) || fk==0 ){
-						args.$rows.attr('singrupo','true');
-					}					
+					
+					var id= ( args.data.id!=undefined )? parseInt(args.data.id) : 0;					
+					if ( isNaN(id ) || id==0 ){
+						args.$rows.attr('nuevo','true');
+					}else{
+						if ( isNaN(fk ) || fk==0 ){
+							args.$rows.attr('singrupo','true');
+						}
+					}
 				}else{					
 					args.$rows.attr('grupo_editable','true');
 					
@@ -462,7 +467,7 @@ var EdicionArticulo=function (tabId){
 			
 			
 			input.bind('blur',function(){
-				// alert('blur');
+				
 				var input=$(this);				
 				
 				
@@ -491,7 +496,7 @@ var EdicionArticulo=function (tabId){
 				var sel=gridPedidos.wijgrid('selection');
 				sel.addRows(index);
 
-				// alert(args.cell.column().dataKey);
+				
 				switch (args.cell.column().dataKey) {
 					case "codigo":
 						var combo=
@@ -539,11 +544,11 @@ var EdicionArticulo=function (tabId){
 			
 				switch (args.cell.column().dataKey) {
 					case "producto_pi":
-						alert("producto_pi");
+						
 						args.value = args.cell.container().find("input").val();
 						
 						if (me.articulo!=undefined){
-							alert("producto definido");
+							
 							var row=args.cell.row();
 							console.log(me.articulo);
 							row.data.idproducto=me.articulo.value;
@@ -636,7 +641,7 @@ var EdicionArticulo=function (tabId){
 		});
 		
 		gridPedidos.wijgrid({ selectionChanged: function (e, args) {
-			// alert('selectionChanged');
+			
 			var item=args.addedCells.item(0);
 			var row=item.row();
 			var data=row.data;
@@ -669,7 +674,7 @@ var EdicionArticulo=function (tabId){
 		this.numCols=$(tabId+' .grid_articulos thead th').length;
 		
 		gridPedidos.find('td').bind('mousedown',function(e){ 
-			// alert("editar");
+			
 		});
 	};
 	
@@ -708,7 +713,7 @@ var EdicionArticulo=function (tabId){
 		
 		 var col = $(target).parent().children().index($(target));
         var row = $(target).parent().parent().children().index($(target).parent());
-        alert('Row: ' + row + ', Column: ' + col);
+        
 		
 		return true;
 		//Obtengo la celda seleccionada
@@ -772,7 +777,7 @@ var EdicionArticulo=function (tabId){
 		} else if ( nextCell>=this.numCols || saltar){
 			nextCell=0;
 			if (mantenerColumna){
-				// alert(' mantenerColumna: '+ cellIndex);
+				
 				nextCell=cellIndex;
 			}
 			//ir al registro siguiente, cambiar de pagina o agregar nuevo registro,
@@ -784,9 +789,7 @@ var EdicionArticulo=function (tabId){
 			dataItemIndex = row.dataItemIndex;
 			var ip= (pageSize * (pageIndex+1) )-1;
 			// var index = collection.indexOf(0, 0);			
-			// alert(index);
 			
-			//alert("pageSize: "+pageSize+" pageIndex:" + pageIndex + " dataItemIndex: " + dataItemIndex + ' ip:' + ip);
 			
 			if ( (dataItemIndex+1) == data.length ){
 				//esta en el ultimo registro de la ultima pagina
