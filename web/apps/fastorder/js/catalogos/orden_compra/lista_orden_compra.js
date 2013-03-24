@@ -101,7 +101,7 @@
 					break;
 					case 'editar':
 						if (me.selected!=undefined){													
-							TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar Orden de Compra',me.selected.id);
+							TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar Orden de Compra', me.selected.id);
 						}
 					break;
 					case 'eliminar':

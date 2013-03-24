@@ -19,14 +19,14 @@
 		color:white;
 	}
 	
-	tr[singrupo="true"] td{
+	tr[singrupo="true"] td, tr[nuevo="true"] td{
 		/*background-color:blue;
 		color:white;*/
 		font-weight:bold !important;
 	}
 	
 	tr[singrupo="true"] td:nth-child(2), tr[singrupo="true"] td:nth-child(3), tr[singrupo="true"] td:nth-child(4), tr[singrupo="true"] td:nth-child(5), tr[singrupo="true"] td:nth-child(6), tr[singrupo="true"] td:nth-child(7), tr[singrupo="true"] td:nth-child(8){
-		color:transparent;
+		color:transparent; 
 	}
 	
 	/* tr[arial-level="1"] td:nth-child(2),tr[arial-level="1"] td:nth-child(3), tr[arial-level="1"] td:nth-child(4), tr[arial-level="1"] td:nth-child(5){		

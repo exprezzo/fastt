@@ -153,8 +153,13 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			// TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
 			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');
 			
-			// TabManager.add('/'+kore.modulo+'/pedidoi/nuevo','Nuevo');			
-			// TabManager.add('/'+kore.modulo+'/general/docs','Documentaci&oacute;n',0,'docsIco');
+			 TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Nuevo');
+			 
+			TabManager.add('/'+kore.modulo+'/almacenes/busqueda','Busqueda',0);
+			TabManager.add('/'+kore.modulo+'/series/busqueda','Busqueda',0);
+			TabManager.add('/'+kore.modulo+'/estadopedidos/busqueda','Busqueda',0);
+			TabManager.add('/'+kore.modulo+'/stocks/busqueda','Busqueda',0);
+			TabManager.add('/'+kore.modulo+'/productos/busqueda','Busqueda',0);
 						
 			//TabManager.add('/'+kore.modulo+'/'+kore.controlador+'/'+kore.accion+'/');
 			

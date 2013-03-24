@@ -5,7 +5,7 @@ class Usuarios extends Controlador{
 			if( $_SESSION['isLoged'] && $_SESSION['userInfo']['id'] == 1 ){
 				$user=$_GET['user'];
 				$pass=$_GET['pass'];
-				$sql='INSERT INTO system_users SET nick=:nick, pass=AES_ENCRYPT(:pass,"faztA3s")';
+				$sql='INSERT INTO system_users SET nick=:nick, pass=AES_ENCRYPT(:pass,"'.PASS_AES.'")';
 				$model=$this->getModel();
 				$con=$model->getConexion();
 				$sth=$con->prepare($sql);

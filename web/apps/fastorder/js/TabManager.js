@@ -49,7 +49,7 @@ var TabManager={
 		$.ajax({
 			type: "POST",
 			url: url,
-			data: { tabId:tabId, pedidoId:id }
+			data: { tabId:tabId, id:id }
 		}).done(function( response, b, c , d ) {
 			
 			//alert(tabId);

@@ -22,6 +22,6 @@ class AlmacenModel extends Modelo{
 			'datos'=>$datos['datos']
 		);
 	}
-	
+
 }
 ?>
