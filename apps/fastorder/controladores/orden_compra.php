@@ -101,7 +101,7 @@ class Orden_Compra extends Controlador{
 		 $mod=$this->getModel();
 		 $mod->indexTabla=1;
 		 $pedido=$mod->nuevo();
-		 
+		 // print_r($pedido);exit;
 		 $vista=$this->getVista();
 		 $vista->pedido =$pedido['datos'];
 		 $vista->mostrar('orden_compra/edicion');
@@ -109,7 +109,7 @@ class Orden_Compra extends Controlador{
 	
 	function editar(){
 		$idPedido=empty($_REQUEST['id'])? 0 : $_REQUEST['id'];		
-		$pedido=$this->getOC($idPedido);		
+		$pedido=$this->getOC();		
 	}
 	function getProveedores(){
 		
@@ -127,7 +127,7 @@ class Orden_Compra extends Controlador{
 	}
 	function getOC($id = null){
 		if ($id==null){
-			$idPedido=$_REQUEST['pedidoId'];
+			$idPedido=$_REQUEST['id'];
 			$mostrar=true;
 		}else{
 			$idPedido=$id;
@@ -164,10 +164,10 @@ class Orden_Compra extends Controlador{
 		$vista->pedido=$pedido;
 		
 		
-		// 	print_r($pedido);exit;
+		 	// print_r($pedido);exit;
 		
 		if ($mostrar==true){
-			$vista->mostrar('orden_compra/edicion');
+			$vista->mostrar('/orden_compra/edicion');
 		}else{
 			return $vista;
 		}

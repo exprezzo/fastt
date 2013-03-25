@@ -1,4 +1,4 @@
-var Edicionproductos = function(){
+var Edicioncatalogos = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	
@@ -98,7 +98,6 @@ var Edicionproductos = function(){
 		var tabId=this.tabId;
 		var tab = $('#tabs '+tabId);
 		var me=this;
-	
 		//-----------------------------------
 		// http://stackoverflow.com/questions/2403179/how-to-get-form-data-as-a-object-in-jquery
 		var paramObj = {};

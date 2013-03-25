@@ -1,4 +1,4 @@
-var BusquedaEstadoPedidos=function(){
+var Busquedaestado_pedido=function(){
 	this.tituloNuevo='Nueva';
 	this.eliminar=function(){
 	

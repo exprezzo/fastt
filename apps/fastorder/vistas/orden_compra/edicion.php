@@ -102,7 +102,7 @@
 		var articulos=<?php echo json_encode($this->pedido['articulos']); ?>;				
 		
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
-		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;
+		var pedidoId=<?php echo $_REQUEST['id']; ?>;
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
 		var edicion = new EdicionOrdenCompra();
 		edicion.init(tabId, pedidoId, almacen, articulos);
@@ -140,11 +140,11 @@
 
 
 <div class="paneles" style="width:90%;">
-	<div class="pnlIzq">
+	<div class="pnlIzq" style="width:1229px;">
 		<div style="display:block;">
 		<?php $this->mostrar($_PETICION->controlador.'/componentes/toolbar'); ?>
 		</div>
-		<form class='frmPedidoi' style='padding-top:10px;'>	
+		<form class='frmPedidoi' style='padding-top:10px;width:auto;'>	
 			<input type='hidden' name='id' class="txtId" value="<?php echo $id; ?>" />	
 			<input type='hidden' name='id_tmp' class="txtIdTmp" value="<?php echo $id_tmp; ?>" />	
 			<input type='hidden' name='fecha' class="txtFkAlmacen" value="<?php echo $fk_almacen; ?>" />

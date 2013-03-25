@@ -11,11 +11,11 @@
 				nombre:'<?php echo $_PETICION->controlador; ?>'
 			},
 			catalogo:{
-				nombre:'EstadoPedido'
+				nombre:'Proveedor'
 			}
 			
 		};				
-		 var lista=new BusquedaEstadoPedidos();
+		 var lista=new Busquedaproveedores();
 		 lista.init(config);		
 	});
 </script>

@@ -11,11 +11,11 @@
 				nombre:'<?php echo $_PETICION->controlador; ?>'
 			},
 			catalogo:{
-				nombre:'EstadoPedido'
+				nombre:'Proveedor'
 			}
 			
 		};				
-		 var editor=new EdicionEstadoPedidos();
+		 var editor=new Edicionproveedores();
 		 editor.init(config);		
 	});
 </script>

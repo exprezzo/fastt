@@ -25,7 +25,7 @@ var Edicionstocks = function(){
 		this.controlador=params.controlador;
 		this.catalogo=params.catalogo;
 		
-		var tabId=params.tabId;
+		var tabId='#'+params.tab.id;
 		var objId=params.objId;
 		
 		this.tabId= tabId;		
@@ -99,15 +99,20 @@ var Edicionstocks = function(){
 		var tab = $('#tabs '+tabId);
 		var me=this;
 	
-		var datos={
-			id			: tab.find('.txtId').val(),			
-			titulo		:tab.find('.txtTitulo').val(),
-			contenido	:tab.find('.txtContenido').val(),
-			url_imagen	:tab.find('input[name="url_imagen"]').val(),
-			posx	:tab.find('input[name="posx"]').val(),
-			posy	:tab.find('input[name="posy"]').val(),
-			fk_categoria:tab.find('select[name="fk_categoria"]').val(),
-		};
+		//-----------------------------------
+		// http://stackoverflow.com/questions/2403179/how-to-get-form-data-as-a-object-in-jquery
+		var paramObj = {};
+		$.each($(tabId + ' .frmEdicion').serializeArray(), function(_, kv) {
+		  if (paramObj.hasOwnProperty(kv.name)) {
+			paramObj[kv.name] = $.makeArray(paramObj[kv.name]);
+			paramObj[kv.name].push(kv.value);
+		  }
+		  else {
+			paramObj[kv.name] = kv.value;
+		  }
+		});
+		//-----------------------------------
+		var datos=paramObj;
 		
 		//Envia los datos al servidor, el servidor responde success true o false.
 		

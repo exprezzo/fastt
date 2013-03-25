@@ -27,6 +27,11 @@ ul.ui-tabs-nav li a.frmPedido{ background-image:url('../images/supermono/add-but
 ul.ui-tabs-nav li a.welcome{ background-image:url('../images/supermono/home.png'); }
 ul.ui-tabs-nav li a.scrum{ background-image:url('../images/supermono/alarm-clock.png'); }
 ul.ui-tabs-nav li a.docsIco{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_almacenes{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_series{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_estadopedidos{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_stocks{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_productos{ background-image:url('../images/supermono/help.png'); }
 
 #tabs > ul.ui-tabs-nav li a.pedido{ background-image:url('../images/supermono/basket.png'); }
 

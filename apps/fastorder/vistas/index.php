@@ -151,15 +151,21 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			// TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
 			// TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
-			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');
+			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');			
+			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Nuevo');			 
+			TabManager.add('/'+kore.modulo+'/catalogos/busqueda','Busqueda',0);
 			
-			 TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Nuevo');
-			 
-			TabManager.add('/'+kore.modulo+'/almacenes/busqueda','Busqueda',0);
-			TabManager.add('/'+kore.modulo+'/series/busqueda','Busqueda',0);
-			TabManager.add('/'+kore.modulo+'/estadopedidos/busqueda','Busqueda',0);
-			TabManager.add('/'+kore.modulo+'/stocks/busqueda','Busqueda',0);
-			TabManager.add('/'+kore.modulo+'/productos/busqueda','Busqueda',0);
+			<?php 
+			
+			foreach($this->catalogos as $cat){
+				echo 'TabManager.add(\'/\'+kore.modulo+\'/'.$cat['controlador'].'/busqueda\',\'Busqueda\',0);';
+			}
+			?>
+			// TabManager.add('/'+kore.modulo+'/series/busqueda','Busqueda',0);
+			// TabManager.add('/'+kore.modulo+'/estadopedidos/busqueda','Busqueda',0);
+			// TabManager.add('/'+kore.modulo+'/stocks/busqueda','Busqueda',0);
+			// TabManager.add('/'+kore.modulo+'/productos/busqueda','Busqueda',0);
+			// TabManager.add('/'+kore.modulo+'/catalogos/busqueda','Busqueda',0);
 						
 			//TabManager.add('/'+kore.modulo+'/'+kore.controlador+'/'+kore.accion+'/');
 			

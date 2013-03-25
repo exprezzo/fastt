@@ -1,10 +1,10 @@
 <?php
-require_once '../apps/'.$_PETICION->modulo.'/modelos/Producto_modelo.php';
-class productos extends Controlador{
-	var $modelo="Producto";
+require_once '../apps/'.$_PETICION->modulo.'/modelos/unidademedida_modelo.php';
+class unidademedida extends Controlador{
+	var $modelo="unidademedida";
 	
 	function nuevo(){		
-		$fields=array('id','nombre','codigo','tipo');
+		$fields=array('id','abrev','descripcion');
 		$vista=$this->getVista();				
 		for($i=0; $i<sizeof($fields); $i++){
 			$obj[$fields[$i]]='';

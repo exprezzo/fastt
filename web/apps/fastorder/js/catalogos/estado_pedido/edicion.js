@@ -1,4 +1,4 @@
-var Edicionproductos = function(){
+var Edicionestado_pedido = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	

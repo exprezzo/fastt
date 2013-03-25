@@ -4,13 +4,6 @@
 // http://fastt/exps/crear_catalogo.php?controlador=series&modelo=Serie&tabla=series
 // http://fastt/exps/crear_catalogo.php?controlador=stocks&modelo=Stock&tabla=articulostock
 
-include 'crear_controlador.php';
-include 'crear_modelo.php';
-include 'crear_vistas.php';
-include 'crear_buscador.php';
-include 'crear_buscadorjs.php';
-include 'crear_editor.php';
-include 'crear_editorjs.php';
 
 $controlador = $_REQUEST['controlador'];
 $modelo = $_REQUEST['modelo'];
