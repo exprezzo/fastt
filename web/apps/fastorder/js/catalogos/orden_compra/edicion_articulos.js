@@ -714,7 +714,23 @@ var EdicionArticulo=function (tabId){
 		 var col = $(target).parent().children().index($(target));
         var row = $(target).parent().parent().children().index($(target).parent());
         
+		col++;
 		
+		$numRows=$(this.padre.tabId+' .grid_articulos tr').length;		
+		var rows=$(this.padre.tabId+' .grid_articulos tr');
+		$numCols=$(rows[0]).find('td').length;
+		
+		if (col>numCols){
+			col=0;
+			row++;
+		}
+		// row=1;
+		//detener la edicion
+		this.editar();
+		var tr=$(this.padre.tabId+' .grid_articulos tr:nth-child('+(row+1)+')');
+		var td=tr.find('td:nth-child('+(col+1)+')');
+		
+		console.log("td"); console.log(td);
 		return true;
 		//Obtengo la celda seleccionada
 		var tabId, cellInfo, cellIndex, rowIndex,  row, nextCell, nextRow; 
@@ -733,9 +749,6 @@ var EdicionArticulo=function (tabId){
 		if (saltar){
 			nextCell=(alreves)? -1 : this.numCols + 1			
 		}
-		
-		
-		
 		
 		if ( nextCell<0 ){
 			//ir al registro anterior, cambiar de pagina

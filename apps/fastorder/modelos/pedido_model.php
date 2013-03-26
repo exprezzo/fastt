@@ -93,9 +93,11 @@ class PedidoModel extends Modelo{
 		$exito=$sth->execute();
 		if ( !$exito ) return $this->getError( $sth );
 		$detallesRecetas=$sth->fetchAll( PDO::FETCH_ASSOC );		
+		
 		//Se mezclan los productos y los ingredientes de la receta.
 		$detalles = array_merge( $detalles, $detallesRecetas);
 		$numDetalles =sizeof($detalles);
+		
 		if ($numDetalles==0) return array( 'success'=>true );
 		$ordenes=array();
 		
@@ -113,6 +115,7 @@ class PedidoModel extends Modelo{
 		}
 				
 		$ordenMod=new OrdenCompraModel();
+		
 		foreach($ordenes as $key=>$value){
 			$orden=array(
 				'almacen'		=>3,
@@ -123,6 +126,8 @@ class PedidoModel extends Modelo{
 				'proveedor'		=>$key
 			);
 			$orden['articulos']=$value;
+			
+			
 			$res=$ordenMod->guardar( $orden );
 			if ( !$res['success'] ) return $res;
 			

@@ -32,7 +32,7 @@ class catalogos extends Controlador{
 	}
 	
 	function crear_catalogo($controlador, $modelo, $tabla){
-		echo 'crear catalogo, controlador: '.$controlador.' tabla: '.$tabla.'<br/> ';
+		// echo 'crear catalogo, controlador: '.$controlador.' tabla: '.$tabla.'<br/> ';
 		$sql="SHOW COLUMNS FROM $tabla";
 		$mod=$this->getModel();
 		$res=$mod->ejecutarSql($sql);
@@ -51,7 +51,7 @@ class catalogos extends Controlador{
 		$resp5=crear_editor($controlador, $modelo);
 		$resp6=crear_editorjs($controlador, $modelo);		
 		ob_end_clean();
-		echo $resp1.$resp2.$resp3.$resp4.$resp5.$resp6;
+		// echo json_encode($res);
 	}
 	function guardar(){
 		ob_start();
@@ -59,8 +59,8 @@ class catalogos extends Controlador{
 		ob_end_clean();
 		
 		$this->crear_catalogo($_REQUEST['datos']['controlador'], $_REQUEST['datos']['modelo'], $_REQUEST['datos']['tabla']);
+		echo json_encode($resp);
 		
-		return true;
 	}
 	function borrar(){
 		return parent::borrar();

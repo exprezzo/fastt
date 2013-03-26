@@ -45,7 +45,7 @@ var EdicionAlmacenes = function(){
 		this.actualizarTitulo();				
 		
 		var me=this;
-		$(this.tabId + '.frmEdicion input').change(function(){
+		$(this.tabId + ' .frmEdicion input').change(function(){
 			me.editado=true;		
 		});
 		
@@ -60,7 +60,7 @@ var EdicionAlmacenes = function(){
 		$(tabId+' .toolbarEdicion .boton').mouseleave(function(e){			 
 				$(this).removeClass("ui-state-hover");			
 		});
-		 // tab.data('tabObj',this); //Este para que?		
+		 tab.data('tabObj',this); //Este para que?		
 	};
 	//esta funcion pasara al plugin
 	//agrega una clase al panel del contenido y a la pestaña relacionada.

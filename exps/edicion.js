@@ -45,7 +45,7 @@ var EdicionNombreDelControlador = function(){
 		this.actualizarTitulo();				
 		
 		var me=this;
-		$(this.tabId + '.frmEdicion input').change(function(){
+		$(this.tabId + ' .frmEdicion input').change(function(){
 			me.editado=true;		
 		});
 		
@@ -60,6 +60,7 @@ var EdicionNombreDelControlador = function(){
 		$(tabId+' .toolbarEdicion .boton').mouseleave(function(e){			 
 				$(this).removeClass("ui-state-hover");			
 		});
+		
 		 // tab.data('tabObj',this); //Este para que?		
 	};
 	//esta funcion pasara al plugin
@@ -76,7 +77,7 @@ var EdicionNombreDelControlador = function(){
 		var tabId = this.tabId;
 		var me=this;
 		 $('#tabs > ul a[href="'+tabId+'"] + span').click(function(e){
-			//e.preventDefault();
+			e.preventDefault();
 			 var tmp=$(me.tabId+' .txtIdTmp');				
 			if (tmp.length==1){
 				var id=$(tmp[0]).val();				

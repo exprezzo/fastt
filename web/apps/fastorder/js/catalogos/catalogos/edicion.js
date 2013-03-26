@@ -45,10 +45,10 @@ var Edicioncatalogos = function(){
 		this.actualizarTitulo();				
 		
 		var me=this;
-		$(this.tabId + '.frmEdicion input').change(function(){
+		$(this.tabId + ' .frmEdicion input').change(function(){
 			me.editado=true;		
 		});
-		 // tab.data('tabObj',this); //Este para que?		
+		 tab.data('tabObj',this); //Este para que?		
 	};
 	//esta funcion pasara al plugin
 	//agrega una clase al panel del contenido y a la pestaña relacionada.
