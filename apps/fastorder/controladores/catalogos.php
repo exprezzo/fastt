@@ -1,6 +1,6 @@
 <?php
 
-require_once '../apps/'.$_PETICION->modulo.'/modelos/Catalogo_modelo.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/catalogo_modelo.php';
 
 include '../exps/crear_controlador.php';
 include '../exps/crear_modelo.php';

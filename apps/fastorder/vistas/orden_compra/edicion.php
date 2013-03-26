@@ -4,11 +4,11 @@
 		padding-left:0 !important;
 	}
 	
-	.pnlIzq > div{
+	.tabOrdenCompra .pnlIzq > div{
 		float:right;		
 	}
 	
-	.pnlIzq > form{
+	.tabOrdenCompra .pnlIzq > form{
 		float:left;
 		padding-top:0;
 	}
@@ -139,7 +139,7 @@
 ?>
 
 
-<div class="paneles" style="width:90%;">
+<div class="paneles tabOrdenCompra" style="width:90%;">
 	<div class="pnlIzq" style="width:1229px;">
 		<div style="display:block;">
 		<?php $this->mostrar($_PETICION->controlador.'/componentes/toolbar'); ?>

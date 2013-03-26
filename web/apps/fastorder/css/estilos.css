@@ -27,11 +27,20 @@ ul.ui-tabs-nav li a.frmPedido{ background-image:url('../images/supermono/add-but
 ul.ui-tabs-nav li a.welcome{ background-image:url('../images/supermono/home.png'); }
 ul.ui-tabs-nav li a.scrum{ background-image:url('../images/supermono/alarm-clock.png'); }
 ul.ui-tabs-nav li a.docsIco{ background-image:url('../images/supermono/help.png'); }
-ul.ui-tabs-nav li a.busqueda_almacenes{ background-image:url('../images/supermono/help.png'); }
-ul.ui-tabs-nav li a.busqueda_series{ background-image:url('../images/supermono/help.png'); }
-ul.ui-tabs-nav li a.busqueda_estadopedidos{ background-image:url('../images/supermono/help.png'); }
-ul.ui-tabs-nav li a.busqueda_stocks{ background-image:url('../images/supermono/help.png'); }
-ul.ui-tabs-nav li a.busqueda_productos{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_almacenes, ul.ui-tabs-nav li a.frmalmacenes{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_series, ul.ui-tabs-nav li a.frmseries{ background-image:url('http://png.findicons.com/files/icons/1156/fugue/16/barcode_2d.png'); }
+ul.ui-tabs-nav li a.busqueda_estadopedidos,ul.ui-tabs-nav li a.frmestadopedidos{ background-image:url('../images/supermono/help.png'); }
+ul.ui-tabs-nav li a.busqueda_stocks, ul.ui-tabs-nav li a.frmstocks{ background-image:url('../images/supermono/database.png'); }
+ul.ui-tabs-nav li a.busqueda_productos, ul.ui-tabs-nav li a.frmproductos{ background-image:url('../images/supermono/tag.png'); }
+ul.ui-tabs-nav li a.busqueda_catalogos, ul.ui-tabs-nav li a.frmcatalogos{ background-image:url('../images/supermono/plugin.png'); }
+ul.ui-tabs-nav li a.busqueda_Almacenes, ul.ui-tabs-nav li a.frmAlmacenes{ background-image:url('../images/supermono/home.png'); }
+ul.ui-tabs-nav li a.busqueda_estado_pedido, ul.ui-tabs-nav li a.frmestado_pedido{ background-image:url('../images/supermono/traffic-lights.png'); }
+ul.ui-tabs-nav li a.busqueda_proveedores, ul.ui-tabs-nav li a.frmproveedores{ background-image:url('../images/supermono/user.png'); }
+ul.ui-tabs-nav li a.busqueda_usuarios, ul.ui-tabs-nav li a.frmusuarios{ background-image:url('../images/supermono/group.png'); }
+ul.ui-tabs-nav li a.busqueda_unidademedida, ul.ui-tabs-nav li a.frmunidademedida{ background-image:url('../images/supermono/rullers.png'); }
+ul.ui-tabs-nav li a.busqueda_cuentas, ul.ui-tabs-nav li a.frmcuentas{ background-image:url('../images/supermono/table.png'); }
+ul.ui-tabs-nav li a.busqueda_grupo_productos, ul.ui-tabs-nav li a.frmgrupo_productos{ background-image:url('../images/supermono/network.png'); }
+
 
 #tabs > ul.ui-tabs-nav li a.pedido{ background-image:url('../images/supermono/basket.png'); }
 
@@ -247,7 +256,7 @@ body{border:0 !important;}
 /* ARCHIVO PEDIDO CSS */
 
 
-form.frmPedidoi, .frmEdicion label{
+ .frmEdicion label{
 		width:100px;
 		/* display:inline-block; */
 	}
@@ -324,3 +333,7 @@ div.frmPedido{
 }
 
 /* FIN ARCHIVO PEDIDO*/
+.toolbarEdicion{
+    margin-left: 19px;
+    margin-top: 14px;
+}

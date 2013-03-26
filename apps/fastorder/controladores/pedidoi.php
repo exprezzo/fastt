@@ -176,7 +176,7 @@ class Pedidoi extends Controlador{
 	
 	function getPedido($id = null){
 		if ($id==null){
-			$idPedido=$_REQUEST['pedidoId'];
+			$idPedido=$_REQUEST['id'];
 			$mostrar=true;
 		}else{
 			$idPedido=$id;

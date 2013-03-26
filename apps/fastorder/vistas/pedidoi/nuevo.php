@@ -16,11 +16,11 @@
 		
 	}
 	
-	.pnlIzq > div{
+	.frmPedidoInterno .pnlIzq > div{
 		float:right;		
 	}
 	
-	.pnlIzq > form{
+	.frmPedidoInterno .pnlIzq > form{
 		float:left;
 		
 		padding:0;
@@ -73,7 +73,7 @@
 		var articulos=<?php echo json_encode($this->pedido['articulos']); ?>;				
 		console.log("articulos"); console.log(articulos);
 		var tabId="<?php echo $_REQUEST['tabId']; ?>";
-		var pedidoId=<?php echo $_REQUEST['pedidoId']; ?>;
+		var pedidoId=<?php echo $_REQUEST['id']; ?>;
 		var almacen="<?php echo isset($this->pedido)?  $this->pedido['nombreAlmacen'] : ''; ?>";
 		var edicion = new EdicionPedido();
 		edicion.init(tabId, pedidoId, almacen, articulos);
@@ -106,7 +106,7 @@
 	}	
 ?>
 
-<div class="paneles" style="width:90%;">
+<div class="paneles frmPedidoInterno" style="width:90%;">
 	<div class="pnlIzq">
 		<div style="display:block;">
 		<?php $this->mostrar($_PETICION->controlador.'/componentes/toolbar'); ?>

@@ -48,6 +48,18 @@ var Edicionusuarios = function(){
 		$(this.tabId + '.frmEdicion input').change(function(){
 			me.editado=true;		
 		});
+		
+		$(tabId+' .toolbarEdicion .boton:not(.btnPrint, .btnEmail)').mouseenter(function(){
+			$(this).addClass("ui-state-hover");
+		});
+		
+		$(tabId+' .toolbarEdicion .boton *').mouseenter(function(){						
+			 $(this).parent('.boton').addClass("ui-state-hover");						
+		});
+		
+		$(tabId+' .toolbarEdicion .boton').mouseleave(function(e){			 
+				$(this).removeClass("ui-state-hover");			
+		});
 		 // tab.data('tabObj',this); //Este para que?		
 	};
 	//esta funcion pasara al plugin

@@ -27,7 +27,7 @@ class usuarios extends Controlador{
 	}
 	
 	function nuevo(){		
-		$fields=array('nick','pass','email','rol','fbid','id','name','picture','originalName','bio','allowFavorites','allowShared','allowLiked','keepLoged','request');
+		$fields=array('nick','pass','email','rol','fbid','id','name','picture','originalName');
 		$vista=$this->getVista();				
 		for($i=0; $i<sizeof($fields); $i++){
 			$obj[$fields[$i]]='';
@@ -48,7 +48,21 @@ class usuarios extends Controlador{
 		return parent::borrar();
 	}
 	function editar(){
-		return parent::editar();
+		// header("Content-Type: text/html;charset=utf-8");
+		
+		$id=empty( $_REQUEST['id'])? 0 : $_REQUEST['id'];
+		$model=$this->getModel();
+		$params=array(
+			'id'=>$id
+		);		
+		$obj=$model->obtener( $params );		
+		$obj['pass']='';
+		$vista=$this->getVista();				
+		$vista->datos=$obj;		
+		
+		global $_PETICION;
+		$vista->mostrar('/'.$_PETICION->controlador.'/edicion');
+		// print_r($obj);
 	}
 	function buscar(){
 		return parent::buscar();

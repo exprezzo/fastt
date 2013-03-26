@@ -1,7 +1,6 @@
 <?php
-class StockModelo extends Modelo{
-	var $tabla="articulostock";
-	var $pk='idarticuloalmacen';
+class GrupoProductoModelo extends Modelo{
+	var $tabla="grupo_de_productos";
 	function nuevo($params){
 		return parent::nuevo($params);
 	}

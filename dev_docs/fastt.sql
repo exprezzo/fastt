@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50508
 File Encoding         : 65001
 
-Date: 2013-03-22 16:28:20
+Date: 2013-03-25 17:17:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,12 +23,12 @@ CREATE TABLE `almacenes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of almacenes
 -- ----------------------------
-INSERT INTO `almacenes` VALUES ('1', 'Figuras');
+INSERT INTO `almacenes` VALUES ('1', 'Limpieza');
 INSERT INTO `almacenes` VALUES ('2', 'Cocina');
 INSERT INTO `almacenes` VALUES ('3', 'Compras');
 
@@ -152,8 +152,8 @@ INSERT INTO `articulostock` VALUES ('70', '22', '3', '8.00000', '6.00000', '10.0
 INSERT INTO `articulostock` VALUES ('71', '23', '3', '4.00000', '2.00000', '1.00000', '3.00000', '1', '1');
 INSERT INTO `articulostock` VALUES ('72', '24', '3', '11.00000', '1.00000', '34.00000', '3.00000', '1', '1');
 INSERT INTO `articulostock` VALUES ('73', '25', '3', '11.00000', '1.00000', '35.00000', '3.00000', '1', '1');
-INSERT INTO `articulostock` VALUES ('74', '26', '3', '11.00000', '1.00000', '36.00000', '3.00000', '1', '1');
-INSERT INTO `articulostock` VALUES ('75', '27', '3', '11.00000', '1.00000', '37.00000', '3.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('74', '26', '3', null, null, null, null, '1', '1');
+INSERT INTO `articulostock` VALUES ('75', '27', '3', null, null, '0.00000', null, '1', '1');
 INSERT INTO `articulostock` VALUES ('78', '22', '1', '1.00000', '11.00000', '1.00000', '1.00000', '1', '1');
 
 -- ----------------------------
@@ -205,15 +205,14 @@ CREATE TABLE `grupo_de_productos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` char(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of grupo_de_productos
 -- ----------------------------
-INSERT INTO `grupo_de_productos` VALUES ('1', 'CHICO');
 INSERT INTO `grupo_de_productos` VALUES ('2', 'MEDIANO');
-INSERT INTO `grupo_de_productos` VALUES ('3', 'GRANDE');
 INSERT INTO `grupo_de_productos` VALUES ('4', 'insumos');
+INSERT INTO `grupo_de_productos` VALUES ('5', 'b,bmbn');
 
 -- ----------------------------
 -- Table structure for `orden_compra`
@@ -229,7 +228,7 @@ CREATE TABLE `orden_compra` (
   `folio` int(11) DEFAULT NULL,
   `fk_almacen` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra
@@ -240,11 +239,13 @@ INSERT INTO `orden_compra` VALUES ('74', '0', '2013-03-21 11:49:28', '2013-03-21
 INSERT INTO `orden_compra` VALUES ('75', '0', '2013-03-21 11:50:21', '2013-03-21 11:50:21', '1', '4', '38', '3');
 INSERT INTO `orden_compra` VALUES ('88', '5', '2013-03-21 22:24:58', '2013-03-23 22:24:58', '1', '4', '51', '3');
 INSERT INTO `orden_compra` VALUES ('89', '3', '2013-03-22 12:56:05', '2013-03-22 12:56:05', '1', '4', '52', '3');
-INSERT INTO `orden_compra` VALUES ('90', '5', '2013-03-22 16:19:29', '2013-03-22 16:19:29', '1', '4', '53', '3');
+INSERT INTO `orden_compra` VALUES ('90', '5', '2013-03-22 18:30:28', '2013-03-22 18:30:28', '1', '4', '53', '3');
 INSERT INTO `orden_compra` VALUES ('91', '0', '2013-03-22 15:44:24', '2013-03-22 15:44:24', '1', '4', '54', '3');
 INSERT INTO `orden_compra` VALUES ('92', '0', '2013-03-22 15:44:27', '2013-03-22 15:44:27', '1', '4', '55', '3');
 INSERT INTO `orden_compra` VALUES ('93', '0', '2013-03-22 15:46:15', '2013-03-22 15:46:15', '1', '4', '56', '3');
 INSERT INTO `orden_compra` VALUES ('94', '0', '2013-03-22 16:10:58', '2013-03-22 16:10:58', '1', '4', '57', '3');
+INSERT INTO `orden_compra` VALUES ('95', '0', '2013-03-22 17:00:16', '2013-03-22 17:00:16', '1', '4', '58', '3');
+INSERT INTO `orden_compra` VALUES ('97', '0', '2013-03-25 09:50:28', '2013-03-25 09:50:28', '1', '1', '16', '1');
 
 -- ----------------------------
 -- Table structure for `orden_compra_estado`
@@ -280,7 +281,7 @@ CREATE TABLE `orden_compra_productos` (
   `pedidoi` decimal(18,6) DEFAULT NULL,
   `fk_almacen` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=956 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=969 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra_productos
@@ -318,6 +319,12 @@ INSERT INTO `orden_compra_productos` VALUES ('951', '91', '22', '0', '0.000000',
 INSERT INTO `orden_compra_productos` VALUES ('952', '92', '22', '0', '0.000000', '0', '22', null, '0.000000', '3');
 INSERT INTO `orden_compra_productos` VALUES ('953', '93', '22', '0', '0.000000', '0', '22', null, '0.000000', '3');
 INSERT INTO `orden_compra_productos` VALUES ('955', '94', '22', '0', '0.000000', '0', '22', null, '0.000000', '3');
+INSERT INTO `orden_compra_productos` VALUES ('957', '95', '22', '0', '0.000000', '0', '22', null, '0.000000', '3');
+INSERT INTO `orden_compra_productos` VALUES ('958', '95', '23', '0', '0.000000', '0', '23', null, '0.000000', '3');
+INSERT INTO `orden_compra_productos` VALUES ('959', '95', '22', '0', '0.000000', '0', '22', null, '0.000000', '3');
+INSERT INTO `orden_compra_productos` VALUES ('960', '90', '2', '0', '14.000000', '0', '2', null, '14.000000', '3');
+INSERT INTO `orden_compra_productos` VALUES ('966', '90', '2', '0', '14.000000', '0', '2', null, '14.000000', '3');
+INSERT INTO `orden_compra_productos` VALUES ('967', '97', '2', '0', '4.000000', '0', '2', null, '4.000000', '1');
 
 -- ----------------------------
 -- Table structure for `orden_compra_series`
@@ -337,9 +344,9 @@ CREATE TABLE `orden_compra_series` (
 -- ----------------------------
 -- Records of orden_compra_series
 -- ----------------------------
-INSERT INTO `orden_compra_series` VALUES ('1', 'OC_1', '1', '1000', '15', '', '1');
+INSERT INTO `orden_compra_series` VALUES ('1', 'OC_1', '1', '1000', '17', '', '1');
 INSERT INTO `orden_compra_series` VALUES ('2', 'OC_2', '1', '1000', '1', '', '2');
-INSERT INTO `orden_compra_series` VALUES ('4', 'OC_3', '1', '1000', '58', '', '3');
+INSERT INTO `orden_compra_series` VALUES ('4', 'OC_3', '1', '1000', '59', '', '3');
 
 -- ----------------------------
 -- Table structure for `pedidos`
@@ -424,7 +431,7 @@ CREATE TABLE `productos` (
   `codigo` char(20) DEFAULT NULL,
   `tipo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of productos
@@ -434,7 +441,7 @@ INSERT INTO `productos` VALUES ('2', 'Flor Feliz', 'flo-ch', '1');
 INSERT INTO `productos` VALUES ('3', 'Flor', 'flo-ch', '1');
 INSERT INTO `productos` VALUES ('4', 'Corazon', 'cor-med', '1');
 INSERT INTO `productos` VALUES ('5', 'Rosita', 'ro-ch', '1');
-INSERT INTO `productos` VALUES ('6', 'Osito', 'oso-med', '1');
+INSERT INTO `productos` VALUES ('6', null, 'oso-med', '1');
 INSERT INTO `productos` VALUES ('7', 'Pez', 'pez-med', '1');
 INSERT INTO `productos` VALUES ('8', 'Dinosaurio Triceratop', 'tri-med', '1');
 INSERT INTO `productos` VALUES ('9', 'Dinosaurio Diplodocus', 'dip-med', '1');
@@ -456,6 +463,8 @@ INSERT INTO `productos` VALUES ('24', 'ajo', 'ajo', '1');
 INSERT INTO `productos` VALUES ('25', 'cilantro', 'cilantro', '1');
 INSERT INTO `productos` VALUES ('26', 'Salsa de tomate', 'salsa', '2');
 INSERT INTO `productos` VALUES ('27', 'Jugo de Tomate', 'jugo tomate', '2');
+INSERT INTO `productos` VALUES ('28', 'Vaso', 'vaso', '2');
+INSERT INTO `productos` VALUES ('29', 'Escoba', '', '0');
 
 -- ----------------------------
 -- Table structure for `proveedor`
@@ -465,16 +474,17 @@ CREATE TABLE `proveedor` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of proveedor
 -- ----------------------------
-INSERT INTO `proveedor` VALUES ('1', 'Exprezzo');
+INSERT INTO `proveedor` VALUES ('1', 'Exprezzo...');
 INSERT INTO `proveedor` VALUES ('2', 'Surti Tec');
 INSERT INTO `proveedor` VALUES ('3', 'Poliformas');
 INSERT INTO `proveedor` VALUES ('4', 'Fruteria Del Valle');
 INSERT INTO `proveedor` VALUES ('5', 'Fruteria Juarez');
+INSERT INTO `proveedor` VALUES ('6', 'Otro proveedor');
 
 -- ----------------------------
 -- Table structure for `proveedor_producto`
@@ -537,76 +547,62 @@ CREATE TABLE `series` (
 -- Records of series
 -- ----------------------------
 INSERT INTO `series` VALUES ('1', 'PA', '1', '100', '4', '', '1');
-INSERT INTO `series` VALUES ('2', 'PC', '1', '100', '25', '', '2');
+INSERT INTO `series` VALUES ('2', 'PC', '1', '100', '1', '', '2');
 INSERT INTO `series` VALUES ('3', 'PI_3', '1', '1000', '11', '', '3');
+
+-- ----------------------------
+-- Table structure for `system_catalogos`
+-- ----------------------------
+DROP TABLE IF EXISTS `system_catalogos`;
+CREATE TABLE `system_catalogos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` char(255) DEFAULT NULL,
+  `controlador` char(255) DEFAULT NULL,
+  `modelo` char(255) DEFAULT NULL,
+  `tabla` char(255) DEFAULT NULL,
+  `icono` char(255) DEFAULT NULL,
+  `t_nuevo` char(255) DEFAULT NULL,
+  `t_edicion` char(255) DEFAULT NULL,
+  `t_eliminar` char(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of system_catalogos
+-- ----------------------------
+INSERT INTO `system_catalogos` VALUES ('8', 'Productos', 'productos', 'Producto', 'productos', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('11', 'Series', 'series', 'Serie', 'series', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('13', 'Almacenes', 'Almacenes', 'Almacen', 'almacenes', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('14', 'Stock', 'stocks', 'Stock', 'articulostock', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('15', 'Estado Pedido', 'estado_pedido', 'EstadoPedido', 'estado_pedido', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('16', 'Proveedores', 'proveedores', 'Proveedor', 'proveedor', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('17', 'UM', 'unidademedida', 'unidademedida', 'um', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('18', 'Usuarios', 'usuarios', 'Usuario', 'system_users', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('20', 'Grupo de Productos', 'grupo_productos', 'GrupoProducto', 'grupo_de_productos', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `system_users`
 -- ----------------------------
 DROP TABLE IF EXISTS `system_users`;
 CREATE TABLE `system_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nick` char(255) NOT NULL,
   `pass` blob,
   `email` char(255) NOT NULL,
   `rol` int(11) DEFAULT '1',
   `fbid` int(11) DEFAULT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(255) NOT NULL DEFAULT '0',
   `picture` varchar(255) DEFAULT NULL,
   `originalName` char(255) DEFAULT NULL,
-  `bio` varchar(150) DEFAULT NULL,
-  `allowFavorites` tinyint(1) DEFAULT '1',
-  `allowShared` tinyint(1) DEFAULT '1',
-  `allowLiked` tinyint(1) DEFAULT '1',
-  `keepLoged` tinyint(1) DEFAULT '0',
-  `request` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `nick` (`nick`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of system_users
 -- ----------------------------
-INSERT INTO `system_users` VALUES ('zesar1', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'cbibriesca@hotmail.com', '2', null, '1', 'Zesar X', 'pic_1.jpg', 'retro_blue_background.jpg', 'sdfas ad asdasd a dasd ad asd asd asd asd as asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd  as as as dasd sad asd asd asd asd asd asd as', '0', '1', '1', '1', '1355958733');
-INSERT INTO `system_users` VALUES ('cesarx', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'cesar@correo.com', '1', null, '2', '0', null, null, 'asdf', '1', '1', '1', '1', null);
-INSERT INTO `system_users` VALUES ('asdfasdf', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'asd@asd.com', '1', null, '3', '0', null, null, 'asdf', '1', '1', '1', '1', null);
-INSERT INTO `system_users` VALUES ('username', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'asdf@sadf.com', '1', null, '5', 'name', null, null, 'asdf', '1', '1', '1', '1', null);
-INSERT INTO `system_users` VALUES ('asd', 0x7F1300B33D82209DB71110F778FA07C4, '', '1', null, '16', '0', null, null, null, '1', '1', '1', '0', null);
-
--- ----------------------------
--- Table structure for `system_users_copy`
--- ----------------------------
-DROP TABLE IF EXISTS `system_users_copy`;
-CREATE TABLE `system_users_copy` (
-  `nick` char(255) NOT NULL,
-  `pass` blob,
-  `email` char(255) NOT NULL,
-  `rol` int(11) DEFAULT '1',
-  `fbid` int(11) DEFAULT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` char(255) NOT NULL DEFAULT '0',
-  `picture` varchar(255) DEFAULT NULL,
-  `originalName` char(255) DEFAULT NULL,
-  `bio` varchar(150) DEFAULT NULL,
-  `allowFavorites` tinyint(1) DEFAULT '1',
-  `allowShared` tinyint(1) DEFAULT '1',
-  `allowLiked` tinyint(1) DEFAULT '1',
-  `keepLoged` tinyint(1) DEFAULT '0',
-  `request` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `nick` (`nick`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of system_users_copy
--- ----------------------------
-INSERT INTO `system_users_copy` VALUES ('zesar1', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'cbibriesca@hotmail.com', '2', null, '1', 'Zesar X', 'pic_1.jpg', 'retro_blue_background.jpg', 'sdfas ad asdasd a dasd ad asd asd asd asd as asd asd asd asd asd asd asd asd asd asd asd asd asd asd asd  as as as dasd sad asd asd asd asd asd asd as', '0', '1', '1', '1', '1355958733');
-INSERT INTO `system_users_copy` VALUES ('cesarx', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'cesar@correo.com', '1', null, '2', '0', null, null, 'asdf', '1', '1', '1', '1', null);
-INSERT INTO `system_users_copy` VALUES ('asdfasdf', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'asd@asd.com', '1', null, '3', '0', null, null, 'asdf', '1', '1', '1', '1', null);
-INSERT INTO `system_users_copy` VALUES ('username', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'asdf@sadf.com', '1', null, '5', 'name', null, null, 'asdf', '1', '1', '1', '1', null);
-INSERT INTO `system_users_copy` VALUES ('asd', 0x7F1300B33D82209DB71110F778FA07C4, '', '1', null, '16', '0', null, null, null, '1', '1', '1', '0', null);
+INSERT INTO `system_users` VALUES ('1', 'zesar1', 0x1E398E80A894F4559B8CB0E74C8BEBBA, 'cbibriesca@hotmail.com', '2', '0', 'Zesar X', 'pic_1.jpg', 'retro_blue_background.jpg');
 
 -- ----------------------------
 -- Table structure for `um`
@@ -622,8 +618,8 @@ CREATE TABLE `um` (
 -- ----------------------------
 -- Records of um
 -- ----------------------------
-INSERT INTO `um` VALUES ('1', 'PZA', null);
+INSERT INTO `um` VALUES ('1', 'PZA', 'esta es la descripcion');
 INSERT INTO `um` VALUES ('2', 'U', null);
-INSERT INTO `um` VALUES ('3', 'Kg', null);
-INSERT INTO `um` VALUES ('4', 'M', null);
+INSERT INTO `um` VALUES ('3', 'Kg', '');
+INSERT INTO `um` VALUES ('4', 'M', 'as');
 INSERT INTO `um` VALUES ('5', 'Km', null);

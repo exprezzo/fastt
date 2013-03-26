@@ -1,4 +1,4 @@
-var Edicionunidademedida = function(){
+var Ediciongrupo_productos = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	

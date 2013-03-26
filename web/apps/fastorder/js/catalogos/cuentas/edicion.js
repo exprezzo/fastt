@@ -1,4 +1,4 @@
-var Edicionunidademedida = function(){
+var Edicioncuentas = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	

@@ -18,7 +18,7 @@ class UsuarioModelo extends Modelo{
 			$sql='INSERT INTO '.$this->tabla.' SET ';
 			foreach($params as $key=>$val){
 				if ($key=='pass'){
-					$sql.='pass=AES_ENCRYPT(:pass, "\'.PASS_AES.\'"),';
+					$sql.='pass=AES_ENCRYPT(:pass, "'.PASS_AES.'"),';
 				}else{
 					$sql.="$key=:$key, ";
 				}
