@@ -152,7 +152,7 @@ var EdicionArticulo=function (tabId){
 				rowdom.find('td:eq(8) div').html(sugerido);
 				rowdom.find('td:eq(9) div').html(0);
 				
-				console.log("item"); console.log(item);
+				
 				
 				me.articulo.pedido=sugerido;
 				me.articulo.sugerido=sugerido;
@@ -245,6 +245,67 @@ var EdicionArticulo=function (tabId){
 			});
 		});
 	},
+	this.startGroupEdit=function(col, row){
+		var row=$(this.padre.tabId+' .grid_articulos tbody tr:nth-child('+(row+1)+')');		
+		var tr=$(this.padre.tabId+' .grid_articulos tbody tr');		
+		var prodId=tr.attr('idobjeto');		
+		var td=row.find('td:nth-child('+(col+1)+')');				
+		
+		
+		
+		var div=td.find('div');
+		
+		
+		
+		var input=$("<input style='text-align:right;' />");
+			input.val( div[0].innerText ) 
+			.appendTo(  td.find('div').empty() ); 				
+			
+		// jQuery.data( input, 'celda', args.target )
+		input.focus();
+		
+		var me=this;
+		input.bind('changeX',function(){
+			alert("change");
+			
+			var index=prodId.toString();
+			
+			
+			
+			if ( me.padre.prods==undefined ){
+				me.padre.prods={};
+			}
+			if ( me.padre.prods[index] == undefined ){
+				me.padre.prods[index]={};
+			}
+							
+			var di=td.attr('dataIndex');
+			// console.log("di"); console.log(di);
+			
+			me.padre.prods[index][di]= $(this).val();				
+			
+			console.log("index: "+index);
+			$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
+		});
+		
+		
+		input.bind('blur',function(){
+			
+			var input=$(this);				
+			
+			
+			// celda=jQuery.data(this,'celda');					
+			// var di=$(args.target).parent().attr('dataIndex');				
+			
+			 // var div=$('<div class="swijmo-wijgrid-innercell">'+input.val()+'</div>');									
+			// input.remove();
+			// var di = input.parent().attr('dataIndex');
+			
+			 input.parent().empty().html( input.val() );
+						
+			
+		});
+	},
 	this.configurarGrid=function(tabId, articulos){			
 		var gridPedidos=$('#tabs '+tabId+" .grid_articulos");				
 		
@@ -302,6 +363,8 @@ var EdicionArticulo=function (tabId){
 		gridPedidos.wijgrid({
 			allowColSizing:true,
 			allowPaging: true,
+			imprimirId:true,
+			indexId:17,
 			pageSize:9,
 			allowEditing:true,
 			allowColMoving: false,
@@ -398,7 +461,7 @@ var EdicionArticulo=function (tabId){
 						}												
 					break;
 				}
-			},
+			},			
 			rowStyleFormatter: function(args) {				
 				//como voy a saber que el registro no esta concentrado??
 				//facil, cuando no tiene establecida una relacion con el detalle								
@@ -432,10 +495,10 @@ var EdicionArticulo=function (tabId){
 		gridPedidos.wijgrid({ beforeGroupEdit: function(e, args) { //agregada al nucleo de Wijmo el 11-03-2013					
 			var tr=$(args.target).parents('tr');			
 			
-			var tds= tr.find('td');			
-			var size=tds.length;			
-			var last=tds[size-1];			
-			var div = $(last).find('div');
+			// alert("change");
+			var prodId=tr.attr('idobjeto');
+			
+			
 								
 			var input=$("<input style='text-align:right;' />");
 				input.val( args.target.innerText ) 
@@ -447,8 +510,8 @@ var EdicionArticulo=function (tabId){
 			
 			input.bind('change',function(){
 				
-				var prodId=div[0].innerHTML;
 				var index=prodId.toString();
+				alert(index);
 				
 				if ( me.padre.prods==undefined ){
 					me.padre.prods={};
@@ -459,7 +522,7 @@ var EdicionArticulo=function (tabId){
 								
 				var di=$(args.target).parent().attr('dataIndex');
 				console.log("di"); console.log(di);
-				
+				console.log("me.padre.prods"); console.log(me.padre.prods);
 				me.padre.prods[index][di]= $(this).val();				
 				
 				$(me.tabId+' .grid_articulos').wijgrid('doRefresh');
@@ -490,7 +553,7 @@ var EdicionArticulo=function (tabId){
 				var column=args.cell.column();
 				
 				if (column.editable === false){
-					return false;
+					// return false;
 				}
 				
 				var sel=gridPedidos.wijgrid('selection');
@@ -550,7 +613,7 @@ var EdicionArticulo=function (tabId){
 						if (me.articulo!=undefined){
 							
 							var row=args.cell.row();
-							console.log(me.articulo);
+							
 							row.data.idproducto=me.articulo.value;
 							row.data.producto = me.articulo.nombre;
 							row.data.pedido=me.articulo.pedido;
@@ -711,26 +774,51 @@ var EdicionArticulo=function (tabId){
 		//si está nvegando alrevés, y está ubicado en el primer elemento de la pagina, pasar a la pagina anterior.
 		
 		
-		 var col = $(target).parent().children().index($(target));
+		var col = $(target).parent().children().index($(target));
         var row = $(target).parent().parent().children().index($(target).parent());
         
+		//
+		getTipoColumna=function(col, row,tabId){
+			var tr=$(tabId+' .grid_articulos tbody tr:nth-child('+(row+1)+')');			
+			if ( tr.hasClass('wijmo-wijgrid-groupheaderrow') ){
+				return 'GRUPO';
+			}else{
+				return 'NORMAL';
+			}
+			//si tiene esta clase, es grupo. 
+			
+		}
+		var tipo = getTipoColumna(col,row,this.padre.tabId);
+		
+		if (tipo=='GRUPO'){
+			// this.stopGroupEdit(col,row); 
+		}else if (tipo=='NORMAL'){
+			$(this.padre.tabId+' .grid_articulos').wijgrid('endEdit');			
+		}
 		col++;
 		
-		$numRows=$(this.padre.tabId+' .grid_articulos tr').length;		
-		var rows=$(this.padre.tabId+' .grid_articulos tr');
-		$numCols=$(rows[0]).find('td').length;
-		
-		if (col>numCols){
+		var numRows=$(this.padre.tabId+' .grid_articulos tbody tr').length;		
+		var rows=$(this.padre.tabId+' .grid_articulos tbody tr');		
+		var numCols=$(rows[0]).find('td').length;		
+		// alert(numCols);
+		if ((col)>=numCols){
 			col=0;
 			row++;
 		}
-		// row=1;
-		//detener la edicion
-		this.editar();
-		var tr=$(this.padre.tabId+' .grid_articulos tr:nth-child('+(row+1)+')');
-		var td=tr.find('td:nth-child('+(col+1)+')');
+				
+		// var tr=$(this.padre.tabId+' .grid_articulos tr:nth-child('+(row+1)+')');
+		// var td=tr.find('td:nth-child('+(col+1)+')');		
 		
-		console.log("td"); console.log(td);
+		var tipoDestino = getTipoColumna(col,row,this.padre.tabId);
+		if (tipoDestino=='GRUPO'){
+			this.startGroupEdit(col,row); 
+		}else if (tipoDestino=='NORMAL'){			
+			// $(tabId+' .grid_articulos').wijgrid('doRefresh');
+			$(this.padre.tabId+" .grid_articulos").wijgrid("currentCell",  col, row);
+			$(this.padre.tabId+" .grid_articulos").wijgrid("beginEdit");			
+			// grid.stopEditing();
+			// grid.startEditing();
+		}
 		return true;
 		//Obtengo la celda seleccionada
 		var tabId, cellInfo, cellIndex, rowIndex,  row, nextCell, nextRow; 

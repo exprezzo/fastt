@@ -153,7 +153,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			// TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
 			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');			
 			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Nuevo');			 
-			TabManager.add('/'+kore.modulo+'/catalogos/busqueda','Busqueda',0);
+			 TabManager.add('/'+kore.modulo+'/catalogos/busqueda','Busqueda',0);
 			
 			<?php 
 			

@@ -28,7 +28,7 @@ var EdicionOrdenCompra = function(){
 		}
 		
 		this.tabId= '#'+tabId;		
-		alert(this.tabId);
+		
 		
 		var tab=$('div'+this.tabId);
 		//estas dos linas deben estar en la hoja de estilos

@@ -59,7 +59,7 @@ var TabManager={
 			 $tabs.wijtabs('select',tabId);			
 			 
 			var tabObj = $('#'+ tabId ).data('tabObj');
-			console.log( "tabObj" ); console.log( tabObj );
+			
 			if (tabObj != undefined ){
 				if (tabObj.activate != undefined){
 					tabObj.activate();

@@ -9069,7 +9069,13 @@ var __extends = this.__extends || function (b, c) {
                             e = this._buildGroupRow(d, b, true, h);
                             this._data.splice(b.r1, 0, e);
                             e.__attr["arial-level"] = c;
-							e.__attr['idproducto']='xxx';
+							
+							if (this._grid.options.imprimirId==true && this._grid.options.indexId != undefined ){								
+								e.__attr['idObjeto']=this._data[f][this._grid.options.indexId].value; 
+							}
+							// this._grid._trigger("processRowGroup", null, e);
+							
+							
                             e.__attr["aria-expanded"] = i;
                             if (h) {
                                 e.__style.display = "none";
