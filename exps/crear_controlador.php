@@ -1,7 +1,6 @@
 <?php
 function crear_controlador($nombreControlador, $nombreModelo,$fields){
 	$ruta='..//apps/fastorder/controladores/';	
-	print_r($fields); 
 	
 	$fieldsStr='array(';
 	for($i=0; $i<sizeof($fields); $i++ ){
@@ -15,9 +14,10 @@ $contenido='<?php
 require_once \'../apps/\'.$_PETICION->modulo.\'/modelos/'.$nombreModelo.'_modelo.php\';
 class '.$nombreControlador.' extends Controlador{
 	var $modelo="'.$nombreModelo.'";
+	var $campos='.$fieldsStr.';
 	
 	function nuevo(){		
-		$fields='.$fieldsStr.';
+		$campos=$this->fields;
 		$vista=$this->getVista();				
 		for($i=0; $i<sizeof($fields); $i++){
 			$obj[$fields[$i]]=\'\';

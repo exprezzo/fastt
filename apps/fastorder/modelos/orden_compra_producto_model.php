@@ -78,7 +78,7 @@ class OrdenCompraProductoModel extends Modelo{
 		$total=$datos['datos'][0]['total'];
 		//, maximo maximo, minimo, reorden, iinicial, sugerido, pedido, pendiente,fk_articulo, id_tmp, fk_um,id id
 		$sql=<<<EOT
-		SELECT orpro.id id,alm.nombre as almacen_pi, orpro.cantidad cantidad,0 as pendiente,
+		SELECT orpro.id id,alm.nombre as almacen_pi, orpro.cantidad cantidad,orpro.pendiente,
 	procom.codigo codigo,procom.nombre producto, procom.id idproducto,procom.nombre producto,
 	CONCAT('{"nombre":"',procom.nombre,'","id":',procom.id ,'}') productoJson,
 	arsto.maximo, arsto.minimo, arsto.puntoreorden, arsto.existencia,

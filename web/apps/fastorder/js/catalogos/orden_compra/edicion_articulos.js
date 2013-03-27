@@ -251,22 +251,18 @@ var EdicionArticulo=function (tabId){
 		var prodId=tr.attr('idobjeto');		
 		var td=row.find('td:nth-child('+(col+1)+')');				
 		
-		
-		
 		var div=td.find('div');
-		
-		
 		
 		var input=$("<input style='text-align:right;' />");
 			input.val( div[0].innerText ) 
-			.appendTo(  td.find('div').empty() ); 				
+			.appendTo(  td.find('div').empty() ).focus().select();
 			
 		// jQuery.data( input, 'celda', args.target )
 		input.focus();
 		
 		var me=this;
 		input.bind('changeX',function(){
-			alert("change");
+			
 			
 			var index=prodId.toString();
 			
@@ -373,7 +369,7 @@ var EdicionArticulo=function (tabId){
 			data:articulos,
 			// ensureColumnsPxWidth:true,
 			columns:columns,			
-			groupText:function(e,args){					},	
+			groupText:function(e,args){	},	
 			groupAggregate: function (e, args, f, g) {
 				switch( args.column.dataKey ){
 					case 'sugerido_pi':																		
@@ -495,14 +491,14 @@ var EdicionArticulo=function (tabId){
 		gridPedidos.wijgrid({ beforeGroupEdit: function(e, args) { //agregada al nucleo de Wijmo el 11-03-2013					
 			var tr=$(args.target).parents('tr');			
 			
-			// alert("change");
+			
 			var prodId=tr.attr('idobjeto');
 			
 			
 								
 			var input=$("<input style='text-align:right;' />");
 				input.val( args.target.innerText ) 
-				.appendTo( $(args.target ).empty() ); 				
+				.appendTo( $(args.target ).empty() ).focus().select(); 				
 				
 			// jQuery.data( input, 'celda', args.target )
 			input.focus();
@@ -511,7 +507,7 @@ var EdicionArticulo=function (tabId){
 			input.bind('change',function(){
 				
 				var index=prodId.toString();
-				alert(index);
+				
 				
 				if ( me.padre.prods==undefined ){
 					me.padre.prods={};
@@ -785,8 +781,7 @@ var EdicionArticulo=function (tabId){
 			}else{
 				return 'NORMAL';
 			}
-			//si tiene esta clase, es grupo. 
-			
+			//si tiene esta clase, es grupo. 			
 		}
 		var tipo = getTipoColumna(col,row,this.padre.tabId);
 		
@@ -795,35 +790,50 @@ var EdicionArticulo=function (tabId){
 		}else if (tipo=='NORMAL'){
 			$(this.padre.tabId+' .grid_articulos').wijgrid('endEdit');			
 		}
-		col++;
 		
+		if (alreves){
+			col--;
+		}else{
+			col++;
+		}
+				
 		var numRows=$(this.padre.tabId+' .grid_articulos tbody tr').length;		
 		var rows=$(this.padre.tabId+' .grid_articulos tbody tr');		
 		var numCols=$(rows[0]).find('td').length;		
-		// alert(numCols);
-		if ((col)>=numCols){
-			col=0;
-			row++;
+		
+		if (alreves){
+			if (col<0){
+				col=numCols-1;
+				row--;
+			}
+		}else{
+			if ( (col)>=numCols ){
+				col=0;
+				row++;
+			}
+			
 		}
+		
 				
 		// var tr=$(this.padre.tabId+' .grid_articulos tr:nth-child('+(row+1)+')');
 		// var td=tr.find('td:nth-child('+(col+1)+')');		
 		
 		var tipoDestino = getTipoColumna(col,row,this.padre.tabId);
+		// alert(tipoDestino+', '+col+':'+row);
 		if (tipoDestino=='GRUPO'){
-			this.startGroupEdit(col,row); 
-		}else if (tipoDestino=='NORMAL'){			
+			this.startGroupEdit(col, row); 
+		}else if (tipoDestino=='NORMAL'){
 			// $(tabId+' .grid_articulos').wijgrid('doRefresh');
+			// console.log(col+" : "+row);
 			$(this.padre.tabId+" .grid_articulos").wijgrid("currentCell",  col, row);
-			$(this.padre.tabId+" .grid_articulos").wijgrid("beginEdit");			
+			$(this.padre.tabId+" .grid_articulos").wijgrid("beginEdit");
 			// grid.stopEditing();
 			// grid.startEditing();
 		}
 		return true;
 		//Obtengo la celda seleccionada
-		var tabId, cellInfo, cellIndex, rowIndex,  row, nextCell, nextRow; 
+		var tabId, cellInfo, cellIndex, rowIndex,  row, nextCell, nextRow;
 		tabId=this.tabId;
-		
 		
 		cellInfo= $(tabId+" .grid_articulos").wijgrid("currentCell");
 		

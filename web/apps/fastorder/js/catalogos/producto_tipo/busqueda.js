@@ -1,4 +1,4 @@
-var Busquedaproducto_tipo=function(){
+﻿var Busquedaproducto_tipo=function(){
 	this.tituloNuevo='Nueva';
 	this.eliminar=function(){
 	
@@ -44,7 +44,7 @@ var Busquedaproducto_tipo=function(){
 	}
 	this.borrar=function(){
 		if (this.selected==undefined) return false;
-		var r=confirm("�Eliminar Elemento?");
+		var r=confirm("¿Eliminar Elemento?");
 		if (r==true){
 		  this.eliminar();
 		}
@@ -68,7 +68,7 @@ var Busquedaproducto_tipo=function(){
 		jTab.data('tabObj',this);		
 				
 		var jTab=$('a[href="'+tabId+'"]');		//// this.agregarClase('busqueda_'+this.controlador.nombre);
-	    jTab.html('Tipos de Producto');		 
+	    jTab.html(this.catalogo.nombre);		 
 		 jTab.addClass('busqueda_'+this.controlador.nombre); 
 		//-------------------------------------------
 		$('div'+tabId).css('padding','0px 0 0 0');

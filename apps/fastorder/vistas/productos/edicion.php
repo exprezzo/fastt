@@ -31,15 +31,23 @@
 		
 		<form class="frmEdicion" style="padding-top:10px;">	
 			<input type="hidden" name="id" class="txtId" value="<?php echo $this->datos['id']; ?>" />	
-			<?php
-				foreach($this->datos as $key=>$value){
-					if ($key=="id") continue;
-			?>
-					<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-						<label style=""><?php echo $key; ?>:</label>
-						<input type="text" name="<?php echo $key; ?>" class="txt_<?php echo $key; ?>" value="<?php echo $value; ?>" style="width:500px;" />
-					</div>
-			<?php	}
-			?>
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+			<label style="">nombre:</label>
+			<input type="text" name="nombre" class="txt_nombre" value="<?php echo $this->datos['nombre']; ?>" style="width:500px;" />
+		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+			<label style="">codigo:</label>
+			<input type="text" name="codigo" class="txt_codigo" value="<?php echo $this->datos['codigo']; ?>" style="width:500px;" />
+		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+			<label style="">tipo:</label>
+			<select  name="tipo" class="txt_tipo"  style="width:500px;" >
+				<?php 
+				foreach($this->tipos as $tipo){
+					$selected= ($tipo['id']==$this->datos['tipo'] )? 'selected': '';
+					echo '<option '.$selected.' value="'.$tipo['id'].'">'.$tipo['nombre'].'</option>';
+				}
+				?>
+			</select>
+			
+		</div>
 	</div>
 </div>

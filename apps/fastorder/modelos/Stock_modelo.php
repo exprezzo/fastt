@@ -1,6 +1,7 @@
 <?php
 class StockModelo extends Modelo{
 	var $tabla="articulostock";
+	var $campos=array('idarticuloalmacen','idarticulo','idalmacen','existencia','minimo','maximo','puntoreorden','idgrupo','grupoposicion');
 	var $pk='idarticuloalmacen';
 	function nuevo($params){
 		return parent::nuevo($params);
@@ -15,7 +16,7 @@ class StockModelo extends Modelo{
 		return parent::obtener($params);
 	}
 	function buscar($params){
-		return parent::paginar($params);
+		return parent::buscar($params);
 	}
 }
 ?>

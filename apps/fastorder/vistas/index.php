@@ -6,7 +6,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="us">
 <head>
-	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title><?php echo NOMBRE_APL; ?></title>
 	<!--jQuery References-->
 	<!--link href="/js/jquery-ui-1.9.2.custom/css/flick/jquery-ui-1.9.2.custom.css" rel="stylesheet"-->	
@@ -50,7 +50,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<link href="/web/apps/fastorder/css/estilos.css" rel="stylesheet" type="text/css" />
 	<script src="/web/apps/fastorder/js/funciones.js" type="text/javascript"></script>
 	<script src="/web/apps/fastorder/js/TabManager.js" type="text/javascript"></script>
-	
+	<script src="/web/apps/fastorder/js/navegacion_en_tabla.js" type="text/javascript"></script>
 	<script type="text/javascript">		
 		kore={
 			modulo:'<?php echo $_PETICION->modulo; ?>',

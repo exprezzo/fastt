@@ -1,6 +1,8 @@
 <?php
 class AlmacenModelo extends Modelo{
 	var $tabla="almacenes";
+	var $campos=array('id','nombre');
+	
 	function nuevo($params){
 		return parent::nuevo($params);
 	}
@@ -14,7 +16,7 @@ class AlmacenModelo extends Modelo{
 		return parent::obtener($params);
 	}
 	function buscar($params){
-		return parent::paginar($params);
+		return parent::buscar($params);
 	}
 }
 ?>

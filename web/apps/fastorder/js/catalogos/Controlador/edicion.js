@@ -1,4 +1,4 @@
-var Ediciongrupo_productos = function(){
+var EdicionControlador = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	

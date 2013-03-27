@@ -1,4 +1,4 @@
-var BusquedaNombreDelControlador=function(){
+﻿var BusquedaNombreDelControlador=function(){
 	this.tituloNuevo='Nueva';
 	this.eliminar=function(){
 	
@@ -44,7 +44,7 @@ var BusquedaNombreDelControlador=function(){
 	}
 	this.borrar=function(){
 		if (this.selected==undefined) return false;
-		var r=confirm("�Eliminar Elemento?");
+		var r=confirm("¿Eliminar Elemento?");
 		if (r==true){
 		  this.eliminar();
 		}

@@ -1,3 +1,5 @@
+ï»¿
+
 var Busquedaproductos=function(){
 	this.tituloNuevo='Nueva';
 	this.eliminar=function(){
@@ -44,7 +46,7 @@ var Busquedaproductos=function(){
 	}
 	this.borrar=function(){
 		if (this.selected==undefined) return false;
-		var r=confirm("¿Eliminar Elemento?");
+		var r=confirm("Â¿Eliminar Elemento?");
 		if (r==true){
 		  this.eliminar();
 		}
@@ -64,6 +66,9 @@ var Busquedaproductos=function(){
 		var tab=config.tab;		
 		tabId = '#' + tab.id;
 		this.tabId = tabId;
+		
+		
+		
 		var jTab=$('div'+tabId);				
 		jTab.data('tabObj',this);		
 				
@@ -94,7 +99,7 @@ var Busquedaproductos=function(){
 					break;
 					case 'eliminar':
 						if (me.selected==undefined) return false;
-						var r=confirm("¿Eliminar?");
+						var r=confirm("&iquest;Â¿Eliminar?");
 						if (r==true){
 						  me.eliminar();
 						}
@@ -150,34 +155,40 @@ var Busquedaproductos=function(){
 		this.dataSource=dataSource;
 		var gridBusqueda=$(this.tabId+" .grid_busqueda");
 
-		var me=this;		 
+		var me=this;
 		gridBusqueda.wijgrid({
 			dynamic: true,
-			allowColSizing:true,			
+			allowColSizing:true,
 			allowKeyboardNavigation:true,
 			allowPaging: true,
 			pageSize:pageSize,
+			allowEditing:true,
 			selectionMode:'singleRow',
 			data:dataSource,
-			columns: [ 
-			    // { dataKey: "id", hidden:true, visible:true, headerText: "ID" }						
+			columns: [
+			    // { dataKey: "id", hidden:true, visible:true, headerText: "ID" }
 			]
 		});
-		
 		var me=this;
 		
-		gridBusqueda.wijgrid({ selectionChanged: function (e, args) { 					
+		gridBusqueda.wijgrid({ selectionChanged: function (e, args) {
 			var item=args.addedCells.item(0);
 			var row=item.row();
-			var data=row.data;			
-			me.selected=data;			
+			var data=row.data;
+			me.selected=data;
 		} });
 		
-		gridBusqueda.wijgrid({ loaded: function (e) { 
-			$(me.tabId + ' .grid_busqueda tr').bind('dblclick', function (e) { 							
+		gridBusqueda.wijgrid({ loaded: function (e) {
+			// var nav = new NavegacionEnTabla();
+			// nav.init({
+				// targetSelector: me.tabId+' .grid_busqueda',
+				// pageSize:pageSize
+			// });
+			
+			$(me.tabId + ' .grid_busqueda tr').bind('dblclick', function (e) {
 				var pedidoId=me.selected.id;
-				TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar '+me.catalogo.nombre,pedidoId);				
-			});			
+				TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar '+me.catalogo.nombre,pedidoId);
+			});
 		} });
 	};
 };

@@ -45,11 +45,11 @@ class catalogos extends Controlador{
 		//en la carpeta controladores crea el controlador
 		ob_start();
 		$resp1=crear_controlador($controlador, $modelo,$fields);
-		$resp2=crear_modelo($modelo, $tabla);
-		$resp3=crear_buscador($controlador, $modelo);
-		$resp4=crear_buscadorjs($controlador, $modelo);
-		$resp5=crear_editor($controlador, $modelo);
-		$resp6=crear_editorjs($controlador, $modelo);		
+		$resp2=crear_modelo($modelo, $tabla,$fields);
+		$resp3=crear_buscador($controlador, $modelo,$fields);
+		$resp4=crear_buscadorjs($controlador, $modelo,$fields);
+		$resp5=crear_editor($controlador, $modelo, $fields);
+		$resp6=crear_editorjs($controlador, $modelo,$fields);		
 		ob_end_clean();
 		// echo json_encode($res);
 	}

@@ -1,9 +1,20 @@
 <?php
-function crear_modelo($nombreModelo, $tabla){
+function crear_modelo($nombreModelo, $tabla, $fields){
 	$ruta='..//apps/fastorder/modelos/';	
+	
+	$fieldsStr='array(';
+	for($i=0; $i<sizeof($fields); $i++ ){
+		$fieldsStr.='\''.$fields[$i].'\',';
+	}
+	
+	$fieldsStr=$sql=substr($fieldsStr, 0, strlen($fieldsStr)-1 );
+	$fieldsStr.=')';
+	
 $contenido='<?php
 class '.$nombreModelo.'Modelo extends Modelo{
 	var $tabla="'.$tabla.'";
+	var $campos='.$fieldsStr.';
+	
 	function nuevo($params){
 		return parent::nuevo($params);
 	}
@@ -17,7 +28,7 @@ class '.$nombreModelo.'Modelo extends Modelo{
 		return parent::obtener($params);
 	}
 	function buscar($params){
-		return parent::paginar($params);
+		return parent::buscar($params);
 	}
 }
 ?>';

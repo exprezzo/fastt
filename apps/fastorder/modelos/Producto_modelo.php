@@ -1,6 +1,8 @@
 <?php
 class ProductoModelo extends Modelo{
 	var $tabla="productos";
+	var $campos=array('id','nombre','codigo','tipo');
+	
 	function nuevo($params){
 		return parent::nuevo($params);
 	}
@@ -14,10 +16,7 @@ class ProductoModelo extends Modelo{
 		return parent::obtener($params);
 	}
 	function buscar($params){
-		return $this->paginar($params);
-	}
-	
-	function paginar($params){
+		
 		$con = $this->getConexion();
 		
 		$sql = 'SELECT COUNT(*) as total FROM '.$this->tabla;
@@ -25,15 +24,28 @@ class ProductoModelo extends Modelo{
 		$tot = $sth->fetchAll(PDO::FETCH_ASSOC);
 		$total = $tot[0]['total'];
 		
-		$limit=$params['limit'];
-		$start=$params['start'];		
-		$sql = 'SELECT p.id,p.nombre,p.codigo, pt.nombre tipo FROM '.$this->tabla.' p
-		LEFT JOIN producto_tipo pt ON pt.id = p.tipo
-		limit :start,:limit';
-		// echo $sql;
+		$paginar=false;
+		if ( isset($params['limit']) && isset($params['start']) ){
+			$paginar=true;
+		}
+		if ($paginar){
+			$limit=$params['limit'];
+			$start=$params['start'];		
+			$sql = 'SELECT p.id,p.nombre,p.codigo,pt.nombre tipo FROM '.$this->tabla.' p
+			LEFT JOIN producto_tipo pt ON pt.id = p.tipo
+			limit :start,:limit';
+		}else{			
+			$sql = 'SELECT p.id,p.nombre,p.codigo,pt.nombre tipo FROM '.$this->tabla.' p
+			LEFT JOIN producto_tipo pt ON pt.id = p.tipo';
+		}
+		
+		
 		$sth = $con->prepare($sql);
-		$sth->bindValue(':limit',$limit,PDO::PARAM_INT);
-		$sth->bindValue(':start',$start,PDO::PARAM_INT);
+		if ($paginar){
+			$sth->bindValue(':limit',$limit,PDO::PARAM_INT);
+			$sth->bindValue(':start',$start,PDO::PARAM_INT);
+		}
+		
 		$exito = $sth->execute();
 
 		$modelos = $sth->fetchAll(PDO::FETCH_ASSOC);				

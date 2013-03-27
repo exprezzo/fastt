@@ -14,7 +14,7 @@ class unidademedidaModelo extends Modelo{
 		return parent::obtener($params);
 	}
 	function buscar($params){
-		return parent::paginar($params);
+		return parent::buscar($params);
 	}
 }
 ?>

@@ -60,7 +60,8 @@ var Edicionproducto_tipo = function(){
 		$(tabId+' .toolbarEdicion .boton').mouseleave(function(e){			 
 				$(this).removeClass("ui-state-hover");			
 		});
-		 tab.data('tabObj',this); //Este para que?		
+		
+		 // tab.data('tabObj',this); //Este para que?		
 	};
 	//esta funcion pasara al plugin
 	//agrega una clase al panel del contenido y a la pestaña relacionada.
@@ -76,7 +77,7 @@ var Edicionproducto_tipo = function(){
 		var tabId = this.tabId;
 		var me=this;
 		 $('#tabs > ul a[href="'+tabId+'"] + span').click(function(e){
-			//e.preventDefault();
+			e.preventDefault();
 			 var tmp=$(me.tabId+' .txtIdTmp');				
 			if (tmp.length==1){
 				var id=$(tmp[0]).val();				

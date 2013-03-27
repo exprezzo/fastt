@@ -1,11 +1,10 @@
 <?php
-require_once '../apps/'.$_PETICION->modulo.'/modelos/Stock_modelo.php';
-class stocks extends Controlador{
-	var $modelo="Stock";
-	var $fields=array('idarticuloalmacen','idarticulo','idalmacen','existencia','minimo','maximo','puntoreorden','idgrupo','grupoposicion');
+require_once '../apps/'.$_PETICION->modulo.'/modelos/Modelo_modelo.php';
+class Controlador extends Controlador{
+	var $modelo="Modelo";
 	
 	function nuevo(){		
-		$fields=$this->fields;
+		$fields=array);
 		$vista=$this->getVista();				
 		for($i=0; $i<sizeof($fields); $i++){
 			$obj[$fields[$i]]='';
