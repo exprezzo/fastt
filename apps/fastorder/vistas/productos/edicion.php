@@ -37,9 +37,9 @@
 		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
 			<label style="">codigo:</label>
 			<input type="text" name="codigo" class="txt_codigo" value="<?php echo $this->datos['codigo']; ?>" style="width:500px;" />
-		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:50%;" autoFocus >
 			<label style="">tipo:</label>
-			<select  name="tipo" class="txt_tipo"  style="width:500px;" >
+			<select  name="tipo" class="txt_tipo"  style="width:250px;" >
 				<?php 
 				foreach($this->tipos as $tipo){
 					$selected= ($tipo['id']==$this->datos['tipo'] )? 'selected': '';

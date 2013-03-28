@@ -32,6 +32,8 @@ class catalogos extends Controlador{
 	}
 	
 	function crear_catalogo($controlador, $modelo, $tabla){
+		
+		
 		// echo 'crear catalogo, controlador: '.$controlador.' tabla: '.$tabla.'<br/> ';
 		$sql="SHOW COLUMNS FROM $tabla";
 		$mod=$this->getModel();
@@ -57,6 +59,8 @@ class catalogos extends Controlador{
 		ob_start();
 			$resp = parent::guardar();
 		ob_end_clean();
+		
+		$params=$_REQUEST['datos'];
 		
 		$this->crear_catalogo($_REQUEST['datos']['controlador'], $_REQUEST['datos']['modelo'], $_REQUEST['datos']['tabla']);
 		echo json_encode($resp);

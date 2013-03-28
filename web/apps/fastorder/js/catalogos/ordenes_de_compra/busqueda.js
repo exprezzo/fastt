@@ -1,4 +1,4 @@
-﻿var Busquedastocks=function(){
+﻿var Busquedaordenes_de_compra=function(){
 	this.tituloNuevo='Nueva';
 	this.eliminar=function(){
 	
@@ -175,7 +175,7 @@
 		
 		gridBusqueda.wijgrid({ loaded: function (e) { 
 			$(me.tabId + ' .grid_busqueda tr').bind('dblclick', function (e) { 							
-				var pedidoId=me.selected.idarticuloalmacen;
+				var pedidoId=me.selected.id;
 				TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar '+me.catalogo.nombre,pedidoId);				
 			});			
 		} });

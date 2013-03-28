@@ -41,6 +41,8 @@ ul.ui-tabs-nav li a.busqueda_unidademedida, ul.ui-tabs-nav li a.frmunidademedida
 ul.ui-tabs-nav li a.busqueda_cuentas, ul.ui-tabs-nav li a.frmcuentas{ background-image:url('../images/supermono/table.png'); }
 ul.ui-tabs-nav li a.busqueda_grupo_productos, ul.ui-tabs-nav li a.frmgrupo_productos{ background-image:url('../images/supermono/network.png'); }
 ul.ui-tabs-nav li a.busqueda_producto_tipo, ul.ui-tabs-nav li a.frmproducto_tipo{ background-image:url('../images/supermono/settings-3.png'); }
+ul.ui-tabs-nav li a.busqueda_empresas, ul.ui-tabs-nav li a.frmempresas{ background-image:url('../images/supermono/settings.png'); }
+
 
 
 #tabs > ul.ui-tabs-nav li a.pedido{ background-image:url('../images/supermono/basket.png'); }

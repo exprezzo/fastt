@@ -1,4 +1,4 @@
-﻿var Busquedastocks=function(){
+﻿var Busquedadetalle_de_la_orden=function(){
 	this.tituloNuevo='Nueva';
 	this.eliminar=function(){
 	
@@ -57,6 +57,7 @@
 		tab.addClass(clase);
 	}
 	this.init=function(config){		
+		this.config=config;
 		//-------------------------------------------Al nucleo		*/		
 		this.controlador=config.controlador;
 		this.catalogo=config.catalogo;
@@ -134,8 +135,9 @@
 			
 		var dataSource = new wijdatasource({
 			proxy: new wijhttpproxy({
-				url: '/'+kore.modulo+'/'+this.controlador.nombre+'/buscar',
-				dataType: "json"
+				url: '/'+kore.modulo+'/'+this.controlador.nombre+'/getDetalles',
+				dataType: "json",
+				data: { id: this.config.id }
 			}),
 			dynamic:true,
 			reader:new wijarrayreader(campos)
@@ -156,6 +158,7 @@
 			allowColSizing:true,			
 			allowKeyboardNavigation:true,
 			allowPaging: true,
+			allowEditing: true,
 			pageSize:pageSize,
 			selectionMode:'singleRow',
 			data:dataSource,
@@ -174,10 +177,15 @@
 		} });
 		
 		gridBusqueda.wijgrid({ loaded: function (e) { 
-			$(me.tabId + ' .grid_busqueda tr').bind('dblclick', function (e) { 							
-				var pedidoId=me.selected.idarticuloalmacen;
-				TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar '+me.catalogo.nombre,pedidoId);				
-			});			
+			// $(me.tabId + ' .grid_busqueda tr').bind('dblclick', function (e) { 							
+				// var pedidoId=me.selected.id;
+				// TabManager.add('/'+kore.modulo+'/'+me.controlador.nombre+'/editar','Editar '+me.catalogo.nombre,pedidoId);				
+			// });			
+						var nav = new NavegacionEnTabla();
+			nav.init({
+				targetSelector: me.tabId+' .grid_busqueda',
+				pageSize:pageSize
+			});
 		} });
 	};
 };

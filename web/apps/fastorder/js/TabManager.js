@@ -5,7 +5,7 @@ var TabManager={
 		   tabTemplate: '<li><a  href="#{href}">#{label}</a> <span class="ui-icon ui-icon-close">Remove Tab</span></li>',
 		    beforeremove: function (e, params) { 
 				//obtener el tab con ese index, ejecutarle la funcion beforeclose, si es que tiene
-				var tab=$(params.el).data('tabObj');
+				var tab=$(params.el).data('tabObj');				
 				if (tab!=undefined && tab.close != undefined){
 					return tab.close();
 				}else{

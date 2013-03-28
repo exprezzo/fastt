@@ -17,10 +17,10 @@ class '.$nombreControlador.' extends Controlador{
 	var $campos='.$fieldsStr.';
 	
 	function nuevo(){		
-		$campos=$this->fields;
+		$campos=$this->campos;
 		$vista=$this->getVista();				
-		for($i=0; $i<sizeof($fields); $i++){
-			$obj[$fields[$i]]=\'\';
+		for($i=0; $i<sizeof($campos); $i++){
+			$obj[$campos[$i]]=\'\';
 		}
 		$vista->datos=$obj;		
 		

@@ -45,6 +45,7 @@ $contenido='
 		<form class="frmEdicion" style="padding-top:10px;">	
 			<input type="hidden" name="id" class="txtId" value="<?php echo $this->datos[\'id\']; ?>" />	
 			'.$divs.'
+		</form>
 	</div>
 </div>
 ';

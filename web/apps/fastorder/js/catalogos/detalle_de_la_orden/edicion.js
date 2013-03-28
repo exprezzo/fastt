@@ -1,4 +1,4 @@
-var Edicionproductos = function(){
+ï»¿var Ediciondetalle_de_la_orden = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	
@@ -7,9 +7,9 @@ var Edicionproductos = function(){
 		
 	}
 	this.close=function(){
-	
+		
 		if (this.editado){
-			var res=confirm('¿Guardar antes de salir?');
+			var res=confirm('Â¿Guardar antes de salir?');
 			if (res===true){
 				this.saveAndClose=true;
 				this.guardar();
@@ -45,7 +45,7 @@ var Edicionproductos = function(){
 		this.actualizarTitulo();				
 		
 		var me=this;
-		$(this.tabId + ' .frmEdicion input').change(function(){			
+		$(this.tabId + ' .frmEdicion input').change(function(){
 			me.editado=true;		
 		});
 		
@@ -60,7 +60,8 @@ var Edicionproductos = function(){
 		$(tabId+' .toolbarEdicion .boton').mouseleave(function(e){			 
 				$(this).removeClass("ui-state-hover");			
 		});
-		 tab.data('tabObj',this); //Este para que?	 para poder notificar al cerrar, ver funcion TabManager.init
+		
+		 // tab.data('tabObj',this); //Este para que?		
 	};
 	//esta funcion pasara al plugin
 	//agrega una clase al panel del contenido y a la pestaña relacionada.
@@ -76,7 +77,7 @@ var Edicionproductos = function(){
 		var tabId = this.tabId;
 		var me=this;
 		 $('#tabs > ul a[href="'+tabId+'"] + span').click(function(e){
-			//e.preventDefault();
+			e.preventDefault();
 			 var tmp=$(me.tabId+' .txtIdTmp');				
 			if (tmp.length==1){
 				var id=$(tmp[0]).val();				
@@ -235,9 +236,13 @@ var Edicionproductos = function(){
 	
 	this.configurarFormulario=function(tabId){		
 		var me=this;
-		$(this.tabId+" .txt_tipo").wijcombobox({
-			autoComplete: false
-		});	
+		
+	
+		
+		
+	
+		
+		
 	};
 	this.configurarToolbar=function(tabId){		
 			
@@ -249,7 +254,7 @@ var Edicionproductos = function(){
 			});
 			
 			$(this.tabId + ' .toolbarEdicion .btnDelete').click( function(){
-				var r=confirm("¿Eliminar?");
+				var r=confirm("Â¿Eliminar?");
 				if (r==true){
 				  me.eliminar();
 				  me.editado=true;
