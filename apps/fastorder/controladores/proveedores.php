@@ -12,9 +12,7 @@ class proveedores extends Controlador{
 		$vista->datos=$obj;		
 		
 		global $_PETICION;
-		$vista->mostrar('/'.$_PETICION->controlador.'/edicion');
-		
-		
+		$vista->mostrar('/'.$_PETICION->controlador.'/edicion');		
 	}
 	
 	function guardar(){

@@ -1,4 +1,4 @@
-﻿var Edicionordenes_de_compra = function(){
+﻿var EdicionRecetas = function(){
 	this.editado=false;
 	this.saveAndClose=false;
 	
@@ -22,11 +22,6 @@
 		}
 	};
 	this.init=function(params){
-		// var defaults={		
-			// guardar:this.guardar
-		// }
-		 // $.extend(this, defaults, new ComportamientoEdicion() );
-		 
 		this.controlador=params.controlador;
 		this.catalogo=params.catalogo;
 		
@@ -116,11 +111,7 @@
 		var tabId=this.tabId;
 		var tab = $('#tabs '+tabId);
 		var me=this;
-		
-		
-		var articulos=$(this.tabId+' .grid_busqueda').wijgrid('data');
-		// console.log("data"); console.log(data);
-		
+	
 		//-----------------------------------
 		// http://stackoverflow.com/questions/2403179/how-to-get-form-data-as-a-object-in-jquery
 		var paramObj = {};
@@ -135,7 +126,7 @@
 		});
 		//-----------------------------------
 		var datos=paramObj;
-		datos.articulos=articulos;
+		
 		//Envia los datos al servidor, el servidor responde success true o false.
 		
 		$.ajax({
@@ -164,17 +155,6 @@
 				var objId = '/'+kore.modulo+'/'+me.controlador.nombre+'/editar?id='+resp.datos.id;
 				objId = objId.toLowerCase();
 				$(me.tabId ).attr('objId',objId);				
-				
-				var articulos=resp.articulos || new Array();
-				 var gridPedidos=$(me.tabId+" .grid_busqueda");
-				 var data=gridPedidos.wijgrid('data');
-				 data.length=0;
-				 for(var i=0; i<articulos.length; i++){
-					 data.push(articulos[i]);
-				 }
-				
-				gridPedidos.wijgrid('ensureControl', true);
-				
 				
 				$.gritter.add({
 					position: 'bottom-left',

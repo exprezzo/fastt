@@ -26,7 +26,7 @@ var NavegacionEnAgrupada=function(){
 		var data= $(this.targetSelector).wijgrid('data');									
 		
 		this.tmp_id++;
-		nuevo[0].tmp_id=this.tmp_id;
+		// nuevo[0].tmp_id=this.tmp_id;
 		var array3 = nuevo.concat(data); // Merges both arrays
 		data.length=0;
 		for(var i=0; i<array3.length; i++){

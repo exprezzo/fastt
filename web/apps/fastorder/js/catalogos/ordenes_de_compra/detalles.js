@@ -1,38 +1,126 @@
 ﻿var Busquedadetalle_de_la_orden=function(){
 	this.tituloNuevo='Nueva';
-	this.eliminar=function(){
-	
-	var id = this.selected.id;
-	var me=this;
-	$.ajax({
-			type: "POST",
-			url: '/'+kore.modulo+'/'+this.controlador.nombre+'/eliminar',
-			data: { id: id}
-		}).done(function( response ) {		
-			var resp = eval('(' + response + ')');
-			var msg= (resp.msg)? resp.msg : '';
-			var title;
-			if ( resp.success == true	){
-				icon='/web/apps/fastorder/images/yes.png';
-				title= 'Success';				
-				var gridBusqueda=$(me.tabId+" .grid_busqueda");				
-				gridBusqueda.wijgrid('ensureControl', true);
-			}else{
-				icon= '/web/apps/fastorder/images/error.png';
-				title= 'Error';
-			}
-			
-			//cuando es true, envia tambien los datos guardados.
-			//actualiza los valores del formulario.
-			$.gritter.add({
-				position: 'bottom-left',
-				title:title,
-				text: msg,
-				image: icon,
-				class_name: 'my-sticky-class'
-			});
+	this.configurarComboArticulo=function(target){
+		
+		var tabId=this.tabId;
+		 
+		var fields=[			
+			{name: 'presentacion'},
+			{name: 'idarticulopre'},
+			{name: 'codigo'},
+			{name: 'existencia'},
+			{name: 'minimo'},
+			{name: 'maximo'},
+			{name: 'puntoreorden'},
+			{name: 'nombre_almacen'},
+		{
+			name: 'label',
+			mapping: 'nombre'
+		}, {
+			name: 'value',
+			mapping: 'id'
+		}, {
+			name: 'selected',
+			defaultValue: false
+		}];
+		var me = this;
+		var myReader = new wijarrayreader(fields);
+		
+		var proxy = new wijhttpproxy({
+			url: '/'+kore.modulo+'/'+this.controlador.nombre+'/getArticulos',
+			dataType:"json"			
 		});
-}
+		
+		var datasource = new wijdatasource({
+			reader:  new wijarrayreader(fields),
+			proxy: proxy,	
+			loaded: function (data) {				
+				// var val=$('#tabs '+tabId+' .txtFkAlmacen').val();
+				// $.each(data.items, function(index, datos) {					
+					// if (parseInt(val)==parseInt(datos.id) ){						
+						// $('#tabs '+tabId+' .cmbAlmacen').wijcombobox({selectedIndex:index});
+					// }
+				// });				
+			},
+			loading: function (dataSource, userData) {				 
+				 dataSource.proxy.options.data=dataSource.proxy.options.data || {};
+				 dataSource.proxy.options.data.idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();		
+            }
+		});		
+		
+		datasource.reader.read= function (datasource) {
+			var totalRows=datasource.data.totalRows;
+			datasource.data = datasource.data.rows;
+			datasource.data.totalRows = totalRows;
+			myReader.read(datasource);
+		};
+		
+		datasource.load();
+		var me=this;
+		var combo=$(target).wijcombobox({
+			data: datasource,
+			showTrigger: true,
+			autoFilter: false,
+			minLength: 1,
+			animationOptions: {
+				animated: "Drop",
+				duration: 1000
+			},
+			forceSelectionText: false,
+			search: function (e, obj) {
+				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
+			},
+			select: function (e, item)
+			{
+				var rowdom=$(me.tabId+' .grid_articulos tbody tr:eq('+me.selected.sectionRowIndex +')');
+				me.articulo=item;				
+								
+				// rowdom.find('td:eq(2) div').html(item.maximo);
+				// rowdom.find('td:eq(3) div').html(item.minimo);
+				// rowdom.find('td:eq(4) div').html(item.puntoreorden);
+				// rowdom.find('td:eq(5) div').html(item.existencia);
+				
+				
+				// var reorden=parseInt( item.puntoreorden );
+				// var existencia=parseInt( item.existencia );
+				// var maximo=parseInt( item.maximo );
+				// var sugerido=0;
+				// var pendiente=0;
+				// if (existencia<=reorden){
+					// sugerido = maximo-existencia;					
+				// }				
+				// me.articulo.pedido=sugerido;
+				// me.articulo.sugerido=sugerido;
+				// me.articulo.pendiente=0;
+				
+				return true;
+				
+			}
+		});
+		combo.focus();
+	};
+	this.eliminar=function(){
+		
+		if (this.borrados==undefined) this.borrados = new Array();
+		
+		this.borrados.push( this.selected.id );			
+		var me=this;
+		
+		var data= $(this.tabId+" .grid_busqueda").wijgrid("data");
+		
+		for(var i=0; i<data.lenth; i++){
+			if (data[i].id==this.selected.id ){
+				data[i].eliminado=true;
+			}
+		}
+		
+		
+		var cellInfo= $(this.tabId+" .grid_busqueda").wijgrid("currentCell");
+		var row = cellInfo.row();
+		var container=cellInfo.container();
+		$(this.tabId+" .grid_busqueda 	tbody tr:eq("+cellInfo.rowIndex()+")").addClass('eliminado');		
+		row.data.eliminado=true;
+};
 	this.nuevo=function(){		
 		TabManager.add('/'+kore.modulo+'/'+this.controlador.nombre+'/nuevo',this.tituloNuevo);
 	};
@@ -95,7 +183,7 @@
 					break;
 					case 'eliminar':
 						if (me.selected==undefined) return false;
-						var r=confirm("�Eliminar?");
+						var r=confirm("¿Eliminar?");
 						if (r==true){
 						  me.eliminar();
 						}
@@ -117,7 +205,7 @@
 						
 					break;
 					case 'imprimir':
-						alert("Imprimir en construcci�n");
+						alert("Imprimir en construcción");
 					break;
 				}
 				
@@ -126,53 +214,19 @@
 		
 	};
 	this.configurarGrid=function(tabId){
-		pageSize=10;
+		pageSize=10;		
 		
-		var campos=[
-			// { name: "id"  }
-		];
-		// var dataReader = new wijarrayreader(campos);
-			
-		// var dataSource = new wijdatasource({
-			// proxy: new wijhttpproxy({
-				// url: '/'+kore.modulo+'/'+this.controlador.nombre+'/getDetalles',
-				// dataType: "json",
-				// data: { id: this.config.id }
-			// }),
-			// dynamic:true,
-			// reader:new wijarrayreader(campos)
-		// });
-				
-		// dataSource.reader.read= function (datasource) {						
-			// var totalRows=datasource.data.totalRows;						
-			// datasource.data = datasource.data.rows;
-			// datasource.data.totalRows = totalRows;
-			// dataReader.read(datasource);
-		// };				
-		// this.dataSource=dataSource;
 		var gridBusqueda=$(this.tabId+" .grid_busqueda");
-		
-		// if (this.z_editor == undefined){
-			// this.z_editor = new NavegacionEnAgrupada();				
-			// this.z_editor.init({
-				// targetSelector: this.tabId+' .grid_busqueda',
-				// pageSize:pageSize,
-				// tabId:this.tabId,
-				// padre:this
-			// });
-		// }else{
-			// this.z_editor.reset();
-		// }
 		
 		this.columns=[ 
 			     { dataKey: "id", visible:false, headerText: "ID" },
 				 { dataKey: "fk_orden_compra", visible:false },
 				 { dataKey: "fk_articulo", visible:false },
 				 { dataKey: "idarticulopre", visible:false },
-				 { dataKey: "nombreOrigen", visible:true, headerText:'Producto', editable:false, nuevoEditable:true },	
+				 { dataKey: "nombreOrigen", visible:true, headerText:'Producto', editable:false, nuevoEditable:true},
 				 { dataKey: "almacen", visible:true, editable:false ,headerText:'Almacén'},
 				 { dataKey: "pedidoi", visible:true , dataType:'number', aggregate:"sum", editable:false},
-				 { dataKey: "cantidad", visible:true, aggregate:"sum", dataType:'number', headerText:'Ordenado',grupoEditable:true },				 
+				 { dataKey: "cantidad", visible:true, aggregate:"sum", dataType:'number', headerText:'Ordenado',grupoEditable:false }, 
 				 { dataKey: "fk_pedido_detalle", visible:false },
 				 { dataKey: "nombreProducto", visible:false, grupoEditable:false, 	groupInfo:{
 					position: "header", 
@@ -226,9 +280,8 @@
 				}
 					
 			},
-			beforeGroupEdit: function(e, args) {
-				
-				// obtengo la celda que intenta editarse, y sus indices en la tabla
+			beforeGroupEdit: function(e, args) {				
+			// comportamiento editable para los registros agrupadores
 				var td=$(args.target).parents('td');																		
 				var celda={
 					col:$(td).parent().children().index( $(td) ),
@@ -248,14 +301,12 @@
 				var column=args.cell.column();				
 				
 				var row = args.cell.row();
-				// console.log("row"); console.log(row);
+			
 				
-				//con los registros nuevos, la edicion es diferente 
-				
-				//------------------------------------
+			//con los registros nuevos, la edicion es diferente 			
+			//------------------------------------
 				if (row.data.id==undefined || row.data.id=="" || row.data.id == 0 ){
-					//En este caso, la propiedad nuevoEditable sobreEscribe readOnly.
-					// console.log("nuevoEditable? column"); console.log(column);
+				//En este caso, la propiedad nuevoEditable sobreEscribe a editable.					
 					if (column.nuevoEditable !== undefined){
 						if (column.nuevoEditable === false)  return false;
 					}  else{
@@ -265,21 +316,81 @@
 				}else{
 					if (column.editable === false)  return false;
 				}
-				//------------------------------------
-				
-				var input=$("<input />")
-					.val(args.cell.value())
-					.appendTo(args.cell.container().empty()).focus().select();				
-				
-				var domCel = args.cell.tableCell();
-				input.css('width',	$(domCel).width()  -10 );
-				input.css('height',	$(domCel).height() -10 );
+			//------------------------------------
+				switch (args.cell.column().dataKey) {
+					case "nombreOrigen": 						
+						var combo=
+						$("<input />")
+							.val(args.cell.value()) 
+							.appendTo(args.cell.container().empty());   
+						args.handled = true;   
 						
+						var domCel = args.cell.tableCell();
+						combo.css('width',	$(domCel).width()-10 );
+						combo.css('height',	$(domCel).height()-10 );
+						
+						me.configurarComboArticulo(combo);
+					break;
+					default:					
+						var input=$("<input />")
+							.val(args.cell.value())
+							.appendTo(args.cell.container().empty()).focus().select();				
+						
+						var domCel = args.cell.tableCell();
+						input.css('width',	$(domCel).width()  -10 );
+						input.css('height',	$(domCel).height() -10 );
+					break;
+				}
 				return true;
 				
 			}
 		});
 		
+		gridBusqueda.wijgrid({beforeCellUpdate:function(e, args) {
+			
+				switch (args.cell.column().dataKey) {
+					case "nombreOrigen":
+						
+						args.value = args.cell.container().find("input").val();
+						
+						if (me.articulo!=undefined){
+							
+							var row=args.cell.row();
+							
+							row.data.fk_articulo=me.articulo.value;
+							row.data.nombreProducto = me.articulo.nombre;
+							// row.data.pedido=me.articulo.pedido;
+							// row.data.fk_producto_origen=me.articulo.id;							
+							// row.data.codigo=me.articulo.codigo;
+							// row.data.maximo=me.articulo.maximo;
+							// row.data.minimo=me.articulo.minimo;
+							// row.data.puntoreorden=me.articulo.puntoreorden;
+							// row.data.existencia=me.articulo.existencia;
+							row.data.sugerido=me.articulo.sugerido;							
+							row.data.pendiente=me.articulo.pendiente;
+							row.data.nombreGpo=me.articulo.grupo;		
+							row.data.fk_producto_origen=me.articulo.value;
+						}
+					break;
+					case 'cantidad':
+						args.value = args.cell.container().find("input").val();
+						
+						var row=args.cell.row();
+						// console.log('cantidad'); console.log(row);
+						
+						if ( row.data.fk_pedido_detalle != 0 ){
+							row.data.cantidad = args.value;							 
+							row.data.pendiente = row.data.pedidoi - row.data.cantidad;							
+							
+							$(me.tabId+' .grid_busqueda').wijgrid('doRefresh');
+						}
+							
+					break;
+					
+				}
+				me.articulo=undefined;
+			}
+		});
 		var me=this;
 		
 		gridBusqueda.wijgrid({ selectionChanged: function (e, args) { 					

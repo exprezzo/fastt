@@ -7,7 +7,42 @@ class Orden_de_compraModelo extends Modelo{
 		return parent::nuevo($params);
 	}
 	function guardar($params){
-		return parent::guardar($params);
+		
+		if ( isset($params['articulos']) ){
+			$articulos=  $params['articulos'];
+			unset($params['articulos']);
+		}else{
+			$articulos=array();
+		}
+		
+		// echo 'guardar';
+		// print_r($params);
+		
+		$resM= parent::guardar($params);
+		
+		if ( $resM['success']==false ){			
+			return $resM;
+		}
+		
+		$id=$resM['datos']['id'];
+		
+		$detMod=new DetalleDeOrdenModelo();
+		foreach($articulos as $articulo){
+			$articulo['fk_orden_compra']=$id;
+			unset( $articulo['nombreProducto'] );
+			unset( $articulo['nombreOrigen'] );
+			unset( $articulo['almacen'] );
+			
+			if ( isset($articulo['eliminado']) && $articulo['eliminado']==true ){
+				$res=$detMod->eliminar($articulo);
+			}else{
+				$res=$detMod->guardar($articulo);
+			}			
+		}
+		$prods=$detMod->getProductosDeLaOrden($id);
+		$resM['articulos']=$prods['datos'];
+		
+		return $resM;
 	}
 	function borrar($params){
 		return parent::borrar($params);

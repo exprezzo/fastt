@@ -1,13 +1,14 @@
 <?php
-require_once '../apps/'.$_PETICION->modulo.'/modelos/Modelo_modelo.php';
-class Controlador extends Controlador{
-	var $modelo="Modelo";
+require_once '../apps/'.$_PETICION->modulo.'/modelos/Receta_modelo.php';
+class Recetas extends Controlador{
+	var $modelo="Receta";
+	var $campos=array('id','idarticulo','fk_articulo','cantidad');
 	
 	function nuevo(){		
-		$fields=array);
+		$campos=$this->campos;
 		$vista=$this->getVista();				
-		for($i=0; $i<sizeof($fields); $i++){
-			$obj[$fields[$i]]='';
+		for($i=0; $i<sizeof($campos); $i++){
+			$obj[$campos[$i]]='';
 		}
 		$vista->datos=$obj;		
 		

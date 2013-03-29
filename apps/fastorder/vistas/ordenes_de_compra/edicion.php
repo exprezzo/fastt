@@ -98,8 +98,12 @@
 	
 </style>
 
-<script>			
+<script>
+	<?php if ( !isset($this->detalles) ) $this->detalles=array(); ?>
+			
 	$( function(){	
+		
+		
 		var articulos=<?php echo json_encode($this->detalles); ?>;		
 		
 		var config={
@@ -138,15 +142,25 @@
 		<form class="frmEdicion" style="padding-top:10px;">	
 			<input type="hidden" name="id" class="txtId" value="<?php echo $this->datos['id']; ?>" />	
 			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-			<label style="">idproveedor:</label>
-			<input type="text" name="idproveedor" class="txt_idproveedor" value="<?php echo $this->datos['idproveedor']; ?>" style="width:500px;" />
-		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-			<label style="">fecha:</label>
-			<input type="text" name="fecha" class="txt_fecha" value="<?php echo $this->datos['fecha']; ?>" style="width:500px;" />
-		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-			<label style="">vencimiento:</label>
-			<input type="text" name="vencimiento" class="txt_vencimiento" value="<?php echo $this->datos['vencimiento']; ?>" style="width:500px;" />
-		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+				<label style="">idproveedor:</label>
+				<select name="idproveedor">
+					<?php foreach($this->proveedores as $prov){
+						$selected= ($prov['id'] == $this->datos['idproveedor'])? 'selected' : '';
+						echo '<option '.$selected.' value="'.$prov['id'].'">'.$prov['nombre'].'</option>';
+					}
+					?>					
+				</select>
+				
+			</div>
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+				<label style="">fecha:</label>
+				<input type="text" name="fecha" class="txt_fecha" value="<?php echo $this->datos['fecha']; ?>" style="width:500px;" />
+			</div>
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+				<label style="">vencimiento:</label>
+				<input type="text" name="vencimiento" class="txt_vencimiento" value="<?php echo $this->datos['vencimiento']; ?>" style="width:500px;" />
+			</div>
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
 			<label style="">idestado:</label>
 			<input type="text" name="idestado" class="txt_idestado" value="<?php echo $this->datos['idestado']; ?>" style="width:500px;" />
 		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
@@ -156,8 +170,15 @@
 			<label style="">folio:</label>
 			<input type="text" name="folio" class="txt_folio" value="<?php echo $this->datos['folio']; ?>" style="width:500px;" />
 		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-			<label style="">fk_almacen:</label>
-			<input type="text" name="fk_almacen" class="txt_fk_almacen" value="<?php echo $this->datos['fk_almacen']; ?>" style="width:500px;" />
+			<label style="">Almac&eacute;n:</label>
+			<select name="fk_almacen">
+				<?php foreach($this->almacenes as $obj){
+					$selected= ($obj['id'] == $this->datos['fk_almacen'])? 'selected' : '';
+					echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
+				}
+				?>					
+			</select>
+			
 		</div>
 		</form>
 		<div >	
