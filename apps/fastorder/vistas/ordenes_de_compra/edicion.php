@@ -1,10 +1,107 @@
 
 <script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/<?php echo $_PETICION->controlador; ?>/edicion.js"></script>
 <script src="/web/apps/<?php echo $_PETICION->modulo; ?>/js/catalogos/<?php echo $_PETICION->controlador; ?>/detalles.js"></script>
+<style type="text/css">
+	.frmPedido .inputBox{display:inline-block !important; }
+	.frmOrdenCompra .wijmo-wijgrid-innercell{
+		padding-left:0 !important;
+	}
+	
+	.tabOrdenCompra .pnlIzq > div{
+		float:right;		
+	}
+	
+	.tabOrdenCompra .pnlIzq > form{
+		float:left;
+		padding-top:0;
+	}
+	
+	
+	tr[grupo_editable="true"] td{
+		background-color:black;
+		color:white;
+	}
+	
+	tr[singrupo="true"] td, tr[nuevo="true"] td{
+		/*background-color:blue;
+		color:white;*/
+		font-weight:bold !important;
+	}
+	
+	tr[singrupo="true"] td:nth-child(2), tr[singrupo="true"] td:nth-child(3), tr[singrupo="true"] td:nth-child(4), tr[singrupo="true"] td:nth-child(5), tr[singrupo="true"] td:nth-child(6), tr[singrupo="true"] td:nth-child(7), tr[singrupo="true"] td:nth-child(8){
+		color:transparent; 
+	}
+	
+	/* tr[arial-level="1"] td:nth-child(2),tr[arial-level="1"] td:nth-child(3), tr[arial-level="1"] td:nth-child(4), tr[arial-level="1"] td:nth-child(5){		
+		color:white !important;
+	}
+	*/
+	
+	 tr[arial-level="1"] td{		
+		color:white !important;
+		border:none !important;
+	}
+	
+	
+	.divLabel {vertical-align:bottom;text-alignt:right; text-align:right; display:inline-block;}
+.divNumerosStock ul{padding:0;margin:0;}
+.divNumerosStock li{display:inline ;padding:0;margin:0;}
+.stock_numbers li{display:inline;}
 
+	.frmEditInlinePedido input[readonly="true"]{
+		border:none !important;
+		text-align:right;
+	}
+	.frmEditInlinePedido input{
+		text-align:right;
+	}
+	@media screen and (max-width:1280px) { 
+		
+	}
+	
+	@media screen and (min-width:1250px) { 
+		/* .divNumerosStock li:not(:first-child):before, .stock_numbers li:not(:first-child):before
+		{ 
+		content:", ";
+		} */
+		
+		.stock_numbers li
+		{ 
+			border:1px solid;
+			border-left:0;
+			border-color:gray;
+			padding:10px 8px 10px 8px;
+		}		
+		.stock_numbers li:last-child{
+			border-right:0;
+		}
+		
+		.divNumerosStock ul{margin-top:5px;}
+		.divNumerosStock li{
+			border:1px solid;
+			border-left:0;
+			border-color:gray;
+			padding:10px 8px 10px 8px;
+			
+		}
+		
+		.divNumerosStock li:first-child{
+			border-left:1px solid;
+		}
+		
+	}
+	@media screen and (max-width:1250px) { 
+		.divNumerosStock li{display:block;padding:0;margin-right:10px;}
+		.stock_numbers li{display:block;}
+
+	}
+	
+</style>
 
 <script>			
-	$( function(){		
+	$( function(){	
+		var articulos=<?php echo json_encode($this->detalles); ?>;		
+		
 		var config={
 			tab:{
 				id:'<?php echo $_REQUEST['tabId']; ?>'
@@ -15,9 +112,12 @@
 			catalogo:{
 				nombre:'Orden_de_compra'
 			},
+			articulos:articulos,
 			id:'<?php echo $_REQUEST['id']; ?>'
 			
 		};				
+		
+		// console.log(config);
 		var editor=new Edicionordenes_de_compra();
 		editor.init(config);	
 
@@ -29,7 +129,7 @@
 	<div class="pnlIzq">
 		<?php 	
 			global $_PETICION;
-			$this->mostrar('/componentes/toolbar');	
+			$this->mostrar('/componentes/toolbar_edicion_maestro_detalle');	
 			if (!isset($this->datos)){		
 				$this->datos=array();		
 			}

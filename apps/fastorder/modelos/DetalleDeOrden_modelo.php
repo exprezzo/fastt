@@ -20,7 +20,13 @@ class DetalleDeOrdenModelo extends Modelo{
 	}
 	function getProductosDeLaOrden($fk_orden_compra){	
 		$con = $this->getConexion();		
-		$sql = 'SELECT * FROM '.$this->tabla.' WHERE fk_orden_compra=:fk_orden_compra';
+		$sql = 'SELECT d.id,d.fk_orden_compra,d.fk_articulo, p.nombre as nombreProducto, d.idarticulopre,d.cantidad,d.fk_pedido_detalle,
+		d.fk_producto_origen,po.nombre as nombreOrigen, d.fk_pedido,d.pedidoi,d.fk_almacen,d.pendiente ,a.nombre almacen
+		FROM '.$this->tabla.'  d
+		LEFT JOIN productos p ON p.id=d.fk_articulo
+		LEFT JOIN productos po ON po.id=d.fk_producto_origen
+		LEFT JOIN almacenes a ON a.id = d.fk_almacen
+		WHERE fk_orden_compra=:fk_orden_compra ORDER BY fk_articulo ASC';
 				
 		$sth = $con->prepare($sql);
 		$sth->bindValue(':fk_orden_compra',$fk_orden_compra,PDO::PARAM_INT);

@@ -51,6 +51,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	<script src="/web/apps/fastorder/js/funciones.js" type="text/javascript"></script>
 	<script src="/web/apps/fastorder/js/TabManager.js" type="text/javascript"></script>
 	<script src="/web/apps/fastorder/js/navegacion_en_tabla.js" type="text/javascript"></script>
+	<script src="/web/apps/fastorder/js/navegacion_en_tabla_agrupada.js" type="text/javascript"></script>
+	
 	<script type="text/javascript">		
 		kore={
 			modulo:'<?php echo $_PETICION->modulo; ?>',

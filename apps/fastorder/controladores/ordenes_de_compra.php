@@ -6,8 +6,12 @@ class ordenes_de_compra extends Controlador{
 	var $campos=array('id','idproveedor','fecha','vencimiento','idestado','fk_serie','folio','fk_almacen');
 	
 	function nuevo(){		
+		$vista=$this->getVista();
+		$vista->columnas=$this->campos;
+		
 		$campos=$this->campos;
-		$vista=$this->getVista();				
+		
+						
 		for($i=0; $i<sizeof($campos); $i++){
 			$obj[$campos[$i]]='';
 		}
@@ -33,7 +37,18 @@ class ordenes_de_compra extends Controlador{
 		$res['rows']=$res['datos'];
 		echo json_encode($res);
 	}
-	function editar(){		
+	function editar(){	
+		$vista=$this->getVista();
+		$vista->columnas=$this->campos;
+		
+		
+		$detMod=new DetalleDeOrdenModelo();
+		$id=$_REQUEST['id'];
+		$res=$detMod->getProductosDeLaOrden($id);		
+		$vista->detalles=$res['datos'];
+		
+		
+		
 		return parent::editar();
 	}
 	

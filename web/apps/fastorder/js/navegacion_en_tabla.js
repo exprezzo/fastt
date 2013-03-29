@@ -1,5 +1,4 @@
 var NavegacionEnTabla=function(){
-
 	this.eliminar=function(){	
 		console.log("eliminar");
 	};
@@ -23,6 +22,10 @@ var NavegacionEnTabla=function(){
 	}
 	this.paginaAnterior=function(){
 		var pi=$(this.targetSelector).wijgrid('option',"pageIndex");
+		if (pi<0){
+			this.celdaActual.row=0;
+			this.celdaActual.col=0;
+		}
 		this.editarUltimo=true;
 		$(this.targetSelector).wijgrid('option','pageIndex',pi-1);			 															
 	}
@@ -36,8 +39,9 @@ var NavegacionEnTabla=function(){
 			
 			if ( this.celdaActual.row < 0  ){
 				this.celdaActual.row=this.pageSize-1;
-				this.paginaAnterior();
+				return this.paginaAnterior();
 			}
+			// if ( this.celdaActual.row < 0  ){
 		}
 		
 		
@@ -54,6 +58,9 @@ var NavegacionEnTabla=function(){
 		this.celdaActual.col++;
 		//al llegar ala ultima celda del registro, salta a la primera celda del siguiente registro.
 		//si es el ultimo registro de la pagina
+		console.log("this.celdaActual"); console.log(this.celdaActual);
+		console.log("this"); console.log(this);
+		
 		if ( this.celdaActual.col >= this.numCols ){
 			this.celdaActual.col=0;
 			this.celdaActual.row++;			
@@ -62,8 +69,16 @@ var NavegacionEnTabla=function(){
 				return this.siguientePagina();
 			}
 			
-			if (this.celdaActual.row >= this.numRows){
-				this.celdaActual.row = this.numRows-1;
+			var tr=$(this.targetSelector+' tbody tr');					
+			var numRows=tr.length;	
+			
+			// console.log("seleccionarSiguienteCelda"); console.log(me);
+			
+			// alert("asd: "+numRows);
+			
+			// console.log();
+			if (this.celdaActual.row >= numRows){
+				this.celdaActual.row = numRows-1;
 				this.celdaActual.col = this.numCols-1;
 			}
 			
@@ -89,36 +104,35 @@ var NavegacionEnTabla=function(){
 		$(this.targetSelector).wijgrid("beginEdit");
 	};
 	
+	this.reset=function(){
+	};
 	this.init=function(params){
 		this.tablaSel=params.targetSelector;
 		this.targetSelector =params.targetSelector;
 		this.pageSize =params.pageSize;
 		var me=this;
 		
-		var tr=$(this.targetSelector+' tbody tr:nth-child(1)');		
-		var tds=tr.find('td');		
+		var tr=$(this.targetSelector+' thead tr:nth-child(1)');		
+		var tds=tr.find('th');		
+		
 		this.numCols=tds.length;		
-		var me=this;
+		
 		
 		$(this.targetSelector).bind("wijgridloaded", function (e) { 
 			
 			if (me.editarPrimero){
 				me.editarPrimero=false;				
-				$(me.targetSelector).wijgrid("currentCell",  me.celdaActual.col, me.celdaActual.row);
-				console.log("beginEdit");
-				console.log(me.celdaActual);
+				$(me.targetSelector).wijgrid("currentCell",  me.celdaActual.col, me.celdaActual.row);				
 				$(me.targetSelector).wijgrid("beginEdit");
 			}
 			if (me.editarUltimo){
 				me.editarUltimo=false;				
-				$(me.targetSelector).wijgrid("currentCell",  me.celdaActual.col, me.celdaActual.row);
-				console.log("beginEdit");
-				console.log(me.celdaActual);
+				$(me.targetSelector).wijgrid("currentCell",  me.celdaActual.col, me.celdaActual.row);				
 				$(me.targetSelector).wijgrid("beginEdit");
 			}
 			
 			var tr=$(me.targetSelector+' tbody tr');					
-			me.numRows=tr.length;		
+			me.numRows=tr.length;							
 		});
 		
 		
@@ -133,7 +147,9 @@ var NavegacionEnTabla=function(){
 			var celdaActual={
 				col:col,
 				row:row
-			}
+			};
+			
+			
 			me.celdaActual = celdaActual;
 			
 				
