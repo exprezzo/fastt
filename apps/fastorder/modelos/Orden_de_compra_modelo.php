@@ -15,6 +15,12 @@ class Orden_de_compraModelo extends Modelo{
 			$articulos=array();
 		}
 		
+		$fecha = DateTime::createFromFormat('d/m/Y', $params['fecha']);
+		$params['fecha']= $fecha->format('Y-m-d H:i:s');
+		
+		$vencimiento = DateTime::createFromFormat('d/m/Y', $params['vencimiento']);
+		$params['vencimiento']= $vencimiento->format('Y-m-d H:i:s');
+		
 		// echo 'guardar';
 		// print_r($params);
 		

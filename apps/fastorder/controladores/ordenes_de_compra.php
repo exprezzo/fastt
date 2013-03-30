@@ -4,8 +4,9 @@ require_once '../apps/'.$_PETICION->modulo.'/modelos/DetalleDeOrden_modelo.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/Producto_modelo.php';
 
 require_once '../apps/'.$_PETICION->modulo.'/modelos/Almacen_modelo.php';
-require_once '../apps/'.$_PETICION->modulo.'/modelos/Serie_modelo.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/SerieOrdenCompra_modelo.php';
 require_once '../apps/'.$_PETICION->modulo.'/modelos/Proveedor_modelo.php';
+require_once '../apps/'.$_PETICION->modulo.'/modelos/EstadosOrdenCompra_modelo.php';
 
 class ordenes_de_compra extends Controlador{
 	var $modelo="Orden_de_compra";
@@ -63,13 +64,19 @@ class ordenes_de_compra extends Controlador{
 		$res=$detMod->buscar(array());		
 		$vista->proveedores=$res['datos'];		
 		
-		$detMod=new SerieModelo();		
+		$detMod=new SerieOrdenCompraModelo();		
 		$res=$detMod->buscar(array());		
 		$vista->series=$res['datos'];		
 		
 		$detMod=new AlmacenModelo();		
 		$res=$detMod->buscar(array());		
 		$vista->almacenes=$res['datos'];
+		
+		$detMod=new EstadosOrdenCompraModelo();		
+		$res=$detMod->buscar(array());		
+		$vista->estados=$res['datos'];
+		
+		
 	}
 	
 	function editar(){	

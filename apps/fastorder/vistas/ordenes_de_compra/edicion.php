@@ -141,8 +141,8 @@
 		
 		<form class="frmEdicion" style="padding-top:10px;">	
 			<input type="hidden" name="id" class="txtId" value="<?php echo $this->datos['id']; ?>" />	
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-				<label style="">idproveedor:</label>
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+				<label style="">Proveedor:</label>
 				<select name="idproveedor">
 					<?php foreach($this->proveedores as $prov){
 						$selected= ($prov['id'] == $this->datos['idproveedor'])? 'selected' : '';
@@ -152,24 +152,46 @@
 				</select>
 				
 			</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
 				<label style="">fecha:</label>
-				<input type="text" name="fecha" class="txt_fecha" value="<?php echo $this->datos['fecha']; ?>" style="width:500px;" />
+				<input type="text" name="fecha" class="txt_fecha" value="<?php echo $this->datos['fecha']; ?>" style="width:120px;" />
 			</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
 				<label style="">vencimiento:</label>
-				<input type="text" name="vencimiento" class="txt_vencimiento" value="<?php echo $this->datos['vencimiento']; ?>" style="width:500px;" />
+				<input type="text" name="vencimiento" class="txt_vencimiento" value="<?php echo $this->datos['vencimiento']; ?>" style="width:120px;" />
 			</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-			<label style="">idestado:</label>
-			<input type="text" name="idestado" class="txt_idestado" value="<?php echo $this->datos['idestado']; ?>" style="width:500px;" />
-		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-			<label style="">fk_serie:</label>
-			<input type="text" name="fk_serie" class="txt_fk_serie" value="<?php echo $this->datos['fk_serie']; ?>" style="width:500px;" />
-		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+				<label style="">Estado:</label>
+				
+				<select name="idestado">
+					<?php foreach($this->estados as $obj){
+						$selected= ($obj['id'] == $this->datos['idestado'])? 'selected' : '';
+						echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
+					}
+					?>					
+				</select>
+			</div>
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+				<label style="">Serie:</label>
+				<select name="fk_serie">
+					<?php 
+					if ( empty($this->datos['fk_serie']) ) {
+						$this->series=array();
+						$this->datos['folio']='';
+					}
+					foreach($this->series as $obj){
+						$selected= ($obj['id'] == $this->datos['fk_serie'])? 'selected' : '';
+						echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['serie'].'</option>';
+					}
+					?>					
+				</select>
+			
+		</div>
+		<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
 			<label style="">folio:</label>
-			<input type="text" name="folio" class="txt_folio" value="<?php echo $this->datos['folio']; ?>" style="width:500px;" />
-		</div><div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
+			<input type="text" name="folio" class="txt_folio" value="<?php echo $this->datos['folio']; ?>" style="width:20px;" />
+		</div>
+		<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
 			<label style="">Almac&eacute;n:</label>
 			<select name="fk_almacen">
 				<?php foreach($this->almacenes as $obj){
@@ -177,9 +199,11 @@
 					echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
 				}
 				?>					
-			</select>
-			
+			</select>			
 		</div>
+			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" >
+				<input type="button"  class="btnPrecargar" value="Precargar" />
+			</div>
 		</form>
 		<div >	
 			<table class="grid_busqueda">

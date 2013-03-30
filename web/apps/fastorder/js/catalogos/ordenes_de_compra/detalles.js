@@ -72,9 +72,9 @@
 			},
 			select: function (e, item)
 			{
-				var rowdom=$(me.tabId+' .grid_articulos tbody tr:eq('+me.selected.sectionRowIndex +')');
-				me.articulo=item;				
-								
+				me.articulo=item;
+				var rowdom=$(me.tabId+' .grid_busqueda tbody tr:eq('+me.selected.sectionRowIndex +')');
+				
 				// rowdom.find('td:eq(2) div').html(item.maximo);
 				// rowdom.find('td:eq(3) div').html(item.minimo);
 				// rowdom.find('td:eq(4) div').html(item.puntoreorden);
@@ -280,7 +280,7 @@
 				}
 					
 			},
-			beforeGroupEdit: function(e, args) {				
+			beforeGroupEditX: function(e, args) {				
 			// comportamiento editable para los registros agrupadores
 				var td=$(args.target).parents('td');																		
 				var celda={
@@ -295,6 +295,7 @@
 			},
 			columns: this.columns,
 			beforeCellEdit: function (e, args) { 
+				
 				args.handled=true;
 				
 				
@@ -302,7 +303,7 @@
 				
 				var row = args.cell.row();
 			
-				
+				 if (row ==undefined) return false;
 			//con los registros nuevos, la edicion es diferente 			
 			//------------------------------------
 				if (row.data.id==undefined || row.data.id=="" || row.data.id == 0 ){
@@ -322,7 +323,7 @@
 						var combo=
 						$("<input />")
 							.val(args.cell.value()) 
-							.appendTo(args.cell.container().empty());   
+							.appendTo(args.cell.container().empty() );   
 						args.handled = true;   
 						
 						var domCel = args.cell.tableCell();
@@ -346,15 +347,35 @@
 			}
 		});
 		
+		gridBusqueda.wijgrid({ rendered: function (e) { 
+			// console.log("rendered");
+			if (me.z_editor == undefined){
+				me.z_editor = new NavegacionEnAgrupada();				
+				me.z_editor.init({
+					targetSelector: me.tabId+' .grid_busqueda',
+					pageSize:pageSize,
+					tabId:me.tabId,
+					padre:me
+				});
+			}else{
+				me.z_editor.reset();
+			}
+		} });
+		// Supply a callback function to handle the afterCellUpdate event
+		gridBusqueda.wijgrid({ afterCellUpdate: function (e, args) { 
+			// console.log("afterCellUpdate");
+			 $(me.tabId+' .grid_busqueda').wijgrid('doRefresh');
+		} });
 		gridBusqueda.wijgrid({beforeCellUpdate:function(e, args) {
-			
-				switch (args.cell.column().dataKey) {
+				var dk=args.cell.column().dataKey;
+				console.log("dk"); console.log(dk);
+				switch (dk) {
 					case "nombreOrigen":
 						
 						args.value = args.cell.container().find("input").val();
 						
 						if (me.articulo!=undefined){
-							
+							console.log("me.articulo"); console.log(me.articulo);
 							var row=args.cell.row();
 							
 							row.data.fk_articulo=me.articulo.value;
@@ -373,16 +394,16 @@
 						}
 					break;
 					case 'cantidad':
-						args.value = args.cell.container().find("input").val();
-						
-						var row=args.cell.row();
-						// console.log('cantidad'); console.log(row);
-						
+						 args.value = args.cell.container().find("input").val();					
+						 
+						var row=args.cell.row();						
+						// row.data.cantidad = args.value;							 
 						if ( row.data.fk_pedido_detalle != 0 ){
-							row.data.cantidad = args.value;							 
-							row.data.pendiente = row.data.pedidoi - row.data.cantidad;							
+							console.log("args.value"); console.log(args.value);
 							
-							$(me.tabId+' .grid_busqueda').wijgrid('doRefresh');
+							row.data.pendiente = row.data.pedidoi - args.value;
+							
+							 $(me.tabId+' .grid_busqueda').wijgrid('doRefresh');
 						}
 							
 					break;
@@ -395,9 +416,14 @@
 		
 		gridBusqueda.wijgrid({ selectionChanged: function (e, args) { 					
 			var item=args.addedCells.item(0);
-			var row=item.row();
-			var data=row.data;			
-			me.selected=data;			
+			
+				var row=item.row();
+				var data=row.data;			
+				me.selected=data;			
+				me.selected.dataItemIndex=row.dataItemIndex;
+				me.selected.sectionRowIndex=row.sectionRowIndex;
+			
+			
 		} });
 		
 		gridBusqueda.wijgrid({ loaded: function (e) { 

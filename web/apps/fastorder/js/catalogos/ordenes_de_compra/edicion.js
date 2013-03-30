@@ -263,6 +263,12 @@
 		$(this.tabId+' select[name="idestado"]').wijcombobox();
 		$(this.tabId+' input[name="folio"]').wijtextbox();
 		
+		 $(this.tabId+ " input.btnPrecargar" )
+			.button()
+			.click(function( event ) {
+				event.preventDefault();
+			});
+	  
 		$(this.tabId+' input[name="fecha"]').wijinputdate({ 
 			dateFormat: 'd/M/yyyy', showTrigger: true,
 			dateChanged: function(e, arg){

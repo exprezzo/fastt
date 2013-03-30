@@ -285,6 +285,7 @@ var NavegacionEnAgrupada=function(){
 			};
 			 this.editarGrupo(col, row);
 		}else{
+			console.log("celda"); console.log(celda);
 			this.ultimaCelda={
 				col:col,
 				row:row
