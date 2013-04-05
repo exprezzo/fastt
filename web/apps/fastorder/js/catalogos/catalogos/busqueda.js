@@ -44,7 +44,7 @@ var Busquedacatalogos=function(){
 	}
 	this.borrar=function(){
 		if (this.selected==undefined) return false;
-		var r=confirm("¿Eliminar Elemento?");
+		var r=confirm("Â¿Eliminar Elemento?");
 		if (r==true){
 		  this.eliminar();
 		}
@@ -94,7 +94,7 @@ var Busquedacatalogos=function(){
 					break;
 					case 'eliminar':
 						if (me.selected==undefined) return false;
-						var r=confirm("¿Eliminar?");
+						var r=confirm("Â¿Eliminar?");
 						if (r==true){
 						  me.eliminar();
 						}

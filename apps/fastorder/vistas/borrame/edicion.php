@@ -11,11 +11,11 @@
 				nombre:'<?php echo $_PETICION->controlador; ?>'
 			},
 			catalogo:{
-				nombre:'Modelo'
+				nombre:'borrame'
 			}
 			
 		};				
-		 var editor=new EdicionControlador();
+		 var editor=new Edicionborrame();
 		 editor.init(config);		
 	});
 </script>
@@ -31,15 +31,7 @@
 		
 		<form class="frmEdicion" style="padding-top:10px;">	
 			<input type="hidden" name="id" class="txtId" value="<?php echo $this->datos['id']; ?>" />	
-			<?php
-				foreach($this->datos as $key=>$value){
-					if ($key=="id") continue;
-			?>
-					<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" autoFocus >
-						<label style=""><?php echo $key; ?>:</label>
-						<input type="text" name="<?php echo $key; ?>" class="txt_<?php echo $key; ?>" value="<?php echo $value; ?>" style="width:500px;" />
-					</div>
-			<?php	}
-			?>
+			
+		</form>
 	</div>
 </div>

@@ -2,7 +2,7 @@
 require_once '../apps/'.$_PETICION->modulo.'/modelos/catalogo_modelo.php';
 
 class General extends Controlador{
-	function index($vistaFile=''){				
+	function index($vistaFile=''){						
 		$vista= $this->getVista();					
 		
 		$catMod = new CatalogoModelo();		

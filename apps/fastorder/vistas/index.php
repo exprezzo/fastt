@@ -47,7 +47,9 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 	
 	<script src="/web/apps/fastorder/libs/shortcut.js"></script>  
 	
-	<link href="/web/apps/fastorder/css/estilos.css" rel="stylesheet" type="text/css" />
+	<link href="/web/apps/fastorder/css/estilos.css" rel="stylesheet" type="text/css" />	
+	<link href="/sistema/cssmenu" rel="stylesheet" type="text/css" />
+	
 	<script src="/web/apps/fastorder/js/funciones.js" type="text/javascript"></script>
 	<script src="/web/apps/fastorder/js/TabManager.js" type="text/javascript"></script>
 	<script src="/web/apps/fastorder/js/navegacion_en_tabla.js" type="text/javascript"></script>
@@ -70,6 +72,34 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			window.location='/'+kore.modulo+'/user/logout';
 		}
 		$(function () {			
+			shortcut.add("Ctrl+Alt+C", 
+				function() { 
+					TabManager.add('/'+kore.modulo+'/catalogos/busqueda','Menu',0);
+					
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document}
+			);
+			
+			shortcut.add("Ctrl+Alt+M", 
+				function() { 
+					TabManager.add('/'+kore.modulo+'/sistema/menu','Menu');
+					
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document}
+			);
+			
+			shortcut.add("Ctrl+Alt+G", 
+				function() { 
+					var tab=$('#tabs > div[aria-hidden="false"]');
+					var tabObj = tab.data('tabObj');
+					if (tabObj!=undefined && tabObj.guardar!=undefined){
+						tabObj.guardar();
+					}
+					
+				}, 
+				{ 'type':'keydown', 'propagate':false, 'target':document}
+			);
+			
 			shortcut.add("Ctrl+S", 
 				function() { 
 					var tab=$('#tabs > div[aria-hidden="false"]');
@@ -113,6 +143,8 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 				{ 'type':'keydown', 'propagate':false, 'target':document} 
 			); 
 			
+			
+			
 			shortcut.add("Ctrl+Alt+N", 
 				function() { 
 					var tab=$('#tabs > div[aria-hidden="false"]');
@@ -131,6 +163,10 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 					var tabObj = tab.data('tabObj');
 					if (tabObj!=undefined && tabObj.borrar!=undefined){
 						tabObj.borrar();
+					}
+					
+					if (tabObj!=undefined && tabObj.eliminar!=undefined){
+						// tabObj.eliminar();
 					}
 					
 				}, 
@@ -153,14 +189,15 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			
 			// TabManager.add('/'+kore.modulo+'/general/welcome','Bienvenido');
 			// TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Busqueda');
-			TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');			
-			TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Nuevo');			 
-			 TabManager.add('/'+kore.modulo+'/catalogos/busqueda','Busqueda',0);
+			// TabManager.add('/'+kore.modulo+'/orden_compra/index','Orden de Compra',1,'');			
+			// TabManager.add('/'+kore.modulo+'/pedidoi/verlista','Nuevo');			 
+			 // TabManager.add('/'+kore.modulo+'/catalogos/busqueda','Busqueda',0);
+			 TabManager.add('/'+kore.modulo+'/sistema/menu','Menu',0,'tabMenu');
 			
 			<?php 
 			
 			foreach($this->catalogos as $cat){
-				echo 'TabManager.add(\'/\'+kore.modulo+\'/'.$cat['controlador'].'/busqueda\',\'Busqueda\',0);';
+				// echo 'TabManager.add(\'/\'+kore.modulo+\'/'.$cat['controlador'].'/busqueda\',\'Busqueda\',0);';
 			}
 			?>
 			// TabManager.add('/'+kore.modulo+'/series/busqueda','Busqueda',0);
@@ -256,7 +293,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 			</ul>		
 		</div>	
 		
-		<div class="ui-state-default link-salir" style="position:absolute;right:0;top:0;"><a onclick="salir()" href="#" >Salir</a></div>
+		<div class="ui-state-default link-salir" style="position:absolute;right:0;top:0;height:29px;"><a onclick="salir()" href="#" >Salir</a></div>
 		
 	</div>
 	

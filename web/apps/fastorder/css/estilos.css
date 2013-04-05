@@ -1,3 +1,4 @@
+
 .nombre_empresa_header{cursor:pointer;}
 .wijmo-wijsplitter-h-expander{top:11px !important;left:20px;position:absolute;-visibility:hidden;}
  .wijmo-wijsplitter-h-panel1-expanded{left:10px;}
@@ -42,7 +43,7 @@ ul.ui-tabs-nav li a.busqueda_cuentas, ul.ui-tabs-nav li a.frmcuentas{ background
 ul.ui-tabs-nav li a.busqueda_grupo_productos, ul.ui-tabs-nav li a.frmgrupo_productos{ background-image:url('../images/supermono/network.png'); }
 ul.ui-tabs-nav li a.busqueda_producto_tipo, ul.ui-tabs-nav li a.frmproducto_tipo{ background-image:url('../images/supermono/settings-3.png'); }
 ul.ui-tabs-nav li a.busqueda_empresas, ul.ui-tabs-nav li a.frmempresas{ background-image:url('../images/supermono/settings.png'); }
-
+ul.ui-tabs-nav li a.tabMenu{ background-image:url('../images/supermono/network.png'); }
 
 
 #tabs > ul.ui-tabs-nav li a.pedido{ background-image:url('../images/supermono/basket.png'); }
@@ -291,6 +292,8 @@ div.frmPedido .formTitle .closeBtn{cursor:pointer; width:16px; height:16px; disp
 .boton.btnAgregar span{background: black;color:white; }
 .boton.btnCancel .icon{background: #dbc512 url('../images/player_stop.png') no-repeat scroll center; background-size:16px;}
 .boton.btnCancel span{background-color: #dbc512;}
+.boton.btnPrecargar .icon{background: #dbc512 url('http://png.findicons.com/files/icons/1035/human_o2/16/bookmarks_list_add.png') no-repeat scroll center; background-size:16px;}
+.boton.btnPrecargar span{background-color: black;}
 
 div.frmPedido .paneles{padding:8px;}
 div.frmPedido .pnlIzq{display: inline-block !important;} 

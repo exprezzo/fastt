@@ -1,5 +1,7 @@
 <?php
 require_once '../apps/'.$_PETICION->modulo.'/modelos/Almacen_modelo.php';
+require_once '../apps/'.$_PETICION->modulo.'/vistas/pdf_almacen.php';
+// require_once '../apps/'.$_PETICION->modulo.'/vistas/modelo_almacen.php';
 class Almacenes extends Controlador{
 	var $modelo="Almacen";
 	

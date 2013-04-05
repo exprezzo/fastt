@@ -38,11 +38,27 @@ class Orden_de_compraModelo extends Modelo{
 			unset( $articulo['nombreProducto'] );
 			unset( $articulo['nombreOrigen'] );
 			unset( $articulo['almacen'] );
+			unset( $articulo['dataItemIndex'] );
+			unset( $articulo['sectionRowIndex'] );
+			unset( $articulo['sugerido'] );
+			unset( $articulo['codigo'] );
+			unset( $articulo['grupo'] );
+			unset( $articulo['presentacion'] );
+			unset( $articulo['minimo'] );
+			unset( $articulo['maximo'] );
+			unset( $articulo['puntoreorden'] );
+			unset( $articulo['idgrupo'] );
+			unset( $articulo['grupoposicion'] );
+			
 			
 			if ( isset($articulo['eliminado']) && $articulo['eliminado']==true ){
 				$res=$detMod->eliminar($articulo);
+				
 			}else{
 				$res=$detMod->guardar($articulo);
+				if ($res['success']==false){
+					echo json_encode($res);
+				}
 			}			
 		}
 		$prods=$detMod->getProductosDeLaOrden($id);

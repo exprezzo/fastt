@@ -38,6 +38,7 @@ var Edicionseries = function(){
 		
 		
 		this.agregarClase('frm'+this.controlador.nombre);		
+		this.agregarClase('tab_'+this.controlador.nombre);		
 		
 		this.configurarFormulario(this.tabId);
 		this.configurarToolbar(this.tabId);		

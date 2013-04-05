@@ -11,11 +11,11 @@
 				nombre:'<?php echo $_PETICION->controlador; ?>'
 			},
 			catalogo:{
-				nombre:'Modelo'
+				nombre:'borrame'
 			}
 			
 		};				
-		 var lista=new BusquedaControlador();
+		 var lista=new Busquedaborrame();
 		 lista.init(config);		
 	});
 </script>

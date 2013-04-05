@@ -9,7 +9,7 @@ var Edicioncatalogos = function(){
 	this.close=function(){
 		
 		if (this.editado){
-			var res=confirm('¿Guardar antes de salir?');
+			var res=confirm('Â¿Guardar antes de salir?');
 			if (res===true){
 				this.saveAndClose=true;
 				this.guardar();
@@ -240,7 +240,7 @@ var Edicioncatalogos = function(){
 			});
 			
 			$(this.tabId + ' .toolbarEdicion .btnDelete').click( function(){
-				var r=confirm("¿Eliminar?");
+				var r=confirm("Â¿Eliminar?");
 				if (r==true){
 				  me.eliminar();
 				  me.editado=true;

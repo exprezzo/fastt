@@ -66,7 +66,7 @@ var TabManager={
 				}
 				
 			}
-			
+			// iniciarLinkTabs();
 			 //$('#'+ tabId ).html(response);				
 		});
 	},

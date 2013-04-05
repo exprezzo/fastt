@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50508
 File Encoding         : 65001
 
-Date: 2013-03-26 13:28:50
+Date: 2013-03-30 10:17:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -148,7 +148,7 @@ INSERT INTO `articulostock` VALUES ('65', '18', '3', '11.00000', '1.00000', '28.
 INSERT INTO `articulostock` VALUES ('66', '19', '3', '11.00000', '1.00000', '29.00000', '3.00000', '1', '1');
 INSERT INTO `articulostock` VALUES ('67', '20', '3', '11.00000', '1.00000', '30.00000', '3.00000', '1', '1');
 INSERT INTO `articulostock` VALUES ('68', '21', '3', '11.00000', '1.00000', '31.00000', '3.00000', '1', '1');
-INSERT INTO `articulostock` VALUES ('70', '22', '3', '8.00000', '6.00000', '11.00000', '7.00000', '1', '1');
+INSERT INTO `articulostock` VALUES ('70', '22', '3', '8.00000', '23.00000', '21.00000', '7.00000', '1', '1');
 INSERT INTO `articulostock` VALUES ('71', '23', '3', '4.00000', '2.00000', '1.00000', '3.00000', '1', '1');
 INSERT INTO `articulostock` VALUES ('72', '24', '3', '11.00000', '1.00000', '34.00000', '3.00000', '1', '1');
 INSERT INTO `articulostock` VALUES ('73', '25', '3', '11.00000', '1.00000', '35.00000', '3.00000', '1', '1');
@@ -165,17 +165,38 @@ CREATE TABLE `articulo_detalle` (
   `fk_articulo` int(11) NOT NULL COMMENT 'id del detalle',
   `cantidad` decimal(12,5) DEFAULT NULL,
   `precio_compra` decimal(12,5) DEFAULT NULL,
-  `costo_total` decimal(12,5) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `costo_total` decimal(12,5) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of articulo_detalle
 -- ----------------------------
-INSERT INTO `articulo_detalle` VALUES ('26', '22', '4.50000', '5.00000', '5.00000');
-INSERT INTO `articulo_detalle` VALUES ('26', '23', '2.00000', '6.00000', '6.00000');
-INSERT INTO `articulo_detalle` VALUES ('26', '24', '1.00000', '1.00000', '1.00000');
-INSERT INTO `articulo_detalle` VALUES ('26', '25', '1.00000', '1.00000', '1.00000');
-INSERT INTO `articulo_detalle` VALUES ('27', '22', '0.50000', '5.00000', '5.00000');
+INSERT INTO `articulo_detalle` VALUES ('26', '22', '4.50000', '5.00000', '5.00000', '1');
+INSERT INTO `articulo_detalle` VALUES ('26', '23', '2.00000', '6.00000', '6.00000', '2');
+INSERT INTO `articulo_detalle` VALUES ('26', '24', '1.00000', '1.00000', '1.00000', '3');
+INSERT INTO `articulo_detalle` VALUES ('26', '25', '1.00000', '1.00000', '1.00000', '4');
+INSERT INTO `articulo_detalle` VALUES ('27', '22', '0.50000', '5.00000', '5.00000', '5');
+
+-- ----------------------------
+-- Table structure for `empresa`
+-- ----------------------------
+DROP TABLE IF EXISTS `empresa`;
+CREATE TABLE `empresa` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` char(255) DEFAULT NULL,
+  `telefonos` char(255) DEFAULT NULL,
+  `direccion` char(255) DEFAULT NULL,
+  `sitio_web` char(255) DEFAULT NULL,
+  `mas` char(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of empresa
+-- ----------------------------
+INSERT INTO `empresa` VALUES ('3', 'Empresa de prueba', '1 21 22 23													', 'Entre el cerro del vigia y laguna del camaron.						', 'gh', 'g');
 
 -- ----------------------------
 -- Table structure for `estado_pedido`
@@ -227,14 +248,16 @@ CREATE TABLE `orden_compra` (
   `fk_serie` int(11) DEFAULT NULL,
   `folio` int(11) DEFAULT NULL,
   `fk_almacen` int(11) DEFAULT NULL,
+  `concentrada` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra
 -- ----------------------------
-INSERT INTO `orden_compra` VALUES ('98', '5', '2013-03-25 18:46:56', '2013-03-25 18:46:56', '1', '4', '59', '3');
-INSERT INTO `orden_compra` VALUES ('99', '5', '2013-03-26 13:20:45', '2013-03-26 13:20:45', '1', '4', '60', '3');
+INSERT INTO `orden_compra` VALUES ('106', '6', '2013-03-05 10:02:57', '2013-03-29 10:02:57', '1', '4', '63', '1', '0');
+INSERT INTO `orden_compra` VALUES ('107', '1', '2013-03-29 17:47:21', '2013-03-29 17:47:21', '1', '1', '0', '1', '0');
+INSERT INTO `orden_compra` VALUES ('108', '1', '2013-03-29 07:59:04', '2013-03-29 07:59:04', '1', null, '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for `orden_compra_estado`
@@ -244,7 +267,7 @@ CREATE TABLE `orden_compra_estado` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` char(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra_estado
@@ -253,6 +276,7 @@ INSERT INTO `orden_compra_estado` VALUES ('1', 'borrador');
 INSERT INTO `orden_compra_estado` VALUES ('2', 'ordenado');
 INSERT INTO `orden_compra_estado` VALUES ('3', 'surtido');
 INSERT INTO `orden_compra_estado` VALUES ('4', 'parcialmente surtido');
+INSERT INTO `orden_compra_estado` VALUES ('5', 'concentrado');
 
 -- ----------------------------
 -- Table structure for `orden_compra_productos`
@@ -269,30 +293,25 @@ CREATE TABLE `orden_compra_productos` (
   `fk_pedido` int(11) DEFAULT NULL,
   `pedidoi` decimal(18,6) DEFAULT NULL,
   `fk_almacen` int(11) DEFAULT NULL,
+  `pendiente` decimal(18,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=987 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1045 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orden_compra_productos
 -- ----------------------------
-INSERT INTO `orden_compra_productos` VALUES ('969', '98', '25', '45', '39.000000', '1961', '25', null, '39.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('970', '98', '22', '42', '14.000000', '1962', '22', null, '14.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('971', '98', '23', '43', '10.000000', '1964', '23', null, '10.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('972', '98', '24', '44', '37.000000', '1966', '24', null, '37.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('973', '98', '22', '46', '0.000000', '1963', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('974', '98', '23', '46', '0.000000', '1963', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('975', '98', '24', '46', '0.000000', '1963', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('976', '98', '25', '46', '0.000000', '1963', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('977', '98', '22', '47', '0.000000', '1965', '27', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('978', '98', '22', '0', '12.000000', '0', '22', null, '0.000000', '3');
-INSERT INTO `orden_compra_productos` VALUES ('979', '99', '25', '45', '36.000000', '1967', '25', null, '36.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('980', '99', '22', '42', '34.000000', '1968', '22', null, '34.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('981', '99', '23', '43', '-1.000000', '1970', '23', null, '-1.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('982', '99', '22', '46', '0.000000', '1969', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('983', '99', '23', '46', '0.000000', '1969', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('984', '99', '24', '46', '0.000000', '1969', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('985', '99', '25', '46', '0.000000', '1969', '26', null, '0.000000', '2');
-INSERT INTO `orden_compra_productos` VALUES ('986', '99', '22', '47', '12.000000', '1971', '27', null, '0.000000', '2');
+INSERT INTO `orden_compra_productos` VALUES ('1024', '106', '22', '42', '7.000000', '1985', '22', '0', '25.000000', '2', '18.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1025', '106', '23', '43', '9.000000', '1987', '23', '0', '9.000000', '2', '0.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1026', '106', '24', '44', '10.000000', '1989', '24', '0', '35.000000', '2', '25.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1028', '106', '22', '46', '6.000000', '1986', '26', '0', '0.000000', '2', '-6.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1029', '106', '23', '46', '8.000000', '1986', '26', '0', '0.000000', '2', '-8.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1032', '106', '22', '47', '5.000000', '1988', '27', '0', '0.000000', '2', '-5.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1033', '107', '5', '0', '12.000000', '0', '5', '0', '0.000000', '3', null);
+INSERT INTO `orden_compra_productos` VALUES ('1034', '108', '3', '0', '0.000000', '0', '3', '0', '0.000000', '3', null);
+INSERT INTO `orden_compra_productos` VALUES ('1041', '106', '2', '0', '1.000000', '0', '2', '0', '0.000000', '0', '0.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1042', '106', '5', '0', '4.000000', '0', '5', '0', '0.000000', '0', '0.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1043', '106', '5', '0', '3.000000', '0', '5', '0', '0.000000', '0', '0.000000');
+INSERT INTO `orden_compra_productos` VALUES ('1044', '106', '5', '0', '2.000000', '0', '5', '0', '0.000000', '0', '0.000000');
 
 -- ----------------------------
 -- Table structure for `orden_compra_series`
@@ -314,7 +333,7 @@ CREATE TABLE `orden_compra_series` (
 -- ----------------------------
 INSERT INTO `orden_compra_series` VALUES ('1', 'OC_1', '1', '1000', '17', '', '1');
 INSERT INTO `orden_compra_series` VALUES ('2', 'OC_2', '1', '1000', '1', '', '2');
-INSERT INTO `orden_compra_series` VALUES ('4', 'OC_3', '1', '1000', '61', '', '3');
+INSERT INTO `orden_compra_series` VALUES ('4', 'OC_3', '1', '1000', '64', '', '3');
 
 -- ----------------------------
 -- Table structure for `pedidos`
@@ -329,13 +348,12 @@ CREATE TABLE `pedidos` (
   `fk_serie` int(11) DEFAULT NULL,
   `folio` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos
 -- ----------------------------
-INSERT INTO `pedidos` VALUES ('159', '2', '2013-03-25 18:39:34', '2013-03-25 18:39:34', '2', '2', '2');
-INSERT INTO `pedidos` VALUES ('160', '2', '2013-03-26 06:43:00', '2013-03-26 06:43:00', '2', '2', '3');
+INSERT INTO `pedidos` VALUES ('163', '2', '2013-03-29 11:29:12', '2013-03-29 11:29:12', '2', '2', '6');
 
 -- ----------------------------
 -- Table structure for `pedidos_productos`
@@ -350,23 +368,17 @@ CREATE TABLE `pedidos_productos` (
   `status` tinyint(1) DEFAULT '1',
   `concentrado` decimal(18,6) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1973 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1991 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pedidos_productos
 -- ----------------------------
-INSERT INTO `pedidos_productos` VALUES ('1961', '25', '159', '15.000000', '45', '2', '15.000000');
-INSERT INTO `pedidos_productos` VALUES ('1962', '22', '159', '12.000000', '42', '2', '12.000000');
-INSERT INTO `pedidos_productos` VALUES ('1963', '26', '159', '16.000000', '46', '2', '16.000000');
-INSERT INTO `pedidos_productos` VALUES ('1964', '23', '159', '13.000000', '43', '2', '13.000000');
-INSERT INTO `pedidos_productos` VALUES ('1965', '27', '159', '17.000000', '47', '2', '17.000000');
-INSERT INTO `pedidos_productos` VALUES ('1966', '24', '159', '14.000000', '44', '2', '14.000000');
-INSERT INTO `pedidos_productos` VALUES ('1967', '25', '160', '12.000000', '45', '2', '12.000000');
-INSERT INTO `pedidos_productos` VALUES ('1968', '22', '160', '32.000000', '42', '2', '32.000000');
-INSERT INTO `pedidos_productos` VALUES ('1969', '26', '160', '11.000000', '46', '2', '11.000000');
-INSERT INTO `pedidos_productos` VALUES ('1970', '23', '160', '2.000000', '43', '2', '2.000000');
-INSERT INTO `pedidos_productos` VALUES ('1971', '27', '160', '21.000000', '47', '2', '21.000000');
-INSERT INTO `pedidos_productos` VALUES ('1972', '24', '160', '0.000000', '44', '1', null);
+INSERT INTO `pedidos_productos` VALUES ('1985', '22', '163', '12.000000', '42', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1986', '26', '163', '12.000000', '46', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1987', '23', '163', '12.000000', '43', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1988', '27', '163', '12.000000', '47', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1989', '24', '163', '12.000000', '44', '2', '12.000000');
+INSERT INTO `pedidos_productos` VALUES ('1990', '25', '163', '12.000000', '45', '2', '12.000000');
 
 -- ----------------------------
 -- Table structure for `productos`
@@ -386,8 +398,8 @@ CREATE TABLE `productos` (
 INSERT INTO `productos` VALUES ('1', 'Piolinx', 'pio-ch', '1');
 INSERT INTO `productos` VALUES ('2', 'Flor Feliz', 'flo-ch', '1');
 INSERT INTO `productos` VALUES ('3', 'Flor', 'flo-ch', '1');
-INSERT INTO `productos` VALUES ('5', 'Rosita', 'ro-ch', '1');
-INSERT INTO `productos` VALUES ('6', null, 'oso-med', '1');
+INSERT INTO `productos` VALUES ('5', 'Rositas', 'ro-ch', '1');
+INSERT INTO `productos` VALUES ('6', 'Oso Mediano', 'oso-med', '1');
 INSERT INTO `productos` VALUES ('7', 'Pez', 'pez-med', '1');
 INSERT INTO `productos` VALUES ('8', 'Dinosaurio Triceratop', 'tri-med', '1');
 INSERT INTO `productos` VALUES ('9', 'Dinosaurio Diplodocus', 'dip-med', '1');
@@ -421,13 +433,14 @@ CREATE TABLE `producto_tipo` (
   `nombre` char(255) DEFAULT NULL,
   `descripcion` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of producto_tipo
 -- ----------------------------
 INSERT INTO `producto_tipo` VALUES ('1', 'Insumos', 'Articulos usados para elaborar productos.');
 INSERT INTO `producto_tipo` VALUES ('2', 'Wacal', null);
+INSERT INTO `producto_tipo` VALUES ('3', 'Otro tipo', 'una descripcion');
 
 -- ----------------------------
 -- Table structure for `proveedor`
@@ -510,7 +523,7 @@ CREATE TABLE `series` (
 -- Records of series
 -- ----------------------------
 INSERT INTO `series` VALUES ('1', 'PA', '1', '100', '4', '', '1');
-INSERT INTO `series` VALUES ('2', 'PC', '1', '100', '4', '', '2');
+INSERT INTO `series` VALUES ('2', 'PC', '1', '100', '7', '', '2');
 INSERT INTO `series` VALUES ('3', 'PI_3', '1', '1000', '11', '', '3');
 
 -- ----------------------------
@@ -533,21 +546,25 @@ CREATE TABLE `system_catalogos` (
   `msg_eliminado` char(255) DEFAULT NULL,
   `msg_cambios` char(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of system_catalogos
 -- ----------------------------
 INSERT INTO `system_catalogos` VALUES ('8', 'Productos', 'productos', 'Producto', 'productos', '', 'Nuevo Producto', '{nombre}:{id}', 'Buscar Productos', 'Producto Creado ({nombre}:{id})', 'Producto Actualizado ({nombre}:{id})', 'Â¿Desea Eliminar el Producto: {nombre}:{id} ?', 'Producto <b> {nombre}:{id} </b> eliminado', 'Â¿Guardar Producto antes de salir?');
-INSERT INTO `system_catalogos` VALUES ('11', 'Series', 'series', 'Serie', 'series', '', '', '', '', null, null, null, null, null);
-INSERT INTO `system_catalogos` VALUES ('13', 'Almacenes', 'Almacenes', 'Almacen', 'almacenes', '', '', '', '', null, null, null, null, null);
-INSERT INTO `system_catalogos` VALUES ('14', 'Stock', 'stocks', 'Stock', 'articulostock', '', '', '', '', null, null, null, null, null);
-INSERT INTO `system_catalogos` VALUES ('15', 'Estado Pedido', 'estado_pedido', 'EstadoPedido', 'estado_pedido', '', '', '', '', null, null, null, null, null);
-INSERT INTO `system_catalogos` VALUES ('16', 'Proveedores', 'proveedores', 'Proveedor', 'proveedor', '', '', '', '', null, null, null, null, null);
-INSERT INTO `system_catalogos` VALUES ('17', 'UM', 'unidademedida', 'unidademedida', 'um', '', '', '', '', null, null, null, null, null);
+INSERT INTO `system_catalogos` VALUES ('11', 'Series', 'series', 'Serie', 'series', '', '', '', '', '', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('13', 'Almacenes', 'Almacenes', 'Almacen', 'almacenes', '', '', '', '', '', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('14', 'Stock', 'stocks', 'Stock', 'articulostock', '', '', '', '', '', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('15', 'Estado Pedido', 'estado_pedido', 'EstadoPedido', 'estado_pedido', '', '', '', '', '', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('16', 'Proveedores', 'proveedores', 'Proveedor', 'proveedor', '', '', '', '', '', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('17', 'UM', 'unidademedida', 'unidademedida', 'um', '', '', '', '', '', '', '', '', '');
 INSERT INTO `system_catalogos` VALUES ('18', 'Usuarios', 'usuarios', 'Usuario', 'system_users', '', '', '', '', null, null, null, null, null);
-INSERT INTO `system_catalogos` VALUES ('20', 'Grupo de Productos', 'grupo_productos', 'GrupoProducto', 'grupo_de_productos', null, null, null, null, null, null, null, null, null);
-INSERT INTO `system_catalogos` VALUES ('21', 'Tipo de producto', 'producto_tipo', 'producto_tipo', 'producto_tipo', '', 'Nuevo Tipo de Producto', '{nombre}:{id}', 'Busqueda de Tipos de Producto', 'Producto Creado', '', '', '', null);
+INSERT INTO `system_catalogos` VALUES ('20', 'Grupo de Productos', 'grupo_productos', 'GrupoProducto', 'grupo_de_productos', '', '', '', '', '', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('21', 'Tipo de producto', 'producto_tipo', 'producto_tipo', 'producto_tipo', '', 'Nuevo Tipo de Producto', '{nombre}:{id}', 'Busqueda de Tipos de Producto', 'Producto Creado', '', '', '', '');
+INSERT INTO `system_catalogos` VALUES ('23', 'Orden de Compra', 'ordenes_de_compra', 'Orden_de_compra', 'orden_compra', null, null, null, null, null, null, null, null, null);
+INSERT INTO `system_catalogos` VALUES ('24', 'Recetas', 'Recetas', 'Receta', 'articulo_detalle', null, null, null, null, null, null, null, null, null);
+INSERT INTO `system_catalogos` VALUES ('25', 'Estados de Orden de Compra', 'estados_de_orden_de_compra', 'EstadosOrdenCompra', 'orden_compra_estado', null, null, null, null, null, null, null, null, null);
+INSERT INTO `system_catalogos` VALUES ('26', 'Series Orden Compra', 'serie_orden_compra', 'SerieOrdenCompra', 'orden_compra_series', null, null, null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `system_users`

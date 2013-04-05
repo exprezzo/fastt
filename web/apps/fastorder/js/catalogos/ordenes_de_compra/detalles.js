@@ -214,34 +214,33 @@
 		
 	};
 	this.configurarGrid=function(tabId){
-		pageSize=10;		
-		
+		pageSize=10;				
 		var gridBusqueda=$(this.tabId+" .grid_busqueda");
 		
-		this.columns=[ 
-			     { dataKey: "id", visible:false, headerText: "ID" },
-				 { dataKey: "fk_orden_compra", visible:false },
-				 { dataKey: "fk_articulo", visible:false },
-				 { dataKey: "idarticulopre", visible:false },
-				 { dataKey: "nombreOrigen", visible:true, headerText:'Producto', editable:false, nuevoEditable:true},
-				 { dataKey: "almacen", visible:true, editable:false ,headerText:'Almacén'},
-				 { dataKey: "pedidoi", visible:true , dataType:'number', aggregate:"sum", editable:false},
-				 { dataKey: "cantidad", visible:true, aggregate:"sum", dataType:'number', headerText:'Ordenado',grupoEditable:false }, 
-				 { dataKey: "fk_pedido_detalle", visible:false },
-				 { dataKey: "nombreProducto", visible:false, grupoEditable:false, 	groupInfo:{
-					position: "header", 
-					outlineMode: "startExpanded", 							 
-					groupSingleRow: true,
-					headerText:'{0}'
-				 }},
-				 			 
-				 { dataKey: "fk_producto_origen", visible:false},
-				 { dataKey: "fk_pedido", visible:false },
-				 
-				 { dataKey: "fk_almacen", visible:false },
-				 { dataKey: "pendiente", visible:true, aggregate:"sum", dataType:'number',editable:false }
-				 
-			];
+		this.columns=[
+			 { dataKey: "id", visible:false, headerText: "ID" },
+			 { dataKey: "fk_orden_compra", visible:false },
+			 { dataKey: "fk_articulo", visible:false },
+			 { dataKey: "idarticulopre", visible:false },
+			 { dataKey: "nombreOrigen", visible:true, headerText:'Producto', editable:false, nuevoEditable:true},
+			 { dataKey: "almacen", visible:true, editable:false ,headerText:'Almacén'},
+			 { dataKey: "pedidoi", visible:true , dataType:'number', aggregate:"sum", editable:false},
+			 { dataKey: "cantidad", visible:true, aggregate:"sum", dataType:'number', headerText:'Ordenado',grupoEditable:false },
+			 { dataKey: "fk_pedido_detalle", visible:false },
+			 { dataKey: "nombreProducto", visible:false, grupoEditable:false, 	groupInfo:{
+				position: "header",
+				outlineMode: "startExpanded", 							 
+				groupSingleRow: true,
+				headerText:'{0}'
+			 }},
+						 
+			 { dataKey: "fk_producto_origen", visible:false},
+			 { dataKey: "fk_pedido", visible:false },
+			 
+			 { dataKey: "fk_almacen", visible:false },
+			 { dataKey: "pendiente", visible:true, aggregate:"sum", dataType:'number',editable:false }
+			 
+		];
 		
 		var me=this;		 
 		gridBusqueda.wijgrid({
@@ -368,29 +367,30 @@
 		} });
 		gridBusqueda.wijgrid({beforeCellUpdate:function(e, args) {
 				var dk=args.cell.column().dataKey;
-				console.log("dk"); console.log(dk);
+				
 				switch (dk) {
 					case "nombreOrigen":
 						
 						args.value = args.cell.container().find("input").val();
 						
+						
 						if (me.articulo!=undefined){
-							console.log("me.articulo"); console.log(me.articulo);
-							var row=args.cell.row();
 							
-							row.data.fk_articulo=me.articulo.value;
-							row.data.nombreProducto = me.articulo.nombre;
-							// row.data.pedido=me.articulo.pedido;
-							// row.data.fk_producto_origen=me.articulo.id;							
-							// row.data.codigo=me.articulo.codigo;
-							// row.data.maximo=me.articulo.maximo;
-							// row.data.minimo=me.articulo.minimo;
-							// row.data.puntoreorden=me.articulo.puntoreorden;
-							// row.data.existencia=me.articulo.existencia;
-							row.data.sugerido=me.articulo.sugerido;							
-							row.data.pendiente=me.articulo.pendiente;
-							row.data.nombreGpo=me.articulo.grupo;		
-							row.data.fk_producto_origen=me.articulo.value;
+							 var row=args.cell.row();
+							
+							 row.data.fk_articulo=me.articulo.value;
+							 row.data.fk_producto_origen = row.data.fk_articulo;
+							 // row.data.nombreProducto = me.articulo.value;
+							 row.data.sugerido=0;
+							 row.data.pendiente=0;
+							 
+							 // console.log("me.articulo"); console.log(me.articulo);
+							  row.data.nombreOrigen = me.articulo.label;
+							  row.data.nombreProducto = me.articulo.label;
+							// row.data.sugerido=me.articulo.sugerido;							
+							// row.data.pendiente=me.articulo.pendiente;
+							// row.data.nombreGpo=me.articulo.grupo;		
+							 
 						}
 					break;
 					case 'cantidad':

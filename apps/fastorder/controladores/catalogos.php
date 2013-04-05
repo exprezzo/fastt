@@ -13,22 +13,19 @@ include '../exps/crear_editorjs.php';
 
 class catalogos extends Controlador{
 	var $modelo="Catalogo";
+	var $campos=array('id','nombre','controlador','modelo','tabla','icono','titulo_nuevo','titulo_edicion','titulo_busqueda','msg_creado','msg_actualizado','pregunta_eliminar','msg_eliminado','msg_cambios');
 	
 	function nuevo(){		
-		$obj=array(
-			'id'=>0,
-			'nombre'=>'Nombre',
-			'controlador'=>'Controlador',
-			'modelo'=>'Modelo',
-			'tabla'=>'Tabla'
-		);
+		$obj=array();
+		$campos=$this->campos;
+		for($i=0; $i<sizeof($campos); $i++){
+			$obj[$campos[$i]]='';
+		}		
 		$vista=$this->getVista();				
 		$vista->datos=$obj;		
 		
 		global $_PETICION;
-		$vista->mostrar('/'.$_PETICION->controlador.'/edicion');
-		
-		
+		$vista->mostrar('/'.$_PETICION->controlador.'/edicion');		
 	}
 	
 	function crear_catalogo($controlador, $modelo, $tabla){

@@ -1,11 +1,169 @@
 ﻿var Edicionordenes_de_compra = function(){
 	this.editado=false;
 	this.saveAndClose=false;
-	
+	this.configurarComboSerie=function(){
+		var tabId=this.tabId;
+		var fields=[{
+			name: 'label',
+			mapping:'serie'
+		},{
+			name: 'value',
+			mapping: 'id'
+		},{
+			name:'es_default'
+		},{
+			name:'sig_folio'
+		}];
+		
+		var myReader = new wijarrayreader(fields);
+		
+		var proxy = new wijhttpproxy({
+			url: '/'+kore.modulo+'/'+this.controlador.nombre+'/getSeries',
+			dataType:"json"			
+		});
+		var me=this;
+		var datasource = new wijdatasource({
+			reader:  new wijarrayreader(fields),
+			proxy: proxy,
+			loaded: function (data) {				
+				var val=parseInt( $('#tabs '+tabId+' .txtFkSerie').val() );								
+				
+				
+				
+				$.each(data.items, function(index, datos) {					
+					
+					 
+					 
+					if (val !=0 ){
+						if (val==parseInt(datos.value) ){
+							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
+							me.actualizarTitulo();
+						}
+					}else{
+						if (parseInt(datos.es_default) == 1 ){							
+							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
+							$(tabId+' .txtFkSerie').val(datos.value);
+							$(tabId+' .txtFolio').val(datos.sig_folio);
+						}
+					}
+					
+				});				
+			},
+			loading: function (dataSource, userData) {
+				var idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();
+                dataSource.proxy.options.data={idalmacen:idalmacen};
+            }
+			
+		});
+		this.dataSerie=datasource;
+		datasource.reader.read= function (datasource) {			
+			var totalRows=datasource.data.totalRows;			
+			datasource.data = datasource.data.rows;
+			datasource.data.totalRows = totalRows;
+			myReader.read(datasource);
+		};			
+		
+		datasource.load();	
+		var combo=$('#tabs '+tabId+' .cmbSerie').wijcombobox({
+			data: datasource,
+			showTrigger: true,
+			minLength: 1,
+			autoFilter: false,
+			animationOptions: {
+				animated: "Drop",
+				duration: 1000
+			},
+			forceSelectionText: true,
+			search: function (e, obj) {
+				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
+			},
+			select: function (e, item) {
+				me.editado=true;
+				$(tabId+' .txtFkSerie').val(item.value);
+				$(tabId+' .txtFolio').val(item.sig_folio);
+			}
+		});
+	};
 	this.activate=function(){
 		var tabId=this.tabId;
 		
 	}
+	this.configCmbAlmacen=function(){
+		var tabId=this.tabId;
+		var me=this;
+		// var fields=[{
+			// name: 'label',
+			// mapping: function (item) {
+				// return item.label;
+			// }
+		// }, {
+			// name: 'value',
+			// mapping: 'label'
+		// }, {
+			// name: 'selected',
+			// defaultValue: false
+		// },{name:'id'}];
+		
+		// var myReader = new wijarrayreader(fields);
+		
+		// var proxy = new wijhttpproxy({
+			// url: '/'+kore.modulo+'/'+this.controlador.nombre+'/getAlmacenes',
+			// dataType:"json"			
+		// });
+		
+		$(this.tabId+' select[name="fk_almacen"]').wijcombobox({select:function(){
+			me.editado=true;		
+			me.dataSerie.load();
+		}});
+		
+		
+		return true;
+		// var datasource = new wijdatasource({
+			// reader:  new wijarrayreader(fields),
+			// proxy: proxy,
+			// loaded: function (data) {				
+				// var val=$('#tabs '+tabId+' select[name="fk_almacen"]').val();
+				// $.each(data.items, function(index, datos) {					
+					// if (parseInt(val)==parseInt(datos.id) ){						
+						  // $('#tabs '+tabId+' .cmbAlmacen').wijcombobox({selectedIndex:index});
+					// }
+				// });				
+			// }
+		// });
+		
+		datasource.reader.read= function (datasource) {			
+			var totalRows=datasource.data.totalRows;			
+			datasource.data = datasource.data.rows;
+			datasource.data.totalRows = totalRows;
+			myReader.read(datasource);
+		};			
+		
+		datasource.load();	
+		var combo=$('#tabs '+tabId+' .cmbAlmacen').wijcombobox({
+			data: datasource,
+			showTrigger: true,
+			minLength: 1,
+			autoFilter: false,
+			animationOptions: {
+				animated: "Drop",
+				duration: 1000
+			},
+			forceSelectionText: true,
+			search: function (e, obj) {
+				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
+			},
+			select: function (e, item) {				
+				$('#tabs '+me.tabId+' .txtFkAlmacen').val(item.id);				
+				$('#tabs '+me.tabId+' .txtFkSerie').val(0);	
+				
+				$(me.tabId +' .cmbSerie').wijcombobox('option', 'selectedIndex',-1)
+				//$(me.tabId +' .cmbSerie + div input').val('')
+				
+				me.editado=true;
+				me.dataSerie.load();
+			}
+		});
+	};
 	this.close=function(){
 		
 		if (this.editado){
@@ -42,7 +200,8 @@
 		tab.css('border','0 1px 1px 1px');
 		
 		
-		this.agregarClase('frm'+this.controlador.nombre);		
+		this.agregarClase('frm'+this.controlador.nombre);
+		this.agregarClase('tab_'+this.controlador.nombre);
 		
 		this.configurarFormulario(this.tabId);
 		this.configurarToolbar(this.tabId);		
@@ -257,16 +416,57 @@
 	this.configurarFormulario=function(tabId){		
 		var me=this;
 		
-		$(this.tabId+' select[name="fk_serie"]').wijcombobox();
-		$(this.tabId+' select[name="idproveedor"]').wijcombobox();
-		$(this.tabId+' select[name="fk_almacen"]').wijcombobox();
-		$(this.tabId+' select[name="idestado"]').wijcombobox();
+		$(this.tabId+' select[name="fk_serie"]').wijcombobox({select:function(){
+			// alert("select");
+			me.editado=true;			
+		}});
+		$(this.tabId+' select[name="idproveedor"]').wijcombobox({
+			width:120,
+			select:function(){
+				me.editado=true;			
+			}
+		});
+		
+		this.configCmbAlmacen();
+		
+		$(this.tabId+' select[name="idestado"]').wijcombobox({
+			width:120,
+			select:function(){
+				me.editado=true;
+			}
+		});
 		$(this.tabId+' input[name="folio"]').wijtextbox();
 		
-		 $(this.tabId+ " input.btnPrecargar" )
-			.button()
+		 $(this.tabId+ " .btnPrecargar" )			
 			.click(function( event ) {
 				event.preventDefault();
+				// alert("precargar");
+				var params={					 
+					 idalmacen:$(me.tabId+' select[name="fk_almacen"]').val()					 
+				};
+				$.ajax({
+					type: "POST",
+					url: '/'+kore.modulo+'/'+me.controlador.nombre+'/precargar',
+					data: params
+				}).done(function( response ) {				
+					var resp = eval('(' + response + ')');
+					
+					if ( resp.success == true	){
+						me.editado=true;
+						
+						var data= $(me.tabId+" .grid_busqueda").wijgrid('data');
+						data.length=0;
+						for(var i=0; i<resp.rows.length; i++){
+							data.push(resp.rows[i]);
+						}
+						
+						//gridPedidos.wijgrid('data',resp.articulos);					
+						
+						$(me.tabId+" .grid_busqueda").wijgrid('ensureControl', true);					
+					}
+				
+				});
+				
 			});
 	  
 		$(this.tabId+' input[name="fecha"]').wijinputdate({ 

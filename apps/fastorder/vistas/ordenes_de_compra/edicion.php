@@ -95,7 +95,12 @@
 		.stock_numbers li{display:block;}
 
 	}
-	
+	.txt_fecha{
+		padding:5px;
+	}
+	.txt_vencimiento {
+		padding:3px;
+	}
 </style>
 
 <script>
@@ -133,76 +138,76 @@
 	<div class="pnlIzq">
 		<?php 	
 			global $_PETICION;
-			$this->mostrar('/componentes/toolbar_edicion_maestro_detalle');	
+			$this->mostrar('/'.$_PETICION->controlador.'/toolbar_edicion');	
 			if (!isset($this->datos)){		
 				$this->datos=array();		
 			}
 		?>
 		
 		<form class="frmEdicion" style="padding-top:10px;">	
-			<input type="hidden" name="id" class="txtId" value="<?php echo $this->datos['id']; ?>" />	
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
-				<label style="">Proveedor:</label>
-				<select name="idproveedor">
-					<?php foreach($this->proveedores as $prov){
-						$selected= ($prov['id'] == $this->datos['idproveedor'])? 'selected' : '';
-						echo '<option '.$selected.' value="'.$prov['id'].'">'.$prov['nombre'].'</option>';
-					}
-					?>					
-				</select>
-				
+			<input type="hidden" name="id" class="txtId" value="<?php echo $this->datos['id']; ?>" />				
+			<div style="display:inline-block;">
+				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+					<label style="">Almac&eacute;n:</label>
+					<select name="fk_almacen">
+						<?php foreach($this->almacenes as $obj){
+							$selected= ($obj['id'] == $this->datos['fk_almacen'])? 'selected' : '';
+							echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
+						}
+						?>					
+					</select>			
+				</div>
+				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+					<label style="">Serie:</label>
+					<select name="fk_serie">
+						<?php 
+						if ( empty($this->datos['fk_serie']) ) {
+							$this->series=array();
+							$this->datos['folio']='';
+						}
+						foreach($this->series as $obj){
+							$selected= ($obj['id'] == $this->datos['fk_serie'])? 'selected' : '';
+							echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['serie'].'</option>';
+						}
+						?>					
+					</select>			
+				</div>
+				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+					<label style="">folio:</label>
+					<input type="text" name="folio" class="txt_folio" value="<?php echo $this->datos['folio']; ?>" style="width:20px;" />
+				</div>
+								
 			</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
-				<label style="">fecha:</label>
-				<input type="text" name="fecha" class="txt_fecha" value="<?php echo $this->datos['fecha']; ?>" style="width:120px;" />
-			</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
-				<label style="">vencimiento:</label>
-				<input type="text" name="vencimiento" class="txt_vencimiento" value="<?php echo $this->datos['vencimiento']; ?>" style="width:120px;" />
-			</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
-				<label style="">Estado:</label>
-				
-				<select name="idestado">
-					<?php foreach($this->estados as $obj){
-						$selected= ($obj['id'] == $this->datos['idestado'])? 'selected' : '';
-						echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
-					}
-					?>					
-				</select>
-			</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
-				<label style="">Serie:</label>
-				<select name="fk_serie">
-					<?php 
-					if ( empty($this->datos['fk_serie']) ) {
-						$this->series=array();
-						$this->datos['folio']='';
-					}
-					foreach($this->series as $obj){
-						$selected= ($obj['id'] == $this->datos['fk_serie'])? 'selected' : '';
-						echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['serie'].'</option>';
-					}
-					?>					
-				</select>
-			
-		</div>
-		<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
-			<label style="">folio:</label>
-			<input type="text" name="folio" class="txt_folio" value="<?php echo $this->datos['folio']; ?>" style="width:20px;" />
-		</div>
-		<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
-			<label style="">Almac&eacute;n:</label>
-			<select name="fk_almacen">
-				<?php foreach($this->almacenes as $obj){
-					$selected= ($obj['id'] == $this->datos['fk_almacen'])? 'selected' : '';
-					echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
-				}
-				?>					
-			</select>			
-		</div>
-			<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;" >
-				<input type="button"  class="btnPrecargar" value="Precargar" />
+			<div style="display:inline-block;vertical-align:top;">
+				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+					<label style="">Proveedor:</label>
+					<select name="idproveedor">
+						<?php foreach($this->proveedores as $prov){
+							$selected= ($prov['id'] == $this->datos['idproveedor'])? 'selected' : '';
+							echo '<option '.$selected.' value="'.$prov['id'].'">'.$prov['nombre'].'</option>';
+						}
+						?>					
+					</select>				
+				</div>
+				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+					<label style="">fecha:</label>
+					<input type="text" name="fecha" class="txt_fecha" value="<?php echo $this->datos['fecha']; ?>" style="width:120px;" />
+				</div>
+				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+					<label style="">vencimiento:</label>
+					<input type="text" name="vencimiento" class="txt_vencimiento" value="<?php echo $this->datos['vencimiento']; ?>" style="width:120px;" />
+				</div>
+				<!--div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
+					<label style="">Estado:</label>					
+					<select name="idestado">
+						<?php 
+							// foreach($this->estados as $obj){
+								// $selected= ($obj['id'] == $this->datos['idestado'])? 'selected' : '';
+								// echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
+							// }
+						?>					
+					</select>
+				</div-->
 			</div>
 		</form>
 		<div >	

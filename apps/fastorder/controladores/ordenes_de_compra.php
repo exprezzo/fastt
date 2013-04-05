@@ -12,6 +12,16 @@ class ordenes_de_compra extends Controlador{
 	var $modelo="Orden_de_compra";
 	var $campos=array('id','idproveedor','fecha','vencimiento','idestado','fk_serie','folio','fk_almacen');
 	
+	function precargar(){
+		$mod=new ProductoModelo();		
+		
+		$params=array(
+			'id_almacen'=>empty($_REQUEST['idalmacen'])? 0 :$_REQUEST['idalmacen']
+		);
+		$res=$mod->precargar($params);				
+		$res['success']=true;
+		echo json_encode($res);	
+	}
 	function getArticulos(){
 		$mod=new ProductoModelo();		
 		
