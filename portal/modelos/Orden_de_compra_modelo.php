@@ -23,7 +23,7 @@ class Orden_de_compraModelo extends Modelo{
 		
 		// echo 'guardar';
 		// print_r($params);
-		
+		unset($params['cmb_serie']);
 		$resM= parent::guardar($params);
 		
 		if ( $resM['success']==false ){			

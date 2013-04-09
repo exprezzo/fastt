@@ -7,7 +7,7 @@ require_once '../'.$_PETICION->modulo.'/modelos/Almacen_modelo.php';
 require_once '../'.$_PETICION->modulo.'/modelos/SerieOrdenCompra_modelo.php';
 require_once '../'.$_PETICION->modulo.'/modelos/Proveedor_modelo.php';
 require_once '../'.$_PETICION->modulo.'/modelos/EstadosOrdenCompra_modelo.php';
-
+require_once '../'.$_PETICION->modulo.'/modelos/orden_compra_serie_model.php';
 class ordenes_de_compra extends Controlador{
 	var $modelo="Orden_de_compra";
 	var $campos=array('id','idproveedor','fecha','vencimiento','idestado','fk_serie','folio','fk_almacen');
@@ -32,7 +32,20 @@ class ordenes_de_compra extends Controlador{
 		
 		echo json_encode($res);	
 	}
-	
+		
+	function getSeries(){
+		$idAlmacen=$_GET['idalmacen'];
+		$mod=new OrdenCompraSerieModel();
+		$res=$mod->getSeries($start=0, $limit=9, $idAlmacen);
+		if ( !$res['success'] ){
+			echo json_encode($res);	exit;
+		}
+		$respuesta=array(
+			'rows'=>$res['datos'],
+			'totalRows'=> $res['total']
+		);
+		echo json_encode($respuesta);
+	}
 
 	function nuevo(){		
 		$this->cargarDatosAdicionales();
@@ -54,7 +67,7 @@ class ordenes_de_compra extends Controlador{
 		
 	}
 	
-	function guardar(){
+	function guardar(){	
 		return parent::guardar();
 	}
 	function borrar(){

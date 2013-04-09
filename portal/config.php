@@ -9,7 +9,7 @@ $DB_CONFIG=array(
 );
 
 $APP_CONFIG=array(
-	'nombre'=>'Marina MVC, admin',
+	'nombre'=>'Fast Order',
 	'tema'=>'cobalt'
 );
 

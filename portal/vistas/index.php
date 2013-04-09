@@ -157,7 +157,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 				{ 'type':'keydown', 'propagate':false, 'target':document} 
 			); 
 			
-			shortcut.add("Delete", 
+			shortcut.add("Ctrl+Alt+B", 
 				function() { 
 					var tab=$('#tabs > div[aria-hidden="false"]');
 					var tabObj = tab.data('tabObj');
@@ -165,8 +165,7 @@ if ( !isset($_SESSION['isLoged'])|| $_SESSION['isLoged']!=true ){
 						tabObj.borrar();
 					}
 					
-					if (tabObj!=undefined && tabObj.eliminar!=undefined){
-						// tabObj.eliminar();
+					if (tabObj!=undefined && tabObj.eliminar!=undefined){						
 					}
 					
 				}, 

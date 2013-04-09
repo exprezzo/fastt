@@ -27,29 +27,33 @@
 		var datasource = new wijdatasource({
 			reader:  new wijarrayreader(fields),
 			proxy: proxy,
-			loaded: function (data) {				
-				var val=parseInt( $('#tabs '+tabId+' select[name="fk_serie"]').val() );												
+			loaded: function (data) {							
+				var val=parseInt( $('#tabs '+tabId+' [name="fk_serie"]').val() );												
+				val= ( isNaN(val) )? 0 : val;
+				
 				$.each(data.items, function(index, datos) {										
-					if (val !=0 ){
+					
+					if (val !=0 ){						
 						if (val==parseInt(datos.value) ){
-							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
-							me.actualizarTitulo();
+							$(me.tabId+' select[name="cmb_serie"]').wijcombobox({selectedIndex:index});							
+							// me.actualizarTitulo();
 						}
 					}else{
-						if (parseInt(datos.es_default) == 1 ){							
-							$(tabId+' .cmbSerie').wijcombobox({selectedIndex:index});
-							$(tabId+' .txtFkSerie').val(datos.value);
-							$(tabId+' .txtFolio').val(datos.sig_folio);
+						if (parseInt(datos.es_default) == 1 ){									
+							$(me.tabId+' select[name="cmb_serie"]').wijcombobox({selectedIndex:index});							
+							$(me.tabId+' select[name="cmb_serie"]').wijcombobox('option','text',datos.label);							
+							$(me.tabId+' [name="fk_serie"]').val(datos.value);
+							$(me.tabId+' [name="folio"]').val(datos.sig_folio);							
 						}
 					}
 					
 				});				
 			},
-			loading: function (dataSource, userData) {
-				var idalmacen = $('#tabs '+me.tabId+' .txtFkAlmacen').val();
+			loading: function (dataSource, userData) {				
+				// var idalmacen = $(me.tabId+' select[name="fk_almacen"]').val();
+				var idalmacen = me.almacen_seleccionado;
                 dataSource.proxy.options.data={idalmacen:idalmacen};
-            }
-			
+            }			
 		});
 		this.dataSerie=datasource;
 		datasource.reader.read= function (datasource) {			
@@ -60,29 +64,35 @@
 		};			
 		
 		datasource.load();	
-		var combo=$('#tabs '+tabId+' .cmbSerie').wijcombobox({
+		
+		
+		
+		
+		var combo=$(this.tabId+' select[name="cmb_serie"]').wijcombobox({
 			data: datasource,
 			showTrigger: true,
 			minLength: 1,
 			autoFilter: false,
+			width:50,
 			animationOptions: {
 				animated: "Drop",
 				duration: 1000
 			},
-			forceSelectionText: true,
+			forceSelectionText: false,
 			search: function (e, obj) {
 				//obj.datasrc.proxy.options.data.name_startsWith = obj.term.value;
 			},
 			select: function (e, item) {
-				me.editado=true;
-				$(tabId+' .txtFkSerie').val(item.value);
-				$(tabId+' .txtFolio').val(item.sig_folio);
+				me.editado=true;				
+				$(me.tabId+' select[name="fk_serie"]').val(item.value);
+				 $(tabId+' [name="folio"]').val(item.sig_folio);
 			}
 		});
 	};
 	this.activate=function(){
 		var tabId=this.tabId;
-		
+		var w=$(tabId+' .lblAlmacen').width();		
+		$(tabId+' .lblSerie').width(w);
 	}
 	this.configCmbAlmacen=function(){
 		var tabId=this.tabId;
@@ -107,9 +117,19 @@
 			// dataType:"json"			
 		// });
 		
-		$(this.tabId+' select[name="fk_almacen"]').wijcombobox({select:function(){
+		$(this.tabId+' select[name="fk_almacen"]').wijcombobox({select:function(e, item){			
+			me.almacen_seleccionado = item.value;
+			
+			// $(me.tabId+" [name='cmb_serie']").wijcombobox({
+				// data: []
+			// });
+			
+			$(me.tabId+" [name='fk_serie']").val(0);
 			me.editado=true;		
-			me.dataSerie.load();
+			
+			setTimeout(me.dataSerie.load(), 100);
+
+			// alert();
 		}});
 		
 		
@@ -189,6 +209,7 @@
 		
 		this.tabId= tabId;		
 		
+		this.almacen_seleccionado = $(this.tabId + ' [name="fk_almacen"]').val();
 		
 		var tab=$('div'+this.tabId);
 		//estas dos linas deben estar en la hoja de estilos
@@ -273,8 +294,7 @@
 		var me=this;
 		
 		
-		var articulos=$(this.tabId+' .grid_busqueda').wijgrid('data');
-		// console.log("data"); console.log(data);
+		var articulos=$(this.tabId+' .grid_busqueda').wijgrid('data');		
 		
 		//-----------------------------------
 		// http://stackoverflow.com/questions/2403179/how-to-get-form-data-as-a-object-in-jquery
@@ -412,9 +432,9 @@
 	this.configurarFormulario=function(tabId){		
 		var me=this;
 		
-		$(this.tabId+' select[name="fk_serie"]').wijcombobox({select:function(){			
-			me.editado=true;			
-		}});
+		// $(this.tabId+' select[name="cmb_serie"]').wijcombobox({select:function(){			
+			// me.editado=true;			
+		// }});
 		
 		this.configurarComboSerie();
 		$(this.tabId+' select[name="idproveedor"]').wijcombobox({

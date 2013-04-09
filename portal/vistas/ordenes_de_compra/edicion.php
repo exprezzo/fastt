@@ -149,7 +149,7 @@
 			<div style="display:inline-block;">
 				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
 					<label style="">Almac&eacute;n:</label>
-					<select name="fk_almacen">
+					<select name="fk_almacen" style="width:95px;">
 						<?php foreach($this->almacenes as $obj){
 							$selected= ($obj['id'] == $this->datos['fk_almacen'])? 'selected' : '';
 							echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['nombre'].'</option>';
@@ -159,12 +159,13 @@
 				</div>
 				<div class="inputBox" style="margin-bottom:8px;display:block;margin-left:10px;width:100%;"  >
 					<label style="">Serie:</label>
-					<select name="fk_serie">
+					<input type="hidden" name="fk_serie" value="<?php echo $this->datos['fk_serie']; ?>" />
+					<select name="cmb_serie" style="width:95px;">
 						<?php 
 						if ( empty($this->datos['fk_serie']) ) {
 							$this->series=array();
 							$this->datos['folio']='';
-						}
+						}						
 						foreach($this->series as $obj){
 							$selected= ($obj['id'] == $this->datos['fk_serie'])? 'selected' : '';
 							echo '<option '.$selected.' value="'.$obj['id'].'">'.$obj['serie'].'</option>';
